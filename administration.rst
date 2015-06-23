@@ -13,7 +13,7 @@ There are several ways to upgrade ClusterControl to the latest version. By defau
 .. image:: img/docs_notification_update.png
    :align: center
 
-You can disable the notification at *ClusterControl UI > Settings > General Settings > Version > untick “Check for updates”*. We recommend our users to keep up-to-date with the latest release once it is available. Details of changes in each release can be found in the `Change Logs <#changelog.html>`_.
+You can disable the notification at *ClusterControl UI > Settings > General Settings > Version > untick “Check for updates”*. We recommend our users to keep up-to-date with the latest release once it is available. Details of changes in each release can be found in the `Change Logs <changelog.html>`_.
 
 Online Upgrade
 ``````````````
