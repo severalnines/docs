@@ -15,7 +15,7 @@ Creates an immediate backup of the database. You can choose to create a full bac
 	- Supported backup method:
 		- mysqldump - Separated compressed schema and data dump. See `mysqldump`_ section.
 		- xtrabackup (full) - A full compressed backup. See `Percona Xtrabackup`_ section.
-		- NDB backup (for MySQL Cluster) - See `NDB backup (MySQL Cluster)`_ section.
+		- NDB backup (for MySQL Cluster) - See `NDB backup`_ section.
 
 * **Backup Location**
 	- Supported backup locations:

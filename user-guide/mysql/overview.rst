@@ -12,7 +12,7 @@ Galera Cluster
 ''''''''''''''
 
 * **Add Node**
-	- See `Add Node <#add-node>`_ section.
+	- See `Add Node`_ section.
 
 * **Add Load Balancer**
 	- See `Add Load Balancer <manage.html#load-balancer>`_ section.
@@ -37,7 +37,7 @@ Galera Cluster
 	- You can still re-register your cluster to ClusterControl at a later stage.
 
 MySQL standalone/replication
-''''''''''''''''''''''''''''
+''''''''''''''''''''''''''''''
 
 * **Add Node**
 	- See `Add Node`_ section.
@@ -61,7 +61,7 @@ MySQL Cluster
 	- You can still re-register your cluster to ClusterControl at a later stage.
 
 Add Node
-''''''''
+''''''''''
 
 Adds a new or existing database node into the cluster. You can scale out your cluster by adding mode database nodes. The new node will automatically join and synchronize with the rest of the cluster. 
 
@@ -279,10 +279,10 @@ This provides a summary of host and replication-related stats for all nodes. The
 Each database cluster has it’s own set of statistics as explained below:
 
 Galera Cluster
-..............
+''''''''''''''
 
 Galera Nodes Grid
-+++++++++++++++++
+..................
 
 * **Host**
 	- Database node hostname or IP address
@@ -333,7 +333,7 @@ Galera Nodes Grid
 	- Fetch the latest update.
 
 Master Nodes Grid
-+++++++++++++++++
+..................
 
 This grid appears if you configured Galera node to produce binary log with a unique ``server_id`` value.
 
@@ -362,7 +362,7 @@ This grid appears if you configured Galera node to produce binary log with a uni
 	- Fetch the latest update.
 
 Slave Nodes Grid
-++++++++++++++++
+..................
 
 This grid appears if you have a replication slave attached to the Galera cluster.
 
@@ -404,10 +404,10 @@ This grid appears if you have a replication slave attached to the Galera cluster
 
 
 MySQL single instance or replication
-....................................
+''''''''''''''''''''''''''''''''''''
 
 Standalone Nodes Grid
-+++++++++++++++++++++
+.....................
 
 * **Host**
 	- Database node hostname or IP address
@@ -428,7 +428,7 @@ Standalone Nodes Grid
 	- The number of SELECT queries on this node per second.
 
 Master Nodes Grid
-+++++++++++++++++
+..................
 
 This grid appears if you configured MySQL node to produce binary log with a unique ``server_id`` value.
 
@@ -460,7 +460,7 @@ This grid appears if you configured MySQL node to produce binary log with a uniq
 	- Value of ``binlog_ignore_db`` option.
 
 Slave Nodes Grid
-+++++++++++++++++
+..................
 
 This grid appears if you have slaves replicating from a master.
 
@@ -501,10 +501,10 @@ This grid appears if you have slaves replicating from a master.
 	- Fetch the latest update.
 
 MySQL Cluster
-.............
+''''''''''''''
 
 Management Nodes Grid
-+++++++++++++++++++++
+......................
 
 * **Instance**
 	- Management node hostname or IP address
@@ -528,7 +528,7 @@ Management Nodes Grid
 	- Fetch the latest update.
 
 SQL Nodes Grid
-++++++++++++++
+..................
 
 * **Instance**
 	- SQL node hostname or IP address.
@@ -559,7 +559,7 @@ SQL Nodes Grid
 	- Fetch the latest update.
 
 Data Nodes Grid
-+++++++++++++++
+..................
 
 * **Instance**
 	- Data node hostname or IP address.

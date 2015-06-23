@@ -69,7 +69,7 @@ These are specific functions available for Galera nodes:
 	- This option is only available if the node is down. It starts the database instance on this node. If you tick 'Perform an initial start?', it will remove all files in the MySQL datadir and force a full resync (SST), which is necessary sometimes if the Galera node fails to reach a synced state after multiple node recovery attempts and there is a filesystem issue.
 	
 * **Make Primary**
-	- This option is only available if the node is down. It makes sense to use it if the Galera node is down and reported as :term:`non-Primary component` from the *Overview* page. ClusterControl will attempt to promote the node from non-Primary state to :term:`Primary component`.
+	- This option is only available if the node is down. It makes sense to use it if the Galera node is down and reported as non-Primary component from the *Overview* page. ClusterControl will attempt to promote the node from non-Primary state to :term:`Primary component`.
 
 MySQL Cluster
 '''''''''''''

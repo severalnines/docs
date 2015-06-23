@@ -119,7 +119,7 @@ Glossary
 	
 		.. seealso:: https://puppetlabs.com/
 		
-	s9s-admin tool
+	s9s-admin tools
 		ClusterControl helper scripts provided by Severalnines. The source code can be accessible at Severalnines Github repository.
 		
 		.. seealso:: https://github.com/severalnines/s9s-admin

@@ -122,7 +122,7 @@ This provides a summary of host and replication-related stats for all nodes. The
 Each database cluster has it’s own set of statistics as explained below:
 
 MongoDB Replica Set
-....................
+'''''''''''''''''''
 
 * **Node**
 	- MongoDB instance consists of node's IP address or hostname and MongoDB port.

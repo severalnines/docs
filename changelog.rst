@@ -6,7 +6,7 @@ Change Logs
 These change logs list details about updates in each version of ClusterControl.
 
 Changes in v1.2.10
--------------------
+------------------
 
 *May 27th, 2015*
 
