@@ -63,7 +63,7 @@ These are specific functions available for Galera nodes:
 * **Rebuild Replication Slave**
 	- Rebuilds replication slave on this node from another master. This is only relevant if you have setup a replication slave for the cluster and you want to resync the data. It uses Percona Xtrabackup to stage the replication data.
 
-.. caution:: 'Rebuilding Replication Slave' will wipe out the selected node's MySQL datadir content.
+.. caution:: 'Rebuilding Replication Slave' will wipe out the selected node's MySQL datadir.
 
 * **Start Node**
 	- This option is only available if the node is down. It starts the database instance on this node. If you tick 'Perform an initial start?', it will remove all files in the MySQL datadir and force a full resync (SST), which is necessary sometimes if the Galera node fails to reach a synced state after multiple node recovery attempts and there is a filesystem issue.
@@ -102,7 +102,7 @@ These are specific functions available for MySQL replication nodes:
 * **Rebuild Replication Slave**
 	- Rebuilds replication slave on this node from another master. It uses Percona Xtrabackup to stage the replication data.
 	
-.. caution:: 'Rebuilding Replication Slave' will wipe out the selected node's MySQL datadir content.
+.. caution:: 'Rebuilding Replication Slave' will wipe out the selected node's MySQL datadir.
 	
 * **Stop Slave**
 	- Stops the slave thread.
