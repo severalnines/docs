@@ -213,7 +213,11 @@ Proper passwordless SSH setup from ClusterControl node to all nodes (including C
 Setting up passwordless SSH
 +++++++++++++++++++++++++++
 
-To setup a passwordless SSH, make sure you generate a SSH key and copy it from the ClusterControl host as the designated user to the target host. Take note that ClusterControl also requires passwordless SSH to itself, so do not forget to set this up as described in the example below. It is NOT neccessary to setup two-way passwordless SSH, e.g: from the managed database node to the ClusterControl.
+To setup a passwordless SSH, make sure you generate a SSH key and copy it from the ClusterControl host as the designated user to the target host. Take note that ClusterControl also requires passwordless SSH to itself, so do not forget to set this up as described in the example below. 
+
+Most of the sampling tasks for controller are done locally but there are some tasks that require a working self-passwordless SSH e.g: starting netcat when performing backup. There are also various places where ClusterControl performs the execution "uniformly" regardless of the node's role/type. So, setting this up is required and failing to do so will result ClusterControl to raise an alarm.
+
+.. Note:: It is *NOT* neccessary to setup two-way passwordless SSH, e.g: from the managed database node to the ClusterControl.
 
 Examples below shows how a root user on the ClusterControl host generates and copies a SSH key to a database host, 192.168.0.10:
 
