@@ -22,12 +22,26 @@ Open your web browser to http://[ClusterControl_host]/clustercontrol and create 
 
 *Step #3*
 
-`Add Existing Servers/Clusters <user-guide/index.html#add-existing-server-cluster>`_ | `Create Database Cluster <user-guide/index.html#create-database-cluster>`_ | `Create Database Node <user-guide/index.html#create-database-node>`_
+Setup passwordless SSH to all target database nodes (including ClusterControl node). On ClusterControl node, run following commands:
+
+.. code-block:: bash
+
+	$ ssh-keygen -r rsa # press enter on all prompts
+	$ ssh-copy-id -i ~/.ssh/id_rsa [ClusterControl IP address]
+	$ ssh-copy-id -i ~/.ssh/id_rsa [Database nodes IP address] # repeat this to all target database nodes
 
 *Step #4*
 
-`ClusterControl User Guide <user-guide/index.html>`_
+Deploy a new server/cluster or add an existing database server/cluster into ClusterControl via:
+
+`Add Existing Servers/Clusters <user-guide/index.html#add-existing-server-cluster>`_ | `Create Database Cluster <user-guide/index.html#create-database-cluster>`_ | `Create Database Node <user-guide/index.html#create-database-node>`_
 
 *Step #5*
+
+Start managing and monitor your database instances:
+
+`ClusterControl User Guide <user-guide/index.html>`_
+
+*Step #6*
 
 `Follow our blog <http://severalnines.com/blog/>`_ | `Exchange with other users <http://support.severalnines.com/forums/20303393-Community-Help>`_ | `Contact Severalnines Support <http://support.severalnines.com/home>`_ | `Contact Sales <http://www.severalnines.com/contact-us>`_
