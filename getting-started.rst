@@ -13,11 +13,11 @@ Install the latest ClusterControl:
   $ chmod +x install-cc
   $ ./install-cc   # as root or sudo user
 
-If you have multiple network interface cards, assign one IP address as per below:
+If you have multiple network interface cards, assign one IP address for HOST variable as per example below:
 
 .. code-block:: bash
 
-  $ HOST=ip_address ./install-cc # as root or sudo user  
+  $ HOST=192.168.1.10 ./install-cc # as root or sudo user  
 
 .. Note:: The installation script will always install an Apache server on the host. An existing MySQL server can be used or a new MySQL server install is configured for minimum system requirements. If you have a larger server please make the necessary changes to the ``my.cnf`` file and restart the MySQL server after the installation.
 
