@@ -186,9 +186,16 @@ You are recommended to install ClusterControl as 'root', and running as root is 
 
 For sudoers, using passwordless sudo is recommended. To setup a passwordless sudo user, add following line into ``/etc/sudoers``:
 
+Edit the sudoers with the following command (as root):
+
 .. code-block:: bash
 
-  # add the following line at the end. Replace [OS user] with the sudo username of your choice.
+  visudo
+
+And add the following line at the end. Replace [OS user] with the sudo username of your choice:
+
+.. code-block:: bash
+
   [OS user] ALL=(ALL) NOPASSWD: ALL
 
 Open a new terminal to verify it works. You should now be able to run the command below without entering a password:
