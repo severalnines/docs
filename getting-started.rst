@@ -13,7 +13,12 @@ Install the latest ClusterControl:
   $ chmod +x install-cc
   $ ./install-cc   # as root or sudo user
 
-  
+If you have multiple network interface cards, assign one IP address as per below:
+
+.. code-block:: bash
+
+  $ HOST=ip_address ./install-cc # as root or sudo user  
+
 .. Note:: The installation script will always install an Apache server on the host. An existing MySQL server can be used or a new MySQL server install is configured for minimum system requirements. If you have a larger server please make the necessary changes to the ``my.cnf`` file and restart the MySQL server after the installation.
 
 *Step #2*
@@ -30,7 +35,7 @@ Setup passwordless SSH to all target nodes (ClusterControl and all database node
 	$ ssh-copy-id -i ~/.ssh/id_rsa [ClusterControl IP address]
 	$ ssh-copy-id -i ~/.ssh/id_rsa [Database nodes IP address] # repeat this to all target database nodes
 
-.. Attention:: If you use a non-root user, then it must be in sudoers on all nodes.
+.. Attention:: If you use a non-root user, then it must be in sudoers on all nodes. Read `here <requirements.html#operating-system-user>`_ for details.
 
 *Step #4*
 
