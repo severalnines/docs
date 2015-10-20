@@ -19,7 +19,13 @@ If you have multiple network interface cards, assign one IP address for HOST var
 
   $ HOST=192.168.1.10 ./install-cc # as root or sudo user  
 
-.. Note:: The installation script will always install an Apache server on the host. An existing MySQL server can be used or a new MySQL server install is configured for minimum system requirements. If you have a larger server please make the necessary changes to the ``my.cnf`` file and restart the MySQL server after the installation.
+.. Note:: ClusterControl relies on a MySQL server as a data repository for the clusters it manages and an Apache server for the User Interface. The installation script will always install an Apache server on the host. An existing MySQL server can be used or a new MySQL server install is configured for minimum system requirements. If you have a larger server please make the necessary changes to the my.cnf file and restart the MySQL server after the installation.
+
+If you want to perform a non-interactive installation, you can assign each variable with its value beforehand, similar to example below:
+
+.. code-block:: bash
+
+	$ S9S_CMON_PASSWORD=cmon S9S_ROOT_PASSWORD=root123 S9S_DB_PORT=3306 HOST=10.10.10.10 ./install-cc
 
 *Step #2*
 

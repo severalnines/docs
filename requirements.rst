@@ -17,14 +17,15 @@ Following is the expected system environment for the ClusterControl host:
 * Network: conventional network interface
 * Hardware platform:
 	* Bare-metal
-	* Paravirtualization (VMware, VirtualBox, Xen)
-	* HVM
-* Cloud platform:
+	* Virtualization
+		* VMware
+		* VirtualBox
+		* Xen
+		* Docker (with limited support)
+* Tested cloud platform:
 	* AWS EC2
 	* RackSpace Cloud
-	* Microsoft Azure
-	* Google Cloud
-* Internet connection (for selected cluster deployment purposes)
+* Internet connection (for selected cluster deployment)
 
 Operating system
 ----------------
@@ -40,8 +41,6 @@ The following do not work:
 * Centos 5.4 and earlier
 * Fedora Core 16 and earlier
 
-.. Important:: ClusterControl node must run under the same operating system distribution running on the database nodes. For instance, if you have a set of MySQL Cluster nodes running on CentOS 6.5, it is possible to have ClusterControl node run on Redhat 6.5. Mixing up Debian-based hosts with Redhat-based hosts is not possible. On top of that, mixing Ubuntu 14.04 with 12.04 (and lower) is not recommended since they both are running different Apache version with distinct configuration.
-
 Software Dependencies
 ---------------------
 
@@ -50,15 +49,30 @@ The following software is required by ClusterControl:
 - MySQL server (5.1 or later, preferably 5.5 or later)
 - MySQL client
 - Apache web server (2.2 or later)
+	- mod_rewrite
+	- mod_ssl
+	- allow .htaccess override
 - PHP (5 or later)
+	- RHEL: php, php-mysql, php-gd, php-ldap, php-curl
+	- Debian: php5-common, php5-mysql, php5-gd, php5-ldap, php5-curl, php5-json
 - Linux Kernel Security (SElinux or AppArmor) - must be disabled or set to permissive mode
 - OpenSSH server/client
 - BASH (recommended: version 4 or later)
-- NTP server - All servers’ time must synced under a same time zone
+- NTP server - All servers’ time must synced under one time zone
 - netcat - for streaming backups
 
 .. Note:: If ClusterControl is installed via deployment package (generated with Severalnines Configurator), installation script (install-cc.sh), bootstrap script (s9s_bootstrap) or package manager (yum/apt), all dependencies will be automatically satisfied.*
 
+Supported Browsers
+------------------
+
+We highly recommend user to use the following web browsers when accessing ClusterControl UI:
+	- Google Chrome
+	- Mozilla Firefox
+	
+Ensure to keep up-to-date of these browsers as we are very likely taking advatange of the new features available in the latest version.
+
+.. Note:: ClusterControl is built and tested only on the mentioned browsers. Some major web browsers like Safari, Opera and Internet Explorer could also work.
 
 Supported Clusters
 ------------------
@@ -85,6 +99,8 @@ The following table shows supported database clusters with recommended minimum n
 |                | Replica set                | 3 hosts (2 replica servers + 1 ClusterControl node)                         |
 +----------------+----------------------------+-----------------------------------------------------------------------------+
 | PostgreSQL     | Single instance            | 2 hosts (1 PostgreSQL node + 1 ClusterControl node)                         |
++                +----------------------------+-----------------------------------------------------------------------------+
+|                | Replication                | 3 hosts (1 master node + 1 slave node + 1 ClusterControl node)              |
 +----------------+----------------------------+-----------------------------------------------------------------------------+
 
 Firewall and Security Groups
@@ -138,10 +154,21 @@ ClusterControl supports various database and application vendors and each has it
 |                                                 | * 27017 (mongos)                     |
 |                                                 | * 27019 (config server)              |
 +-------------------------------------------------+--------------------------------------+
+| PostgreSQL                                      | * 22 (SSH)                           |
+|                                                 | * ICMP (echo reply/request)          |
+|                                                 | * 5432 (postgres)                    |
++-------------------------------------------------+--------------------------------------+
 | HAproxy                                         | * 22 (SSH)                           |
 |                                                 | * ICMP (echo reply/request)          |
 |                                                 | * 9600 (HAproxy stats)               |
 |                                                 | * 3307 or 33306 (MySQL load-balanced)|
++-------------------------------------------------+--------------------------------------+
+| MaxScale                                        | * 22 (SSH)                           |
+|                                                 | * ICMP (echo reply/request)          |
+|                                                 | * 6033 (MaxAdmin - CLI)              |
+|                                                 | * 4006 (Round robin listener)        |
+|                                                 | * 4008 (R/W split listener)          |
+|                                                 | * 4442 (Debug information            |
 +-------------------------------------------------+--------------------------------------+
 | Keepalived                                      | * 22 (SSH)                           |
 |                                                 | * ICMP (echo reply/request)          |
@@ -175,7 +202,7 @@ You need to separate the 127.0.0.1 entry from your real hostname, specifying it 
 Operating System User
 ---------------------
 
-ClusterControl controller (cmon) process requires a dedicated operating system user to perform various management and monitoring commands on the managed nodes. This user which is defined as ``os_user`` or ``sshuser`` in CMON configuration file, must exist on all managed nodes and it should have ability to perform super-user commands.
+ClusterControl controller (cmon) process requires a dedicated operating system user to perform various management and monitoring commands on the managed nodes. This user which is defined as ``os_user`` or ``sshuser`` in CMON configuration file, must exist on all managed nodes and it should have the ability to perform super-user commands.
 
 You are recommended to install ClusterControl as 'root', and running as root is the easiest option. If you perform the install using another user other than 'root', the following must be true:
 
@@ -215,14 +242,14 @@ where ``[OS user]`` is the name of the user you intend to use during the install
 Passwordless SSH
 ----------------
 
-Proper passwordless SSH setup from ClusterControl node to all nodes (including ClusterControl node) is mandatory. If ClusterControl is installed using the deployment package generated from the Severalnines Configurator or using one of our bootstrap scripts, the deployment script will guide users on setting up SSH keys before proceeding with the install.
+Proper passwordless SSH setup from ClusterControl node to all nodes (including ClusterControl node) is mandatory. If ClusterControl is installed using the deployment package generated from the Severalnines Configurator or using one of our bootstrap scripts, the deployment script will guide users on setting up SSH keys before proceed with the installation.
 
 Setting up passwordless SSH
 +++++++++++++++++++++++++++
 
 To setup a passwordless SSH, make sure you generate a SSH key and copy it from the ClusterControl host as the designated user to the target host. Take note that ClusterControl also requires passwordless SSH to itself, so do not forget to set this up as described in the example below. 
 
-Most of the sampling tasks for controller are done locally but there are some tasks that require a working self-passwordless SSH e.g: starting netcat when performing backup. There are also various places where ClusterControl performs the execution "uniformly" regardless of the node's role/type. So, setting this up is required and failing to do so will result ClusterControl to raise an alarm.
+Most of the sampling tasks for controller are done locally but there are some tasks that require a working self-passwordless SSH e.g: starting netcat when performing backup (to stream created backup to the other node). There are also various places where ClusterControl performs the execution "uniformly" regardless of the node's role or type. So, setting this up is required and failing to do so will result ClusterControl to raise an alarm.
 
 .. Note:: It is *NOT* neccessary to setup two-way passwordless SSH, e.g: from the managed database node to the ClusterControl.
 
@@ -251,6 +278,7 @@ If you are running as a sudo user e.g sysadmin, here is an example:
 You should now able to SSH from ClusterControl to the other server(s) without password:
 
 .. code-block:: bash
+
   $ ssh [username]@[server IP address]
 
 If it does not work, check permissions of the ``.ssh`` directory and the files in it. Some users need to set the following in their ``/etc/ssh/sshd_config`` file:
@@ -326,6 +354,6 @@ UTC is however recommended. Configure NTP client for each host with a working ti
 License
 -------
 
-ClusterControl comes in three versions, Community, Pro and Enterprise editions, within the same binary. Please review the `ClusterControl product page <http://www.severalnines.com/pricing>`_ for a feature comparison between these editions. To upgrade from Community to Pro or Enterprise, you would need a valid software license. When the license expires, ClusterControl defaults back to the Community Edition.
+ClusterControl comes in three versions, Community, Pro and Enterprise editions, within the same binary. Please review the `ClusterControl product page <http://www.severalnines.com/pricing>`_ for features comparison between these editions. To upgrade from Community to Pro or Enterprise, you would need a valid software license. When the license expires, ClusterControl defaults back to the Community Edition.
 
 All installation methods automatically configures ClusterControl with a 14-days fully functional trial license. For commercial information, please `contact us <http://www.severalnines.com/contact>`_.

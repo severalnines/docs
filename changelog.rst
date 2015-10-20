@@ -5,6 +5,52 @@ Change Logs
 
 These change logs list details about updates in each version of ClusterControl.
 
+Changes in v1.2.11
+------------------
+
+*Oct 1st, 2015*
+
+* This is a our best release yet for Postgres with a number of improvements.
+	- Create a new Postgres Node/cluster from the "Create Database Node" dialog or add an new node with a few clicks 
+	- You can now easily add a new replication slave for your Postgres master node
+	- The replication peformance and status is shown on the overview page for the slave
+	- You can restore a backup created by ClusterControl on a specific node
+	- Create your own dashboard with stats to chart/graph on the overview page like MySQL based clusters
+	- DB performance charts on the Nodes page
+	- View database status and variables on your postgres nodes side by side
+	- Enabled DevStudio, i.e., our JavaScript based advisors which was introduced in 1.2.10 for Postgres as well
+	- Create your own postgres "advisors/DB minions" for alarms or email notifications
+
+* MaxScale for MySQL based clusters. MariaDB MaxScale is an open-source, database-centric proxy that works with MariaDB Enterprise, MariaDB Enterprise Cluster, MariaDB 5.5, MariaDB 10 and Oracle MySQL.
+	- Deploy MaxScale instance for round-robin or read/write splitter with a customizable configuration  
+	- Add an existing running MaxScale instance
+	- Send commands to "maxadmin" and view the output in ClusterControl
+
+* MySQL Based Clusters.
+	- You can now use CoderShip as the Galera vendor for Create Cluster and Database node
+	- Create a MySQL Replication Master Node from the Create DB Node dialog. Currently only Percona as vendor is supported
+	- Add/Register an existing running MySQL slave without stopping and provisioning the dataset from the cluster
+	- Create Cluster and Database Node now support using "internal repositories" for environments where you do not have internet access and have internal repostory servers instead
+	- Removed the limit of only being able to chart 8 DB stats. You can now arrange the charts in a layout with 2 or 3 columns and chart up to 20 stats
+	- Fixes to Clone Cluster and the UI notification system/look
+	- Backup individual schemas
+	- Option to enable 'wsrep_desync' during backup for Galera clusters to workaround stalls/issues with FLUSH TABLES WITH READ LOCK. Puts the backup node into 'Donor/Desynced' state during the backup.
+	- Manage Email Notifications for all users at once
+	- New Database Logs page
+		- We have a new page specifically for database logs that you access from Logs->Database Logs
+		- A tree view lists your DB nodes so you can simply pick the nodes that you want to check the mysql error log for
+	- Revamped Configuration Management
+		- New implementation and look using our JS engine and a set of js scripts
+		- Group Changes. Automatically change and persist individual database variables across your DB nodes at once. If it's a dynamic variable we'll change it directly on the nodes
+	- Revamped MySQL User Management
+		- New implementation and look using our JS Engine and a set of js scripts
+		- We' removed the old implementation where we maintained users created from ClusterControl separately
+		- Users and privileges are set directly and retrieved from your cluster so you are always in sync
+		- Create your users across more than one cluster at once
+
+* HAProxy and KeepAlived
+	- You can now add existing running HAProxy and Keepalived instances that have been installed outside of ClusterControl
+
 Changes in v1.2.10
 ------------------
 

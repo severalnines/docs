@@ -33,19 +33,35 @@ Galera Cluster
 	- Stop all nodes in the cluster.
 
 * **Delete Cluster**
-	- Unregister a database cluster from the ClusterControl UI. This action will remove the selected CMONAPI URL and token for corresponding cluster and will NOT uninstall the actual database cluster.
-	- You can still re-register your cluster to ClusterControl at a later stage.
+	- This action will remove the corresponding cluster from ClusterControl supervision and will NOT uninstall the actual database cluster.
+	- If you want to re-add the cluster, you have to use `Add Existing Server/Cluster <../../user-guide/index.html#add-existing-server-cluster>`_.
+
+* **Deregister Cluster from UI**
+	- Unregister a database cluster from the ClusterControl UI. 
+	- You can still re-register your cluster to ClusterControl at a later stage by using `Cluster Registrations <../../user-guide/index.html#cluster-registrations>`_.
+	
+* **Remove Node**
+	- Remove a managed node from the cluster.
 
 MySQL standalone/replication
 ''''''''''''''''''''''''''''''
 
 * **Add Node**
 	- See `Add Node`_ section.
+	
+* **Add Load Balancer**
+	- See `Add Load Balancer <manage.html#load-balancer>`_ section.
 
 * **Delete Cluster**
-	- Unregister a database cluster from the ClusterControl UI. This action will remove the selected CMONAPI URL and token for corresponding cluster and will NOT uninstall the actual database cluster.
-	- You can still re-register your cluster to ClusterControl at a later stage.
+	- This action will remove the corresponding cluster from ClusterControl supervision and will NOT uninstall the actual database cluster.
+	- If you want to re-add the cluster, you have to use `Add Existing Server/Cluster <../../user-guide/index.html#add-existing-server-cluster>`_.
 
+* **Deregister Cluster from UI**
+	- Unregister a database cluster from the ClusterControl UI. 
+	- You can still re-register your cluster to ClusterControl at a later stage by using `Cluster Registrations <../../user-guide/index.html#cluster-registrations>`_.
+	
+* **Remove Node**
+	- Remove a managed node from the cluster.
 
 MySQL Cluster
 '''''''''''''
@@ -57,8 +73,12 @@ MySQL Cluster
 	- See `Add Load Balancer <manage.html#load-balancer>`_ section.
 
 * **Delete Cluster**
-	- Unregister a database cluster from the ClusterControl UI. This action will remove the selected CMONAPI URL and token for corresponding cluster and will NOT uninstall the actual database cluster.
-	- You can still re-register your cluster to ClusterControl at a later stage.
+	- This action will remove the corresponding cluster from ClusterControl supervision and will NOT uninstall the actual database cluster.
+	- If you want to re-add the cluster, you have to use `Add Existing Server/Cluster <../../user-guide/index.html#add-existing-server-cluster>`_.
+
+* **Deregister Cluster from UI**
+	- Unregister a database cluster from the ClusterControl UI. 
+	- You can still re-register your cluster to ClusterControl at a later stage by using `Cluster Registrations <../../user-guide/index.html#cluster-registrations>`_.
 
 Add Node
 ''''''''''
@@ -105,7 +125,7 @@ Use this function if you have added a DB node manually to your cluster and want 
 Add Replication Slave
 '''''''''''''''''''''
 
-MySQL replication slave requires at least a master with GTID enabled on the Galera nodes. However, we would recommend users to configure all Galera nodes as master for better failover. GTID is required as it is used to do master failover (MariaDB's  GTID is not supported at the moment). If you are running on MySQL 5.5, you might need to upgrade to MySQL 5.6
+MySQL replication slave requires at least a master with GTID enabled on the Galera nodes. However, we would recommend users to configure all Galera nodes as master for better failover. GTID is required as it is used to do master failover (MariaDB's  GTID is not supported at the moment). If you are running on MySQL 5.5, you might need to upgrade to MySQL 5.6.
 
 The following must be true for the masters:
 
@@ -587,13 +607,13 @@ Hosts
 Shows collected system statistics in a table as below:
 
 * **Ping**
-	- ping round trip from ClusterControl host to each host in milliseconds.
+	- Ping round trip from ClusterControl host to each host in milliseconds.
 
 * **CPU util/steal**
-	- total of CPU utilization in percentage.
+	- Total of CPU utilization in percentage.
 
 * **Loadavg (1/5/15)**
-	- load value captured for 1, 5 and 15 minutes average.
+	- Load value captured for 1, 5 and 15 minutes average.
 
 * **Net (tx/s / rx/s)**
 	- Amount of data transmitted and received by the host.

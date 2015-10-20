@@ -1,7 +1,7 @@
 Logs
 -----
 
-To make sure
+Provides interface for log messages, CMON jobs and error reporting for troublehoosting and auditing purposes. The tab is embedded with a counter (higlighted in red) indicating there are new jobs executed by ClusterControl under *ClusterControl > Logs > Jobs* which might require your attention.
 
 Jobs
 ````
@@ -40,4 +40,24 @@ To create an error report, click on *Create Error Report* button. This will trig
 	- Only applicable if you specified *Store Error Report on Web Server* to No. This destination is relative to the ClusterControl node.
 
 .. Note:: We also recommend you take a screenshot showing the problem area, e.g, the Cluster Overview dashboard from the UI is useful if there are node failures, cluster issues or missing data.
- 
+
+System Logs
+````````````
+
+Tree view of corresponding database logs across cluster. Clicking on a log file will appear in a new tab in viewing panel on the right-hand side. Browsing through the appropriate error logs is key element of the troubleshooting process.
+
+Click on 'Refresh Logs' will trigger a job for ClusterControl to perform log collection. By default, the logs are fetched every ``db_stats_collection`` which is 30 minutes. You can verify this from the 'Last Updated' value at the bottom of the section.
+
+ClusterControl collects important database logs depending on the cluster type as shown below:
+
+- MySQL:
+	- MySQL error log
+	- innobackup backup log
+	- innobackup prepare log
+
+- MongoDB:
+	- MongoDB system log
+	- mongodump backup log
+
+- PostgreSQL:
+	- 

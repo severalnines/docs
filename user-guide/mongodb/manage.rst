@@ -21,6 +21,8 @@ Configurations
 
 Manages the configuration files of your database nodes. From here you can edit and/or detect whether your database configuration files are in sync and do not diverge. Any changes will not take effect until the database server/process is restarted.
 
+.. Attention:: ClusterControl does not store configuration changes history so there is no versioning. Only one version is exist at one time. It always import the latest configuration files every 30 minutes and overwrite it in cmon DB. This limitation will be improved in the upcoming release where ClusterControl shall support configuration versioning with dynamic import interval.
+
 * **Edit/View**
 	- Edit and view your database configuration files. Any changes will not take effect until the database server/processes is restarted.
 

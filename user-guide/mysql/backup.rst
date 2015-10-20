@@ -27,6 +27,9 @@ Creates an immediate backup of the database. You can choose to create a full bac
 	
 * **Netcat Port**
 	- Specify the port number that will be used by ClusterControl to stream backup created on the database node. Only available if you choose *Store on Controller* in *Backup Location*.
+	
+* **Databases**
+  - List of databases retrieved from the monitored MySQL servers. Default is 'All Databases'.
 
 .. Note:: You can check the backup status under *ClustreControl > Backup > Reports*.
 
@@ -61,6 +64,9 @@ Creates backup schedules of the database. You can choose to create a full backup
 * **Netcat Port**
 	- Specify the port number that will be used by ClusterControl to stream backup created on the database node. Only available if you choose *Store on Controller* in *Backup Location*.
 
+* **Databases**
+  - List of databases retrieved from the monitored MySQL servers. Default is 'All Databases'.
+  
 Current Backup Schedule
 .......................
 
@@ -122,7 +128,7 @@ ClusterControl has ability to restore backups (mysqldump and xtrabackup) created
 * **Backup Id**
 	- Selected backup ID. This is auto picked if you click the *Restore Backup* button.
 
-* Restore backup on
+* **Restore backup on**
 	- The backup will be restored to the selected server.
 
 Restore External Backups

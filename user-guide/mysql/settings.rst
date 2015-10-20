@@ -133,9 +133,9 @@ Thresholds
 
 Provides thresholds for warnings and criticals event. Thresholds specify the threshold level at which an alarm will be triggered and notification will be sent via email to the list of recipients configured in the `Email Notification`_. Set your alarm thresholds for:
 
-* CPU, RAM, Disk Space utilization
-* MySQL Server Memory utilization
-* DataMemory, IndexMemory, Tablespace, REDO Log and Buffer utilization (MySQL Cluster)
+* CPU, RAM, disk space and swap utilization
+* MySQL server memory utilization
+* DataMemory, IndexMemory, tablespace, redo log and buffer utilization (MySQL Cluster)
 
 ========= ===========
 Level     Description
@@ -147,21 +147,20 @@ Critical  Sets your critical threshold in percentage for specific event.
 Graphs
 ``````
 
-Manages graph settings and data capturing. From here, it is possible to record up to 83 different MySQL counters. You can choose to view up to 8 counters on this page. The settings configured here affects *ClusterControl > Performance > Overview* page.
+Manages graph settings and data capturing. On each database node, ClusterControl records up to 82 MySQL counters every ``db_stats_collection_interval`` defined in CMON configuration file. The default is 30 seconds. 
 
-* **ON?**
-	- Choose counters you want to record and graph.
+You can choose to view up to 20 counters in 2 or 3 columns layout on this page. The settings configured here affects *ClusterControl > Performance > Overview* page.
 
 * **Search**
 	- Filters the status variables available in the counter list.
 
 * **VAR**
-	- Choose the status variables that you want to track. Tick the 'On' checkbox to the left of the counter that you want to record. For detailed explanation on status variables of your cluster, you can refer to following pages:
+	- List of the status and variables that ClusterControl tracks. For detailed explanation on status variables of your cluster, you can refer to following pages:
 		- MySQL: http://dev.mysql.com/doc/refman/5.6/en/server-status-variables.html
 		- Galera Cluster: http://galeracluster.com/documentation-webpages/galerastatusvariables.html
 		- MySQL Cluster: http://dev.mysql.com/doc/refman/5.6/en/mysql-cluster-status-variables.html
 
-* **Graph 1-8**
+* **Graph 1-N**
 	- Choose the enabled counter to be graphed.
 	
 * **Save Graph**

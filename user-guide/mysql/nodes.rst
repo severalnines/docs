@@ -3,7 +3,7 @@
 Nodes
 -----
 
-Provides detailed information for each node in the cluster. On the left hand column, you can find a list of all nodes that are members of the cluster including ClusterControl node. If you added slaves, HAProxy, Keepalived or :term:`Garbd` (Galera Arbitrator) to your cluster through ClusterControl, these will also be listed.
+Provides detailed information for each node in the cluster. On the left hand column, you can find a list of all nodes that are members of the cluster including ClusterControl node. If you added slaves, HAProxy, Keepalived, MaxScale or :term:`Garbd` (Galera Arbitrator) to your cluster through ClusterControl, these will also be listed.
 
 
 Nodes Monitoring

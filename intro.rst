@@ -3,7 +3,7 @@
 Introduction
 ============
 
-This documentation covers ClusterControl version 1.2.10.
+This documentation covers ClusterControl version 1.2.11 which released on October 1st, 2015. This release contains key new features along with performance improvements and bug fixes. Release changelog is available `here <changelog.html>`_.
 
 What is ClusterControl?
 -----------------------
@@ -61,14 +61,13 @@ What user really needs to do is to access ClusterControl UI located at http://[C
    :alt: Example multiple cluster deployment
    :align: center
 
-
 ClusterControl exposes all functionality through remote procedure calls (RPC) on port 9500 and REST API accessible at http://[ClusterControl_host]/cmonapi authenticated by an API token. The ClusterControl UI interacts with those interfaces to retrieve monitoring data (cluster load, host status, alarms, backup status etc.) or to send management commands (add/remove nodes, run backups, upgrade a cluster, etc.). The diagram below illustrates the architecture of ClusterControl:
 
 .. image:: img/cc_arch.png
    :alt: ClusterControl architecture
    :align: center
 
-ClusterControl has minimal performance impact due to its monitoring responsibility and will not cause any downtime to your database server/cluster even if it is down. In fact, it will perform automatic recovery if it finds a failed database node.
+ClusterControl has minimal performance impact due to its monitoring responsibility and will not cause any downtime to your database server/cluster. In fact, it will perform automatic recovery (if enabled) when it finds a failed database node.
 
 What it can do?
 ---------------
@@ -89,8 +88,8 @@ ClusterControl is able to handle most of the administration tasks required to ma
 * Deploy a new database server/cluster
 * Add existing MySQL/MariaDB server/cluster, MongoDB/TokuMX replica set and PostgreSQL server
 * Scale your database cluster (add/remove Galera node, garbd and replication slave)
-* Deploy load balancer (HAproxy) and virtual IP address (Keepalived)
-* Monitor HAproxy statistics
+* Deploy database load balancers (HAproxy and MaxScale) and virtual IP address (Keepalived)
+* Monitor HAproxy/MaxScale statistics
 * Manage MySQL user privileges
 * Upgrade MySQL servers
 * Stage/Failover replication slave from a master

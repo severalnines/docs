@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to ClusterControl's documentation!
-==========================================
+ClusterControl's documentation
+==============================
 
 Contents:
 
@@ -20,6 +20,8 @@ Contents:
    user-guide/index
    components
    administration
+   troubleshooting
+   faq
    dsl
    changelog
    glossary

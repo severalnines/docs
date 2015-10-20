@@ -20,13 +20,19 @@ YUM repository
 
 	$ rpm --import http://repo.severalnines.com/severalnines-repos.asc
 
-2. You can download the repository definition from `Severalnines download page <http://www.severalnines.com/downloads/cmon/>`_:
+2 (a). You can download the repository definition from `Severalnines download page <http://www.severalnines.com/downloads/cmon/>`_:
 
 .. code-block:: bash
 
-	$ wget http://www.severalnines.com/downloads/cmon/s9s-repo.repo -P /etc/yum.repos.d/
+  $ wget http://www.severalnines.com/downloads/cmon/s9s-repo.repo -P /etc/yum.repos.d/
 
-Or, you can create the repository definition manually:
+For nightly build (development release):
+
+.. code-block:: bash
+
+  $ wget http://www.severalnines.com/downloads/cmon/s9s-repo-nightly.repo -P /etc/yum.repos.d/
+
+2 (b). Or, you can create the repository definition manually:
 
 .. code-block:: bash
 
@@ -38,6 +44,19 @@ Or, you can create the repository definition manually:
 	gpgkey = http://repo.severalnines.com/severalnines-repos.asc
 	gpgcheck = 1
 	REPOEND
+
+For nightly build (development release):
+
+.. code-block:: bash
+
+  $ cat - > /etc/yum.repos.d/s9s-repo-nightly.repo <<REPOEND
+  [s9s-repo-nightly]
+  name = Severalnines Nightly Repository
+  baseurl = http://repo.severalnines.com/repos-nightly/rpm/os/x86_64
+  enabled = 1
+  gpgkey = http://repo.severalnines.com/repos-nightly/severalnines-repos.asc
+  gpgcheck = 1
+  REPOEND
 
 3. Look for ClusterControl packages:
 
@@ -54,17 +73,29 @@ APT repository
 
 	$ wget http://repo.severalnines.com/severalnines-repos.asc -O- | sudo apt-key add -
 
-2. You can download the repository definition from `Severalnines download page <http://www.severalnines.com/downloads/cmon/>`_:
+2 (a). You can download the repository definition from `Severalnines download page <http://www.severalnines.com/downloads/cmon/>`_:
 
 .. code-block:: bash
 
-	$ sudo wget http://www.severalnines.com/downloads/cmon/s9s-repo.list -P /etc/apt/sources.list.d/
+  $ sudo wget http://www.severalnines.com/downloads/cmon/s9s-repo.list -P /etc/apt/sources.list.d/
 
-Or, add the Severalnines APT source list manually:
+For nightly build (development release):
+
+.. code-block:: bash
+
+  $ sudo wget http://www.severalnines.com/downloads/cmon/s9s-repo-nightly.list -P /etc/apt/sources.list.d/
+
+2 (b). Or, add the Severalnines APT source list manually:
 
 .. code-block:: bash
 
   $ echo 'deb [arch=amd64] http://repo.severalnines.com/deb ubuntu main' | sudo tee /etc/apt/sources.list.d/s9s-repo.list
+
+For nightly build (development release):
+
+.. code-block:: bash
+
+  $ echo 'deb [arch=amd64] http://repo.severalnines.com/repos-nightly/deb ubuntu main' | sudo tee /etc/apt/sources.list.d/s9s-repo-nightly.list
 
 3. Update package list:
 
@@ -85,9 +116,8 @@ Automatic Installation
 We have a bunch of scripts and tools to automate and simplify the installation process of ClusterControl in various environments:
 
 * Severalnines Configurator
-* Installation script (install-cc)
-* Post-installation script (setup-cc.sh)
-* Bootstrap script
+* Installation script (recommended)
+* Bootstrap script (legacy)
 * Puppet module
 * Chef cookbooks
 * Docker image
@@ -149,57 +179,35 @@ On ClusterControl server, run following commands:
 
   $ wget http://www.severalnines.com/downloads/cmon/install-cc
   $ chmod +x install-cc
-  # omit sudo if you run as root
-  $ sudo ./install-cc
+  $ sudo ./install-cc   # omit sudo if you run as root
 
-.. Note:: The installation script will always install an Apache server on the host. An existing MySQL server can be used or a new MySQL server install is configured for minimum system requirements. If you have a larger server please make the necessary changes to the ``my.cnf`` file and restart the MySQL server after the installation.
-
-After the installation completes, open your web browser to http://[ClusterControl_host]/clustercontrol and create the default admin user by specifying a valid email address and password on the welcome page.
-
-Post-installation script (setup-cc.sh)
-``````````````````````````````````````
-
-In order to use post-installation script, you have to install ClusterControl UI package via package manager beforehand.
-
-1. On ClusterControl node, setup `Severalnines repository <installation.html#severalnines-repository>`_
-
-2. Install ClusterControl UI by using following command:
+If you have multiple network interface cards, assign one IP address for HOST variable as per example below:
 
 .. code-block:: bash
 
-  # omit sudo if you run as root
-  $ yum install -y clustercontrol # Redhat/CentOS
-  $ sudo apt-get update && sudo apt-get install -y clustercontrol # Debian/Ubuntu
+  $ HOST=192.168.1.10 ./install-cc # as root or sudo user
 
-.. Note:: ClusterControl requires extra post-installation setup steps, such as generating an API token, configuring cmon/dcps database schema, grant privileges on cmon schema, setting up SSL and so on. We provide a post-installation script for this purpose at ``[wwwroot]/clustercontrol/app/tools/setup-cc.sh``. If you are installing for the first time, you are required to run this script to ensure ClusterControl is properly set up.
+.. Note:: ClusterControl relies on a MySQL server as a data repository for the clusters it manages and an Apache server for the User Interface. The installation script will always install an Apache server on the host. An existing MySQL server can be used or a new MySQL server install is configured for minimum system requirements. If you have a larger server please make the necessary changes to the my.cnf file and restart the MySQL server after the installation.
 
-3. Execute the post installation script as below:
-
-.. code-block:: bash
-
-  # omit sudo if you run as root
-  $ sudo /var/www/html/clustercontrol/app/tools/setup-cc.sh # Redhat/CentOS/Ubuntu =>14.04
-  $ sudo /var/www/clustercontrol/app/tools/setup-cc.sh # Debian/Ubuntu <14.04
- 
-Basically, the post-installation script will attempt to automate the following tasks:
+Basically, the installation script will attempt to automate the following tasks:
 
 * Install and configure a MySQL server (used by ClusterControl to store monitoring data)
-* Configure ClusterControl UI and cmonapi packages
-* Install and configure the ClusterControl Controller package via package manager
+* Configure ClusterControl UI and CMONAPI packages
+* Install and configure the ClusterControl controller package via package manager
 * Install ClusterControl dependencies via package manager
 * Configure Apache and SSL
-* Configure ClusterControl API token
+* Configure ClusterControl API URL and token
 * Configure ClusterControl Controller with minimal configuration options
-* Enable the CMON service on boot and start it
+* Enable the CMON service on boot and start it up
 
-Once the installation completes, login to the ClusterControl UI at http://[ClusterControl_host]/clustercontrol and create the default admin user by entering a valid email address and password.
+After the installation completes, open your web browser to http://[ClusterControl_host]/clustercontrol and create the default admin user by specifying a valid email address and password on the welcome page.
 
 Bootstrap Script
 ````````````````
 
-Bootstrap script is a legacy way to install ClusterControl on top of existing database cluster. Common use case when you want to install ClusterControl on top of MongoDB Sharded Cluster or MySQL Cluster. The reason behind this is only these database cluster types are not supported to be added through ClusterControl UI. You can also use bootstrap script to install ClusterControl standby server for high availability, as described `in this blog post <http://www.severalnines.com/blog/installing-clustercontrol-standby-server>`_.
+Bootstrap script is a legacy way to install ClusterControl on top of existing database cluster. Common use case when you want to install ClusterControl on top of existing MongoDB Sharded Cluster or MySQL Cluster. The reason behind this is only these database cluster types are not supported to be added through ClusterControl UI. You can also use bootstrap script to install ClusterControl standby server for high availability, as described `in this blog post <http://www.severalnines.com/blog/installing-clustercontrol-standby-server>`_.
 
-You will need to prepare a host for ClusterControl, download the ``cc-bootstrap`` package on that host and execute it. It will install ClusterControl on the host and add your existing database cluster to ClusterControl.
+You will need to prepare a host for ClusterControl, download the ``cc-bootstrap`` package on that host and execute it. Follow the installation wizard and it will install ClusterControl on the host and add your existing database cluster to ClusterControl.
 
 .. Attention:: Even though it supports adding the other type of database cluster (particularly Galera, MySQL replication and MongoDB Replica Set), we do recommend that you install ClusterControl first and then use *Add Existing Server/Cluster* feature.
 
@@ -896,19 +904,19 @@ A sample configuration will be something like this:
 .. code-block:: bash
 
 	cp -f /var/www/cmonapi/ssl/server.crt /etc/ssl/certs/s9server.crt
-	cp -f /var/www/cmonapi/ssl/server.key /etc/ssl/private/s9server.key
+	cp -f /var/www/cmonapi/ssl/server.key /etc/ssl/certs/s9server.key
 	rm -rf /var/www/cmonapi/ssl
 	sed -i 's|AllowOverride None|AllowOverride All|g' /etc/apache2/sites-available/default
 	sed -i 's|AllowOverride None|AllowOverride All|g' /etc/apache2/sites-available/default-ssl
 	sed -i 's|^[ \t]*SSLCertificateFile.*|SSLCertificateFile /etc/ssl/certs/s9server.crt|g' /etc/apache2/sites-available/default-ssl
-	sed -i 's|^[ \t]*SSLCertificateKeyFile.*|SSLCertificateKeyFile /etc/ssl/private/s9server.key|g' /etc/apache2/sites-available/default-ssl
+	sed -i 's|^[ \t]*SSLCertificateKeyFile.*|SSLCertificateKeyFile /etc/ssl/certs/s9server.key|g' /etc/apache2/sites-available/default-ssl
 
 For Ubuntu 14.04, it runs on Apache 2.4 which has a slightly different configuration than above:
 
 .. code-block:: bash
 
 	cp -f /var/www/cmonapi/ssl/server.crt /etc/ssl/certs/s9server.crt
-	cp -f /var/www/cmonapi/ssl/server.key /etc/ssl/private/s9server.key
+	cp -f /var/www/cmonapi/ssl/server.key /etc/ssl/certs/s9server.key
 	rm -rf /var/www/cmonapi/ssl
 	cp -f /var/www/clustercontrol/app/tools/apache2/s9s.conf /etc/apache2/sites-available/
 	cp -f /var/www/clustercontrol/app/tools/apache2/s9s-ssl.conf /etc/apache2/sites-available/
@@ -918,7 +926,7 @@ For Ubuntu 14.04, it runs on Apache 2.4 which has a slightly different configura
 	ln -sfn /etc/apache2/sites-available/s9s.conf /etc/apache2/sites-enabled/001-s9s.conf
 	ln -sfn /etc/apache2/sites-available/s9s-ssl.conf /etc/apache2/sites-enabled/001-s9s-ssl.conf
 	sed -i 's|^[ \t]*SSLCertificateFile.*|SSLCertificateFile /etc/ssl/certs/s9server.crt|g' /etc/apache2/sites-available/s9s-ssl.conf
-	sed -i 's|^[ \t]*SSLCertificateKeyFile.*|SSLCertificateKeyFile /etc/ssl/private/s9server.key|g' /etc/apache2/sites-available/s9s-ssl.conf
+	sed -i 's|^[ \t]*SSLCertificateKeyFile.*|SSLCertificateKeyFile /etc/ssl/certs/s9server.key|g' /etc/apache2/sites-available/s9s-ssl.conf
 
 11. Enable Apache’s SSL and rewrite module and create a symlink to sites-enabled for default HTTPS virtual host:
 

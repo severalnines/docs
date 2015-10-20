@@ -12,6 +12,7 @@ Lists of hosts being managed by ClusterControl for the specific cluster. This in
 * garbd nodes (Galera)
 * HAproxy nodes (Galera and MySQL Cluster)
 * Keepalived nodes
+* MaxScale nodes
 * MySQL API nodes (MySQL Cluster)
 * Management nodes (MySQL Cluster)
 * Data nodes (MySQL Cluster)
@@ -23,21 +24,24 @@ To remove a host, just select the host and click on the *Remove* button.
 Configurations
 ``````````````
 
-Manage the configuration files of your database nodes. From here you can edit and/or detect whether your database configuration files are in sync and do not diverge. Any changes will not take effect until the database server/process is restarted.
+Manage the configuration files of your database nodes. Changes can be persisted to database variables across one node or a group of nodes at once, dynamic variables are changed directly without a restart.
 
-* **Edit/View**
-	- Edit and view your database configuration files. Any changes will not take effect until the database server/processes is restarted.
+.. Attention:: ClusterControl does not store configuration changes history so there is no versioning at the moment. Only one version is exist at one time. It always import the latest configuration files every 30 minutes and overwrite it in cmon DB. This limitation will be improved in the upcoming release where ClusterControl shall support configuration versioning with dynamic import interval.
 
-* **Restart**
-	- This button will only appear under *Action* when ClusterControl detects configuration changes. Click to restart the database service for selected node.
+* **Save**
+	- Save the changes that you have made and push them to the corresponding node.
 
-* **Reimport Configuration**
+* **Import**
 	- Re-import configuration if you have:
-		- Performed local configuration changes directly on the configuration files
-		- Restarted the mysql servers/performed a rolling restart after a configuration change
+		- Performed local configuration changes directly on the configuration files.
+		- Restarted the mysql servers/performed a rolling restart after a configuration change.
+	- ClusterControl will trigger a job to fetch the latest modification from each DB node.
 
-* **Create New Template**
-	- Create a new MySQL configuration template file. This template can be used when adding a new node.
+* **Change Parameter**
+	- The selected parameter will be changed or created in the specified group option. ClusterControl will attempt to dynamically set the configuration value if the parameter is valid. Then, the change can be persisted in the configuration file.
+	- For example, if you want to turn off ``read_only`` which is a dynamic variable, choose it from the parameter list and specify a new value 0. ClusterControl will then perform the change using 'SET GLOBAL' statement and make it persisted in the config file accordingly.
+
+.. Attention:: If you change a global system variable, the value is remembered and used ONLY for new connections.
 
 Load Balancer
 ``````````````
@@ -45,7 +49,7 @@ Load Balancer
 Deploys load balancers (HAProxy), virtual IP (Keepalived) for MySQL-based clusters (NDB, Galera). For Galera Cluster, it is also possible to add Galera arbitrator daemon (Garbd) through this interface. You can monitor the status of the job under *ClusterControl > Logs > Jobs*.
 
 
-HAproxy
+HAProxy
 .......
 
 Installs and configures an :term:`HAProxy` instance on a selected node. ClusterControl will automatically install and configure HAproxy, install ``mysqlcheck`` script (to report the MySQL healthiness) on each of database nodes as part of xinetd service and start the HAproxy service. Once the installation is complete, MySQL will listen on *Listen Port* (3307 by default) on the configured node.
@@ -53,6 +57,9 @@ Installs and configures an :term:`HAProxy` instance on a selected node. ClusterC
 This feature is indempotent, you can execute it as many times as you want and it will always reinstall everything as configured.
 
 .. seealso:: `MySQL Load Balancing with HAProxy - Tutorial <http://www.severalnines.com/resources/clustercontrol-mysql-haproxy-load-balancing-tutorial>`_.
+
+Create a new HAproxy instance
+'''''''''''''''''''''''''''''
 
 * **HAProxy Address**
 	- Select on which host to add the load balancer. If the host is not provisioned in ClusterControl (see `Hosts`_), type in the IP address. The required files will be installed on the new host. Note that ClusterControl will access the new host using passwordless SSH.
@@ -78,7 +85,7 @@ This feature is indempotent, you can execute it as many times as you want and it
 
 
 Advanced Settings
-+++++++++++++++++
+'''''''''''''''''
 	
 * **Stats Socket**
 	- Specify the path to bind a UNIX socket for HAproxy statistics. See `stats socket <http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#stats%20socket>`_.
@@ -111,7 +118,7 @@ Advanced Settings
 	- The specified subnet will be allowed to access the ``mysqlcheck`` via as xinetd service, which listens on port 9200 on each of the database nodes. To allow connections from all IP address, use the default value, 0.0.0.0/0.
 
 Server instances in the load balancer
-++++++++++++++++++++++++++++++++++++++
+'''''''''''''''''''''''''''''''''''''
 
 * **Include**
 	- Select MySQL servers in your cluster that will be included in the load balancing set.
@@ -124,19 +131,67 @@ Server instances in the load balancer
 * **Remove**
 	- Remove the selected HAProxy node.
 
+Add an existing HAproxy instance
+''''''''''''''''''''''''''''''''
+
+* **HAProxy Address**
+	- Select on which host to add the load balancer. If the host is not provisioned in ClusterControl (see `Hosts`_), type in the IP address. The required files will be installed on the new host. Note that ClusterControl will access the new host using passwordless SSH.
+
+* **cmdline**
+	- Specify the command line that ClusterControl should use to start the HAproxy service.
+
+* **Port**
+	- Port to listen HAproxy admin/statistic page (if enable).
+	
+* **Admin User**
+	- Admin username to access HAproxy statistic page. See `stats auth <http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#4-stats%20auth>`_.
+	
+* **Admin Password**
+	- Password for *Admin User*. See `stats auth <http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#4-stats%20auth>`_.
+
+* **LB Name**
+	- Name for the backend. No whitespace or tab allowed.
+	
+* **HAproxy Config**
+	- Location of HAproxy configuration file on the target node.
+
+* **Stats Socket**
+	- Specify the path to bind a UNIX socket for HAproxy statistics. See `stats socket <http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#stats%20socket>`_.
+
 Keepalived
 ..........
 
 :term:`Keepalived` requires two HAProxy nodes in order to provide virtual IP address failover. By default, this IP will be assigned to Haproxy1 instance. If the node goes down, the IP will be automatically failover to Haproxy2.
 
+Create a new Keepalived instance
+'''''''''''''''''''''''''''''''''
+
 * **Haproxy1**
-	- Select the primary HAProxy node.
+	- Select the primary HAProxy node (installed or imported using `HAProxy`_).
 	
 * **Haproxy2**
-	- Select the secondary HAProxy node.
+	- Select the secondary HAProxy node (installed or imported using `HAProxy`_).
 
 * **Virtual IP**
-	- Assigns a virtual IP address. The IP address should not exist in any node in the cluster.
+	- Assigns a virtual IP address. The IP address should not exist in any node in the cluster to avoid conflict.
+
+* **Network Interface** 
+	- Specify a network interface to bind the virtual IP address.
+
+* **Install Keepalived**
+	- Starts installation of Keepalived.
+	
+Add an existing Keepalived instance
+'''''''''''''''''''''''''''''''''''
+
+* **Haproxy1**
+	- Select the primary HAProxy node (installed or imported using `HAProxy`_).
+	
+* **Haproxy2**
+	- Select the secondary HAProxy node (installed or imported using `HAProxy`_).
+
+* **Virtual IP**
+	- Assigns a virtual IP address. The IP address should not exist in any node in the cluster to avoid conflict.
 
 * **Network Interface** 
 	- Specify a network interface to bind the virtual IP address.
@@ -162,11 +217,69 @@ Galera arbitrator daemon (:term:`garbd`) can be installed to avoid network parti
 
 .. Note:: Removing garbd from ClusterControl does not uninstall the existing garbd packages.
 
-Spreadsheet (BETA)
-``````````````````
+MaxScale
+........
 
-Provides data predection engine in the rows and columns of a grid and can be manipulated and used in calculations. The spreadsheet subsystem can be controlled and used by sending JSON messages to the C++ backend and receiving the JSON reply messages when the given operation is finished. You can send JSON requests trough the CMON RPC interface.
+MaxScale is an is an intelligent proxy that allows forwarding of database statements to one or more database servers using complex rules, a semantic understanding of the database statements and the roles of the various servers within the backend cluster of databases.
 
+You can deploy or add existing MaxScale node as a load balancer and query router for your Galera Cluster, MySQL/MariaDB replication and MySQL cluster. For new deployment using ClusterControl, by default it will create two production services:
+
+* RW - Implements a read-write split access.
+* RR - Implements round-robin access.
+
+To remove MaxScale, go to *ClusterControl > Nodes > MaxScale node* and click on the '-' icon next to it. We have published a blog post with deployment example in `this blog post <http://severalnines.com/blog/how-deploy-and-manage-maxscale-using-clustercontrol>`_.
+
+Create MaxScale Instance
+'''''''''''''''''''''''''
+
+* **MariaDb Repository URL**
+	- MariaDB introduced individual links to the repository where MaxScale is stored. To get your link, you should log into the `MariaDB Enterprise Portal <https://mariadb.com/my_portal/download>`_ and generate one for yourself. Once you have it, you can paste it in the MariaDB Repository URL box.
+
+* **MaxScale Address**
+	- IP address of the node where MaxScale will be installed. ClusterControl has to be able to perform passwordless SSH to this host. 
+
+* **MaxScale Admin Username**
+	- MaxScale admin username. Default is 'admin'.
+
+* **MaxScale Admin Password**
+	- Password for *MaxScale Admin Username*. Default is 'mariadb'.
+
+* **MaxScale MySQL Username**
+	- MariaDB/MySQL user that will be used by MaxScale to access and monitor the MariaDB/MySQL nodes in your infrastructure.
+
+* **MaxScale MySQL Password**
+	- Password of *MaxScale MySQL Username*
+
+* **Threads**
+	- How many threads MaxScale is allowed to use.
+
+* **CLI Port**
+	- Port for MaxAdmin command line interface. Default is 6603
+
+* **RR Port**
+	- Port for round-robin access. Default is 4006.
+
+* **RW Port**
+	- Port for read-write split access. Default is 4008.
+
+* **Debug Port**
+	- Port for MaxScale debug information. Default it 4442.
+
+* **Include**
+	- Select MySQL servers in your cluster that will be included in the load balancing set.
+
+Add Existing MaxScale
+'''''''''''''''''''''
+
+If you already have MaxScale installed in your setup, you can easily add it to ClusterControl to benefit from health monitoring and access to MaxAdmin - MaxScale’s CLI from the same interface you use to manage the database nodes. 
+
+The only requirement is to have passwordless SSH configured between ClusterControl node and host where MaxScale is running.
+
+* **MaxScale Address**
+	- IP address of the existing MaxScale server.
+
+* **CLI Port**
+	- Port for the MaxAdmin command line interface on the target server.
 
 Processes
 `````````
@@ -196,10 +309,41 @@ To add a new process to be monitored by ClusterControl, click on *Add Custom Man
 * **Deactivate**
 	- Disable the managed process.
 
-Schema and Users
-````````````````
+Schemas and Users
+``````````````````
 
-ClusterControl provides a simple interface to manage database schemas. It is possible to create databases, upload dump files, manage users and privileges. All of the changes are automatically synced to all database nodes in the cluster.
+ClusterControl provides a simple interface to manage database schemas and privileges. All of the changes are automatically synced to all database nodes in the cluster.
+
+Users
+.....
+Provides MySQL user management interface for this cluster. Users and privileges can be set directly and retrieved from the cluster so ClusterControl is always in sync with the managed MySQL databases. Users can be created across more than one cluster at once.
+
+You can choose individual node by clicking on the respective node or all nodes in the cluster by clicking on the respective cluster in the side menu.
+
+Active Accounts
+'''''''''''''''
+Shows all active accounts across clusters, which are currently active or were connected since the last server restart.
+
+Inactive Accounts
+'''''''''''''''''
+Shows all accounts across clusters that are not been used since the last server restart. Server must have been running for at least 8 hours to check for inactives accounts.
+
+You can drop particular accounts by clicking at the multiple checkboxes and click 'Drop User' button to initiate the action.
+
+Create Accounts
+'''''''''''''''
+Creates a new MySQL user for the chosen MySQL node or cluster. 
+
+================== ============
+Field              Description
+================== ============
+Server             Hostname of the user. Wildcard (%) is permitted.
+Username           Specify the username.
+Password           Specify the password *Username*.
+Verify Password    Re-enter the same password for *Username*.
+All Privileges     Allow all privileges, similar to 'ALL PRIVILEGES' option.
+Database           Specify the database or table name. It can be either in '*.*', 'db_name', 'db_name.*' or 'db_name.tbl_name' format.
+================== ============
 
 Upload Dumpfiles
 ................
@@ -236,35 +380,9 @@ Creates a database in the cluster:
 * **Create Database**
 	- Click to create a database.
 
-Privileges
-..........
-
-Provides list of users and privileges created from the ClusterControl UI. Users and privileges will be synced over to database nodes. To create a new user click on *Create User* button and specify values of the following fields:
-
-* **User**
-	- MySQL username.
-
-* **Host**
-	- Host that the user can connect from. You can specify a wildcard, hostname or IP address.
-
-* **Password**
-	- The password for corresponding user and host.
-
-.. Note:: You can only see users and privileges that is created through ClusterControl in the list. It does not import any existing MySQL users and privileges.
-
-To assign privilege to a user, click *Assign Privileges to User* button. Check the appropriate privileges with respective database and user host value.
-
-* **Privileges**
-	- Select privileges for the user.
-
-* **Database**
-	- Specify the database on which to apply the privileges.
-
-* **User Host**
-	- Specify the host from which the user will connect.
-
 Software Packages
 ``````````````````
+
 Allows users to manage packages, upload new versions to ClusterControl’s repository, and select which package to use for deployments. In order to use this feature, set ``post_max_size`` and ``upload_max_filesize`` in php.ini to 256M or more. Make sure you restart Apache to apply the PHP changes. Location of :term:`php.ini` may vary depending on your operating system, infrastructure type and PHP settings.
 
 .. Note:: This feature is intended for packages installed without using package repository. If the MySQL server is installed through package repository and you want to upgrade your MySQL servers, please skip this and see `Upgrades`_ section.
@@ -298,7 +416,7 @@ Performs software upgrade using the software uploaded at *ClusterControl > Manag
 * **Upgrade**
 	- Upgrades are online and are performed on one node at a time. The node will be stopped, then software will be updated, and then the node will be started again. If a node fails to upgrade, the upgrade process is aborted.
 	- Upgrades should only be performed when it is as little traffic as possible on the cluster.
-	- If the MySQL server is installed through package repository, clicking on this will trigger an upgrade job through the respective package manager.
+	- If the MySQL server is installed from package repository, clicking on this will trigger an upgrade job using the respective package manager.
 
 * **Rolling Restart**
 	- Performs a rolling node restart. This stops each node one at a time, waits for it to restart with the new version, before moving to the next node. The cluster is upgraded while it is online and available.

@@ -25,10 +25,10 @@ ClusterControl Controller (CMON) is the core backend process that performs all a
 
 CMON controller package is available at `Severalnines download site <http://www.severalnines.com/downloads/cmon/>`_. Redhat-based systems should download and install the RPM package while Debian-based systems should download and extract the DEB package. The package name is formatted as:
 
-* RPM package (Redhat-based systems): ``cmon-controller-[version]-[build number]-[architecture].rpm``
-* DEB package (Debian-based systems): ``cmon-controller-[version]-[build number]-[architecture].deb``
+* RPM package (Redhat-based systems): ``clustercontrol-controller-[version]-[build number]-[architecture].rpm``
+* DEB package (Debian-based systems): ``clustercontrol-controller-[version]-[build number]-[architecture].deb``
 
-To check the installed CMON controller version, simply invoke -v option:
+To check the installed ClusterControl controller version, simply invoke -v option:
 
 .. code-block:: bash
 
@@ -37,7 +37,7 @@ To check the installed CMON controller version, simply invoke -v option:
 	Enabled features: mongodb, libssh, mysql
 	Build git-hash: 18d7bfcce920f2bf779751193c05bff9172250c5
 
-A configuration file ``/etc/cmon.cnf`` is needed to initially setup the CMON Controller. It is possible to have several configuration files each for multiple clusters as described in the next section.
+A configuration file ``/etc/cmon.cnf`` is required to initially setup the CMON Controller. It is possible to have several configuration files each for multiple clusters as described in the next section.
 
 Configuration File
 ``````````````````
@@ -59,7 +59,7 @@ An example of file hierarchy is as follows:
 | Cluster #4 (cluster type)  | /etc/cmon.d/cmon_N.cnf | cluster_id=N | logfile=/var/log/cmon_N.log |
 +----------------------------+------------------------+--------------+-----------------------------+
  
-The CMON Controller will import the configuration options defined in each configuration file into the CMON database and is then used to manage cluster based on the ``cluster_id value``, representing a specific cluster.
+The CMON Controller will import the configuration options defined in each configuration file into the CMON database and is then used to manage cluster based on the ``cluster_id`` value, representing a specific cluster.
 
 Configuration Options
 `````````````````````
@@ -232,8 +232,8 @@ MySQL managed nodes
 
 ``mysql_server_addresses=<string>``
 
-* \*\*/\*\*\* Comma separated list of target MYSQL IP addresses. For MySQL Cluster, this should be the list of MySQL API node IP addresses.	
-* Example: ``mysql_server_addresses=192.168.0.11,192.168.0.12,192.168.0.13``
+* \*\*/\*\*\* Comma separated list of target MYSQL IP addresses. For MySQL Cluster, this should be the list of MySQL API node IP addresses (with or without port is supported).	
+* Example: ``mysql_server_addresses=192.168.0.11,192.168.0.12:3306,192.168.0.13``
 
 ``datanode_addresses=<string>``
 
@@ -417,13 +417,19 @@ ClusterControl REST API (CMONAPI)
 
 The CMONAPI is a RESTful interface, and exposes all ClusterControl functionality as well as monitoring data stored in the CMON DB. Each CMONAPI connects to one CMON DB instance. Several instances of the ClusterControl UI can connect to one CMONAPI as long as they utilize the correct CMONAPI token and URL. The CMON token is automatically generated during installation and is stored inside ``config/bootstrap.php``.
 
+You can generate the CMONAPI token manually by using following command:
+
+.. code-block:: bash
+
+	python -c 'import uuid; print uuid.uuid4()' | sha1sum | cut -f1 -d' '
+
 By default, the CMONAPI is running on Apache and located under ``/var/www/html/cmonapi`` (Redhat/CentOS/Ubuntu >14.04) or ``/var/www/cmonapi`` (Debian/Ubuntu <14.04). The value is relative to ``wwwroot`` value defined in CMON configuration file. The web server must support rule-based rewrite engine and able to follow symlinks.
 
 The CMONAPI page can be accessed through following URL:
 
-**http or https://<ClusterControl IP address or hostname\>/cmonapi**
+**http|https://[ClusterControl IP address or hostname]/cmonapi**
 
-Both ClusterControl CMONAPI and UI must be running on the same version to avoid misinterpretation of request and response data. For instance, ClusterControl UI version 1.2.5 needs to connect to the CMONAPI version 1.2.5.
+Both ClusterControl CMONAPI and UI must be running on the same version to avoid misinterpretation of request and response data. For instance, ClusterControl UI version 1.2.6 needs to connect to the CMONAPI version 1.2.6.
 
 .. Attention:: We are gradually in the process of migrating all functionalities in REST API to RPC interface. Kindly expect the REST API to be obselete in the near future.
 
@@ -432,13 +438,12 @@ ClusterControl UI
 
 ClusterControl UI provides a modern web user interface to visualize the cluster and perform tasks like backup scheduling, configuration changes, adding nodes, rolling upgrades, etc. It requires a MySQL database called 'dcps', to store cluster information, users, roles and settings. It interacts with CMON controller via remote procedure call (RPC) or REST API interface.
 
-You can install the ClusterControl UI independently on another server by using a helper script, ``install-cc-ui.sh`` available from the `Severalnines download page <http://www.severalnines.com/downloads/cmon/>`_. To install the UI:
+You can install the ClusterControl UI independently on another server by running following command:
 
 .. code-block:: bash
 
-	wget http://www.severalnines.com/downloads/cmon/install-cc-ui.sh 
-	chmod u+x install-cc-ui.sh 
-	sudo ./install-cc-ui.sh
+	yum install clustercontrol # RHEL/CentOS
+	sudo apt-get install clustercontrol # Debian/Ubuntu
 	
 .. Note:: Omit 'sudo' if you are running as root.
 
@@ -449,10 +454,10 @@ The ClusterControl UI will load the cluster in the database cluster list, simila
 .. image:: img/docs_cc_ui.png
    :align: center
 
-Similar to the CMONAPI, the ClusterControl UI is running on Apache and located under ``/var/www/html/clustercontrol`` (Redhat/CentOS/Ubuntu >14.04) or ``/var/www/clustercontrol`` (Debian/Ubuntu <14.04). The web server must support rule-based rewrite engine and must be able to follow symlinks. 
+Similar to the CMONAPI, the ClusterControl UI is running on Apache and located under ``/var/www/html/clustercontrol`` (Redhat/CentOS/Ubuntu >14.04) or ``/var/www/clustercontrol`` (Debian <8/Ubuntu <14.04). The web server must support rule-based rewrite engine and must be able to follow symlinks. 
 
 ClusterControl UI page can be accessed through following URL: 
 
-**http or https://<ClusterControl IP address or hostname\>/clustercontrol**
+**http|https://[ClusterControl IP address or hostname]/clustercontrol**
 
-Please refer to User Guide for MySQL for more details on the functionality available through the ClusterControl UI.
+Please refer to `User Guide <user-guide/index.html>`_ for more details on the functionality available in the ClusterControl UI.

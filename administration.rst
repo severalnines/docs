@@ -20,8 +20,8 @@ Online Upgrade
 
 The following upgrade procedures require internet connection on ClusterControl node.
 
-Package Manager
-'''''''''''''''
+Package Manager (Recommended)
+'''''''''''''''''''''''''''''
 
 This is the recommended way to upgrade ClusterControl. We are currently standardizing the upgrade procedure through yum/apt package manager.
 
@@ -36,20 +36,19 @@ Even if you have previously installed from our tarball or .deb packages, it is p
 
 .. code-block:: bash
 
-	yum clean metadata
+	yum clean all
 	yum install cmon-controller clustercontrol clustercontrol-cmonapi clustercontrol-controller
 
-.. Note:: cmon-controller is a transition package for clustercontrol-controller. You can omit it from the command line if you previously didn't have cmon-controller package installed.
+.. Note:: cmon-controller is a transition package for clustercontrol-controller. Omit it from the command line if you previously didn't have cmon-controller package installed.
 
-3) Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.6 to version 1.2.10, apply all SQL modification files between those versions in sequential order:
+3) Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.2.11, apply all SQL modification files between those versions in sequential order:
 
 .. code-block:: bash
 
 	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db.sql
-	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.6-1.2.7.sql
-	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.7-1.2.8.sql
 	mysql -f- h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.8-1.2.9.sql
 	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.9-1.2.10.sql
+	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.10-1.2.11.sql
 	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_data.sql
 
 .. Attention:: Importing ``cmon_db.sql`` and ``cmon_data.sql`` is required on each upgrade. Importing ``cmon_db_mods`` is relative to the previous version.
@@ -72,7 +71,7 @@ Even if you have previously installed from our tarball or .deb packages, it is p
 
 	sudo service cmon restart
 
-Upgrade is now complete. Verify the new version at *ClusterControl UI > Settings > General Settings > Version*. You should re-login if your ClusterControl UI session is active.
+Upgrade is now complete. Verify the new version at *ClusterControl UI > Settings > General Settings > Version* or by using command ``cmon -v``. You should re-login if your ClusterControl UI session is active.
 
 Debian/Ubuntu
 .............
@@ -90,15 +89,14 @@ Even if you have previously installed from our tarball or .deb packages, it is p
 
 .. Note:: cmon-controller is a transition package for clustercontrol-controller. You can omit it from the command line if you previously didn't have cmon-controller package installed.
 
-3) Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.6 to version 1.2.10, apply all SQL modification files between those versions in sequential order:
+3) Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.2.11, apply all SQL modification files between those versions in sequential order:
 
 .. code-block:: bash
 
 	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db.sql
-	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.6-1.2.7.sql
-	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.7-1.2.8.sql
 	mysql -f- h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.8-1.2.9.sql
 	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.9-1.2.10.sql
+	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.10-1.2.11.sql
 	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_data.sql
 
 .. Attention:: Importing ``cmon_db.sql`` and ``cmon_data.sql`` is required on each upgrade. Importing ``cmon_db_mods`` is relative to the previous version.
@@ -127,7 +125,7 @@ Even if you have previously installed from our tarball or .deb packages, it is p
 
 	sudo service cmon restart
 
-Upgrade is now complete. Verify the new version at *ClusterControl UI > Settings > General Settings > Version*. You should re-login if your ClusterControl UI session is active.
+Upgrade is now complete. Verify the new version at *ClusterControl UI > Settings > General Settings > Version* or by using command ``cmon -v``. You should re-login if your ClusterControl UI session is active.
 
 Automatic Upgrade
 '''''''''''''''''
@@ -197,27 +195,26 @@ Redhat/CentOS
 
 .. code-block:: bash
 
-	wget -O clustercontrol-controller-1.2.10-752-x86_64.rpm http://www.severalnines.com/downloads/cmon/clustercontrol-controller-1.2.10-752-x86_64.rpm
-	wget -O clustercontrol-1.2.10-407-x86_64.rpm http://www.severalnines.com/downloads/cmon/clustercontrol-1.2.10-407-x86_64.rpm
-	wget -O clustercontrol-cmonapi-1.2.10-58-x86_64.rpm http://www.severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.2.10-58-x86_64.rpm
+	wget http://www.severalnines.com/downloads/cmon/clustercontrol-controller-1.2.11-953-x86_64.rpm
+	wget http://www.severalnines.com/downloads/cmon/clustercontrol-1.2.11-788-x86_64.rpm
+	wget http://www.severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.2.11-126-x86_64.rpm
 
 2) Install via yum:
 
 .. code-block:: bash
 
-	yum localinstall clustercontrol-controller-1.2.10-727-x86_64.rpm clustercontrol-cmonapi-1.2.10-58-x86_64.rpm clustercontrol-1.2.10-407-x86_64.rpm
+	yum localinstall clustercontrol-controller-1.2.11-953-x86_64.rpm clustercontrol-1.2.11-788-x86_64.rpm clustercontrol-cmonapi-1.2.11-126-x86_64.rpm
 
-.. Note:: cmon-controller is a transition package for clustercontrol-controller. You can omit it from the command line if you previously didn't have cmon-controller package installed.
+.. Note:: cmon-controller is a transition package for clustercontrol-controller. Omit it from the command line if you previously didn't have cmon-controller package installed.
 
-3) Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.6 to version 1.2.10, apply all SQL modification files between those versions in sequential order:
+3) Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.2.11, apply all SQL modification files between those versions in sequential order:
 
 .. code-block:: bash
 
 	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db.sql
-	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.6-1.2.7.sql
-	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.7-1.2.8.sql
 	mysql -f- h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.8-1.2.9.sql
 	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.9-1.2.10.sql
+	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.10-1.2.11.sql
 	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_data.sql
 
 .. Attention:: Importing ``cmon_db.sql`` and ``cmon_data.sql`` is required on each upgrade. Importing ``cmon_db_mods`` is relative to the previous version.
@@ -251,15 +248,15 @@ Even if you have previously installed from our tarball or .deb packages, it is p
 
 .. code-block:: bash
 
-	wget -O clustercontrol-controller-1.2.10-752-x86_64.deb http://www.severalnines.com/downloads/cmon/clustercontrol-controller-1.2.10-752-x86_64.deb
-	wget -O clustercontrol_1.2.10-407_x86_64.deb http://www.severalnines.com/downloads/cmon/clustercontrol_1.2.10-407_x86_64.deb
-	wget -O clustercontrol-cmonapi_1.2.10-58_x86_64.deb http://www.severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.2.10-58_x86_64.deb
+	wget http://www.severalnines.com/downloads/cmon/clustercontrol-controller-1.2.11-953-x86_64.deb
+	wget http://www.severalnines.com/downloads/cmon/clustercontrol_1.2.11-788_x86_64.deb
+	wget http://www.severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.2.11-126_x86_64.deb
 
 2) Install via dpkg:
 
 .. code-block:: bash
 
-	dpkg -i clustercontrol-controller-1.2.10-752-x86_64.deb clustercontrol_1.2.10-407_x86_64.deb clustercontrol-cmonapi_1.2.10-58_x86_64.deb
+	dpkg -i clustercontrol-controller-1.2.11-953-x86_64.deb clustercontrol_1.2.11-788_x86_64.deb clustercontrol-cmonapi_1.2.11-126_x86_64.deb
 
 .. Note:: cmon-controller is a transition package for clustercontrol-controller. You can omit it from the command line if you previously didn't have cmon-controller package installed.
 
@@ -372,9 +369,10 @@ ClusterControl requires ports used by the following services to be opened/enable
 * HTTPS (default is 443)
 * MySQL (default is 3306)
 * CMON RPC (default is 9500)
-* HAproxy statistic page (if installed on ClusterControl node - default is 9600)
-* MySQL load balance (if HAproxy installed on ClusterControl node - default is 33306)
-* Streaming port for mysqldump through netcat (default is 9999)
+* HAproxy statistic page (if HAproxy is installed on ClusterControl node - default is 9600)
+* MySQL load balance through HAproxy (if HAproxy is installed on ClusterControl node - default is 3307 or 33306)
+* MySQL load balance through MaxScale (if MaxScale is installed on ClusterControl node - default is 6033)
+* Streaming port for database backup through netcat (default is 9999)
 
 SSH
 ```
@@ -571,7 +569,7 @@ To change password for the 'root' user:
 Uninstall
 ---------
 
-If ClusterControl is installed on a dedicated host (i.e., not co-located with your application), uninstalling ClusterControl is pretty straightforward. It is enough to bring down the ClusterControl node and revoke the cmon user privileges from the managed database cluster:
+If ClusterControl is installed on a dedicated host (i.e., not co-located with your application), uninstalling ClusterControl is pretty straightforward. It is enough to bring down the ClusterControl node and revoke the cmon user privileges from the managed database nodes:
 
 .. code-block:: mysql
 
@@ -581,10 +579,10 @@ If ClusterControl is installed through Severalnines repository, use following co
 
 .. code-block:: bash
 
-	yum remove -y clustercontrol clustercontrol-controller # Redhat/CentOS
-	sudo apt-get remove -y clustercontrol clustercontrol-controller # Debian/Ubuntu
+	yum remove -y clustercontrol clustercontrol-cmonapi clustercontrol-controller # Redhat/CentOS
+	sudo apt-get remove -y clustercontrol clustercontrol-cmonapi clustercontrol-controller # Debian/Ubuntu
 
-Else, to uninstall ClusterControl Controller manually in order to reuse the host for other purposes, kill the CMON process and remove all ClusterControl related files and databases:
+Else, to uninstall ClusterControl Controller manually so you can to re-use the host for other purposes, kill the CMON process and remove all ClusterControl related files and databases:
 
 .. code-block:: bash
 
@@ -593,6 +591,7 @@ Else, to uninstall ClusterControl Controller manually in order to reuse the host
 	rm -rf /usr/bin/cmon*
 	rm -rf /usr/bin/s9s_*
 	rm -rf /usr/local/cmon*
+	rm -rf /usr/share/cmon*
 	rm -rf /etc/init.d/cmon
 	rm -rf /etc/cron.d/cmon
 	rm -rf /var/log/cmon*

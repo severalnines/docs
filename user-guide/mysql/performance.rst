@@ -6,7 +6,7 @@ Database performance monitoring and advisors.
 Overview
 ````````
 
-You can view graphs of different database counters on this page. You can record up to 36 different MySQL counters.
+You can view graphs of different database counters on this page. You can record up to 82 different MySQL counters.
 
 * **Choose Graph**
 	- Choose which counters to record.
@@ -16,14 +16,14 @@ You can view graphs of different database counters on this page. You can record 
 	- Choose the status variables that you want to track. Check the 'On' box to the left of the counter that you want to record.
 	
 For detailed explanation on status variables of your cluster, you can refer to following pages:
-		- MySQL: http://dev.mysql.com/doc/refman/5.6/en/server-status-variables.html
-		- Galera Cluster: http://galeracluster.com/documentation-webpages/monitoringthecluster.html
-		- MySQL Cluster: http://dev.mysql.com/doc/refman/5.6/en/mysql-cluster-status-variables.html
+	- MySQL: http://dev.mysql.com/doc/refman/5.6/en/server-status-variables.html
+	- Galera Cluster: http://galeracluster.com/documentation-webpages/monitoringthecluster.html
+	- MySQL Cluster: http://dev.mysql.com/doc/refman/5.6/en/mysql-cluster-status-variables.html
 
 Advisors
 ````````
 
-Lists of scheduled Advisors created in Developer Studio using `ClusterControl DSL <../../dsl.html>`_.
+Lists of scheduled Advisors' results created in Developer Studio using `ClusterControl DSL <../../dsl.html>`_.
 
 * **Expand all**
 	- Expands all advisors with detailed.
@@ -46,8 +46,10 @@ Lists of scheduled Advisors created in Developer Studio using `ClusterControl DS
 * **Justification**
 	- The result of advisors' execution.
 
-Health Report
-``````````````
+Health Report (Deprecated)
+``````````````````````````
+
+.. Attention:: This feature is deprecated in favor of `Advisors`_.
 
 ClusterControl uses a number of best practice advisors to create a Health Report for your cluster. These advisors automatically examine your node configurations and performance levels, and identify any deviations from best practice rules. 
 
@@ -496,7 +498,9 @@ TABLE LOCK CONTENTION
 Status Time Machine
 ````````````````````
 
-By default, this feature is disabled until you set ``enable_mysql_timemachine=1`` inside CMON configuration file. The status time machine allows you to select status variable for a time range and compare the values at the start and end of that range. The table shows the selected status variables for the given range. Use the slider at the end of the table change the time range.
+.. Attention:: By default, this feature is disabled until you set ``enable_mysql_timemachine=1`` in CMON configuration file and restart CMON service to load it up.
+
+The status time machine allows you to select status variable for a time range and compare the values at the start and end of that range. The table shows the selected status variables for the given range. Use the slider at the end of the table change the time range.
 
 * **Filter Stats**
 	- Open the Filter Stats window.
