@@ -9,22 +9,19 @@ General
 Is ClusterControl free?
 +++++++++++++++++++++++
 
-It is free forever for community version with limited features. Please refer to ClusterControl product page for details.
+ClusterControl has a Community Edition that is free forever, available features include deployment and monitoring of clusters/servers. Please see the `ClusterControl product page <http://www.severalnines.com/pricing>`_ for details on features.
 
-Is ClusterControl open-source?
-++++++++++++++++++++++++++++++
+Is there a live demo site where I can try out ClusterControl?
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-Nope. It's closed-source.
+There is no live demo site available at the moment, although we have some webinars that show the product in details. We recommend users to `install ClusterControl <http://www.severalnines.com/getting-started>`_ on a test server/VM and give it a try. 
 
-Does ClusterControl have a demo site for tryout?
-++++++++++++++++++++++++++++++++++++++++++++++++
-
-Nope. We recommend our potential users to book a demo so we can prepare the environment that suits their needs. Usually it takes 24 to 48 hours after the initial enquiry.
+You can also contact Severalnines so we can prepare a demo for you - usually we can do this within 24 to 48 hours after the initial enquiry.
 
 Can I purchase the license for the first year only?
 +++++++++++++++++++++++++++++++++++++++++++++++++++
 
-License is renew annually. It's your call to decide on the subsequent year.
+Subscriptions are annual, and include software license, all updates and technical support. At the end of the subscription period, you can choose to renew the subscription or continue with the Community Edition. When the license expires, ClusterControl defaults to the Community Edition. 
 
 My 14-days demo license has expired but I haven't had enough time to test ClusterControl. Can I request for extension?
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -34,15 +31,40 @@ Of course. Please use our contact us page or email directly to sales[at]severaln
 I would like to subscribe as paid user but have limited budget. What should I do?
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-There is always a room for discussion. Please contact us at sales[at]severalnines.com.
+We’ll be happy to understand your specific requirements. Please contact us at sales[at]severalnines.com.
+
+Can I resell your product?
+++++++++++++++++++++++++++
+
+Yes, we have a reseller program. Please email us at sales[at]severalnines.com
+
+Who uses ClusterControl?
+++++++++++++++++++++++++
+
+We have over 100 paying customers, including the likes of Cisco, AVG, Monster.com, Ping Identity, Technicolor and Eurovision. A list of references and case studies can be found at: http://severalnines.com/customers
 
 Technical
 ---------
 
+Do I need to be a DBA to use ClusterControl?
+++++++++++++++++++++++++++++++++++++++++++++
+
+No. We build ClusterControl to be used by DBAs as well as Sysadmins/DevOps to easily manage their databases.
+
+Does ClusterControl run on Windows?
++++++++++++++++++++++++++++++++++++
+
+No. ClusterControl only runs on RHEL-based and Debian-based with x86_64 architecture.
+
+How do I upgrade ClusterControl?
+++++++++++++++++++++++++++++++++
+
+Our official upgrade instruction is available at `our documentation page <http://www.severalnines.com/docs/administration.html#upgrading-clustercontrol>`_ and `our support page <http://support.severalnines.com/entries/21095371>`_.
+
 I'm using ClusterControl community version. Which support channel should I use?
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-You can submit a ticket at https://support.severalnines.com/new or open a thread in our public forum, https://support.severalnines.com/forums. The former is recommended because ticketing is a safe place to share your credentials and log files which might contain sensitive information.
+You can open a thread in our public forum, https://support.severalnines.com/forums. In case you have ots that might contain sensitive information, please submit a ticket at https://support.severalnines.com/new.  
 
 Can I install ClusterControl on RHEL based system but my database cluster is running on Debian?
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -54,10 +76,15 @@ Can I use ClusterControl in an internetless environment?
 
 Yes. However some features might not be working well, as explained in `this page <installation.html#offline-installation>`_.
 
-Can I have a mixed of SSH user per cluster?
-+++++++++++++++++++++++++++++++++++++++++++
+Can I have a mix of different SSH users per cluster?
+++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-It's not recommended and will make the deployment more complex. If you choose root as the SSH user, you must have this user active on all nodes.
+It's possible but not recommended since it will make the deployment more complex. If you choose root as the SSH user, you should use root user for other clusters as well.
+
+Can I use non-privileged SSH user for ClusterControl?
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Unfortunately, no. ClusterControl requires super-privileged SSH user to perform tasks like deployment, administration and management of the database nodes.
 
 What is difference of MySQL Galera Cluster, Percona XtraDB Cluster and MariaDB Galera Cluster?
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -69,15 +96,16 @@ Since they all leverage the same Galera library, replication performance should 
 I found a bug. Where should I report it?
 ++++++++++++++++++++++++++++++++++++++++
 
-Please report the bug by submiting ticket at https://support.severalnines.com/new. For Enterprise user, if the bug is verified, a bugfix will be provided soonest possible (within one working day).
+Please report the bug by submiting ticket at https://support.severalnines.com/new. For Enterprise customers, bugfixes are provided soonest possible.
 
 My cluster is down. What should I do?
 +++++++++++++++++++++++++++++++++++++
 
-Please submit a ticket at https://support.severalnines.com/new, login with the registered email address so we can route the support request based on the subscription. Please also include an error report as described in this page.
+Please submit a ticket at https://support.severalnines.com/new. If you are a paying customer, please do this with your company email address so the ticket can be assigned to the appropriate support SLA. Please also include an `error report <http://support.severalnines.com/entries/21091498-Error-reporting->`_.
 
 How can I submit a feature request?
 +++++++++++++++++++++++++++++++++++
 
-You can either use our `Feature Request <http://support.severalnines.com/forums/20303403-Feature-Requests>`_ page or submit a ticket to https://support.severalnines.com/new .
+You can either use our `Feature Request <http://support.severalnines.com/forums/20303403-Feature-Requests>`_ page or submit a ticket to https://support.severalnines.com/new.
+
 
