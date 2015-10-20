@@ -64,7 +64,7 @@ Our official upgrade instruction is available at `our documentation page <http:/
 I'm using ClusterControl community version. Which support channel should I use?
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-You can open a thread in our public forum, https://support.severalnines.com/forums. In case you have ots that might contain sensitive information, please submit a ticket at https://support.severalnines.com/new.  
+You can open a thread in our public forum, https://support.severalnines.com/forums. In case you have to share files or logs that might contain sensitive information, please submit a ticket at https://support.severalnines.com/new.
 
 Can I install ClusterControl on RHEL based system but my database cluster is running on Debian?
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
