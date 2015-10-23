@@ -104,6 +104,11 @@ Glossary
 		
 		.. seealso:: http://en.wikipedia.org/wiki/Netcat
 
+	pg_dumpall
+		A utility for writing out all PostgreSQL databases of a cluster into one script file. The script file contains SQL commands that can be used as input to psql to restore the databases. It does this by calling pg_dump for each database in a cluster
+		
+		.. seelalso:: http://www.postgresql.org/docs/9.2/static/app-pg-dumpall.html
+
 	php.ini
 		PHP configuration file where you declare changes to your PHP settings.
 		

@@ -15,7 +15,7 @@ Creates an immediate backup of the database. You can choose to create a full bac
 	- Supported backup method:
 		- mysqldump - Separated compressed schema and data dump. See `mysqldump`_ section.
 		- xtrabackup (full) - A full compressed backup. See `Percona Xtrabackup`_ section.
-		- NDB backup (for MySQL Cluster) - See `NDB backup`_ section.
+		- NDB backup (for MySQL Cluster) - See `NDB backup (MySQL Cluster)`_ section.
 
 * **Backup Location**
 	- Supported backup locations:
@@ -36,7 +36,7 @@ Creates an immediate backup of the database. You can choose to create a full bac
 Backup Schedule
 ```````````````
 
-Creates backup schedules of the database. You can choose to create a full backup using mysqldump or xtrabackup. 
+Creates backup schedules of the database. You can choose to create a full or incremental backup using mysqldump or xtrabackup. 
 
 * **Start Time**
 	- Backup start time.
@@ -80,11 +80,11 @@ This section explains backup method used by ClusterControl.
 mysqldump
 .........
 
-ClusterControl performs :term:`mysqldump` against all databases by using the ``--single-transaction`` option. It automatically performs mysqldump with ``--master-data=2`` if it detects binary logging is enabled on the particular node to generate a statement about binary log file and position in the dump file. ClusterControl generates a set of three mysqldump files with the following suffixes:
+ClusterControl performs :term:`mysqldump` against all or selected databases by using the ``--single-transaction`` option. It automatically performs mysqldump with ``--master-data=2`` if it detects binary logging is enabled on the particular node to generate binary log file and position statement in the dump file. ClusterControl generates a set of three mysqldump files with the following suffixes:
 
-* _data - All schemas’ data.
-* _schema - All schemas’ structure.
-* _mysqldb - MySQL system database.
+* _data.sql - All schemas’ data.
+* _schema.sql - All schemas’ structure.
+* _mysqldb.sql - MySQL system database.
 
 The last output of the backup file would be a gunzip compressed file, ``.tar.gz`` consists of three ``.sql.gz`` files.
 

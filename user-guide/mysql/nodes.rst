@@ -30,7 +30,7 @@ The node on the list will appear in red colour to indicate it is unhealthy. The 
 	- Database related logs. For MySQL standalone, replication and Galera, it shows MySQL error log and xtrabackup related log. For MySQL Cluster, it shows log relative to the role e.g MySQL error logs, cluster logs and data node logs.
 
 * **DB Performance**
-	- Overview of choosen database performance counters shown in graph.
+	- Overview of chosen database performance counters shown in graph.
 	
 * **DB Status**
 	- MySQL status for this node, similar to ``SHOW STATUS`` command.

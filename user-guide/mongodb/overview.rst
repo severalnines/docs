@@ -159,13 +159,13 @@ Hosts
 Shows collected system statistics in a grid as below:
 
 * **Ping**
-	- ping round trip from ClusterControl host to each host in milliseconds.
+	- Ping round trip from ClusterControl host to each host in milliseconds.
 
 * **CPU util/steal**
-	- total of CPU utilization in percentage.
+	- Total of CPU utilization in percentage.
 
 * **Loadavg (1/5/15)**
-	- load value captured for 1, 5 and 15 minutes average.
+	- Load value captured for 1, 5 and 15 minutes average.
 
 * **Net (tx/s / rx/s)**
 	- Amount of data transmitted and received by the host.

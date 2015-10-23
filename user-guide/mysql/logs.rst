@@ -56,8 +56,5 @@ ClusterControl collects important database logs depending on the cluster type as
 	- innobackup prepare log
 
 - MongoDB:
-	- MongoDB system log
+	- MongoDB database system log
 	- mongodump backup log
-
-- PostgreSQL:
-	- 

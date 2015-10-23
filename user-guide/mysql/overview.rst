@@ -228,7 +228,7 @@ The Cluster Load graph provides overview of aggregated load on your database clu
 Custom Dashboard
 ````````````````
 
-Customize your dashboard in the `Overview`_ page by selecting which metrics and graphs to display. For Galera nodes, 3 graphs are configured by default:
+Customize your dashboard in the `Overview`_ page by selecting which metrics and graphs to display. For Galera nodes, 6 graphs are configured by default:
 
 ====================== ===========
 Dashboard Name         Description

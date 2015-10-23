@@ -108,4 +108,3 @@ How can I submit a feature request?
 
 You can either use our `Feature Request <http://support.severalnines.com/forums/20303403-Feature-Requests>`_ page or submit a ticket to https://support.severalnines.com/new.
 
-
