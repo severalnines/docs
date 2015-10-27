@@ -3,7 +3,7 @@
 User Guide for PostgreSQL
 =========================
 
-This user guide covers ClusterControl with PostgreSQL-based server, namely:
+This user guide covers ClusterControl with PostgreSQL-based (>9.x) server, namely:
 
 * PostgreSQL single instance
 * PostgreSQL replication

@@ -134,7 +134,7 @@ The following must be true for the masters:
 * ``log_slave_updates`` must be enabled
 * Master’s MySQL port is accessible by ClusterControl and slaves
 
-For the slave, you would need a separate host or VM, with or without MySQL installed. If you do not have a MySQL installed, and choose ClusterControl to install the MySQL on the slave, ClusterControl will perform the necessary actions to prepare the slave, for example, configure root password (based on ``monitored_mysql_root_password``), create slave user (based on ``repl_user``, ``repl_password``), configure MySQL, start the server and also start replication. The MySQL package used will be based on the Galera vendor used, for example, if you are running Percona XtraDB Cluster, ClusterControl will prepare the slave using Percona Server. Prior to the deployment, you must perform following actions beforehand:
+For the slave, you would need a separate host or VM, with or without MySQL installed. If you do not have a MySQL installed, and choose ClusterControl to install the MySQL on the slave, ClusterControl will perform the necessary actions to prepare the slave, for example, configure root password (based on ``monitored_mysql_root_password``), create slave user, configure MySQL, start the server and also start the replication. The MySQL package used will be based on the Galera vendor used, for example, if you are running Percona XtraDB Cluster, ClusterControl will prepare the slave using Percona Server. Prior to the deployment, you must perform following actions:
 
 * The slave node must be accessible using passwordless SSH from the ClusterControl server
 * MySQL port (default 3306) and netcat port 9999 on the slave are open for connections.
@@ -142,8 +142,6 @@ For the slave, you would need a separate host or VM, with or without MySQL insta
 
 .. code-block:: bash
 
-	repl_user=<the replication user>
-	repl_password=<password for replication user>
 	monitored_mysql_root_password=<the mysql root password of all nodes including slave>
 
 * The slave configuration template file must be configured beforehand, and must have at least the following variables defined in the MySQL configuration template:

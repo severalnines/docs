@@ -99,7 +99,7 @@ The following table shows supported database clusters with recommended minimum n
 |                | Replica set                | 3 hosts (2 replica servers + 1 ClusterControl node)                         |
 +----------------+----------------------------+-----------------------------------------------------------------------------+
 | PostgreSQL     | Single instance            | 2 hosts (1 PostgreSQL node + 1 ClusterControl node)                         |
-+                +----------------------------+-----------------------------------------------------------------------------+
++ (>9.x)         +----------------------------+-----------------------------------------------------------------------------+
 |                | Replication                | 3 hosts (1 master node + 1 slave node + 1 ClusterControl node)              |
 +----------------+----------------------------+-----------------------------------------------------------------------------+
 

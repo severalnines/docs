@@ -433,21 +433,21 @@ Deploy a MongoDB replica set setup from ClusterControl. One would start by creat
 =================================== ===========
 Field                               Description
 =================================== ===========
-Hostname                            The IP address or hostname of the target node. Ensure you can perform passwordless SSH to the need using the specified SSH User, SSH Port Number and SSH Key Path
-Port                                MongoDB port
-User                                MongoDB user
-Password                            MongoDB admin password
-RS Name                             The replica set name
-Data Directory                      Location of MongoDB data directory
-mongodb.conf Template               MongoDB configuration template under ``/usr/share/cmon/templates``
-Need Sudo Password                  Click on the link and specify the sudo password for the SSH user if applicable
-SSH User                            SSH user that ClusterControl will use to remotely access the target node
+Hostname                            The IP address or hostname of the target node. Ensure you can perform passwordless SSH to the need using the specified SSH User, SSH Port Number and SSH Key Path.
+Port                                MongoDB port.
+User                                MongoDB user.
+Password                            MongoDB admin password.
+RS Name                             The replica set name.
+Data Directory                      Location of MongoDB data directory.
+mongodb.conf Template               MongoDB configuration template under ``/usr/share/cmon/templates``. Default is mongodb.conf.org.
+Need Sudo Password                  Click on the link and specify the sudo password for the SSH user if applicable.
+SSH User                            SSH user that ClusterControl will use to remotely access the target node.
 SSH Key Path                        Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See `Passwordless SSH <../../requirements.html#passwordless-ssh>`_.
-SSH Port Number                     SSH port of target node
-Disable Firewall                    Yes - Firewall will be disabled, No - Firewall will not be disabled
-Disable AppArmor/SElinux            Check to disable AppArmor (Ubuntu) or SElinux (Redhat or CentOS)
-Uninstall Existing MongoDB Packages All existing MongoDB related package will be removed before ClusterControl performs the new installation on the target node
-Deploy                              Start the database deployment
+SSH Port Number                     SSH port of target node.
+Disable Firewall                    Yes - Firewall will be disabled, No - Firewall will not be disabled.
+Disable AppArmor/SElinux            Check to disable AppArmor (Ubuntu) or SElinux (Redhat or CentOS).
+Uninstall Existing MongoDB Packages All existing MongoDB related package will be removed before ClusterControl performs the new installation on the target node.
+Deploy                              Start the database deployment.
 =================================== ===========
 
 Then, you can add a MongoDB replica node to the setup via `Add Node <user-guide/mysql/overview.html#add-node>`_.
@@ -455,19 +455,19 @@ Then, you can add a MongoDB replica node to the setup via `Add Node <user-guide/
 PostgreSQL
 ''''''''''
 
-Deploy a new PostgreSQL replication cluster from ClusterControl. One would start by creating a PostgreSQL master node under this tab.
+Deploy a new PostgreSQL standalone or replication cluster from ClusterControl. One would start by creating a PostgreSQL master node under this tab.
 
 ====================================== ===========
 Field                                  Description
 ====================================== ===========
-Hostname                               The IP address or hostname of the target node. Ensure you can perform passwordless SSH to the need using the specified SSH User, SSH Port Number and SSH Key Path
-User                                   PostgreSQL user. ClusterControl will create this user automatically
-Password                               PostgreSQL admin password
-SSH User                               SSH user that ClusterControl will use to remotely access the target node
+Hostname                               The IP address or hostname of the target node. Ensure you can perform passwordless SSH to the need using the specified SSH User, SSH Port Number and SSH Key Path.
+User                                   PostgreSQL user. ClusterControl will create this user automatically.
+Password                               PostgreSQL admin password.
+SSH User                               SSH user that ClusterControl will use to remotely access the target node.
 SSH Key Path                           Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See `Passwordless SSH <../../requirements.html#passwordless-ssh>`_.
-Need Sudo Password                     Click on the link and specify the sudo password for the SSH user if applicable
-Uninstall Existing PostgreSQL Packages All existing PostgreSQL related package will be removed before ClusterControl performs the new installation on the target node
-Deploy                                 Start the database deployment
+Need Sudo Password                     Click on the link and specify the sudo password for the SSH user if applicable.
+Uninstall Existing PostgreSQL Packages All existing PostgreSQL related package will be removed before ClusterControl performs the new installation on the target node.
+Deploy                                 Start the database deployment.
 ====================================== ===========
 
 Then, you can add a replication slave to the setup via `Add Node <user-guide/mysql/overview.html#add-node>`_.
