@@ -42,7 +42,7 @@ If you specify a new hostname or IP address, make sure that the node is accessib
 	- IP address or :term:`FQDN` of the target node. If you already have the host added under *ClusterControl > Manage > Hosts*, you can just choose the host from the dropdown menu.
 
 * **Configuration**
-	- Choose a MySQL configuration template for the new node. The configuration file should be created at *ClusterControl > Manage > Configurations > Template Configuration Files*.
+	- Choose a PostgreSQL configuration template for the new node. The configuration file should be created at *ClusterControl > Manage > Configurations > Template Configuration Files*.
 	
 * **Install Software**
 	- If you already have the database server installed on the target host but not yet configured, you can tell ClusterControl to skip the database installation part by choosing 'No'.
