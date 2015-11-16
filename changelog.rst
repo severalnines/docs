@@ -8,7 +8,12 @@ These change logs list details about updates in each version of ClusterControl.
 Changes in v1.2.11
 ------------------
 
-*Oct 1st, 2015*
+*Oct 16th, 2015*
+
+* Build number:
+- clustercontrol-1.2.11-808
+- clustercontrol-cmonapi-1.2.11-128
+- clustercontrol-controller-1.2.11-974
 
 * This is a our best release yet for Postgres with a number of improvements.
 	- Create a new Postgres Node/cluster from the "Create Database Node" dialog or add an new node with a few clicks 
@@ -50,6 +55,82 @@ Changes in v1.2.11
 
 * HAProxy and KeepAlived
 	- You can now add existing running HAProxy and Keepalived instances that have been installed outside of ClusterControl
+	
+Patch release: Oct 23rd, 2015
+``````````````````````````````
+
+* Build number:
+	- clustercontrol-1.2.11-826
+	- clustercontrol-cmonapi-1.2.11-131
+	- clustercontrol-controller-1.2.11-985
+
+* Bugs fixed:
+	- UI:
+		- In Cluster jobs list, Delete and Restart buttons do not work
+		- Add Replication Slave UI Dialog not showing properly
+		- Editing a previously created backup schedule alters the hostname, and backup job fails
+		- Number counter on 'Alarms' and 'Logs' tabs doesn't make sense
+		- User Management - refresh/reload  button and corrected text for CREATE USER
+	- Controller:
+		- Backup fix to support xtrabackup 2.3
+		- Start-up bugs to initialise internal host structures
+		- netcat port defaults to 9999  (and impossible to change)
+		- Cluster failure with "Unknown database some_schema" message
+		- Remove Node: wsrep_cluster_address is not updated
+		- Corrected printout in backup
+		- Corrected sampling of wsrep_flow_cntr_sent/recv
+
+Patch release: Nov 2nd, 2015
+``````````````````````````````
+
+* Build number:
+	- clustercontrol-1.2.11-842
+	- clustercontrol-cmonapi-1.2.11-135
+	- clustercontrol-controller-1.2.11-998
+
+* Bugs fixed:
+	- UI:
+		- Change the favicon for ClusterControl to the one that is used on our site www.severalnines.com
+		- MongoDB add node to replica set looks wrong
+		- Global Job Messages: Local cluster jobs are shown in the popup dialog
+		- Fix in *Manage > Schema Users*. Drop user even if user is empty (‘’@‘localhost’)
+		- Add/Register Existing Galera Node: The "Add Node" button does not react/work if there is no configuration files in the dropdown for the "Add New DB Node" form
+		- MongoDB add node to replica set dialog - text was cut
+		- Add/Register Existing Galera Node: The "Add Node" button does not react/work if there is no configuration files in the dropdown for the "Add New DB Node" form
+		- [PostgreSQL] Empty "DB Performance" graphs
+		- Installation progress window text disappears while scrolling back
+	- Controller:
+		- Galera: Register_node job: registers node with wrong type
+		- Create DB Cluster: Checking OS is the same on all servers
+		- Create DB Cluster/Node, Add Node: Install cronie on Redhat/Centos
+		- Scheduled backups that are stored both on controller and on node (full and incremantals) fail to restore. 
+		- Increase size of ‘properties’ column in server_node table to contain 16384 characters. The following is needed on the cmon db: ``ALTER TABLE server_node MODIFY properties VARCHAR(16384) DEFAULT '';``
+		- CmonHostManager::pull(..): lets properly handle if JSon parse failes.
+		- MongoDB: Check if there is a new member in the replica set and then reload the config.
+		- MySQL: Bugfix for replication mysqldump backuping issues (appeared recently): lets exclude the temporary (name starts with #) DBs from backup
+		- Postgres: Add existing replication slave failed.
+		- Character set on connection + cmon.tx_deadlock_log, change to use utf8mb4 to properly encode characters in *Performance > Transaction Lo*g preventing data from being shown. Do ``mysql -ucmon -p -h127.0.0.1 cmon < /usr/share/cmon/cmon_db.sql`` to recreate this table.
+
+
+Patch release: Nov 6th, 2015
+`````````````````````````````
+
+* Build number:
+	- clustercontrol-1.2.11-854
+	- clustercontrol-cmonapi-1.2.11-136
+	- clustercontrol-controller-1.2.11-1007
+
+* Bugs fixed:
+	- UI:
+		- Default "Admin" Role is missing ACLs settings for Create DB Node and Dev Studio
+		- When viewing Global Jobs, the installation Progress window cannot be resized vertically.
+		- DB Variables page does not load properly
+		- Find Most Advanced Node job sent with the wrong cluster id (0) causing it to fail.
+	- Controller:
+		- Postgres: postgres|postmaster executable names are both supported meaning that the postmaster process is now properly handled.
+		- Javascript: ``s9s/host/disk_space_usage.js`` could not handle multiple partitions.
+		- Javascript: ``s9s/mysql/schema/schema_check_*.js`` - prevent it to run if there are more than 1024 tables (configurable) to prevent I_S caused stalls.
+		- Reading disk partition information failed as non root user.
 
 Changes in v1.2.10
 ------------------
