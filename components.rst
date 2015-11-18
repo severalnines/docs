@@ -232,7 +232,7 @@ MySQL managed nodes
 
 ``mysql_server_addresses=<string>``
 
-* \*\*/\*\*\* Comma separated list of target MYSQL IP addresses. For MySQL Cluster, this should be the list of MySQL API node IP addresses (with or without port is supported).	
+* \*\*/\*\*\* Comma separated list of target MySQL IP addresses. For MySQL Cluster, this should be the list of MySQL API node IP addresses (with or without port is supported).	
 * Example: ``mysql_server_addresses=192.168.0.11,192.168.0.12:3306,192.168.0.13``
 
 ``datanode_addresses=<string>``
@@ -254,6 +254,12 @@ MySQL managed nodes
 
 * \*\*\* Exclusive for MySQL Cluster. NDB binary for data node. Supported values are ndbd or ndbmtd.
 * Example: ``ndb_binary=ndbmtd``
+
+``monitored_mysql_root_password=<string>``
+
+* \*\*/\*\*\* MySQL root password for the managed cluster. ClusterControl assumes all DB nodes are using the same root password. This is required when you want to scale your cluster by adding a new DB node or replication slave.
+* Example: ``monitored_mysql_root_password=r00tPassword``
+
 
 MongoDB/TokuMX managed hosts
 ''''''''''''''''''''''''''''
