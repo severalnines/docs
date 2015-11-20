@@ -202,8 +202,8 @@ Basically, the installation script will attempt to automate the following tasks:
 
 After the installation completes, open your web browser to http://[ClusterControl_host]/clustercontrol and create the default admin user by specifying a valid email address and password on the welcome page.
 
-Bootstrap Script
-````````````````
+Bootstrap Script (deprecated)
+``````````````````````````````
 
 Bootstrap script is a legacy way to install ClusterControl on top of existing database cluster. Common use case when you want to install ClusterControl on top of existing MongoDB Sharded Cluster or MySQL Cluster. The reason behind this is only these database cluster types are not supported to be added through ClusterControl UI. You can also use bootstrap script to install ClusterControl standby server for high availability, as described `in this blog post <http://www.severalnines.com/blog/installing-clustercontrol-standby-server>`_.
 
@@ -531,52 +531,35 @@ The Dockerfiles are available from `our Github repository <https://github.com/se
 .. code-block:: bash
 
 	$ git clone https://github.com/severalnines/docker
-	$ cd docker/[operating system] 
-	$ docker build -t severalnines/clustercontrol:[operating system] .
-
-.. note:: Replace [operating system] with your choice of OS distribution; redhat6, redhat7, centos6, centos7, debian-wheezy, ubuntu-trusty.
+	$ cd docker/
+	$ docker build -t severalnines/clustercontrol .
 
 Running container
 '''''''''''''''''
 
-Please refer to the `Docker Hub page <https://registry.hub.docker.com/u/severalnines/clustercontrol/>`_ for the latest instructions. Pick the operating system distribution images that you would like to deploy, and use the ``docker pull`` command to download the image. To pull all images:
+Please refer to the `Docker Hub page <https://registry.hub.docker.com/u/severalnines/clustercontrol/>`_ for the latest instructions. Use the ``docker pull`` command to download the image:
 
 .. code-block:: bash
 
 	$ docker pull severalnines/clustercontrol
 
-You can pull the ClusterControl image that you want based on your target cluster’s operating system.
-
-.. code-block:: bash
-
-	$ docker pull severalnines/clustercontrol:[ubuntu-trusty|debian-wheezy|redhat6|redhat7]
-
-So, if you want to pull the ClusterControl image for CentOS 6/Redhat 6, just run:
-
-.. code-block:: bash
-
-	$ docker pull severalnines/clustercontrol:redhat6 #or
-	$ docker pull severalnines/clustercontrol:centos6
-
-.. note:: Image tagged with ‘centos6’ or ‘centos7’ is aliased to redhat’s respectively.
-
 Use the following command to run:
 
 .. code-block:: bash
 
-	$ docker run -d --name clustercontrol -p 5000:80 severalnines/clustercontrol:redhat7
+	$ docker run -d --name clustercontrol -p 5000:80 severalnines/clustercontrol
 
 Once started, ClusterControl is accessible at http://[Docker_host]:5000/clustercontrol. You should see the welcome page to create a default admin user. Use your email address and specify passwords for that user. By default MySQL users root and cmon will be using 'password' and 'cmon' as default password respectively. You can override this value with -e flag, as example below:
 
 .. code-block:: bash
 
-	$ docker run -d --name clustercontrol -e CMON_PASSWORD=MyCM0n22 -e MYSQL_ROOT_PASSWORD=SuP3rMan -p 5000:80 severalnines/clustercontrol:debian
+	$ docker run -d --name clustercontrol -e CMON_PASSWORD=MyCM0n22 -e MYSQL_ROOT_PASSWORD=SuP3rMan -p 5000:80 severalnines/clustercontrol
 	
 Optionally, you can map the HTTPS port using -p by appending the forwarding as below:
 
 .. code-block:: bash
 
-	$ docker run -d --name clustercontrol -p 5000:80 -p 5443:443 severalnines/clustercontrol:redhat7
+	$ docker run -d --name clustercontrol -p 5000:80 -p 5443:443 severalnines/clustercontrol
 
 Verify the container is running by using the ps command:
 

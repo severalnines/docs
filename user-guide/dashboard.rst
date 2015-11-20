@@ -8,7 +8,7 @@ This page is the landing page once you logged in. It provides a summary of datab
 
 *Section 1*
 
-ClusteControl's top menu.
+ClusterControl's top menu.
 
 * **Global Notifications**
 	- Provides aggregated view of all alarms and notifications raised across all clusters monitored by ClusterControl.
@@ -62,7 +62,7 @@ There are some prerequisites that need to be fulfilled prior to adding the exist
 * Passwordless SSH from ClusterControl node to database nodes has been configured correctly
 * You must have a running ClusterControl controller with a minimal configuration
 
-For more details, refer to the `Requirement <../../requirements.html>`_ section. Each time you add an existing cluster or server, ClusterControl will trigger a job under *ClusterControl > Admin > Cluster Jobs*. You can see the progress and status under this page. A window will also appear with messages showing progress.
+For more details, refer to the `Requirement <../../requirements.html>`_ section. Each time you add an existing cluster or server, ClusterControl will trigger a job under *ClusterControl > Settings > Cluster Jobs*. You can see the progress and status under this page. A window will also appear with messages showing progress.
 
 Add Existing Galera Cluster
 '''''''''''''''''''''''''''

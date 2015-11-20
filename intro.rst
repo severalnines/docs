@@ -42,7 +42,9 @@ ClusterControl supports following database servers/clusters:
 	- Replica set
 	- Sharded cluster
 	- Replicated sharded cluster
-- PostgreSQL single instance
+- PostgreSQL
+	- Single instance
+	- Replication
 
 How does it work?
 -----------------
@@ -61,7 +63,7 @@ What user really needs to do is to access ClusterControl UI located at http://[C
    :alt: Example multiple cluster deployment
    :align: center
 
-ClusterControl exposes all functionality through remote procedure calls (RPC) on port 9500 and REST API accessible at http://[ClusterControl_host]/cmonapi authenticated by an API token. The ClusterControl UI interacts with those interfaces to retrieve monitoring data (cluster load, host status, alarms, backup status etc.) or to send management commands (add/remove nodes, run backups, upgrade a cluster, etc.). The diagram below illustrates the architecture of ClusterControl:
+ClusterControl exposes all functionality through remote procedure calls (RPC) on port 9500 and REST API accessible at http://[ClusterControl_host]/cmonapi authenticated by an API token. The ClusterControl UI interacts with those interfaces to retrieve monitoring data (cluster load, host status, alarms, backup status etc.) or to send management commands (add/remove nodes, run backups, upgrade a cluster, etc.). The following diagram illustrates the architecture of ClusterControl:
 
 .. image:: img/cc_arch.png
    :alt: ClusterControl architecture
@@ -82,7 +84,7 @@ ClusterControl is able to handle most of the administration tasks required to ma
 * Trigger alarm and send notification
 * Schedule and perform database backup (mysqldump, Xtrabackup, pgdump, mongodump)
 * Database backup status
-* Restore backups (MySQL)
+* Restore backups (MySQL/PostgreSQL)
 * Upload backups to AWS S3/Glacier
 * Stop/Start/Bootstrap database service
 * Deploy a new database server/cluster

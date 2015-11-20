@@ -255,6 +255,11 @@ MySQL managed nodes
 * \*\*\* Exclusive for MySQL Cluster. NDB binary for data node. Supported values are ndbd or ndbmtd.
 * Example: ``ndb_binary=ndbmtd``
 
+``db_configdir=<string>``
+
+* \*\*\* Exclusive for MySQL Cluster. Directory where configuration files (my.cnf/config.ini) of the cluster is stored.
+* Example: ``db_configdir=/etc/mysql``
+
 ``monitored_mysql_root_password=<string>``
 
 * \*\*/\*\*\* MySQL root password for the managed cluster. ClusterControl assumes all DB nodes are using the same root password. This is required when you want to scale your cluster by adding a new DB node or replication slave.

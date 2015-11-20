@@ -33,7 +33,7 @@ Open your web browser to http://[ClusterControl_host]/clustercontrol and create 
 
 *Step #3*
 
-Setup passwordless SSH to all target nodes (ClusterControl and all database nodes). Run following commands on ClusterControl:
+Setup passwordless SSH to all target nodes (ClusterControl and all database nodes). Run following commands on ClusterControl server:
 
 .. code-block:: bash
 
