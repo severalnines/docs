@@ -170,7 +170,7 @@ Choose *MySQL Server* as the database type. Fill in all required information.
 Add existing MySQL Cluster
 ''''''''''''''''''''''''''
 
-Adding existing MySQL Cluster (ndb) is not supported from the ClusterControl UI. But it is possible to use our `bootstrap script <installation.html#bootstrap-script-deprecated>`_ to add MySQL Cluster into ClusterControl. In case if you are about to import multiple MySQL clusters, the `bootstrap script <installation.html#bootstrap-script-deprecated>`_ is capable to add only one MySQL Cluster (cluster_id=1), so you may use it to add the primary cluster. Once imported, you will have to manually add the subsequent MySQL cluster as cluster ID 2 or higher. To achieve this, run following steps on ClusterControl node:
+Adding existing MySQL Cluster (ndb) is not supported from the ClusterControl UI. But it is possible to use our `bootstrap script <http://severalnines.com/docs/installation.html#bootstrap-script-deprecated>`_ to add MySQL Cluster into ClusterControl. In case if you are about to import multiple MySQL clusters, the `bootstrap script <http://severalnines.com/docs/installation.html#bootstrap-script-deprecated>`_ is capable to add only one MySQL Cluster (cluster_id=1), so you may use it to add the primary cluster. Once imported, you will have to manually add the subsequent MySQL cluster as cluster ID 2 or higher. To achieve this, run following steps on ClusterControl node:
 
 1. Copy CMON configuration file from cluster ID 1 as a template for cluster ID 2:
 
