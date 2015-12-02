@@ -124,9 +124,17 @@ To upgrade to the latest version, see `Upgrading ClusterControl section <../../a
 Subscription
 ````````````
 
-For users with a valid subscription (Standard, Pro, Enterprise), enter your license information here to enable additional features based on the subscription. The license key is validated during runtime. Reload your web browser after registering the license.
+For users with a valid subscription (Standard, Pro, Enterprise), enter your license information here to enable additional features based on the subscription. 
 
-.. Note:: When the license expires, ClusterControl defaults back to the Community Edition.
+This functionality is also globally accessible at *ClusterControl > Settings > Subscription*. Following screenshot shows example on filing up the license information:
+
+.. image:: img/subscription.png
+
+.. Attention:: Make sure you copy the subscription information as they are, with no leading/trailing spaces.
+
+The license key is validated during runtime. Reload your web browser after registering the license.
+
+.. Note:: When the license expires, ClusterControl defaults back to the Community Edition. For features comparison, please refer to `ClusterControl product page <http://www.severalnines.com/pricing>`_.
 
 Thresholds
 ``````````
