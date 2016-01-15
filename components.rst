@@ -28,21 +28,53 @@ CMON controller package is available at `Severalnines download site <http://www.
 * RPM package (Redhat-based systems): ``clustercontrol-controller-[version]-[build number]-[architecture].rpm``
 * DEB package (Debian-based systems): ``clustercontrol-controller-[version]-[build number]-[architecture].deb``
 
-To check the installed ClusterControl controller version, simply invoke -v option:
+
+A configuration file ``/etc/cmon.cnf`` is required to initially setup the CMON Controller. It is possible to have several configuration files each for multiple clusters as described in the next section.
+
+Command Line Arguments
+``````````````````````
+
+By default if you just run ``cmon`` (without any arguments), cmon defaults to run in the background. ClusterControl supports several command line options as shown below:
+
+``-h, --help``
+
+* Print the help.
+
+``-v, --version``
+
+* Prints out the version number and build info.
+
+``--logfile=[filepath]``
+
+The path of the log file to be used.
+
+``-d, --nodaemon``
+
+* Run in foreground. Ctrl + C to exit.
+
+``-r, --directory=[directory]``
+
+* Running directory.
+
+``-p, --rpc-port=[integer]``
+
+* Listen on RPC port (default is 9500)
+
+``-b, --bind-addr='ip1,ip2..'``
+
+* Bind Remote Procedure Call (RPC) to IP addresses (default is 127.0.0.1,::1). By default cmon binds to ‘127.0.0.1’ and ‘::1’. If another bind-address is needed, then it is possible to define the bind addresses in the file ``/etc/default/cmon``. The CMON init script translates those RPC\_* ones into command line options.
+
+* Example
 
 .. code-block:: bash
 
-	$ cmon -v
-	cmon, version 1.2.6.233
-	Enabled features: mongodb, libssh, mysql
-	Build git-hash: 18d7bfcce920f2bf779751193c05bff9172250c5
-
-A configuration file ``/etc/cmon.cnf`` is required to initially setup the CMON Controller. It is possible to have several configuration files each for multiple clusters as described in the next section.
+	RPC_PORT=9500
+	RPC_BIND_ADDRESSES="10.10.10.13,192.168.33.1"
 
 Configuration File
 ``````````````````
 
-Starting from version 1.2.4, a single CMON Controller process is able to monitor one or more clusters. Each of the cluster requires one exclusive configuration file residing in the ``/etc/cmon.d/`` directory. For instance, the default CMON configuration file is located at ``/etc/cmon.cnf``, and commonly used to manage the first cluster (cluster_id=1). For the second cluster, it is possible to have another configuration file saved as ``/etc/cmon.d/cmon_2.cnf`` with cluster_id=2.
+A single CMON Controller process is able to monitor one or more clusters. Each of the cluster requires one exclusive configuration file residing in the ``/etc/cmon.d/`` directory. For instance, the default CMON configuration file is located at ``/etc/cmon.cnf``, and commonly used to manage the first cluster (cluster_id=1). For the second cluster, it is possible to have another configuration file saved as ``/etc/cmon.d/cmon_2.cnf`` with cluster_id=2.
 
 An example of file hierarchy is as follows:
 

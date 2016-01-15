@@ -103,7 +103,10 @@ These are specific functions available for MySQL replication nodes:
 	- Rebuilds replication slave on this node from another master. It uses Percona Xtrabackup to stage the replication data.
 	
 .. caution:: 'Rebuilding Replication Slave' will wipe out the selected node's MySQL datadir.
-	
+
+* **Start Slave**
+	- This option is only available if the slave is stopped. It starts the slave thread.
+
 * **Stop Slave**
 	- Stops the slave thread.
 

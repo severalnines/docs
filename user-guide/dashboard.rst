@@ -170,41 +170,7 @@ Choose *MySQL Server* as the database type. Fill in all required information.
 Add existing MySQL Cluster
 ''''''''''''''''''''''''''
 
-Adding existing MySQL Cluster (ndb) is not supported from the ClusterControl UI. But it is possible to use our `bootstrap script <http://severalnines.com/docs/installation.html#bootstrap-script-deprecated>`_ to add MySQL Cluster into ClusterControl. In case if you are about to import multiple MySQL clusters, the `bootstrap script <http://severalnines.com/docs/installation.html#bootstrap-script-deprecated>`_ is capable to add only one MySQL Cluster (cluster_id=1), so you may use it to add the primary cluster. Once imported, you will have to manually add the subsequent MySQL cluster as cluster ID 2 or higher. To achieve this, run following steps on ClusterControl node:
-
-1. Copy CMON configuration file from cluster ID 1 as a template for cluster ID 2:
-
-.. code-block:: bash
-
-	mkdir /etc/cmon.d/
-	cp /etc/cmon.cnf /etc/cmon.d/cmon_2.cnf
-
-2. Update following lines inside ``/etc/cmon.d/cmon_2.cnf``:
-
-.. code-block:: bash
-
-	cluster_id=2
-	logfile=/var/log/cmon_2.log
-	mysql_server_addresses=[SQL nodes IP address or hostname in comma separated list]
-	datanode_addresses=[data nodes IP address or hostname in comma separated list]
-	mgmnode_addresses=[management nodes IP address or hostname in comma separated list]
-	ndb_connectstring=[NDB connection string of the cluster]
-
-.. Note:: Details on configuration options can be referred `here <components.html#configuration-options>`_.
-
-3. Setup passwordless SSH to the all nodes in secondary cluster using following command:
-
-.. code-block:: bash
-
-	ssh-copy-id <IP address>
-
-4. Restart CMON service to apply the changes:
-
-.. code-block:: bash
-
-	service cmon restart
-
-At this point, ClusterControl should start provisioning all nodes defined in the CMON configuration files (both ``/etc/cmon.cnf`` and ``/etc/cmon.d/cmon_2.cnf``). Monitor the output of CMON controller for cluster ID 2 at ``/var/log/cmon_2.log``. If everything is configured correctly, you should see it listed in the ClusterControl UI as the second cluster under `Database Cluster List`_.
+Adding existing MySQL Cluster (NDB) is not supported from the ClusterControl UI. However, it is possible to add it using manually as explained in details in `this blog post <http://severalnines.com/blog/clustercontrol-tips-tricks-manage-and-monitor-your-existing-mysql-ndb-cluster>`_.
 
 
 Add existing MongoDB/TokuMX replica set

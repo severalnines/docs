@@ -202,56 +202,6 @@ Basically, the installation script will attempt to automate the following tasks:
 
 After the installation completes, open your web browser to http://[ClusterControl_host]/clustercontrol and create the default admin user by specifying a valid email address and password on the welcome page.
 
-Bootstrap Script (deprecated)
-``````````````````````````````
-
-Bootstrap script is a legacy way to install ClusterControl on top of existing database cluster. Common use case when you want to install ClusterControl on top of existing MongoDB Sharded Cluster or MySQL Cluster. The reason behind this is only these database cluster types are not supported to be added through ClusterControl UI. You can also use bootstrap script to install ClusterControl standby server for high availability, as described `in this blog post <http://www.severalnines.com/blog/installing-clustercontrol-standby-server>`_.
-
-You will need to prepare a host for ClusterControl, download the ``cc-bootstrap`` package on that host and execute it. Follow the installation wizard and it will install ClusterControl on the host and add your existing database cluster to ClusterControl.
-
-.. Attention:: Even though it supports adding the other type of database cluster (particularly Galera, MySQL replication and MongoDB Replica Set), we do recommend that you install ClusterControl first and then use *Add Existing Server/Cluster* feature.
-
-Requirements
-''''''''''''
-
-Make sure the following is ready prior to the installation:
-
-* A new host for ClusterControl server is ready.
-* You already have a database cluster up and running.
-* Verify that sudo is working properly if you are using a non-root user.
-* ClusterControl node must able to connect to all of the database nodes.
-
-Installation
-''''''''''''
-
-The following steps should be performed on the ClusterControl host:
-
-.. code-block:: bash
-
-  $ wget http://www.severalnines.com/downloads/cmon/cc-bootstrap.tar.gz
-  $ tar zxvf cc-bootstrap.tar.gz
-  $ cd cc-bootstrap-*
-  $ ./s9s_bootstrap --install
-
-Answer all questions during the configuration stage.
-
-Once finished, you should see following success banner:
-
-.. code::
-
-  =================================================
-  ### CLUSTERCONTROL INSTALLATION COMPLETED. ###
-  Use following details to access ClusterControl:
-  URL      : https://192.168.1.80/clustercontrol
-  Username : myemail@domain.com
-  Password : admin
-  
-  ClusterControl API Token : d98316c4ab3340259b483defcf4655fda6215899
-  ClusterControl API URL   : https://192.168.1.80/cmonapi
-  =================================================
-
-Open a web browser and go to mentioned URL. Setup the super admin account by specifying a valid email address and password on the welcome page.
-
 Puppet module
 `````````````
 
