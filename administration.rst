@@ -37,11 +37,11 @@ Even if you have previously installed from our tarball or .deb packages, it is p
 .. code-block:: bash
 
 	yum clean all
-	yum install cmon-controller clustercontrol clustercontrol-cmonapi clustercontrol-controller
+	yum install cmon-controller clustercontrol clustercontrol-cmonapi clustercontrol-controller clustercontrol-nodejs
 
 .. Note:: cmon-controller is a transition package for clustercontrol-controller. Omit it from the command line if you previously didn't have cmon-controller package installed.
 
-3) Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.2.11, apply all SQL modification files between those versions in sequential order:
+3) Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.2.12, apply all SQL modification files between those versions in sequential order:
 
 .. code-block:: bash
 
@@ -49,6 +49,7 @@ Even if you have previously installed from our tarball or .deb packages, it is p
 	mysql -f- h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.8-1.2.9.sql
 	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.9-1.2.10.sql
 	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.10-1.2.11.sql
+	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.11-1.2.12.sql
 	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_data.sql
 
 .. Attention:: Importing ``cmon_db.sql`` and ``cmon_data.sql`` is required on each upgrade. Importing ``cmon_db_mods`` is relative to the previous version.
@@ -85,11 +86,11 @@ Even if you have previously installed from our tarball or .deb packages, it is p
 .. code-block:: bash
 
 	sudo apt-get update
-	sudo apt-get install cmon-controller clustercontrol clustercontrol-cmonapi clustercontrol-controller
+	sudo apt-get install cmon-controller clustercontrol clustercontrol-cmonapi clustercontrol-controller clustercontrol-nodejs
 
 .. Note:: cmon-controller is a transition package for clustercontrol-controller. You can omit it from the command line if you previously didn't have cmon-controller package installed.
 
-3) Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.2.11, apply all SQL modification files between those versions in sequential order:
+3) Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.2.12, apply all SQL modification files between those versions in sequential order:
 
 .. code-block:: bash
 
@@ -97,6 +98,7 @@ Even if you have previously installed from our tarball or .deb packages, it is p
 	mysql -f- h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.8-1.2.9.sql
 	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.9-1.2.10.sql
 	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.10-1.2.11.sql
+	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.11-1.2.12.sql
 	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_data.sql
 
 .. Attention:: Importing ``cmon_db.sql`` and ``cmon_data.sql`` is required on each upgrade. Importing ``cmon_db_mods`` is relative to the previous version.
@@ -195,19 +197,19 @@ Redhat/CentOS
 
 .. code-block:: bash
 
-	wget http://www.severalnines.com/downloads/cmon/clustercontrol-controller-1.2.11-953-x86_64.rpm
-	wget http://www.severalnines.com/downloads/cmon/clustercontrol-1.2.11-788-x86_64.rpm
-	wget http://www.severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.2.11-126-x86_64.rpm
+	wget http://www.severalnines.com/downloads/cmon/clustercontrol-controller-1.2.12-1096-x86_64.rpm
+	wget http://www.severalnines.com/downloads/cmon/clustercontrol-1.2.12-1007-x86_64.rpm
+	wget http://www.severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.2.12-156-x86_64.rpm
+	wget http://severalnines.com/downloads/cmon/clustercontrol-nodejs-1.2.12-51-x86_64.rpm
 
-2) Install via yum:
+2) Install via yum so dependencies are met:
 
 .. code-block:: bash
 
-	yum localinstall clustercontrol-controller-1.2.11-953-x86_64.rpm clustercontrol-1.2.11-788-x86_64.rpm clustercontrol-cmonapi-1.2.11-126-x86_64.rpm
+	yum localinstall clustercontrol-*
 
-.. Note:: cmon-controller is a transition package for clustercontrol-controller. Omit it from the command line if you previously didn't have cmon-controller package installed.
 
-3) Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.2.11, apply all SQL modification files between those versions in sequential order:
+3) Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.2.12, apply all SQL modification files between those versions in sequential order:
 
 .. code-block:: bash
 
@@ -215,6 +217,7 @@ Redhat/CentOS
 	mysql -f- h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.8-1.2.9.sql
 	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.9-1.2.10.sql
 	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.10-1.2.11.sql
+	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.11-1.2.12.sql
 	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_data.sql
 
 .. Attention:: Importing ``cmon_db.sql`` and ``cmon_data.sql`` is required on each upgrade. Importing ``cmon_db_mods`` is relative to the previous version.
@@ -248,27 +251,26 @@ Even if you have previously installed from our tarball or .deb packages, it is p
 
 .. code-block:: bash
 
-	wget http://www.severalnines.com/downloads/cmon/clustercontrol-controller-1.2.11-953-x86_64.deb
-	wget http://www.severalnines.com/downloads/cmon/clustercontrol_1.2.11-788_x86_64.deb
-	wget http://www.severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.2.11-126_x86_64.deb
+	wget http://www.severalnines.com/downloads/cmon/clustercontrol-controller-1.2.12-1096-x86_64.deb
+	wget http://www.severalnines.com/downloads/cmon/clustercontrol_1.2.12-1007_x86_64.deb
+	wget http://www.severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.2.12-156_x86_64.deb
+	wget http://www.severalnines.com/downloads/cmon/clustercontrol-nodejs_1.2.12-51_x86_64.deb
 
 2) Install via dpkg:
 
 .. code-block:: bash
 
-	dpkg -i clustercontrol-controller-1.2.11-953-x86_64.deb clustercontrol_1.2.11-788_x86_64.deb clustercontrol-cmonapi_1.2.11-126_x86_64.deb
+	dpkg -i clustercontrol-controller-1.2.12-1096-x86_64.deb clustercontrol_1.2.12-1007_x86_64.deb clustercontrol-cmonapi_1.2.12-156_x86_64.deb clustercontrol-nodejs_1.2.12-51_x86_64.deb
 
-.. Note:: cmon-controller is a transition package for clustercontrol-controller. You can omit it from the command line if you previously didn't have cmon-controller package installed.
-
-3) Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.6 to version 1.2.10, apply all SQL modification files between those versions in sequential order:
+3) Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.2.12, apply all SQL modification files between those versions in sequential order:
 
 .. code-block:: bash
 
 	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db.sql
-	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.6-1.2.7.sql
-	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.7-1.2.8.sql
 	mysql -f- h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.8-1.2.9.sql
 	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.9-1.2.10.sql
+	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.10-1.2.11.sql
+	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.11-1.2.12.sql
 	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_data.sql
 
 .. Attention:: Importing ``cmon_db.sql`` and ``cmon_data.sql`` is required on each upgrade. Importing ``cmon_db_mods`` is relative to the previous version.
@@ -498,39 +500,33 @@ Examine the output of the CMON log file to verify the IP migration status. The C
 Standby ClusterControl Server for High Availability
 ---------------------------------------------------
 
-It is possible to have several ClusterControl servers to monitor a single cluster. This is useful if you have a multi-datacenter cluster and you may need to have ClusterControl on the remote site to monitor and manage the alive cluster if connection between them goes down. However, you will need to disable auto recovery in configuration for the remote ClusterControl to avoid race conditions when recovering failed node or cluster.
+It is possible to have several ClusterControl servers to monitor a single cluster. This is useful if you have a multi-datacenter cluster and you may need to have ClusterControl on the remote site to monitor and manage the alive nodes if connection between them goes down. However, ClusterControl servers must be configured to be working in active/passive mode to avoid race conditions when digesting queries and recovering failed node or cluster.
+
+In active mode, the ClusterControl node act as a primary controller, where it can perform automatic recovery and parsing MySQL slow log query for query  monitoring. The secondary ClusterControl node however must have following things configured:
+* Cluster/Node auto recovery must be turned off.
+* Query sampling must be disabled.
 
 Installing Standby Server
 `````````````````````````
 
-We have an automation script to install the standby ClusterControl host, built on top of our bootstrap script available at `Severalnines download site <http://www.severalnines.com/blog/installing-clustercontrol-standby-server>`_. On the standby host, do:
+Steps in this section must be performed on the secondary ClusterControl server.
 
-.. code-block:: bash
+1) Install ClusterControl as explained in the Getting Started page.
 
-	wget http://severalnines.com/downloads/cmon/cc-bootstrap.tar.gz
-	tar zxvf cc-bootstrap.tar.gz
-	cd cc-bootstrap-*
-	./s9s_bootstrap --install-standby
+2) Add the same cluster via *ClusterControl > Add Existing Server/Cluster*. Ensure you choose "Enable Node AutoRecovery: No" and "Enable Cluster AutoRecovery: No" in the dialog box. Click "Add Cluster" to start the job.
 
-Follow the installation wizard, and it will guide you through the installation process. At the end of the installation, you should be able to access the standby ClusterControl UI at ``http://<standby_ClusterControl_IP\>/clustercontrol``.
+3) Once the cluster is added, disable query sampling by go to *ClusterControl > Settings > Query Monitoring > Sampling Time = -1*.
 
-At this point, you are having two ClusterControl servers monitoring the same cluster simultaneously. You can connect to any of these servers to perform usual tasks in ClusterControl UI. However both servers are totally independent to each other whereas you will have two distinct ClusterControl UI settings.
-
-The primary ClusterControl server shall perform automatic recovery in case of node or cluster failure.
+Nothing should be performed on the primary side. The primary ClusterControl server shall perform automatic recovery in case of node or cluster failure.
 
 Failover Method
 ```````````````
 
-If you want to enable automatic recovery on the standby server, comment or remove following line inside ``/etc/cmon.cnf`` or ``/etc/cmon.d/cmon_<cluster-id>.cnf``:
+If you want to make the standby server run in active mode, just do as follow (assume the primary ClusterControl is unreachable at the moment):
+* Cluster/Node auto recovery must be turned on. Click on both red power icons in the summary bar until they appear in green colour.
+* Enable query sampling. Go to *ClusterControl > Settings > Query Monitor* and change "Sampling Time" to other than "-1".
 
-.. code-block:: bash
-
-	#enable_autorecovery=0
-	
-Do not forget to restart cmon service after making changes on ``/etc/cmon.cnf``. You should notice that the standby server has taken over the primary role.
-
-We have covered this in details in `this blog post <http://www.severalnines.com/blog/installing-clustercontrol-standby-server>`_.
-
+That's it. You should notice that the standby server has taken over the primary role.
 
 Changing 'cmon' or 'root' Password
 ----------------------------------
@@ -579,8 +575,8 @@ If ClusterControl is installed through Severalnines repository, use following co
 
 .. code-block:: bash
 
-	yum remove -y clustercontrol clustercontrol-cmonapi clustercontrol-controller # Redhat/CentOS
-	sudo apt-get remove -y clustercontrol clustercontrol-cmonapi clustercontrol-controller # Debian/Ubuntu
+	yum remove -y clustercontrol clustercontrol-cmonapi clustercontrol-controller clustercontrol-nodejs # Redhat/CentOS
+	sudo apt-get remove -y clustercontrol clustercontrol-cmonapi clustercontrol-controller clustercontrol-nodejs # Debian/Ubuntu
 
 Else, to uninstall ClusterControl Controller manually so you can to re-use the host for other purposes, kill the CMON process and remove all ClusterControl related files and databases:
 

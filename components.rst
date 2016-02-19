@@ -3,20 +3,23 @@
 Components
 ==========
 
-ClusterControl consists of three components:
+Starting from v1.2.12, ClusterControl consists of four components:
 
-+----------------------------------+---------------------------+-----------------------------------------------------------------------------------+
-| Component                        | Package naming            | Role                                                                              |
-+==================================+===========================+===================================================================================+
-| ClusterControl controller (cmon) | clustercontrol-controller | The brain of ClusterControl. A backend service performing automation, management, |
-|                                  |                           | monitoring and scheduling tasks. All the collected data will be stored directly   |
-|                                  |                           | inside CMON database                                                              |
-+----------------------------------+---------------------------+-----------------------------------------------------------------------------------+
-| ClusterControl REST API          | clustercontrol-cmonapi    | Interprets request and response data between ClusterControl UI and CMON database  |
-+----------------------------------+---------------------------+-----------------------------------------------------------------------------------+
-| ClusterControl UI                | clustercontrol            | A modern web user interface to visualize and manage the cluster. It interacts with| 
-|                                  |                           | CMON controller via remote procedure call (RPC) or REST API interface             |
-+----------------------------------+---------------------------+-----------------------------------------------------------------------------------+
++----------------------------------+---------------------------+------------------------------------------------------------------------------------+
+| Component                        | Package naming            | Role                                                                               |
++==================================+===========================+====================================================================================+
+| ClusterControl controller (cmon) | clustercontrol-controller | The brain of ClusterControl. A backend service performing automation, management,  |
+|                                  |                           | monitoring and scheduling tasks. All the collected data will be stored directly    |
+|                                  |                           | inside CMON database                                                               |
++----------------------------------+---------------------------+------------------------------------------------------------------------------------+
+| ClusterControl REST API [#f1]_   | clustercontrol-cmonapi    | Interprets request and response data between ClusterControl UI and CMON database   |
++----------------------------------+---------------------------+------------------------------------------------------------------------------------+
+| ClusterControl UI                | clustercontrol            | A modern web user interface to visualize and manage the cluster. It interacts with | 
+|                                  |                           | CMON controller via remote procedure call (RPC) or REST API interface              |
++----------------------------------+---------------------------+------------------------------------------------------------------------------------+
+| ClusterControl NodeJS            | clustercontrol-nodejs     | This optional package is introduced in ClusterControl version 1.2.12 to provide an |
+|                                  |                           | interface for notification services and integration with 3rd party tools           |
++----------------------------------+---------------------------+------------------------------------------------------------------------------------+
 
 ClusterControl Controller (CMON)
 --------------------------------
@@ -71,6 +74,7 @@ The path of the log file to be used.
 	RPC_PORT=9500
 	RPC_BIND_ADDRESSES="10.10.10.13,192.168.33.1"
 
+	
 Configuration File
 ``````````````````
 
@@ -504,3 +508,20 @@ ClusterControl UI page can be accessed through following URL:
 **http|https://[ClusterControl IP address or hostname]/clustercontrol**
 
 Please refer to `User Guide <user-guide/index.html>`_ for more details on the functionality available in the ClusterControl UI.
+
+ClusterControl NodeJS
+---------------------
+
+This optional package is introduced in ClusterControl version 1.2.12 to provide an interface for notification services and integration with 3rd party tools like PagerDuty or external mail system. It allows NodeJS to be triggered as part of pseudo-javascript from Developer Studio when the values for the Custom Advisors meet the actual system values.
+
+At the time of this writing, Severalnines contributes two NodeJS plugins available at `NPM page <https://www.npmjs.com/search?q=s9s-plugin>`_.
+
+This package works differently if compared to ClusterControl plugin interface, whereby ClusterControl executes the plugin script if only alarm is raised/closed. Alarm's rules is hardcorded in ClusterControl which is not as dynamic as Advisors. Advisors extends the ClusterControl capability in health checks and notifications, built on top of ClusterControl Domain Specific Language (DSL). Each Advisors will have to be compiled and scheduled directly from ClusterControl's Developer Studio. The list of scheduled Custom Advisors is available at *ClusterControl > Performance > Advisors*.
+
+We have future plan to push alarms to NodeJS interface, so NodeJS can push them into a web socket, and all the subscribers (clients) will get those instantly.
+
+.. rubric:: Footnotes
+
+.. [#f1]
+
+    We are gradually in the process of migrating all functionalities in REST API to RPC interface. Kindly expect the REST API to be obselete in the near future.

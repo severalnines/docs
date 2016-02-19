@@ -21,7 +21,7 @@ Galera Cluster
 	- Deploys a replication slave attached to this cluster. Choose one of the Galera node to be a master. See `Add Replication Slave`_.
 
 * **Clone Cluster** 
-	- See `Clone`_ section.
+	- See `Clone Cluster`_ section.
 
 * **Find Most Advanced Node**
 	- Finds which is the most advanced node in the cluster. This is very useful to determine which node to be bootstrapped if the cluster doesn't have any primary component or when cluster automatic recovery is disabled.
@@ -88,12 +88,11 @@ Adds a new or existing database node into the cluster. You can scale out your cl
 Create and add a new DB node
 ............................
 
-If you specify a new hostname or IP address, make sure that the node is accessible from ClusterControl node and following conditions are true:
+If you specify a new hostname or IP address, make sure that the node is accessible from ClusterControl node via passwordless SSH.
 
-* ClusterControl host is able to connect to the target host via passwordless SSH.
-* The target host must use the same operating system distribution with the ClusterControl host.
+This is only available for Galera Cluster, MySQL Replication (adding slave) and MySQL Cluster.
 
-Starting from version 1.2.6, this is only available for Galera Cluster, MySQL Replication (adding slave) and MySQL Cluster.
+.. Note:: Add node is not supported for MySQL 5.7 since Percona Xtrabackup does not support it yet.
 
 * **Hostname**
 	- IP address or :term:`FQDN` of the target node. If you already have the host added under *ClusterControl > Manage > Hosts*, you can just choose the host from the dropdown menu.
@@ -105,10 +104,21 @@ Starting from version 1.2.6, this is only available for Galera Cluster, MySQL Re
 	- If you already have the database server installed on the target host but not yet configured, you can tell ClusterControl to skip the database installation part by choosing 'No'.
 
 * **Disable Firewall**
-	- Check the box to disable firewall (recommended).
+	- Yes - Firewall will be disabled (recommended).
+	- No - ClusterControl will not disabling any enabled firewall rules.
 
 * **Disable AppArmor/SELinux**
 	- Check the box to let ClusterControl disable AppArmor (Ubuntu) or SELinux (Redhat/CentOS) if enabled.
+
+* **Include in Loadbalancer set (if exist)**
+	- The node will be added into the load balancing set if you have HAProxy or MaxScale deployed with ClusterControl.
+	
+* **Do you want to delay the slave?**
+	- Yes - Sets up a delayed slave.
+	- No - Sets up a standard slave.
+	
+* **Delay slave with**
+	- This option will appear only if you select Yes. Specify the value in seconds.
 
 Add an existing DB node
 .......................
@@ -144,24 +154,60 @@ For the slave, you would need a separate host or VM, with or without MySQL insta
 
 	monitored_mysql_root_password=<the mysql root password of all nodes including slave>
 
-* The slave configuration template file must be configured beforehand, and must have at least the following variables defined in the MySQL configuration template:
-
-.. code-block:: bash
-
-	server_id
-	basedir
-	datadir
-
-To prepare the MySQL configuration file for the slave, go to *ClusterControl > Manage > Configurations > Template Configuration files > edit my.cnf.slave*. Later, specify this template file when adding a slave.
 
 We have covered an example deployment in `this blog post <http://www.severalnines.com/blog/deploy-asynchronous-slave-galera-mysql-easy-way>`_.
 
-Clone
-''''''
+Add New Replication Slave
+.........................
+
+The slave will be setup from a streamed XtraBackup from the master to the slave. 
+
+* **Master Server**
+	- Select a master server. Only Galera nodes that generate binary log are listed here.
+
+* **Slave Server**
+	- Specify the IP address or FQDN of the slave node. This node must be accesible from ClusterControl node via passwordless SSH beforehand.
+
+* **Netcat port**
+	- Choose a port to stream Xtrabackup. Default port is 9999. This port must be reachable by the selected Master Server.
+
+* **Do you want to delay the slave?**
+	- Yes - Sets up a delayed slave.
+	- No - Sets up a standard slave.
+	
+* **Delay slave with**
+	- This option will appear only if you select Yes. Specify the value in seconds.
+
+* **Do you want to install the Slave server**
+	- Yes - Install MySQL Server packages. It will based on the repository and vendor for Galera node. For example, if you are running on Percona XtraDB Cluster, ClusterControl will setup a standalone Percona XtraDB Cluster node as the slave.
+
+* **Disable firewall**
+	- Check the box to disable firewall (recommended).
+
+* **Disable SELinux/AppArmor**
+	- Check the box to let ClusterControl disable AppArmor (Ubuntu) or SELinux (Redhat/CentOS) if enabled (recommended).
+
+.. Note:: Existing MySQL server packages will be uninstalled.
+
+
+Add Existing Replication Slave
+..............................
+
+Add an existing replication slave into ClusterControl. Use this function if you have added a replication slave manually to your cluster and want it to be detected/managed by ClusterControl. ClusterControl will then detect the new DB node as being part of the cluster and starts to manage and monitor it as with the rest of the cluster nodes. Useful if a node has been created outside of ClusterControl e.g, through Puppet, Chef or Ansible.
+
+* **Hostname**
+	- Specify the slave IP address or FQDN.
+
+* **Port**
+	- MySQL port. Default is 3306. This port must be reachable by ClusterControl.
+
+
+Clone Cluster
+''''''''''''''
 
 Exclusive for Galera Clusters. This feature allows you to create, in one click, an exact copy of your Galera Cluster onto a new set of hosts. The most common use case for cloning a deployment is for setting up a staging deployment for further development and test. Cloning is a ‘hot’ procedure and does not affect the operations of the source cluster. 
 
-A clone will be created of this cluster. The follow procedure applies:
+A clone will be created of this cluster. The following procedure applies:
 
 * Create a new Cluster consisting of one node
 * Stage the new Cluster with SST (it is now cloned)

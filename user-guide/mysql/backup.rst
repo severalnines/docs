@@ -12,15 +12,35 @@ Creates an immediate backup of the database. You can choose to create a full bac
 	- The target database host.
 
 * **Backup Method**
-	- Supported backup method:
-		- mysqldump - Separated compressed schema and data dump. See `mysqldump`_ section.
-		- xtrabackup (full) - A full compressed backup. See `Percona Xtrabackup`_ section.
-		- NDB backup (for MySQL Cluster) - See `NDB backup (MySQL Cluster)`_ section.
+	- mysqldump - Separated compressed schema and data dump. See `mysqldump`_ section.
+	- xtrabackup (full) - A full compressed backup. See `Percona Xtrabackup`_ section.
+	- NDB backup (for MySQL Cluster) - See `NDB backup (MySQL Cluster)`_ section.
 
+* **Desync node during backup**
+	- Exclusive for Galera. De-syncing a node with the highest local index before performing backup.
+	
+* **Backup Locks**
+	- This option is only available if xtrabackup is selected. 
+	- Yes - Uses "LOCK TABLES FOR BACKUP" where it supported when making a backup.
+	- No - Sets --no-backup-locks which use "FLUSH NO_WRITE_TO_BINLOG TABLES" and "FLUSH TABLES WITH READ LOCK" when making backup.
+
+* **Use Compression**
+	- This option is only available if xtrabackup is selected.
+	- Yes - Tells xtrabackup to compress all output data, including the transaction log file and meta data files.
+	- No - Do not use compression for the backup.
+
+* **Xtrabackup Parallel Copy Threads**
+	- This option is only available if xtrabackup is selected.
+	- This option specifies the number of threads to use to copy multiple data files concurrently when creating a backup. The default value is 1 (i.e., no concurrent transfer).
+
+* **Use PIGZ for parallel gzip**
+	- This option is only available if xtrabackup is selected.
+	- Yes - Use PIGZ instead of standard gzip. This is helpful if you want to backup very large data set.
+	- No - Use the standard gzip.	
+	
 * **Backup Location**
-	- Supported backup locations:
-		- Store on Node - Store the backup inside corresponding database node.
-		- Store on Controller - Store the backup inside ClusterControl node. This requires :term:`netcat` on source and destination host. By default, ClusterControl uses port 9999 to stream the backup created on the database node to ClusterControl node.
+	- Store on Node - Store the backup inside corresponding database node.
+	- Store on Controller - Store the backup inside ClusterControl node. This requires :term:`netcat` on source and destination host. By default, ClusterControl uses port 9999 to stream the backup created on the database node to ClusterControl node.
 
 * **Backup Directory**
 	- You can opt to use another backup directory as you wish. If you leave this field blank, the system will use the default backup directory specified in the *ClusterControl > Settings > General Settings > Backup*.
@@ -29,9 +49,9 @@ Creates an immediate backup of the database. You can choose to create a full bac
 	- Specify the port number that will be used by ClusterControl to stream backup created on the database node. Only available if you choose *Store on Controller* in *Backup Location*.
 	
 * **Databases**
-  - List of databases retrieved from the monitored MySQL servers. Default is 'All Databases'.
-
-.. Note:: You can check the backup status under *ClustreControl > Backup > Reports*.
+	- List of databases retrieved from the monitored MySQL servers. Default is 'All Databases'.
+  
+.. Note:: You can check the backup status under *ClusterControl > Backup > Reports*.
 
 Backup Schedule
 ```````````````
@@ -47,14 +67,32 @@ Creates backup schedules of the database. You can choose to create a full or inc
 	- Enter a backup directory or use default path provided by ClusterControl under *ClusterControl > Settings > Backup*.
 
 * **Backup Method**
-	- Available backup tools:
-		- mysqldump - Separated compressed schema and data dump. See `mysqldump`_ section.
-		- Full backup with xtrabackup - A full compressed backup. See `Percona Xtrabackup`_ section.
-		- Incremental backup with xtrabackup - An incremental compressed backup. See `Percona Xtrabackup`_ section.
-		- NDB backup (for MySQL Cluster) - See `NDB backup (MySQL Cluster)`_ section.
+	- mysqldump - Separated compressed schema and data dump. See `mysqldump`_ section.
+	- xtrabackup (full) - A full compressed backup. See `Percona Xtrabackup`_ section.
+	- xtrabackup (incr) - An incremental compressed backup. See `Percona Xtrabackup`_ section.
+	- NDB backup (for MySQL Cluster) - See `NDB backup (MySQL Cluster)`_ section.
 
+* **Backup Locks**
+	- This option is only available if xtrabackup is selected. 
+	- Yes - Uses "LOCK TABLES FOR BACKUP" where it supported when making a backup.
+	- No - Sets --no-backup-locks which use "FLUSH NO_WRITE_TO_BINLOG TABLES" and "FLUSH TABLES WITH READ LOCK" when making backup.
+
+* **Use Compression**
+	- This option is only available if xtrabackup is selected.
+	- Yes - Tells xtrabackup to compress all output data, including the transaction log file and meta data files.
+	- No - Do not use compression for the backup.
+
+* **Xtrabackup Parallel Copy Threads**
+	- This option is only available if xtrabackup is selected.
+	- This option specifies the number of threads to use to copy multiple data files concurrently when creating a backup. The default value is 1 (i.e., no concurrent transfer).
+
+* **Use PIGZ for parallel gzip**
+	- This option is only available if xtrabackup is selected.
+	- Yes - Use PIGZ instead of standard gzip. This is helpful if you want to backup very large data set.
+	- No - Use the standard gzip.
+	
 * **Backup Host**
-	- Host to run the backup command.
+	- Host to run the backup command. Choose "Auto Select" to allow ClusterControl to automatically select which node to take the backup on.
 
 * **Backup Location**
 	- Supported backup locations:
@@ -65,7 +103,11 @@ Creates backup schedules of the database. You can choose to create a full or inc
 	- Specify the port number that will be used by ClusterControl to stream backup created on the database node. Only available if you choose *Store on Controller* in *Backup Location*.
 
 * **Databases**
-  - List of databases retrieved from the monitored MySQL servers. Default is 'All Databases'.
+	- List of databases retrieved from the monitored MySQL servers. Default is 'All Databases'.
+  
+* **Failover backup if node is down**
+	- Yes - Backup will be run on any available node if the target database node is down. If failover is enabled and the selected node is not online, the backup job elects an online node to create the backup. This ensures that a backup will be created even if the selected node is not available. If the scheduled backup is an incremental backup and a full backup does not exist on the new elected node, then a full backup will be created.
+	- No - Backup will not run if the target database node is down.
   
 Current Backup Schedule
 .......................

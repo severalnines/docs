@@ -5,15 +5,195 @@ Change Logs
 
 These change logs list details about updates in each version of ClusterControl.
 
+Changes in v1.2.12
+------------------
+
+*Jan 25th, 2016*
+
+* Build number:
+	- clustercontrol-1.2.11-1007
+	- clustercontrol-cmonapi-1.2.12-156
+	- clustercontrol-controller-1.2.12-1096
+	- clustercontrol-nodejs-1.2.12-51
+
+* Operational Reports (BETA). Generate, schedule and email out operational reports. The current default report shows a cluster's health and performance at the time it was generated compared 1 day ago.
+	- The report provides information on Node availability, Backup summary, Top queries, Host and Node stats. We will add more options and report types in future releases.
+
+* Custom Advisor dialog. Create threshold based advisors with host or MySQL stats without needing to write your own JS script.
+
+* Notification Services (new clustercontrol-nodejs package). Currently only email and pagerduty notifications are used by custom advisors. More to come. 
+
+* Local Mirrored Repository. Create a local mirror of a database vendor's software repository. This allows you to "freeze" the current versions of the software packages used to provision a database cluster for a specific vendor and you can later use that mirrored repository to provision the same set of versions when adding more nodes or deploying other clusters.
+
+* Export graphs as CSV, XLS files
+
+* Search the content in the system logs
+
+* MySQL based clusters
+	- Galera
+		- MariaDB 10.1 support.
+		- Enable binary logging for a node. This node can then be used as the master for a replication slave or use the binary log for point in time recovery.
+		- Delayed replication option when adding slave to the Galera Cluster. Delay the replication with N seconds.
+		- Enable/Disable SSL encryption of Galera replication links.
+
+	- MySQL Replication Master
+		- Oracle MySQL 5.7 as vendor. Limitation: Percona Xtrabackup is not supported for MySQL 5.7 yet.
+		- Semi-sync replication option
+		- Find the most advanced MySQL slave server to use for Master promotion
+
+	- MySQL Replication Slave
+		- Delayed replication option (MySQL 5.6). Delay the replication with N seconds.
+		- New table lists delayed replication slaves in the cluster
+
+	- New Backup options
+		- Auto Select backup host. Allow ClusterControl to automatically select which node to take the backup on.
+		- Enable backup failover node. If the selected backup node is down a failover node will be elected. 
+		- Galera: De-syncing a node with the highest local index and then used as the backup failover node.
+		- MySQL Replication: Random slave node used as the backup failover node.
+		- "No backup locks" for xtrabackup/innobackupex. Use FLUSH NO_WRITE_TO_BINLOG TABLES and FLUSH TABLES WITH READ LOCK instead of LOCK TABLES FOR BACKUP.
+
+	- Configuration Management
+		- Manage, Garbd and MaxScale configurations. Limitation: Maxscale does not support 'reload' (https://mariadb.atlassian.net/browse/MXS-99)  meaning the operator must restart (e.g from the UI) the maxscale daemon.
+
+* MongoDB
+	- Support for MongoDB 3.2
+
+* Postgres
+	- Support for Postgres 9.5
+
 Changes in v1.2.11
 ------------------
+
+*Dec 11th, 2015*
+
+* Build number:
+	- clustercontrol-1.2.11-899
+	- clustercontrol-cmonapi-1.2.11-141
+	- clustercontrol-controller-1.2.11-1052
+
+* Controller:
+	- Backup: supports group [mysqldump] in my.cnf file 
+	- Developer Studio:  Fixed bugs in import/export of advisors
+	- Scalability fix: Use poll instead of select
+
+*Dec 4th, 2015*
+
+* Build number:
+	- clustercontrol-1.2.11-899
+	- clustercontrol-cmonapi-1.2.11-141
+	- clustercontrol-controller-1.2.11-1039
+
+* UI
+	- Finer granularity on Range Selection without using date selector (15 mins, 30 mins, 45 mins)
+	- Removed obsolete data columns (Connections and Queries) from cluster bar
+	- Role and Manage Organizations fixes
+
+* Controller:
+	- Fixed a bug when using internal repos
+	- A config file parser fix for include files (parser tried to treat a directory as a file)
+	- NDB nodes statues was reported as "9999" (mysql-unknown) when auto-recovery is disabled
+	- Mariadb repo creation bugfix 
+	- Fixed a crashing bug when having many clusters on one controller. 
+
+*Nov 15th, 2015*
+
+* Build number:
+	- clustercontrol-1.2.11-883
+	- clustercontrol-cmonapi-1.2.11-138
+	- clustercontrol-controller-1.2.11-1023
+
+* UI
+	- Fixes to User/Organization management 
+
+* Controller
+	- Xtrabackup: corrected --no-timestamp option (was -no-timestamp)
+	- Implemented max-request-size handling for the REST API calls to limit transfers between the controller and REST consumers (such as the UI)
+	- MySQL Cluster
+		- Stop Node job could fail unnecessarily.  / Start Node job stuck in RUNNING state for too long.
+	- Keepalived
+		- Corrected vrrp_script chk_haproxy (was rrp_script chk_haproxy)
+
+*Nov 6th 2015*
+
+* Build number:
+	- clustercontrol-1.2.11-854
+	- clustercontrol-cmonapi-1.2.11-135
+	- clustercontrol-controller-1.2.11-1007
+
+* UI
+	- Default "Admin" Role is missing ACLs settings for Create DB Node and Dev Studio
+	- When viewing Global Jobs, the installation Progress window cannot be resized vertically.
+	- DB Variables page does not load properly
+	- Find Most Advanced Node job sent with the wrong cluster id (0) causing it to fail.
+
+* Controller:
+	- Postgres: postgres|postmaster executable names are both supported meaning that the postmaster process is now properly handled.
+	- Javascript: s9s/host/disk_space_usage.js could not handle multiple partitions
+	- Javascript: s9s/mysql/schema/schema_check_*.js  - prevent it to run if there are > 1024 tables (configurable) to prevent I_S caused stalls.
+	- Reading disk partition information failed as non root user 
+
+*Nov 2nd, 2015*
+
+* Build number:
+	- clustercontrol-1.2.11-842
+	- clustercontrol-cmonapi-1.2.11-135
+	- clustercontrol-controller-1.2.11-998
+
+* Bugs fixed
+	- UI
+		- Change the favicon for ClusterControl to the one that is used on our site www.severalnines.com
+		- MongoDB add node to replica set looks wrong
+		- Global Job Messages: Local cluster jobs are shown in the popup dialog
+		- Fix in Manage -> Schema Users. Drop user even if user is empty (‘’@‘localhost’)
+		- Add/Register Existing Galera Node: The "Add Node" button does not react/work if there is no configuration files in the dropdown for the "Add New DB Node" form
+		- MongoDB add node to replica set dialog - text was cut
+		- Add/Register Existing Galera Node: The "Add Node" button does not react/work if there is no configuration files in the dropdown for the "Add New DB Node" form
+		- [PostgreSQL] Empty "DB Performance" graphs
+		- Installation progress window text disappears while scrolling back
+	- Controller:
+		- Galera: Register_node job: registers node with wrong type
+		- Create DB Cluster: Checking OS is the same on all servers
+		- Create DB Cluster/Node, Add Node: Install cronie on Redhat/Centos
+		- Scheduled backups that are stored both on controller and on node (full and incremantals) fail to restore. 
+		- Increase size of ‘properties’ column in server_node table to contain 16384 characters. The following is needed on the cmon db: ALTER TABLE server_node MODIFY properties VARCHAR(16384) DEFAULT '';
+		- Character set on connection + cmon.tx_deadlock_log, change to use utf8mb4 to properly encode characters in Performance -> Transaction Log preventing data from being shown. Do mysql -ucmon -p -h127.0.0.1 cmon < /usr/share/cmon/cmon_db.sql to recreate this table.
+
+		- CmonHostManager::pull(..): lets properly handle if JSon parse failes...
+		- MongoDB
+			- Check if there is a new member in the replica set and then reload the config
+		- MySQL
+			- Bugfix for replication mysqldump backuping issues (appeared recently): lets exclude the temporary (name starts with #) DBs from backup
+		- Postgres
+			- Add existing replication slave failed.
+	
+*Oct 23rd, 2015*
+
+* Build number:
+	- clustercontrol-1.2.11-826
+	- clustercontrol-cmonapi-1.2.11-131
+	- clustercontrol-controller-1.2.11-985
+
+* Controller:
+	- Backup fix to support xtrabackup 2.3
+    - Start-up bugs to initialise internal host structures
+    - netcat port defaults to 9999  (and impossible to change)
+    - Cluster failure with "Unknown database some_schema" message
+    - Remove Node: wsrep_cluster_address is not updated
+    - Corrected printout in backup
+    - Corrected sampling of wsrep_flow_cntr_sent/recv
+* UI:
+	- In Cluster jobs list, Delete and Restart buttons do not work
+	- Add Replication Slave UI Dialog not showing properly
+	- Editing a previously created backup schedule alters the hostname, and backup job fails
+	- Number counter on 'Alarms' and 'Logs' tabs doesn't make sense
+	- User Management - refresh/reload button and corrected text for CREATE USER
 
 *Oct 16th, 2015*
 
 * Build number:
-- clustercontrol-1.2.11-808
-- clustercontrol-cmonapi-1.2.11-128
-- clustercontrol-controller-1.2.11-974
+	- clustercontrol-1.2.11-808
+	- clustercontrol-cmonapi-1.2.11-128
+	- clustercontrol-controller-1.2.11-974
 
 * This is a our best release yet for Postgres with a number of improvements.
 	- Create a new Postgres Node/cluster from the "Create Database Node" dialog or add an new node with a few clicks 

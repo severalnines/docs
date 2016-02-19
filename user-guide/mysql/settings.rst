@@ -1,7 +1,7 @@
 Settings
 --------
 
-Provides global settings for ClusterControl.
+Provides global settings for the cluster.
 
 General Settings
 ````````````````
@@ -78,7 +78,7 @@ Configures email notifications for alarms generated for your database cluster.
 	- Recipient email address.
 
 * **Send digests at**
-	- Send a digested (summary) email at this time every dayf or the selected recipient.
+	- Send a digested (summary) email at this time every day for the selected recipient.
 
 * **Timezone**
 	- Timezone for the selected recipient.
@@ -117,7 +117,7 @@ Configures email notifications for alarms generated for your database cluster.
 Version
 ........
 
-View the database server, vendor, operating system distribution and ClusterControl version installed. Check the Check for updates button to get notified when a new ClusterControl version is released. New versions are made available from `our download site <http://www.severalnines.com/downloads/cmon>`_ and `Severalnines repository <../../installation.html#severalnines-repository>`_.
+View the database server, vendor, operating system distribution and ClusterControl version installed. Tick the "Check for updates" checkbox to get notified when a new ClusterControl version is released. New versions are made available from `our download site <http://www.severalnines.com/downloads/cmon>`_ and `Severalnines repository <../../installation.html#severalnines-repository>`_.
 
 To upgrade to the latest version, see `Upgrading ClusterControl section <../../administration.html#upgrading-clustercontrol>`_.
 

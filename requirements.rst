@@ -32,9 +32,9 @@ Operating system
 
 ClusterControl has been tested on the following operating systems:
 
-* Redhat/CentOS/Amazon Linux/Oracle Linux 5.8 and later
+* Redhat/CentOS/Amazon Linux/Oracle Linux 6 and later
 * Ubuntu 12.04/14.04 LTS
-* Debian 6.0 and later
+* Debian 7.0 and later
 
 The following do not work:
 
@@ -61,7 +61,7 @@ The following software is required by ClusterControl:
 - NTP server - All servers’ time must synced under one time zone
 - netcat - for streaming backups
 
-.. Note:: If ClusterControl is installed via deployment package (generated with Severalnines Configurator), installation script (install-cc.sh), bootstrap script (s9s_bootstrap) or package manager (yum/apt), all dependencies will be automatically satisfied.*
+.. Note:: If ClusterControl is installed via deployment package (generated with Severalnines Configurator), installation script (install-cc) or package manager (yum/apt), all dependencies will be automatically satisfied.*
 
 Supported Browsers
 ------------------
@@ -72,7 +72,7 @@ We highly recommend user to use the following web browsers when accessing Cluste
 	
 Ensure to keep up-to-date of these browsers as we are very likely taking advatange of the new features available in the latest version.
 
-.. Note:: ClusterControl is built and tested only on the mentioned browsers. Some major web browsers like Safari, Opera and Internet Explorer could also work.
+.. Note:: ClusterControl is built and tested only on the mentioned web browsers. Some major web browsers like Safari, Opera and Internet Explorer could also work.
 
 Supported Clusters
 ------------------
@@ -116,8 +116,8 @@ ClusterControl requires ports used by the following services to be opened/enable
 * HTTPS (default is 443)
 * MySQL (default is 3306)
 * CMON RPC (default is 9500)
-* HAproxy stats (if installed on ClusterControl node - default is 9600)
-* MySQL load balance (if HAproxy installed on ClusterControl node - default is 3307)
+* HAProxy stats (if installed on ClusterControl node - default is 9600)
+* MySQL load balance (if HAProxy is installed on ClusterControl node - default is 3307)
 * Streaming port for mysqldump through netcat (default is 9999)
 
 
@@ -167,7 +167,7 @@ ClusterControl supports various database and application vendors and each has it
 |                                                 | * ICMP (echo reply/request)          |
 |                                                 | * 6033 (MaxAdmin - CLI)              |
 |                                                 | * 4006 (Round robin listener)        |
-|                                                 | * 4008 (R/W split listener)          |
+|                                                 | * 4008 (Read/Write split listener)   |
 |                                                 | * 4442 (Debug information            |
 +-------------------------------------------------+--------------------------------------+
 | Keepalived                                      | * 22 (SSH)                           |

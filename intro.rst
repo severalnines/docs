@@ -3,27 +3,30 @@
 Introduction
 ============
 
-This documentation covers ClusterControl version 1.2.11 which released on October 1st, 2015. This release contains key new features along with performance improvements and bug fixes. Release changelog is available `here <changelog.html>`_.
+This documentation covers ClusterControl version 1.2.12 which released on January 25th, 2016. This release contains key new features along with performance improvements and bug fixes. Release changelog is available `here <changelog.html>`_.
 
 What is ClusterControl?
 -----------------------
 
 ClusterControl is an agentless management and automation software for database clusters. It helps deploy, monitor, manage and scale your database server/cluster directly from ClusterControl user interface.
 
-ClusterControl consists of three components:
+ClusterControl consists of four components:
 
-+----------------------------------+---------------------------+-----------------------------------------------------------------------------------+
-| Component                        | Package naming            | Role                                                                              |
-+==================================+===========================+===================================================================================+
-| ClusterControl controller (cmon) | clustercontrol-controller | The brain of ClusterControl. A backend service performing automation, management, |
-|                                  |                           | monitoring and scheduling tasks. All the collected data will be stored directly   |
-|                                  |                           | inside CMON database                                                              |
-+----------------------------------+---------------------------+-----------------------------------------------------------------------------------+
-| ClusterControl REST API [#f1]_   | clustercontrol-cmonapi    | Interprets request and response data between ClusterControl UI and CMON database  |
-+----------------------------------+---------------------------+-----------------------------------------------------------------------------------+
-| ClusterControl UI                | clustercontrol            | A modern web user interface to visualize and manage the cluster. It interacts with| 
-|                                  |                           | CMON controller via remote procedure call (RPC) or REST API interface             |
-+----------------------------------+---------------------------+-----------------------------------------------------------------------------------+
++----------------------------------+---------------------------+------------------------------------------------------------------------------------+
+| Component                        | Package naming            | Role                                                                               |
++==================================+===========================+====================================================================================+
+| ClusterControl controller (cmon) | clustercontrol-controller | The brain of ClusterControl. A backend service performing automation, management,  |
+|                                  |                           | monitoring and scheduling tasks. All the collected data will be stored directly    |
+|                                  |                           | inside CMON database                                                               |
++----------------------------------+---------------------------+------------------------------------------------------------------------------------+
+| ClusterControl REST API [#f1]_   | clustercontrol-cmonapi    | Interprets request and response data between ClusterControl UI and CMON database   |
++----------------------------------+---------------------------+------------------------------------------------------------------------------------+
+| ClusterControl UI                | clustercontrol            | A modern web user interface to visualize and manage the cluster. It interacts with | 
+|                                  |                           | CMON controller via remote procedure call (RPC) or REST API interface              |
++----------------------------------+---------------------------+------------------------------------------------------------------------------------+
+| ClusterControl NodeJS            | clustercontrol-nodejs     | This optional package is introduced in ClusterControl version 1.2.12 to provide an |
+|                                  |                           | interface for notification services and integration with 3rd party tools           |
++----------------------------------+---------------------------+------------------------------------------------------------------------------------+
 
 
 Supported Database Server/Cluster
@@ -31,12 +34,12 @@ Supported Database Server/Cluster
 
 ClusterControl supports following database servers/clusters:
 
-- Galera cluster
+- Galera Cluster
 	- MySQL Galera Cluster (Codership)
 	- Percona XtraDB Cluster (Percona)
 	- MariaDB Galera Cluster (MariaDB)
 - MySQL Cluster (NDB)
-- MySQL replication
+- MySQL Replication
 - MySQL single instance
 - MongoDB/TokuMX
 	- Replica set
@@ -94,6 +97,8 @@ ClusterControl is able to handle most of the administration tasks required to ma
 * Monitor HAproxy/MaxScale statistics
 * Manage MySQL user privileges
 * Upgrade MySQL servers
+* Promote MySQL slave to master
+* Set up a delayed slave
 * Stage/Failover replication slave from a master
 * and many more..
 

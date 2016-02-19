@@ -28,7 +28,7 @@ ClusterControl's top menu.
 
 *Section 2*
 
-Database cluster functions.
+Database server/cluster deployment functions.
 
 * **Add Existing Server/Cluster**
 	- See `Add Existing Server/Cluster`_ section.
@@ -57,7 +57,6 @@ Opens a single-page wizard to import the configuration of the existing database 
 There are some prerequisites that need to be fulfilled prior to adding the existing setup. The existing database cluster/server must:
 
 * Run with same MySQL port with same MySQL root password and MySQL base directory
-* Run on similar OS distribution as the ClusterControl host
 * Verify that sudo is working properly if you are using a non-root user
 * Passwordless SSH from ClusterControl node to database nodes has been configured correctly
 * You must have a running ClusterControl controller with a minimal configuration
@@ -72,7 +71,7 @@ Choose *MySQL Galera Cluster* as the database type. Fill in all required informa
 * **Vendor**
 	- Codership - MySQL Galera Cluster by Codership
 	- Percona XtraDB - Percona XtraDB Cluster by Percona
-	- MariaDB Galera - MariaDB Galera Cluster by MariaDB
+	- MariaDB - MariaDB Galera Cluster by MariaDB
 
 * **MySQL Version**
 	- MySQL 5.5.x
@@ -82,18 +81,7 @@ Choose *MySQL Galera Cluster* as the database type. Fill in all required informa
 	- Specify the password if the SSH user that you specified under *SSH User* requires sudo password to run super-privileged commands.
 
 * **Hostname**
-	- Please note that you only need to specify ONE Galera node which contains a full Galera communication URL on ``wsrep_cluster_address`` variable, for example, on 192.168.0.102, MySQL ``wsrep_cluster_address`` variable returns:
-
-.. code-block:: mysql
-
-	mysql> SHOW VARIABLES LIKE "wsrep_cluster_address";
-	+-----------------------+------------------------------------------------------------------+
-	| Variable_name         | Value                                                            |
-	+-----------------------+------------------------------------------------------------------+
-	| wsrep_cluster_address | gcomm://192.168.0.101:4567,192.168.0.102:4567,192.168.0.103:4567 |
-	+-----------------------+------------------------------------------------------------------+
-
-- This node (192.168.0.102) is a good candidate to be specified in *MySQL Server Hostname* field. There should be one node in the cluster that having ``wsrep_cluster_address`` value as ``gcomm://``. Do not specify that host.
+	- Please note that you only need to specify ONE Galera node and ClusterControl will discover the rest based on wsrep_cluster_address.
 
 * **User**
 	- MySQL user on the target server/cluster. This user must able to perform GRANT statement. Recommended to use MySQL 'root' user.
@@ -108,7 +96,7 @@ Choose *MySQL Galera Cluster* as the database type. Fill in all required informa
 	- MySQL base directory. Default is ``/usr``. ClusterControl assumes MySQL is having the same base directory on all nodes.
 
 * **Enable information_schema Queries**
-	- Use information_schema to query MySQL statistics. This are not recommended for clusters with more than 2000 tables/databases.
+	- Use information_schema to query MySQL statistics. This is not recommended for clusters with more than 2000 tables/databases.
 	
 * **Enable Node AutoRecovery**
 	- ClusterControl will perform automatic recovery if it detects any of the nodes in the cluster is down.
@@ -180,10 +168,9 @@ ClusterControl is able to manage and monitor an existing MongoDB or TokuMX repli
 
 * **Vendor**
 	- 10gen - MongoDB Server from MongoDB Inc. (formerly 10gen)
-	- Tokutek MX - MongoDB Server from Percona (formerly known as Tokutek)
 	
 * **Need Sudo Password**
-		- Specify the password if the SSH user that you specified under *SSH User* requires sudo password to run super-privileged commands. Ignore this if *SSH User* is root or have no sudo password.
+	- Specify the password if the SSH user that you specified under *SSH User* requires sudo password to run super-privileged commands. Ignore this if *SSH User* is root or have no sudo password.
 
 * **Hostname**
 	- Specify one IP address or hostname of the MongoDB replica set member. ClusterControl will automatically discover the rest of the replica set members. 
@@ -252,13 +239,6 @@ Choose Postgres Server as the database type. Fill in all required information.
 Create Database Cluster
 ------------------------
 
-ClusterControl supports auto deployment of database clusters in following environment:
-
-* Galera Cluster in local/on-premise
-
-Local/on-premise
-''''''''''''''''''
-
 Deploys a new Galera Cluster in the same local environment. The database cluster will be automatically added into ClusterControl once deployed.
 
 MySQL Galera
@@ -266,11 +246,11 @@ MySQL Galera
 
 * **Vendor**
 	- Percona XtraDB - Percona XtraDB Cluster by Percona
-	- MariaDB Galera - MariaDB Galera Cluster by MariaDB
+	- MariaDB - MariaDB Galera Cluster by MariaDB
 	- Codership - MySQL Galera Cluster by Codership
 
 * **Version**
-	- Select the MySQL version. For Codership and Percona, 5.5 and 5.6 are available. If you choose MariaDB, 5.5 and 10.x will be available.
+	- Select the MySQL version. For Codership and Percona, 5.5 and 5.6 are available. If you choose MariaDB, 5.5, 10.0 and 10.1 will be available.
 
 * **Server Port**
 	- MySQL port for all nodes. Default is 3306.
@@ -280,7 +260,7 @@ MySQL Galera
 
 * **# of DB nodes**
 	- Specify the number of MySQL instances to deploy. A minimum of three servers is required to handle split brain/network partitioning.
-	- You can also deploy a server for the cluster and scale out using `Add Node`_ at later stage.
+	- You can also deploy a server for the cluster using *Create Database Node > MySQL Galera* and scale out using `Add Node`_ at later stage.
 
 * **my.cnf Template**
 	- MySQL configuration template file under ``/usr/share/cmon/templates``. The default is my.cnf.galera which should be exist by default. 
@@ -288,7 +268,7 @@ MySQL Galera
 * **Root Password**
 	- Specify MySQL root password. ClusterControl will configure the same MySQL root password for all instances in the cluster.
 
-* **DB Nodes: Enter hostname or IP address**
+* **DB Nodes: Enter FQDN or IP address**
 	- The input boxes depend on the value of *# of DB nodes*. Specify the IP address or hostname of the database nodes. ClusterControl will deploy the Galera
 
 * **SSH User**
@@ -308,12 +288,14 @@ MySQL Galera
 	- Check the box to disable firewall (recommended).
 
 * **Disable AppArmor/SELinux**
-	- Check the box to let ClusterControl disable AppArmor (Ubuntu) or SELinux (Redhat/CentOS) if enabled.
+	- Check the box to let ClusterControl disable AppArmor (Ubuntu) or SELinux (Redhat/CentOS) if enabled (recommended).
 	
-* **Use Internal Repositories**
-	- By default, the installation requires internet connection to install the software. Using internal repositories requires that the images are prepared and point to the repository you wish to install the software from.
+* **Repository**
+	- Default Repository - Provision software by setting up and using the database vendor's preferred software repository. ClusterControl will always install the latest version of what is provided by database vendor repository.
+	- Internal Repostory - Provision software by using the pre-existing software repository already setup on the nodes. User has to set up the software repository manually on each database node and ClusterControl will use this repository for deployment. This is good if the database nodes are running without internet connections.
+	- Local Mirrored Repository - Create and mirror the current database vendor's repository and then deploy using the local mirrored repository. This is a preferred option when you have to scale the Galera Cluster in the future, to ensure the newly provisioned node will always have the same version as the rest of the members.
 
-* **Uninstall Existing MySQL Server**
+* **Uninstall Existing MySQL Packages**
 	- ClusterControl expects the target hosts use clean and minimal OS. Existing MySQL dependencies will be removed.
 	
 * **Deploy**
@@ -337,35 +319,36 @@ MySQL Replication Master
 
 Deploy entire master-slave MySQL replication setup from ClusterControl. One would start by creating a master under this tab.
 
-================================ ===========
-Field                            Description
-================================ ===========
-Vendor                           Supported vendor is Percona XtraDB Server
-Version                          Choose the MySQL version that you want to install. 5.6.x is recommended with GTID support
-Template                         MySQL configuration template under ``/usr/share/cmon/templates``. Leave it blank if you want ClusterControl to generate the configuration file automatically.
-Hostname                         The IP address or hostname of the target node. Ensure you can perform passwordless SSH to the node using the specified SSH User, SSH Port Number and SSH Key Path
-Port                             MySQL port
-Data Directory                   Location of MySQL data directory
-Password                         MySQL root password
-SSH User                         SSH user that ClusterControl will use to remotely access the target node
-SSH Key Path                     Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See `Passwordless SSH <../../requirements.html#passwordless-ssh>`_.
-SSH Port Number                  SSH port of target node
-Need Sudo Password               Click on the link and specify the sudo password for the SSH user if applicable
-Disable Firewall                 Yes - Firewall will be disabled, No - Firewall will not be disabled
-Disable AppArmor/SElinux         Check to disable AppArmor (Ubuntu) or SElinux (Redhat or CentOS)
-Uninstall Existing MySQL Server  All existing MySQL related package will be removed before ClusterControl performs the new installation on the target node
-Replication User                 Enter a replication username. ClusterControl will create this user automatically
-Replication Password             Enter a password for *Replication User*
-Use Internal Repositories        By default, the installation requires internet connection to install the software. Using internal repositories requires that the images are prepared and point to the repository you wish to install the software from.
-Deploy                           Start the database deployment
-================================ ===========
+================================== ===========
+Field                              Description
+================================== ===========
+Vendor                             Supported vendor is Percona XtraDB Server
+Version                            Choose the MySQL version that you want to install. 5.6.x is recommended with GTID support
+Template                           MySQL configuration template under ``/usr/share/cmon/templates``. Leave it blank if you want ClusterControl to generate the configuration file automatically.
+Hostname                           The IP address or hostname of the target node. Ensure you can perform passwordless SSH to the node using the specified SSH User, SSH Port Number and SSH Key Path
+Port                               MySQL port
+Data Directory                     Location of MySQL data directory
+Password                           MySQL root password
+SSH User                           SSH user that ClusterControl will use to remotely access the target node
+SSH Key Path                       Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See `Passwordless SSH <../../requirements.html#passwordless-ssh>`_.
+SSH Port Number                    SSH port of target node
+Need Sudo Password                 Click on the link and specify the sudo password for the SSH user if applicable
+Disable Firewall                   Yes - Firewall will be disabled, No - Firewall will not be disabled
+Disable AppArmor/SElinux           Check to disable AppArmor (Ubuntu) or SElinux (Redhat or CentOS)
+Uninstall Existing MySQL Packages  All existing MySQL related package will be removed before ClusterControl performs the new installation on the target node
+Enable Semi-sync Replication       Check the box to let ClusterControl configure this node with semi-sync replication plugin
+Repository                         Default Repository - Provision software by setting up and using the database vendor's preferred software repository. ClusterControl will always install the latest version of what is provided by database vendor repository. Internal Repostory - Provision software by using the pre-existing software repository already setup on the nodes. User has to set up the software repository manually on each database node and ClusterControl will use this repository for deployment. This is good if the database nodes are running without internet connections. Local Mirrored Repository - Create and mirror the current database vendor's repository and then deploy using the local mirrored repository. This is a preferred option when you have to scale the Galera Cluster in the future, to ensure the newly provisioned node will always have the same version as the rest of the members.
+Deploy                             Start the database deployment
+================================== ===========
 
-Then, you can add a replication slave to the setup via `Add Node <user-guide/mysql/overview.html#add-node>`_. Ensure you have a configuration template ready
+Then, you can add a replication slave to the setup via `Add Node <user-guide/mysql/overview.html#add-node>`_. 
+
+.. Note:: Add node is not supported for MySQL 5.7 since Percona Xtrabackup does not support it yet.
 
 MySQL Galera
 '''''''''''''
 
-Deploy a Galera Cluster setup from ClusterControl. You can also use `Create Database Cluster`_ to deploy all nodes at once. One would start by creating a Galera node under this tab.
+Deploy a single Galera node. You can then use `Add Node`_ to scale out the cluster into three or more nodes. You can also use `Create Database Cluster`_ to deploy all nodes at once.
 
 ================================= ===========
 Field                             Description
@@ -385,7 +368,7 @@ Need Sudo Password                Click on the link and specify the sudo passwor
 Disable Firewall                  Yes - Firewall will be disabled, No - Firewall will not be disabled
 Disable AppArmor/SElinux          Check to disable AppArmor (Ubuntu) or SElinux (Redhat or CentOS)
 Uninstall Existing MySQL Packages All existing MySQL related package will be removed before ClusterControl performs the new installation on the target node
-Use Internal Repositories         By default, the installation requires internet connection to install the software. Using internal repositories requires that the images are prepared and point to the repository you wish to install the software from.
+Repository                        Default Repository - Provision software by setting up and using the database vendor's preferred software repository. ClusterControl will always install the latest version of what is provided by database vendor repository. Internal Repostory - Provision software by using the pre-existing software repository already setup on the nodes. User has to set up the software repository manually on each database node and ClusterControl will use this repository for deployment. This is good if the database nodes are running without internet connections. Local Mirrored Repository - Create and mirror the current database vendor's repository and then deploy using the local mirrored repository. This is a preferred option when you have to scale the Galera Cluster in the future, to ensure the newly provisioned node will always have the same version as the rest of the members.
 Deploy                            Start the database deployment
 ================================= ===========
 
@@ -394,7 +377,7 @@ Then, you can add another Galera node to the setup via `Add Node <user-guide/mys
 MongoDB Replica Set Node
 '''''''''''''''''''''''''
 
-Deploy a MongoDB replica set setup from ClusterControl. One would start by creating a MongoDB node (with replSet configured) under this tab. The deployment will use MongoDB packages from MongoDB Inc (formerly known as 10gen).
+Deploy a MongoDB replica set setup from ClusterControl. One would start by creating a MongoDB node (with replSet configured) under this tab. The deployment will use MongoDB packages from MongoDB Inc (formerly known as 10gen). Only version 2.x is supported at the moment.
 
 =================================== ===========
 Field                               Description
@@ -413,6 +396,7 @@ SSH Port Number                     SSH port of target node.
 Disable Firewall                    Yes - Firewall will be disabled, No - Firewall will not be disabled.
 Disable AppArmor/SElinux            Check to disable AppArmor (Ubuntu) or SElinux (Redhat or CentOS).
 Uninstall Existing MongoDB Packages All existing MongoDB related package will be removed before ClusterControl performs the new installation on the target node.
+Repository                          Default Repository - Provision software by setting up and using the database vendor's preferred software repository. ClusterControl will always install the latest version of what is provided by database vendor repository. Internal Repostory - Provision software by using the pre-existing software repository already setup on the nodes. User has to set up the software repository manually on each database node and ClusterControl will use this repository for deployment. This is good if the database nodes are running without internet connections. Local Mirrored Repository - Create and mirror the current database vendor's repository and then deploy using the local mirrored repository. This is a preferred option when you have to scale the Galera Cluster in the future, to ensure the newly provisioned node will always have the same version as the rest of the members.
 Deploy                              Start the database deployment.
 =================================== ===========
 
@@ -421,7 +405,7 @@ Then, you can add a MongoDB replica node to the setup via `Add Node <user-guide/
 PostgreSQL
 ''''''''''
 
-Deploy a new PostgreSQL standalone or replication cluster from ClusterControl. One would start by creating a PostgreSQL master node under this tab.
+Deploy a new PostgreSQL standalone or replication cluster from ClusterControl. One would start by creating a PostgreSQL master node under this tab. Only PostgreSQL 9.x is supported in this version.
 
 ====================================== ===========
 Field                                  Description
@@ -433,6 +417,7 @@ SSH User                               SSH user that ClusterControl will use to 
 SSH Key Path                           Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See `Passwordless SSH <../../requirements.html#passwordless-ssh>`_.
 Need Sudo Password                     Click on the link and specify the sudo password for the SSH user if applicable.
 Uninstall Existing PostgreSQL Packages All existing PostgreSQL related package will be removed before ClusterControl performs the new installation on the target node.
+Repository                             Default Repository - Provision software by setting up and using the database vendor's preferred software repository. ClusterControl will always install the latest version of what is provided by database vendor repository. Internal Repostory - Provision software by using the pre-existing software repository already setup on the nodes. User has to set up the software repository manually on each database node and ClusterControl will use this repository for deployment. This is good if the database nodes are running without internet connections. Local Mirrored Repository - Create and mirror the current database vendor's repository and then deploy using the local mirrored repository. This is a preferred option when you have to scale the Galera Cluster in the future, to ensure the newly provisioned node will always have the same version as the rest of the members.
 Deploy                                 Start the database deployment.
 ====================================== ===========
 
@@ -447,6 +432,8 @@ Each row represents the summarized status of a database cluster:
 | Field                | Description                                                                                                         |
 +======================+=====================================================================================================================+
 | Cluster Name         | The cluster name, configured under *ClusterControl > Settings > General Settings > Cluster Settings > Cluster Name* |
++----------------------+---------------------------------------------------------------------------------------------------------------------+
+| Database Vendor      | Database vendor                                                                                                     |
 +----------------------+---------------------------------------------------------------------------------------------------------------------+
 | Cluster Type         | The database cluster type:                                                                                          |
 |                      |                                                                                                                     |

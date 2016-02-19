@@ -356,7 +356,6 @@ Upload the schema and the data files. Currently only mysqldump is supported and 
  
 In order to use this feature, set ``post_max_size`` and ``upload_max_filesize`` in ``php.ini`` to 256M or more. Make sure you restart Apache to apply the PHP changes. Location of :term:`php.ini` may vary depending on your operating system, infrastructure type and PHP settings.
 
-
 * **Browse**
 	- Browse the location of dump file to upload.
 
@@ -426,10 +425,79 @@ Performs software upgrade using the software uploaded at *ClusterControl > Manag
 
 For a step-by-step walkthrough of how to perform database software upgrades, please review `this blog post <http://www.severalnines.com/blog/patch-updates-and-new-version-upgrades-your-database-clusters>`_.
 
+Custom Advisors
+```````````````
+
+Create threshold based advisors with host or MySQL statistics without needing to write your own JS script (like all the default scripts under "Developer Studio"). The threshold advisor allows you to set threshold to be alerted on if a metric falls below or raises above the threshold and stays there for a specified timeframe.
+
+Clicking on 'Create Custom Advisor' and 'Edit Custom Advisor' will open a new dialog, which described as follows:
+
+* **Type**
+	- Type of custom advisor. At the moment, only Threshold is supported.
+
+* **Applies To**
+	- Choose the target cluster.
+
+* **Resource**
+	- Threshold resources.
+		- Host: Host metrics collected by ClusterControl.
+		- Node: Database node metrics collected by ClusterControl.
+
+* **Hosts**
+	- Target host(s) in the chosen cluster. You can select individual host or all hosts monitored under this cluster.
+
+Condition
+.........
+
+* **If metric**
+	- List of metrics monitored by ClusterControl. Choose one metric to create a threshold condition.
+
+* **Condition**
+	- Type of conditions for the Warning and Critical values.
+
+* **For(s)**
+	- Timeframe in seconds before falling/raising an alarm.
+
+* **Warning**
+	- Value for warning threshold.
+
+* **Critical**
+	- Value for critical threshold.
+
+* **Max Values seen for selected period**
+	- ClusterControl provides preview of already recorded data in a graph to help you determine accurate values for timeframe, warning and critical.
+
+Notification Settings
+.....................
+
+Select the notification service configured under *ClusterControl > Settings > Notification Settings*. This notification service determines what is the endpoint of this advisors once conditions are met. It could be email and/or Pagerduty alert.
+
+Description
+...........
+
+Describe the Advisor and provide instructions on what actions that may be needed if the threshold is triggered.
+
+Available variables:
+
+================= ============
+Variable          Description
+================= ============
+%CLUSTER%         Selected cluster
+%CONDITION%       Condition
+%CRITICAL_VALUE%  Critical Value
+%DURATION%        Duration
+%HOSTNAME%        Selected host or node
+%METRIC%          Metric
+%METRIC_GROUP%    Group for the selected metric
+%RESOURCE%        Selected resource
+%TYPE%            Type of the custom advisor
+%WARNING_VALUE%   Warning Value
+================= ============
+
 Developer Studio
 ````````````````
 
-Provides functionality to create Advisors, Auto Tuners, or “mini Programs” right within your web browser based on `ClusterControl DSL (Domain Specific Language) <../../dsl.html>`_. The DSL syntax is based on JavaScript, with extensions to provide access to ClusterControl’s internal data structures and functions. The DSL allows you to execute SQL statements, run shell commands/programs across all your cluster hosts, and retrieve results to be processed for advisors/alerts or any other actions. Developer Studio is a development environment to quickly create, edit, compile, run, test, debug and schedule your JavaScript programs.
+Provides functionality to create Advisors, auto tuners, or “mini programs” right within your web browser based on `ClusterControl DSL (Domain Specific Language) <../../dsl.html>`_. The DSL syntax is based on JavaScript, with extensions to provide access to ClusterControl’s internal data structures and functions. The DSL allows you to execute SQL statements, run shell commands/programs across all your cluster hosts, and retrieve results to be processed for advisors/alerts or any other actions. Developer Studio is a development environment to quickly create, edit, compile, run, test, debug and schedule your JavaScript programs.
 
 Advisors in ClusterControl are powerful constructs; they provide specific advice on how to address issues in areas such as performance, security, log management, configuration, storage space, etc. They can be anything from simple configuration advice, warning on thresholds or more complex rules for predictions, or even cluster-wide automation tasks based on the state of your servers or databases. 
 

@@ -116,8 +116,7 @@ Automatic Installation
 We have a bunch of scripts and tools to automate and simplify the installation process of ClusterControl in various environments:
 
 * Severalnines Configurator
-* Installation script (recommended)
-* Bootstrap script (legacy)
+* Installation script
 * Puppet module
 * Chef cookbooks
 * Docker image
@@ -128,6 +127,9 @@ Severalnines Configurator
 `Severalnines Configurator <http://www.severalnines.com/configurator>`_ is a free online tool to deploy a database cluster on your servers. It generates a deployment package based on the values you input in the wizard, the deployment package then automates the installation on your servers. Users need to prepare a group of servers for the database cluster plus one dedicated host for ClusterControl.
 
 The Configurator is able to deploy different types of database clusters as stated in the `Supported Database Server/Cluster <intro.html#supported-database-server-cluster>`_ section.
+
+.. Note:: We are strongly recommend users to install ClusterControl first, and then use *Create Database Cluster* or *Create Database Node* feature to deploy a new 
+cluster.
 
 Deployment package
 ''''''''''''''''''
@@ -217,9 +219,8 @@ Requirements
 If you haven’t change the default ``$modulepath``, this module will be installed under ``/etc/puppet/modules/clustercontrol`` on your Puppet master host. This module requires the following criteria to be met:
 
 * The node for ClusterControl must be a clean/dedicated host.
-* ClusterControl node must be running on 64bit OS platform and together with the same OS distribution with the monitored DB hosts. Mixing Debian with Ubuntu and CentOS with Red Hat is acceptable.
 * ClusterControl node must have an internet connection during the deployment. After the deployment, ClusterControl does not need internet access.
-* Make sure your database cluster is up and running before performing this deployment.
+
 
 Pre-installation
 ''''''''''''''''
@@ -262,16 +263,22 @@ Example node definition:
   node "clustercontrol.local" {
     class { 'clustercontrol':
       is_controller => true,
-      email_address => 'admin@localhost.xyz',
-      mysql_server_addresses => '192.168.1.11,192.168.1.12,192.168.1.13',
+	  ssh_user => root,
       api_token => 'b7e515255db703c659677a66c4a17952515dbaf5'
     }
   }
-  
+
+Once deployment is completed, open the ClusterControl web UI at https://[ClusterControl IP address]/clustercontrol and create a default admin login. You can now start to add existing database node/cluster, or deploy a new one. Ensure that passwordless SSH is configured properly from ClusterControl node to all DB nodes beforehand.
+
+To setup passwordless SSH on target database nodes, you can use following definition:
+
+.. code-block:: ruby
+
   # Monitored DB hosts
   node "galera1.local", "galera2.local", "galera3.local" {
     class {'clustercontrol':
       is_controller => false,
+	  ssh_user => root,
       mysql_root_password => 'r00tpassword',
       clustercontrol_host => '192.168.1.10'
     }
@@ -577,7 +584,7 @@ Redhat/CentOS
 
 .. code-block:: bash
 
-	yum -y install clustecontrol clustercontrol-cmonapi clustercontrol-controller
+	yum -y install clustecontrol clustercontrol-cmonapi clustercontrol-controller clustercontrol-nodejs
 
 5. Start MySQL server (MariaDB for Redhat/CentOS 7), enable it on boot and set a MySQL root password:
 
@@ -625,7 +632,7 @@ And add following lines for minimal configuration options:
 	mysql_password=[cmonpassword]
 	hostname=[ClusterControl main IP address]
 
-Example is as follow:
+Example as follow:
 
 .. code-block:: bash
 
@@ -740,7 +747,7 @@ You will then be redirected to the ClusterControl landing page and the installat
 Debian/Ubuntu
 ``````````````
 
-The following steps should be performed on the ClusterControl node, unless specified otherwise. Ensure you have Severalnines repository and ClusterControl UI installed. Please refer to Severalnines Repository section for details. Omit sudo if you are installing as root user. Take note that for Ubuntu 14.04 and later, replace all occurrences of ``/var/www`` with ``/var/www/html`` in the following instructions.
+The following steps should be performed on the ClusterControl node, unless specified otherwise. Ensure you have Severalnines repository and ClusterControl UI installed. Please refer to Severalnines Repository section for details. Omit sudo if you are installing as root user. Take note that for Ubuntu 14.04/Debian 8 and later, replace all occurrences of ``/var/www`` with ``/var/www/html`` in the following instructions.
 
 1. Setup `Severalnines APT Repository <installation.html#apt-repository>`_.
 
@@ -764,7 +771,7 @@ The following steps should be performed on the ClusterControl node, unless speci
 
 .. code-block:: bash
 
-	sudo apt-get install -y clustercontrol-controller
+	sudo apt-get install -y clustercontrol-controller clustercontrol clustercontrol-cmonapi clustercontrol-nodejs
 
 5. Comment the following line inside ``/etc/mysql/my.cnf`` to allow MySQL to listen on all interfaces:
 
@@ -879,13 +886,15 @@ For Ubuntu 14.04, it runs on Apache 2.4 which has a slightly different configura
 
 13. Assign correct ownership and permissions:
 
+For Ubuntu 12.04/Debian 7 and earlier:
+
 .. code-block:: bash
 
 	chmod -R 777 /var/www/clustercontrol/app/tmp
 	chmod -R 777 /var/www/clustercontrol/app/upload
 	chown -Rf www-data.www-data /var/www/cmonapi/
 	chown -Rf www-data.www-data /var/www/clustercontrol/
-
+	
 14. Configure MySQL credentials for ClusterControl UI at ``/var/www/clustercontrol/bootstrap.php``. In most cases, you just need to update the ``DB_PASS`` parameter with the cmon user password:
 
 .. code-block:: php
@@ -938,7 +947,7 @@ For Ubuntu 14.04, it runs on Apache 2.4 which has a slightly different configura
 
 .. Note:: Replace ``[ssh user]`` and ``[IP address of the target node]`` with appropriate values.
 
-21. Open ClusterControl Ui and create the default admin password by providing a valid email address and password. You will be redirected to ClusterControl default page. Go to `Cluster Registrations` and enter the generated ClusterControl API token (step #14) and URL, similar to example below:
+21. Open ClusterControl UI and create the default admin password by providing a valid email address and password. You will be redirected to ClusterControl default page. Go to `Cluster Registrations` and enter the generated ClusterControl API token (step #14) and URL, similar to example below:
 
 .. image:: img/cc_register_token.png
    :alt: Register ClusterControl API token
@@ -955,8 +964,8 @@ The installer script (install-cc) also supports offline installations by specify
 * `Backup > Online Storage` - requires connection to AWS.
 * `Service Providers > AWS Instances` - requires connection to AWS.
 * `Service Providers > AWS VPC` - requires connection to AWS.
-* `Manage > Load Balancer` - requires connection to EPEL repository/HAproxy download site.
-* `Manage > Upgrades` - requires connection to Percona repository.
+* `Manage > Load Balancer` - requires connection to EPEL & MariaDB repository/HAproxy download site.
+* `Manage > Upgrades` - requires connection to provider's repository.
 
 Prior to the offline install, make sure you meet the following requirements for the ClusterControl node:
 
@@ -1096,9 +1105,10 @@ Redhat/CentOS
 
 	mkdir ~/s9s_tmp
 	cd ~/s9s_tmp
-	wget http://www.severalnines.com/downloads/cmon/clustercontrol-1.2.10-418-x86_64.rpm
-	wget http://www.severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.2.10-61-x86_64.rpm
-	wget http://www.severalnines.com/downloads/cmon/clustercontrol-controller-1.2.10-764-x86_64.rpm
+	wget http://www.severalnines.com/downloads/cmon/clustercontrol-controller-1.2.12-1096-x86_64.rpm
+	wget http://www.severalnines.com/downloads/cmon/clustercontrol-1.2.12-1007-x86_64.rpm
+	wget http://www.severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.2.12-156-x86_64.rpm
+	wget http://severalnines.com/downloads/cmon/clustercontrol-nodejs-1.2.12-51-x86_64.rpm
 
 .. Attention:: In this example, we downloaded the package directly to simplify the package preparation step. If the ClusterControl server does not have internet connections, you should upload the packages manually to the mentioned staging path.
 
@@ -1123,11 +1133,10 @@ Debian/Ubuntu
 
 .. code-block:: bash
 
-	mkdir ~/s9s_tmp
-	cd ~/s9s_tmp
-	wget http://www.severalnines.com/downloads/cmon/clustercontrol_1.2.10-418_x86_64.deb
-	wget http://www.severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.2.10-61_x86_64.deb
-	wget http://www.severalnines.com/downloads/cmon/clustercontrol-controller-1.2.10-764-x86_64.deb
+	wget http://www.severalnines.com/downloads/cmon/clustercontrol-controller-1.2.12-1096-x86_64.deb
+	wget http://www.severalnines.com/downloads/cmon/clustercontrol_1.2.12-1007_x86_64.deb
+	wget http://www.severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.2.12-156_x86_64.deb
+	wget http://www.severalnines.com/downloads/cmon/clustercontrol-nodejs_1.2.12-51_x86_64.deb
 
 .. Attention:: In this example, we downloaded the package directly to simplify the package preparation step. If the ClusterControl server does not have internet connections, you should upload the packages manually to the mentioned staging path.
 
@@ -1145,22 +1154,19 @@ Installing ClusterControl
 1. Define ``NO_INET`` variable to 1 to tell the installation script to perform an offline installation and execute the installation script:
 
 .. code-block:: bash
-
-  $ export NO_INET=1
-  $ ./install-cc.sh
-  This script will install the ClusterControl UI and the Controller (optional).
-  An Apache and MySQL server will also be installed. An existing MySQL Server on this host can be used.
-   
-  => Detected NO_INET is set, i.e., NO INTERNET enabled install.
-  => Make sure you have an existing MySQL and Apache Server installed and running on this host!
-  => Download these ClusterControl packages before continuing:
-   
-  => cd s9s_tmp
-  => wget http://severalnines.com/downloads/cmon/s9s-clustercontrol-1.2.6.tar.gz
-  => wget http://severalnines.com/downloads/cmon/cmon-controller-1.2.6-357-x86_64.rpm
-   
-  => The UI/Controller hostname is set to 192.168.253.133. Do you want to change it? (y/N):
-  ...
+	
+	=> Detected NO_INET is set, i.e., NO INTERNET enabled install.
+	=> Have mirrored repos or make sure you have an existing MySQL and Apache Server installed and running on this host!
+	=> Download these ClusterControl packages before continuing:
+	
+	=> cd s9s_tmp
+	=> wget http://severalnines.com/downloads/cmon/clustercontrol-1.2.10-418_x86_64.rpm
+	=> wget http://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.2.10-61_x86_64.rpm
+	=> wget http://severalnines.com/downloads/cmon/clustercontrol-controller-1.2.10-755-x86_64.rpm
+	=> yum -y localinstall clustercontrol-1.2.10-418_x86_64.rpm clustercontrol-cmonapi-1.2.10-61_x86_64.rpm clustercontrol-controller-1.2.10-755-x86_64.rpm
+	
+	=> Run the post install script after installing the packages
+	=> /var/www/html/clustercontrol/app/tools/setup-cc.sh
 
 Follow the installation wizard.
 
