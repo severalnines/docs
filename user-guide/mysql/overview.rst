@@ -267,7 +267,7 @@ The Cluster Load graph provides overview of aggregated load on your database clu
 	- The number of aggregated DELETE queries across all nodes.
 
 * **Queries**
-	- The total of all queries running across all nodes.
+	- The total of all queries running across all nodes. The total number of queries is including statements like SET, BEGIN, COMMIT, etc. These statements are frequently executed by ORMs or during creation of a connection (for instance "SET NAMES UTF8") and thus create a lot of "Queries" even though they are not any queries that read or write to the database. Therefore a sum of selects, updates, deletes and inserts will not the same as the value of "Queries".
 
 Custom Dashboard
 ````````````````
