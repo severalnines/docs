@@ -422,11 +422,11 @@ Repositories
 
 Manages provider's repository for database servers and clusters. You can have three types of repository when deploying database server/cluster using ClusterControl:
 
-1. Default Repository
+1. Use Vendor Repositories
 	- Provision software by setting up and using the database vendor's preferred software repository. ClusterControl will always install the latest version of what is provided by database vendor repository.
-2. Internal Repostory 
+2. Do Not Setup Vendor Repositories
 	- Provision software by using the pre-existing software repository already setup on the nodes. User has to set up the software repository manually on each database node and ClusterControl will use this repository for deployment. This is good if  the database nodes are running without internet connections.
-3. Local Mirrored Repository (Create new repository)
+3. Use Mirrored Repositories (Create new repository)
 	- Create and mirror the current database vendor's repository and then deploy using the local mirrored repository.
 	- This allows you to "freeze" the current versions of the software packages used to provision a database cluster for a specific vendor and you can later use that mirrored repository to provision the same set of versions when adding more nodes or deploying other clusters.
 	- ClusterControl sets up the mirrored repository under [Apache Document root]/cmon-repos/, which is accessible via HTTP at http://[ClusterControl IP address]/cmon-repos/
