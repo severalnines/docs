@@ -503,6 +503,7 @@ Standby ClusterControl Server for High Availability
 It is possible to have several ClusterControl servers to monitor a single cluster. This is useful if you have a multi-datacenter cluster and you may need to have ClusterControl on the remote site to monitor and manage the alive nodes if connection between them goes down. However, ClusterControl servers must be configured to be working in active/passive mode to avoid race conditions when digesting queries and recovering failed node or cluster.
 
 In active mode, the ClusterControl node act as a primary controller, where it can perform automatic recovery and parsing MySQL slow log query for query  monitoring. The secondary ClusterControl node however must have following things configured:
+
 * Cluster/Node auto recovery must be turned off.
 * Query sampling must be disabled.
 
@@ -523,6 +524,7 @@ Failover Method
 ```````````````
 
 If you want to make the standby server run in active mode, just do as follow (assume the primary ClusterControl is unreachable at the moment):
+
 * Cluster/Node auto recovery must be turned on. Click on both red power icons in the summary bar until they appear in green colour.
 * Enable query sampling. Go to *ClusterControl > Settings > Query Monitor* and change "Sampling Time" to other than "-1".
 
