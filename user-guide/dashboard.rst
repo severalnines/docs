@@ -3,7 +3,7 @@ Dashboard
 
 This page is the landing page once you logged in. It provides a summary of database clusters monitored under ClusterControl.
 
-.. image:: img/cc_cluster_list_1211.png
+.. image:: img/cc_cluster_list_13.png
    :align: center
 
 *Section 1*
@@ -21,9 +21,9 @@ ClusterControl's top menu.
 
 * **Help**
 	- Open ClusterControl online documentation page at http://www.severalnines.com/docs
-	- Open Severalnines support forums at http://support.severalnines.com/forums
+	- Open Severalnines community support forums at http://support.severalnines.com/forums
 
-* **Log Out**
+* **Logout**
 	- Logs out from ClusterControl and return to login page.
 
 *Section 2*
@@ -60,6 +60,7 @@ There are some prerequisites that need to be fulfilled prior to adding the exist
 * Verify that sudo is working properly if you are using a non-root user
 * Passwordless SSH from ClusterControl node to database nodes has been configured correctly
 * You must have a running ClusterControl controller with a minimal configuration
+* The target server/cluster must be running in full capacity. For example, if you have a three-node Galera cluster, you 
 
 For more details, refer to the `Requirement <../../requirements.html>`_ section. Each time you add an existing cluster or server, ClusterControl will trigger a job under *ClusterControl > Settings > Cluster Jobs*. You can see the progress and status under this page. A window will also appear with messages showing progress.
 
@@ -74,8 +75,7 @@ Choose *MySQL Galera Cluster* as the database type. Fill in all required informa
 	- MariaDB - MariaDB Galera Cluster by MariaDB
 
 * **MySQL Version**
-	- MySQL 5.5.x
-	- MySQL 5.6.x
+	- Select MySQL version of the target cluster
 
 * **Need Sudo Password**
 	- Specify the password if the SSH user that you specified under *SSH User* requires sudo password to run super-privileged commands.
@@ -87,7 +87,7 @@ Choose *MySQL Galera Cluster* as the database type. Fill in all required informa
 	- MySQL user on the target server/cluster. This user must able to perform GRANT statement. Recommended to use MySQL 'root' user.
 	
 * **Password** 
-	- Password for *MySQL User*. The password must be the same on all nodes that you want to add into ClusterControl..
+	- Password for *MySQL User*. The password must be the same on all nodes that you want to add into ClusterControl.
 
 * **Port**
 	- MySQL port on the target server/cluster. Default to 3306. ClusterControl assumes MySQL is running on the same port on all nodes.
@@ -161,19 +161,20 @@ Add existing MySQL Cluster
 Adding existing MySQL Cluster (NDB) is not supported from the ClusterControl UI. However, it is possible to add it using manually as explained in details in `this blog post <http://severalnines.com/blog/clustercontrol-tips-tricks-manage-and-monitor-your-existing-mysql-ndb-cluster>`_.
 
 
-Add existing MongoDB/TokuMX replica set
-'''''''''''''''''''''''''''''''''''''''
+Add existing MongoDB replica set
+'''''''''''''''''''''''''''''''''
 
-ClusterControl is able to manage and monitor an existing MongoDB or TokuMX replica set. Choose *Mongodb Replicaset* as the database type. Fill in all required information.
+ClusterControl is able to manage and monitor an existing MongoDB 3.x replica set. Choose *Mongodb Replicaset* as the database type. Fill in all required information.
 
 * **Vendor**
-	- 10gen - MongoDB Server from MongoDB Inc. (formerly 10gen)
+	- Percona - Percona Server for MongoDB by Percona. (formerly Tokutek)
+    - MongoDB - MongoDB Server by MongoDB Inc. (formerly 10gen)
 	
 * **Need Sudo Password**
 	- Specify the password if the SSH user that you specified under *SSH User* requires sudo password to run super-privileged commands. Ignore this if *SSH User* is root or have no sudo password.
 
 * **Hostname**
-	- Specify one IP address or hostname of the MongoDB replica set member. ClusterControl will automatically discover the rest of the replica set members. 
+	- Specify one IP address or hostname of the MongoDB replica set member. ClusterControl will automatically discover the rest of the them. 
 
 * **User**
 	- MongoDB admin user. If you don't specify *Password*, ClusterControl assumes you do not use MongoDB authentication.
@@ -239,37 +240,10 @@ Choose Postgres Server as the database type. Fill in all required information.
 Create Database Cluster
 ------------------------
 
-Deploys a new Galera Cluster in the same local environment. The database cluster will be automatically added into ClusterControl once deployed.
+Deploys a new Galera Cluster in the same local environment. The database cluster will be automatically added into ClusterControl once deployed. Minimum of three nodes (excluding garbd) is required. Garbd can be added later after the deployment completes.
 
 MySQL Galera
 ............
-
-* **Vendor**
-	- Percona XtraDB - Percona XtraDB Cluster by Percona
-	- MariaDB - MariaDB Galera Cluster by MariaDB
-	- Codership - MySQL Galera Cluster by Codership
-
-* **Version**
-	- Select the MySQL version. For Codership and Percona, 5.5 and 5.6 are available. If you choose MariaDB, 5.5, 10.0 and 10.1 will be available.
-
-* **Server Port**
-	- MySQL port for all nodes. Default is 3306.
-
-* **Server Data Directory**
-	- Location of MySQL data directory. Default is ``/var/lib/mysql``.
-
-* **# of DB nodes**
-	- Specify the number of MySQL instances to deploy. A minimum of three servers is required to handle split brain/network partitioning.
-	- You can also deploy a server for the cluster using *Create Database Node > MySQL Galera* and scale out using `Add Node`_ at later stage.
-
-* **my.cnf Template**
-	- MySQL configuration template file under ``/usr/share/cmon/templates``. The default is my.cnf.galera which should be exist by default. 
-	
-* **Root Password**
-	- Specify MySQL root password. ClusterControl will configure the same MySQL root password for all instances in the cluster.
-
-* **DB Nodes: Enter FQDN or IP address**
-	- The input boxes depend on the value of *# of DB nodes*. Specify the IP address or hostname of the database nodes. ClusterControl will deploy the Galera
 
 * **SSH User**
 	- Specify root if you have root credentials.
@@ -281,8 +255,73 @@ MySQL Galera
 * **SSH Port Number**
 	- Specify the SSH port for target nodes. ClusterControl assumes SSH is running on the same port on all nodes.
 
-* **Need Sudo Password**
-	- If you use sudo with password, click the link to input sudo password. Ignore this if *SSH User* is root or have no sudo password.
+* **Sudo Password**
+	- If you use sudo with password, specify it here. Ignore this if *SSH User* is root or sudoer does not need a sudo password.
+
+* **Disable Firewall**
+	- Check the box to disable firewall (recommended).
+
+* **Disable AppArmor/SELinux**
+	- Check the box to let ClusterControl disable AppArmor (Ubuntu) or SELinux (Redhat/CentOS) if enabled (recommended).
+
+* **Install Software**
+    - Yes - Use clean and minimal VMs. Existing MySQL dependencies will be removed. New packages will be installed and existing packages will be uninstalled when provisioning the node with required software.
+    - No - Existing packages will not be uninstalled, and nothing will be installed. This requires that the instances have already provisioned the necessary software.
+    
+* **DB Node #**
+	- Specify the IP address or hostname of the database nodes. A minimum of three servers is required to handle split brain/network partitioning.
+    
+* **Add DB Node**
+    - Add a new input box for DB node.
+
+* **Remove last DB Node**
+    - Remove the last input box for DB node.
+
+* **Vendor**
+	- Percona XtraDB - Percona XtraDB Cluster by Percona
+	- MariaDB - MariaDB Galera Cluster by MariaDB
+	- Codership - MySQL Galera Cluster by Codership
+
+* **Version**
+	- Select the MySQL version. For Codership and Percona, 5.5 and 5.6 are available. If you choose MariaDB, 5.5 and 10.1 will be available.
+
+* **Server Data Directory**
+	- Location of MySQL data directory. Default is ``/var/lib/mysql``.
+
+* **Server Port**
+	- MySQL port for all nodes. Default is 3306.
+
+* **My.cnf Template**
+	- MySQL configuration template file under ``/usr/share/cmon/templates``. Default is my.cnf.galera. Keep it default is recommended.
+	
+* **Root Password**
+	- Specify MySQL root password. ClusterControl will configure the same MySQL root password for all instances in the cluster.
+	
+* **Repository**
+	- Use Vendor Repositories - Provision software by setting up and using the database vendor's preferred software repository. ClusterControl will always install the latest version of what is provided by database vendor repository.
+	- Do Not Setup Vendor Repositories - Provision software by using repositories already setup on the nodes. The User has to set up the software repository manually on each database node and ClusterControl will use this repository for deployment. This is good if the database nodes are running without internet connections.
+	- Use Mirrored Repositories - Create and mirror the current database vendor's repository and then deploy using the local mirrored repository. This is a preferred option when you have to scale the Galera Cluster in the future, to ensure the newly provisioned node will always have the same version as the rest of the members.
+	
+* **Deploy**
+	- Starts the Galera Cluster deployment.
+
+MySQL/NDB Cluster
+.................
+
+Deploys a new MySQL (NDB) Cluster by Oracle. The cluster consists of management nodes, MySQL API nodes and data nodes. The database cluster will be automatically added into ClusterControl once deployed. Minimum of 4 nodes (2 API/mgmd + 2 data nodes) is recommended.
+
+* **SSH User**
+	- Specify root if you have root credentials.
+	- If you use 'sudo' to execute system commands, specify the name that you wish to use here. The user must exists on all nodes. See `Operating System User <../../requirements.html#operating-system-user>`_.
+	
+* **SSH Key Path**
+	- Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See `Passwordless SSH <../../requirements.html#passwordless-ssh>`_.
+
+* **SSH Port Number**
+	- Specify the SSH port for target nodes. ClusterControl assumes SSH is running on the same port on all nodes.
+
+* **Sudo Password**
+	- If you use sudo with password, specify it here. Ignore this if *SSH User* is root or sudoer does not need a sudo password.
 
 * **Disable Firewall**
 	- Check the box to disable firewall (recommended).
@@ -290,16 +329,60 @@ MySQL Galera
 * **Disable AppArmor/SELinux**
 	- Check the box to let ClusterControl disable AppArmor (Ubuntu) or SELinux (Redhat/CentOS) if enabled (recommended).
 	
-* **Repository**
-	- Use Vendor Repositories - Provision software by setting up and using the database vendor's preferred software repository. ClusterControl will always install the latest version of what is provided by database vendor repository.
-	- Do Not Setup Vendor Repositories - Provision software by using repositories already setup on the nodes. The User has to set up the software repository manually on each database node and ClusterControl will use this repository for deployment. This is good if the database nodes are running without internet connections.
-	- Use Mirrored Repositories - Create and mirror the current database vendor's repository and then deploy using the local mirrored repository. This is a preferred option when you have to scale the Galera Cluster in the future, to ensure the newly provisioned node will always have the same version as the rest of the members.
 
 * **Uninstall Existing MySQL Packages**
 	- ClusterControl expects the target hosts use clean and minimal OS. Existing MySQL dependencies will be removed.
-	
+    
+* **Management Server 1**
+    - Specify the IP address or hostname of the first management server.
+
+* **Management Server 2**
+    - Specify the IP address or hostname of the second management server.
+
+* **Port**
+    - MySQL Cluster management port. Default to 1186.
+
+* **Datadir**
+    - MySQL Cluster data directory for NDB. Default is ``/var/lib/mysql-cluster``.
+
+* **Data Node server [n]**
+    - Specify the IP address or hostname of the MySQL Cluster data node.
+
+* **Add two more Data Nodes**
+    - It's recommended to have data nodes in pair. If you would like to use more than two data nodes, click this button to add two more input fields.
+
+* **Remove last two Data Nodes**
+    - Removes the last two input fields for data nodes.
+
+* **Port**
+    - MySQL Cluster data node port. Default to 2200.
+    
+* **Datadir**
+    - MySQL Cluster data directory for NDB. Default is ``/var/lib/mysql-cluster``.
+
+* **MySQL server [n]**
+    - Specify the IP address or hostname of the MySQL Cluster SQL/API node.
+
+* **Add one more SQL Nodes**
+    - If you would like to use more than two SQL nodes, click this button to add one more input field.
+
+* **Remove last SQL Nodes**
+    - Removes the last input field for SQL node.
+
+* **Server Port**
+    - MySQL server port. Default to 3306.
+
+* **my.cnf Template**
+    - MySQL configuration template file under ``/usr/share/cmon/templates``. The default is my.cnf.mysqlcluster. Keep it default is recommended.
+
+* **Server Data Directory**
+    - MySQL SQL/API node data directory. Default is ``/var/lib/mysql``.
+
+* **Root Password**
+    - - Specify MySQL root password. ClusterControl will configure the same MySQL root password for all instances in the cluster.
+
 * **Deploy**
-	- Starts the deployment.
+	- Starts the MySQL Cluster deployment.
 
 
 Create Database Node
@@ -322,7 +405,7 @@ Deploy entire master-slave MySQL replication setup from ClusterControl. One woul
 ================================== ===========
 Field                              Description
 ================================== ===========
-Vendor                             Supported vendor is Percona XtraDB Server
+Vendor                             Supported vendor is Percona Server and Oracle
 Version                            Choose the MySQL version that you want to install. 5.6.x is recommended with GTID support
 Template                           MySQL configuration template under ``/usr/share/cmon/templates``. Leave it blank if you want ClusterControl to generate the configuration file automatically.
 Hostname                           The IP address or hostname of the target node. Ensure you can perform passwordless SSH to the node using the specified SSH User, SSH Port Number and SSH Key Path
@@ -343,8 +426,6 @@ Deploy                             Start the database deployment
 
 Then, you can add a replication slave to the setup via `Add Node <user-guide/mysql/overview.html#add-node>`_. 
 
-.. Note:: Add node is not supported for MySQL 5.7 since Percona Xtrabackup does not support it yet.
-
 MySQL Galera
 '''''''''''''
 
@@ -355,7 +436,7 @@ Field                             Description
 ================================= ===========
 Vendor                            Supported vendors are Codership, Percona XtraDB and MariaDB Galera
 Version                           Choose the MySQL version that you want to install
-Data Center                       Segment ID. Database node that have the same number are on the same “data center”.
+Data Center                       Segment ID. Database node that have the same number are considered in the same “data center”.
 my.cnf Template                   MySQL configuration template under ``/usr/share/cmon/templates``
 Hostname                          The IP address or hostname of the target node. Ensure you can perform passwordless SSH to the node using the specified SSH User, SSH Port Number and SSH Key Path
 Port                              MySQL port of target node
@@ -374,14 +455,15 @@ Deploy                            Start the database deployment
 
 Then, you can add another Galera node to the setup via `Add Node <user-guide/mysql/overview.html#add-node>`_.
 
-MongoDB Replica Set Node
-'''''''''''''''''''''''''
+MongoDB ReplicaSet Node
+'''''''''''''''''''''''
 
-Deploy a MongoDB replica set setup from ClusterControl. One would start by creating a MongoDB node (with replSet configured) under this tab. The deployment will use MongoDB packages from MongoDB Inc (formerly known as 10gen). Only version 2.x is supported at the moment.
+Deploy a MongoDB replica set setup from ClusterControl. One would start by creating a MongoDB node (with replSet configured) under this tab. Starting from ClusterControl v1.3, MongoDB 3.x is supported.
 
 =================================== ===========
 Field                               Description
 =================================== ===========
+Vendor                              Supported vendors are Percona (Percona Server for MongoDB) and MongoDB (MongoDB Server)
 Hostname                            The IP address or hostname of the target node. Ensure you can perform passwordless SSH to the need using the specified SSH User, SSH Port Number and SSH Key Path.
 Port                                MongoDB port.
 User                                MongoDB user.
@@ -433,13 +515,18 @@ Each row represents the summarized status of a database cluster:
 +======================+=====================================================================================================================+
 | Cluster Name         | The cluster name, configured under *ClusterControl > Settings > General Settings > Cluster Settings > Cluster Name* |
 +----------------------+---------------------------------------------------------------------------------------------------------------------+
+| ID                   | The cluster identifier number                                                                                       |
++----------------------+---------------------------------------------------------------------------------------------------------------------+
+| Version              | Database server major version                                                                                       |
++----------------------+---------------------------------------------------------------------------------------------------------------------+
 | Database Vendor      | Database vendor                                                                                                     |
 +----------------------+---------------------------------------------------------------------------------------------------------------------+
 | Cluster Type         | The database cluster type:                                                                                          |
 |                      |                                                                                                                     |
-|                      | * MYSQL_SERVER - Standalone MySQL server and MySQL replication                                                      |
+|                      | * MYSQL_SERVER - Standalone MySQL server                                                                            |
+|                      | * REPLICATION - MySQL replication                                                                                   |
 |                      | * GALERA - MySQL Galera Cluster, Percona XtraDB Cluster, MariaDB Galera Cluster                                     |
-|                      | * MYSQL_CLUSTER - MySQL Cluster                                                                                     |
+|                      | * MYSQL CLUSTER - MySQL Cluster                                                                                     |
 |                      | * MONGODB - MongoDB/TokuMX replica Set, MongoDB/TokuMX Sharded Cluster, MongoDB/TokuMX Replicated Sharded Cluster   |
 |                      | * POSTGRESQL - Standalone or Replicated PostgreSQL server                                                           |
 +----------------------+---------------------------------------------------------------------------------------------------------------------+
@@ -450,16 +537,10 @@ Each row represents the summarized status of a database cluster:
 |                      | * FAILURE - The cluster is down. Probably that all or most of the nodes are down or unreachable, resulting the      |
 |                      |   cluster fails to operate as expected.                                                                             |
 +----------------------+---------------------------------------------------------------------------------------------------------------------+
-| Cluster ID           | The cluster identifier number                                                                                       |
-+----------------------+---------------------------------------------------------------------------------------------------------------------+
 | Auto Recovery        | The auto recovery status of Galera Cluster:                                                                         |
 |                      |                                                                                                                     |
 |                      | * Cluster - If sets to ON, ClusterControl will perform automatic recovery if it detects cluster failure.            |
 |                      | * Node - If sets to ON, ClusterContorl will perform automatic recovery if it detects node failure.                  |
-+----------------------+---------------------------------------------------------------------------------------------------------------------+
-| Queries              | Database throughput (query per second) across all nodes in the cluster.                                             |
-+----------------------+---------------------------------------------------------------------------------------------------------------------+
-| Connections          | The aggregated number of database connections across all nodes in the cluster.                                      |
 +----------------------+---------------------------------------------------------------------------------------------------------------------+
 | Node Type and Status | See table on node status indicators further below.                                                                  |
 +----------------------+---------------------------------------------------------------------------------------------------------------------+

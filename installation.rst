@@ -471,6 +471,101 @@ Once completed, open the ClusterControl UI page at http://[ClusterControl_host]/
 
 For more example on deployments using Chef, please refer to `this blog post <http://www.severalnines.com/blog/chef-cookbooks-clustercontrol-management-and-monitoring-your-database-clusters>`_. For more details on configuration options, please refer to `ClusterControl Chef Cookbooks <https://supermarket.chef.io/cookbooks/clustercontrol>`_ page.
 
+Ansible Role
+````````````
+
+If you are automating your infrastructure using :term:`Ansible`, we have created a role for this purpose and it is available at `Ansible Galaxy <https://galaxy.ansible.com/severalnines/clustercontrol>`_. Getting the role is as easy as:
+
+.. code-block:: bash
+
+	$ ansible-galaxy install severalnines.clustercontrol
+
+Usage
+'''''
+
+1. Get the ClusterControl Ansible role from Ansible Galaxy or Github.
+
+Ansible Galaxy:
+
+.. code-block:: bash
+
+    $ ansible-galaxy install severalnines.clustercontrol
+
+Or through Github:
+
+.. code-block:: bash
+
+    $ git clone https://github.com/severalnines/ansible-clustercontrol
+    $ cp -rf ansible-clustercontrol /etc/ansible/roles/severalnines.clustercontrol
+
+2. Create a playbook. See `Example Playbook`_ section.
+
+3. Run the playbook.
+
+.. code-block:: bash
+
+    $ ansible-playbook cc.playbook
+
+4) Once ClusterControl is installed, go to http://[ClusterControl_IP_address]/clustercontrol and create the default admin user/password.
+
+5) On ClusterControl node, setup passwordless SSH key to all target DB nodes. For example, if ClusterControl node is 192.168.0.10 and DB nodes are 192.168.0.11,192.168.0.12 and 192.168.0.13:
+
+.. code-block:: bash
+
+    $ ssh-copy-id 192.168.0.11 # DB1
+    $ ssh-copy-id 192.168.0.12 # DB2
+    $ ssh-copy-id 192.168.0.13 # DB3
+
+.. Note:: Enter the password to complete the passwordless SSH setup.
+
+6) Start to deploy a new database cluster or add an existing one.
+
+Example Playbook
+''''''''''''''''
+
+The simplest playbook would be:
+
+.. code-block:: yaml
+
+    - hosts: clustercontrol-server
+      roles:
+        - { role: severalnines.clustercontrol }
+
+If you would like to specify custom configuration values as explained above, create a file called ``vars/main.yml`` and include it inside the playbook:
+
+.. code-block:: yaml
+
+    - hosts: 192.168.10.15
+      vars:
+        - vars/main.yml
+        roles:
+        - { role: severalnines.clustercontrol }
+
+Inside ``vars/main.yml``:
+
+.. code-block:: yaml
+
+    mysql_root_username: admin
+    mysql_root_password: super-user-password
+    cmon_mysql_password: super-cmon-password
+    cmon_mysql_port: 3307
+
+If you are running as another user, ensure the user has ability to escalate as super user via sudo. Example playbook for Ubuntu 12.04 with sudo password enabled:
+
+.. code-block:: yaml
+
+    - hosts: ubuntu@192.168.10.100
+      become: yes
+      become_user: root
+      roles:
+        - { role: severalnines.clustercontrol }
+
+Then, execute the command with ``--ask-become-pass`` flag, for example:
+
+.. code-block:: bash
+
+    $ ansible-playbook cc.playbook --ask-become-pass
+
 Docker image
 ````````````
 
@@ -617,29 +712,32 @@ Redhat/CentOS
 	mysql -uroot -p cmon < /usr/share/cmon/cmon_data.sql
 	mysql -uroot -p dcps < /var/www/html/clustercontrol/sql/dc-schema.sql
 	
-8. Clear the default CMON configuration file at ``/etc/cmon.cnf`` so we can setup a minimal options:
+8. Generate a ClusterControl key to be used by cmonapi token and rpc_key:
 
 .. code-block:: bash
 
-	sudo cat /dev/null > /etc/cmon.cnf
+    python -c 'import uuid; print uuid.uuid4()' | sha1sum | cut -f1 -d' '
+    6856d96a19d049aa8a7f4a5ba57a34740b3faf57
 
-And add following lines for minimal configuration options:
+And configure following lines for minimal configuration options:
 
 .. code-block:: bash
 
-	mysql_port=3306
-	mysql_hostname=[ClusterControl main IP address]
-	mysql_password=[cmonpassword]
-	hostname=[ClusterControl main IP address]
+    mysql_port=3306
+    mysql_hostname=[ClusterControl main IP address]
+    mysql_password=[cmonpassword]
+    hostname=[ClusterControl main IP address]
+    rpc_key=[ClusterControl API key as generated above]
 
 Example as follow:
 
 .. code-block:: bash
 
-	mysql_port=3306
-	mysql_hostname=192.168.1.85
-	mysql_password=cmon
-	hostname=192.168.1.85
+    mysql_port=3306
+    mysql_hostname=192.168.1.85
+    mysql_password=cmon
+    hostname=192.168.1.85
+    rpc_key=6856d96a19d049aa8a7f4a5ba57a34740b3faf57
 
 .. Attention:: The value of ``mysql_hostname`` and ``hostname`` must be the same that you used to grant user ``cmon@[ClusterControl main IP address]`` in step #6 above.
 
@@ -689,14 +787,7 @@ Example as follow:
 
 .. Note:: Replace ``[cmonpassword]`` with a relevant value.
 
-14. Generate a ClusterControl API token to be used by cmonapi:
-
-.. code-block:: bash
-
-	python -c 'import uuid; print uuid.uuid4()' | sha1sum | cut -f1 -d' '
-	6856d96a19d049aa8a7f4a5ba57a34740b3faf57
-
-15. Use the generated value from the previous command and specify it in ``/var/www/html/cmonapi/bootstrap.php`` under the ``CMON_TOKEN`` parameter. Also, update the ``CC_URL`` value to be equivalent to ClusterControl URL in your environment:
+14. Use the generated value from step #8 and specify it in ``/var/www/html/cmonapi/bootstrap.php`` under the ``CMON_TOKEN`` parameter. It is expected for the CMON_TOKEN and rpc_key value (in cmon.cnf) are the same. Also, update the ``CC_URL`` value to be equivalent to ClusterControl URL in your environment:
 
 .. code-block:: php
 
@@ -705,7 +796,7 @@ Example as follow:
 
 .. Note:: Replace ``[Generated ClusterControl API token]`` and ``[ClusterControl_host]`` with appropriate values.
 
-16. Configure MySQL credential for ClusterControl CMONAPI at ``/var/www/html/cmonapi/database.php``. In most cases, you just need to update the ``DB_PASS`` parameter with the cmon user password:
+15. Configure MySQL credential for ClusterControl CMONAPI at ``/var/www/html/cmonapi/database.php``. In most cases, you just need to update the ``DB_PASS`` parameter with the cmon user password:
 
 .. code-block:: bash
 
@@ -713,7 +804,7 @@ Example as follow:
 
 .. Note:: Replace ``[cmonpassword]`` with a relevant value.
 
-17. Start the Apache web server and configure it to auto start on boot:
+16. Start the Apache web server and configure it to auto start on boot:
 
 .. code-block:: bash
 
@@ -722,7 +813,7 @@ Example as follow:
 	systemctl start httpd # Redhat/CentOS 7
 	systemctl enable httpd # Redhat/CentOS 6
 
-18. Generate a SSH key to be used by ClusterControl so it can perform passwordless SSH to database hosts. If you are running as sudoer, the SSH key should be located under ``/home/$USER/.ssh/id_rsa``:
+17. Generate a SSH key to be used by ClusterControl so it can perform passwordless SSH to database hosts. If you are running as sudoer, the SSH key should be located under ``/home/$USER/.ssh/id_rsa``:
 
 .. code-block:: bash
 
@@ -806,29 +897,32 @@ Restart the MySQL service to apply the change:
 	mysql -uroot -p cmon < /usr/share/cmon/cmon_data.sql
 	mysql -uroot -p dcps < /var/www/clustercontrol/sql/dc-schema.sql
 
-8. Clear the default CMON configuration file at ``/etc/cmon.cnf`` so we can setup minimal configuration:
+8. Generate a ClusterControl key to be used by cmonapi token and rpc_key:
 
 .. code-block:: bash
 
-	sudo cat /dev/null > /etc/cmon.cnf
+	python -c 'import uuid; print uuid.uuid4()' | sha1sum | cut -f1 -d' '
+	6856d96a19d049aa8a7f4a5ba57a34740b3faf57
 
 And add the following lines for minimal configuration options:
 
 .. code-block:: bash
 
-	mysql_port=3306
-	mysql_hostname=[ClusterControl main IP address]
-	mysql_password=[cmonpassword]
-	hostname=[ClusterControl main IP address]
+    mysql_port=3306
+    mysql_hostname=[ClusterControl main IP address]
+    mysql_password=[cmonpassword]
+    hostname=[ClusterControl main IP address]
+    rpc_key=[ClusterControl API key as generated above]
 
 A sample configuration will be something like this:
 
 .. code-block:: bash
 
-	mysql_port=3306
-	mysql_hostname=192.168.1.85
-	mysql_password=cmon
-	hostname=192.168.1.85
+    mysql_port=3306
+    mysql_hostname=192.168.1.85
+    mysql_password=cmon
+    hostname=192.168.1.85
+    rpc_key=6856d96a19d049aa8a7f4a5ba57a34740b3faf57
 
 .. Note:: The value of ``mysql_hostname`` and ``hostname`` must be the same that you used to grant user ``cmon@[ClusterControl main IP address]`` in step #6.
 
@@ -903,14 +997,7 @@ For Ubuntu 12.04/Debian 7 and earlier:
 
 .. Note:: Replace [cmonpassword] with the relevant value.
 
-15. Generate a ClusterControl API token to be used by CMONAPI:
-
-.. code-block:: bash
-
-	python -c 'import uuid; print uuid.uuid4()' | sha1sum | cut -f1 -d' '
-	6856d96a19d049aa8a7f4a5ba57a34740b3faf57
-
-16. Use the generated value from previous command and specify it in ``/var/www/cmonapi/config/bootstrap.php`` under ``CMON_TOKEN`` parameter. Also, update the ``CC_URL`` value to be equivalent to ClusterControl URL in your environment:
+15. Use the generated value from step #8 and specify it in ``/var/www/cmonapi/config/bootstrap.php`` under ``CMON_TOKEN`` parameter. Also, update the ``CC_URL`` value to be equivalent to ClusterControl URL in your environment:
 
 .. code-block:: php
 
@@ -919,7 +1006,7 @@ For Ubuntu 12.04/Debian 7 and earlier:
 
 .. Note:: Replace ``[Generated ClusterControl API token]`` and ``[ClusterControl_host]`` with appropriate values.
 
-17. Configure MySQL credentials for ClusterControl CMONAPI at ``/var/www/cmonapi/config/database.php``. In most cases, you just need to update the ``DB_PASS`` parameter with the cmon user password:
+16. Configure MySQL credentials for ClusterControl CMONAPI at ``/var/www/cmonapi/config/database.php``. In most cases, you just need to update the ``DB_PASS`` parameter with the cmon user password:
 
 .. code-block:: php
 
@@ -927,19 +1014,19 @@ For Ubuntu 12.04/Debian 7 and earlier:
 
 .. Note:: Replace ``[cmonpassword]`` with the relevant value.
 
-18. Restart Apache web server to apply the changes:
+17. Restart Apache web server to apply the changes:
 
 .. code-block:: bash
 
 	sudo service apache2 restart
 
-19. Generate an SSH key to be used by ClusterControl so it can perform passwordless SSH to the database hosts. If you are running as sudoer, the SSH key should be located under ``/home/$USER/.ssh/id_rsa``:
+18. Generate an SSH key to be used by ClusterControl so it can perform passwordless SSH to the database hosts. If you are running as sudoer, the SSH key should be located under ``/home/$USER/.ssh/id_rsa``:
 
 .. code-block:: bash
 
 	ssh-keygen -t rsa # Press enter for all prompt
 
-20. Before importing a database cluster or single-server to ClusterControl, ensure the ClusterControl host is able to do passwordless SSH to the database host(s). Use following command to copy the SSH key to the target host:
+19. Before importing a database cluster or single-server to ClusterControl, ensure the ClusterControl host is able to do passwordless SSH to the database host(s). Use following command to copy the SSH key to the target host:
 
 .. code-block:: bash
 
@@ -947,7 +1034,7 @@ For Ubuntu 12.04/Debian 7 and earlier:
 
 .. Note:: Replace ``[ssh user]`` and ``[IP address of the target node]`` with appropriate values.
 
-21. Open ClusterControl UI and create the default admin password by providing a valid email address and password. You will be redirected to ClusterControl default page. Go to `Cluster Registrations` and enter the generated ClusterControl API token (step #14) and URL, similar to example below:
+20. Open ClusterControl UI and create the default admin password by providing a valid email address and password. You will be redirected to ClusterControl default page. Go to `Cluster Registrations` and enter the generated ClusterControl API token (step #15) and URL, similar to example below:
 
 .. image:: img/cc_register_token.png
    :alt: Register ClusterControl API token

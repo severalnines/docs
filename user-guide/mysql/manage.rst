@@ -17,14 +17,16 @@ Lists of hosts being managed by ClusterControl for the specific cluster. This in
 * Management nodes (MySQL Cluster)
 * Data nodes (MySQL Cluster)
 
+The list also contains respective hosts' operating system, host status, ping time and process ID of the main role.
+
 To remove a host, just select the host and click on the *Remove* button. 
 
-.. Attention:: We strongly recommend user to avoid removing nodes from this page if it still hold a role inside ClusterControl.
+.. Attention:: We strongly recommend user to avoid removing nodes from this page if it still holds a role inside ClusterControl.
 
 Configurations
 ``````````````
 
-Manage the configuration files of your database nodes. Changes can be persisted to database variables across one node or a group of nodes at once, dynamic variables are changed directly without a restart.
+Manage the configuration files of your database, HAProxy and Garbd nodes. For MySQL database, changes can be persisted to database variables across one node or a group of nodes at once, dynamic variables are changed directly without a restart.
 
 .. Attention:: ClusterControl does not store configuration changes history so there is no versioning at the moment. Only one version is exist at one time. It always import the latest configuration files every 30 minutes and overwrite it in cmon DB. This limitation will be improved in the upcoming release where ClusterControl shall support configuration versioning with dynamic import interval.
 
@@ -35,7 +37,7 @@ Manage the configuration files of your database nodes. Changes can be persisted 
 	- Re-import configuration if you have:
 		- Performed local configuration changes directly on the configuration files.
 		- Restarted the mysql servers/performed a rolling restart after a configuration change.
-	- ClusterControl will trigger a job to fetch the latest modification from each DB node.
+	- ClusterControl will trigger a job to fetch the latest modification from each MySQL, HAProxy and Garbd node.
 
 * **Change Parameter**
 	- The selected parameter will be changed or created in the specified group option. ClusterControl will attempt to dynamically set the configuration value if the parameter is valid. Then, the change can be persisted in the configuration file.
@@ -46,8 +48,7 @@ Manage the configuration files of your database nodes. Changes can be persisted 
 Load Balancer
 ``````````````
 
-Deploys load balancers (HAProxy), virtual IP (Keepalived) for MySQL-based clusters (NDB, Galera). For Galera Cluster, it is also possible to add Galera arbitrator daemon (Garbd) through this interface. You can monitor the status of the job under *ClusterControl > Logs > Jobs*.
-
+Manage deployment of load balancers (HAProxy and MaxScale), virtual IP address (Keepalived) and Garbd. For Galera Cluster, it is also possible to add Galera arbitrator daemon (Garbd) through this interface. You can monitor the status of the job under *ClusterControl > Logs > Jobs*.
 
 HAProxy
 .......
@@ -204,14 +205,39 @@ Garbd
 
 Galera arbitrator daemon (:term:`garbd`) can be installed to avoid network partitioning/split-brain scenarios.
 
-* **Host**
-	- A new host or select a host from the list. That host cannot be an existing Galera node.
+Create a new Garbd instance
+'''''''''''''''''''''''''''
+
+* **Garbd Address**
+	- Manually specify the new garbd hostname or IP address or select a host from the list. That host cannot be an existing Galera node.
+    
+* **CmdLine**
+	- Garbd command line used to start garbd process on the target node.
 
 * **Install Garbd**
 	- Starts the installation of garbd.
+    
+Add an existing Garbd instance
+''''''''''''''''''''''''''''''
+
+* **Garbd Address**
+	- Manually specify the new garbd hostname or IP address or select a host from the list. That host cannot be an existing Galera node.
+    
+* **Port**
+    - Garbd port. Default is 4567.
+
+* **CmdLine**
+	- Garbd command line used to start garbd process on the target node.
+
+* **Install Garbd**
+	- Starts the import of garbd.
+
+Remove Garbd
+'''''''''''''
 
 * **Remove**
 	- Remove the selected garbd node. This will:
+    
 		1. Stop garbd service on that node.
 		2. Remove the process monitoring and node from ClusterControl.
 

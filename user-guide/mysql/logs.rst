@@ -47,7 +47,7 @@ System Logs
 Tree view of corresponding database logs across cluster. Clicking on a log file will appear in a new tab in viewing panel on the right-hand side. Browsing through the appropriate error logs is key element of the troubleshooting process.
 
 * **Refresh Logs**
-	- Triggers a job for ClusterControl to perform log collection. By default, the logs are fetched every ``db_stats_collection`` which is 30 minutes. You can verify this from the 'Last Updated' value at the bottom of the section.
+	- Triggers a job for ClusterControl to perform logs collection. By default, the logs are fetched every ``db_stats_collection`` which is 30 minutes. You can verify this from the 'Last Updated' value at the bottom of the section.
 	
 * **Search**
 	- Look up the search term throughout the active document in viewing panel.

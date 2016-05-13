@@ -95,14 +95,112 @@ So attach the generated log file to your Support Issue, and we will be able to h
 Debugging ClusterControl Controller (CMON)
 ''''''''''''''''''''''''''''''''''''''''''
 
-CMON can run in debug mode as foreground process by invoking -d option:
+Starting from ClusterControl v1.3.0, ClusterControl comes with debuginfo package. In case if you encounter CMON crash, please install the debuginfo package ant the necessary packages as shown below.
+
+Install Debugging Components (Redhat/CentOS)
+````````````````````````````````````````````
+
+1. Enable the debug repo under /etc/yum.repos.d:
+
+ (eg.: /etc/yum.repos.d/CentOS-Debuginfo.repo set enabled=1 )
+
+2. Install Yum utilities:
+
+.. code-block:: bash
+
+    yum -y install yum-utils
+
+3. Install ClusterControl debuginfo and gdb:
+
+.. code-block:: bash
+
+    yum -y install clustercontrol-controller-debuginfo gdb
+
+4. Thne, run:
+
+.. code-block:: bash
+
+    debuginfo-install clustercontrol-controller
+
+Install Debugging Components (Debian/Ubuntu)
+``````````````````````````````````````````````
+
+1. Install ClusterControl debuginfo package and gdb:
+
+.. code-block:: bash
+
+    apt-get install clustercontrol-controller-dbg gdb
+
+Optionally, you can 
+
+2. Install the debugging components' library:
+
+.. code-block:: bash
+
+    apt-get install libstdc++6-4.8-dbg  libc6-dbg
+
+However, this totally depends on the libstdc++6 version installed. Print the shared object dependencies using ``ldd``:
+
+.. code-block:: bash
+
+    ldd /usr/sbin/cmon | grep libstdc
+	    libstdc++.so.6 => /usr/lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007ff508001000)
+
+Based on the library path, locate the package name that provides this library:
+
+.. code-block:: bash
+
+    dpkg -S /usr/lib/x86_64-linux-gnu/libstdc++.so.6
+    libstdc++6:amd64: /usr/lib/x86_64-linux-gnu/libstdc++.so.6
+
+Then, find the package's version:
+
+.. code-block:: bash
+
+    dpkg -l | grep libstdc++6
+    ii  libstdc++6:amd64                  4.9.2-10                     amd64        GNU Standard C++ Library v3
+
+In this case, we have version "4.9" installed for libstc++6. Finally, install the corresponding debug packages:
+
+.. code-block:: bash
+
+    apt-get install gdb libc6-dbg libstdc++-6-4.9-dbg  
+
+
+Debugging Steps
+````````````````
+
+Debugging is a program that produces a core dump. It consists of the recorded state of the working memory of a computer program at a specific time, generally when the program has crashed or otherwise terminated abnormally. ClusterControl Controller (CMON) package comes with a cron file installed under ``/etc/cron.d/`` which will auto-restart if the cmon process is terminated abnormally. Typically, you can notice if cmon process has crashed by looking at the ``dmesg`` output.
+
+In such cases, generating a core dump is the only way to backtrace the issue. Make sure you have the debugging components installed as described in the previous section beforehand. On ClusterControl node as root user, increase the CPU limit, adjust kernel's core pattern value and run CMON on foreground:
+
+.. code-block:: bash
+
+    ulimit -c unlimited
+    echo "/tmp/core.%e.%p.%h.%t" > /proc/sys/kernel/core_pattern
+    cmon
+
+When cmon crashes there will now be a core file in /tmp. Compress the core dump (gzip is recommended) and attach it to a support ticket so we can take a look and perform necessary fix. Alternatively, you can send only the backtrace in a support ticket by using following command:
+
+.. code-block:: bash
+
+    gdb /usr/sbin/cmon /tmp/<corefile>
+    thread apply all bt full
+
+
+Attach the full output and potentially replace sensitive information with "XXXXXXXXX". Traces may contain password information.
+
+CMON on Foreground
+````````````````````
+
+If you would like to run cmon as foreground process, you can do that by invoking -d option:
 
 .. code-block:: bash
 
 	$ service cmon stop
 	$ cmon -d
 
-CMON will print detailed information on the screen (stdout) as well as ``/var/log/cmon.log`` or ``/var/log/cmon_[cluster ID].log``. Press ``Ctrl + C`` to kill the process. In certain cases, the CMON debug output might be needed to get insight on the problem.
+CMON will print detailed information on the screen (stdout) as well as ``/var/log/cmon.log`` or ``/var/log/cmon_[cluster ID].log``. Press ``Ctrl + C`` to terminate the process. In certain cases, the CMON  output might be needed to get insight on the problem.
 
 Debugging ClusterControl UI
 '''''''''''''''''''''''''''
@@ -269,7 +367,7 @@ CMON process dies with “Critical error (mysql error code 1)”
 
 .. code-block:: bash
 
-	(ERROR) Critical error (mysql error code 1) occured - shutting down 
+	(ERROR) Critical error (mysql error code 1) occured - shutting down
 
 * **Troubleshooting steps:**
 1. Run the following command on the ClusterControl host to check if the ClusterControl host has the ability to connect to the DB host with current credentials:

@@ -20,13 +20,10 @@ Online Upgrade
 
 The following upgrade procedures require internet connection on ClusterControl node.
 
-Package Manager (Recommended)
-'''''''''''''''''''''''''''''
-
 This is the recommended way to upgrade ClusterControl. We are currently standardizing the upgrade procedure through yum/apt package manager.
 
 Redhat/CentOS
-.............
+'''''''''''''
 
 Even if you have previously installed from our tarball or .deb packages, it is possible to switch to yum repository and perform the upgrade.
 
@@ -75,7 +72,7 @@ Even if you have previously installed from our tarball or .deb packages, it is p
 Upgrade is now complete. Verify the new version at *ClusterControl UI > Settings > General Settings > Version* or by using command ``cmon -v``. You should re-login if your ClusterControl UI session is active.
 
 Debian/Ubuntu
-.............
+'''''''''''''
 
 Even if you have previously installed from our tarball or .deb packages, it is possible to switch to apt repository and perform the upgrade.
 
@@ -129,59 +126,6 @@ Even if you have previously installed from our tarball or .deb packages, it is p
 
 Upgrade is now complete. Verify the new version at *ClusterControl UI > Settings > General Settings > Version* or by using command ``cmon -v``. You should re-login if your ClusterControl UI session is active.
 
-Automatic Upgrade
-'''''''''''''''''
-
-A helper script called ``s9s_upgrade_cmon`` is available from the `Severalnines Github repository <https://github.com/severalnines/s9s-admin>`_ to automate the ClusterControl upgrade process.
-
-.. Important:: Port 9500 must be opened on the Controller. The Apache Server needs to connect to the Controller on localhost:9500 or 127.0.0.1:9500. 
-
-To upgrade to the latest version, clone the Git repo in ClusterControl host:
-
-.. code-block:: bash
-
-	$ git clone https://github.com/severalnines/s9s-admin.git
-
-If you already have that clone, it is very important you update it:
-
-.. code-block:: bash
-
-	$ cd s9s-admin
-	$ git pull
-
-Navigate to the ``s9s_upgrade_cmon`` script folder:
-
-.. code-block:: bash
-
-	$ cd s9s-admin/ccadmin
-
-Start the upgrade process:
-
-.. code-block:: bash
-
-	./s9s_upgrade_cmon --latest
-
-
-.. Note:: For sudoers, kindly run the command with 'sudo'.
-
-The script will compare the current ClusterControl version with the latest version available at Severalnines repository and perform the upgrade in all hosts if necessary. Upgrading using this method will upgrade all ClusterControl related files including the CMON Controller, the CMON DB, the ClusterControl REST API (CMONAPI) and the ClusterControl UI.
-
-For safety precaution, it will backup ClusterControl on every host (default backup path will be ``/$HOME/s9s_backup/s9s_backup_[date & time]``) before performing any upgrade. 
-
-To force upgrade, even though the script detects existing ClusterControl version is already up-to-date, specify the ``--force`` (-f) flag:
-
-.. code-block:: bash
-
-	./s9s_upgrade_cmon --latest --force
-
-By default, the upgrade will skip CMON and dcps databases backup as in some cases this behavior can eaten up a lot of disk space. You may instruct the script to perform the DB backup during the upgrade by using ``--backup-db`` flag (-n) and make sure you have sufficient free space beforehand:
-
-.. code-block:: bash
-
- ./s9s_upgrade_cmon --latest --backup-db
-
-.. Warning:: Due to various way of deployments, we have seen cases where the automatic upgrade does not fit in all environments. That's why we are standardizing the upgrade through package manager.
-
 Offline Upgrade
 ```````````````
 
@@ -197,10 +141,10 @@ Redhat/CentOS
 
 .. code-block:: bash
 
-	wget http://www.severalnines.com/downloads/cmon/clustercontrol-controller-1.2.12-1096-x86_64.rpm
-	wget http://www.severalnines.com/downloads/cmon/clustercontrol-1.2.12-1007-x86_64.rpm
-	wget http://www.severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.2.12-156-x86_64.rpm
-	wget http://severalnines.com/downloads/cmon/clustercontrol-nodejs-1.2.12-51-x86_64.rpm
+	wget http://severalnines.com/downloads/cmon/clustercontrol-controller-1.3.0-1255-x86_64.rpm
+	wget http://severalnines.com/downloads/cmon/clustercontrol-1.3.0-1420-x86_64.rpm
+	wget http://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.3.0-183-x86_64.rpm
+	wget http://severalnines.com/downloads/cmon/clustercontrol-nodejs-1.3.0-57-x86_64.rpm
 
 2) Install via yum so dependencies are met:
 
@@ -209,7 +153,7 @@ Redhat/CentOS
 	yum localinstall clustercontrol-*
 
 
-3) Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.2.12, apply all SQL modification files between those versions in sequential order:
+3) Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.3.0, apply all SQL modification files between those versions in sequential order:
 
 .. code-block:: bash
 
@@ -218,6 +162,7 @@ Redhat/CentOS
 	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.9-1.2.10.sql
 	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.10-1.2.11.sql
 	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.11-1.2.12.sql
+    mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.12-1.3.0.sql
 	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_data.sql
 
 .. Attention:: Importing ``cmon_db.sql`` and ``cmon_data.sql`` is required on each upgrade. Importing ``cmon_db_mods`` is relative to the previous version.
@@ -251,10 +196,10 @@ Even if you have previously installed from our tarball or .deb packages, it is p
 
 .. code-block:: bash
 
-	wget http://www.severalnines.com/downloads/cmon/clustercontrol-controller-1.2.12-1096-x86_64.deb
-	wget http://www.severalnines.com/downloads/cmon/clustercontrol_1.2.12-1007_x86_64.deb
-	wget http://www.severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.2.12-156_x86_64.deb
-	wget http://www.severalnines.com/downloads/cmon/clustercontrol-nodejs_1.2.12-51_x86_64.deb
+	wget http://severalnines.com/downloads/cmon/clustercontrol-controller-1.3.0-1255-x86_64.deb
+	wget http://severalnines.com/downloads/cmon/clustercontrol_1.3.0-1420_x86_64.deb
+	wget http://severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.3.0-183_x86_64.deb
+	wget http://severalnines.com/downloads/cmon/clustercontrol-nodejs_1.3.0-57_x86_64.deb
 
 2) Install via dpkg:
 
@@ -262,7 +207,7 @@ Even if you have previously installed from our tarball or .deb packages, it is p
 
 	dpkg -i clustercontrol-controller-1.2.12-1096-x86_64.deb clustercontrol_1.2.12-1007_x86_64.deb clustercontrol-cmonapi_1.2.12-156_x86_64.deb clustercontrol-nodejs_1.2.12-51_x86_64.deb
 
-3) Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.2.12, apply all SQL modification files between those versions in sequential order:
+3) Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.3.0, apply all SQL modification files between those versions in sequential order:
 
 .. code-block:: bash
 
@@ -271,6 +216,7 @@ Even if you have previously installed from our tarball or .deb packages, it is p
 	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.9-1.2.10.sql
 	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.10-1.2.11.sql
 	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.11-1.2.12.sql
+    mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.12-1.3.0.sql
 	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_data.sql
 
 .. Attention:: Importing ``cmon_db.sql`` and ``cmon_data.sql`` is required on each upgrade. Importing ``cmon_db_mods`` is relative to the previous version.
@@ -317,7 +263,7 @@ To backup ClusterControl manually, you can use your own method to copy or export
 CMON controller
 ```````````````
 
-* CMON configuration file: ``/etc/cmon.cnf``
+* CMON main configuration file: ``/etc/cmon.cnf``
 * CMON configuration directory and all its content: ``/etc/cmon.d/*``
 * CMON cron file: ``/etc/cron.d/cmon``
 * CMON init.d file: ``/etc/init.d/cmon``
@@ -377,7 +323,7 @@ ClusterControl requires ports used by the following services to be opened/enable
 * Streaming port for database backup through netcat (default is 9999)
 
 SSH
-```
+````
 
 SSH is very critical for ClusterControl. It must be possible to SSH from the ClusterControl server to the other nodes in the cluster without password, thus the database nodes must accept the SSH port configured in CMON configuration file. Following best practices are recommended:
 
@@ -415,19 +361,19 @@ MySQL
 
 If you are running MySQL for CMON database on different ports, several areas need to be updated:
 
-+-----------------------------------------+------------------------------------------------+-----------------------------------------+
-| Area                                    | File                                           | Example                                 |
-+=========================================+================================================+=========================================+
-| CMON configuration file                 | ``/etc/cmon.cnf` or ``/etc/cmon.d/cmon_N.cnf`` | ``mysql_port=[custom_port]``            |
-+-----------------------------------------+------------------------------------------------+-----------------------------------------+
-| ClusterControl CMONAPI database setting | ``wwwroot/cmonapi/config/database.php``        | ``define('DB_PORT', '[custom_port]');`` |
-+-----------------------------------------+------------------------------------------------+-----------------------------------------+
-| ClusterControl UI database setting      | ``wwwroot/clustercontrol/bootstrap.php``       | ``define('DB_PORT', '[custom_port]');`` |
-+-----------------------------------------+------------------------------------------------+-----------------------------------------+
++-----------------------------------------+-------------------------------------------------+-----------------------------------------+
+| Area                                    | File                                            | Example                                 |
++=========================================+=================================================+=========================================+
+| CMON configuration file                 | ``/etc/cmon.cnf`` or ``/etc/cmon.d/cmon_N.cnf`` | ``mysql_port=[custom_port]``            |
++-----------------------------------------+-------------------------------------------------+-----------------------------------------+
+| ClusterControl CMONAPI database setting | ``wwwroot/cmonapi/config/database.php``         | ``define('DB_PORT', '[custom_port]');`` |
++-----------------------------------------+-------------------------------------------------+-----------------------------------------+
+| ClusterControl UI database setting      | ``wwwroot/clustercontrol/bootstrap.php``        | ``define('DB_PORT', '[custom_port]');`` |
++-----------------------------------------+-------------------------------------------------+-----------------------------------------+
 
 .. Note:: Replace ``[wwwroot]`` with values defined inside CMON configuration file and ``[custom_port]`` with MySQL port.
 
-HAproxy
+HAProxy
 ```````
 
 By default, HAproxy statistic page will be configured to run on port 9600. To change to another port, change following line in ``/etc/haproxy/haproxy.cfg``:

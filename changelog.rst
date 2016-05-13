@@ -5,13 +5,210 @@ Change Logs
 
 These change logs list details about updates in each version of ClusterControl.
 
+Changes in v1.3.0
+-----------------
+
+Patch release: May 9th, 2016
+``````````````````````````````
+
+* Build:
+    - clustercontrol-controller 1.3.0-1262
+
+* ClusterControl Controller:
+    - Ubuntu 15.04 fix to handle that my.cnf is a symlink
+    - Missing SUPER privilege in Create Cluster causing the Incremental Xtrabackup to fail.
+
+Patch release: May 3rd, 2016
+``````````````````````````````
+
+* Build: 
+    - clustercontrol-1.3.0-1438 | clustercontrol-controller 1.3.0-1257
+
+* ClusterControl UI:
+    - Permission problem in a web folder
+    - Fix upgrade issue for 1.3.0 on centos/rhel
+
+* ClusterControl Controller:
+    - Fixed a compatibility issue with xtrabackup 2.2.x
+
+Patch release: May 2nd, 2016
+``````````````````````````````
+
+* Build number:
+    - clustercontrol-1.3.0-1420 | clustercontrol-controller 1.3.0-1252
+
+* ClusterControl UI:
+    - Alllow 'strange characters' in user name (now all ASCII is supported except ` ´` ' ). UTF-8 characters are not supported. 
+    - Made "Disable Firewall" default choice for Redhat/Centos when creating clusters.
+    - A directory, WWWROOT/cmon, was never created during installation which affected uploading of files.
+    - Postgres fixes to start a node from UI.
+    - Wrong status for  nodes in MySQL Cluster.
+
+* ClusterControl Controller:
+    - MySQL standalone nodes were deployed as read only.
+    - Mongo/HAProxy config file parsing issues fixed.
+    - Failed to detect CentOS 6.6
+    - Some settings (thresholds) set in the front-end was not respected by the controller.
+    - Fixed a compatibility issue with xtrabackup 2.1.x.
+
+Patch release: May 25th, 2016
+``````````````````````````````
+
+* Build number:
+    - clustercontrol-controller 1.3.0-1242
+
+* ClusterControl Controller:
+    - mysqldump fails for MariaDb 10.x with an erroneous parameter being used.  
+
+Patch release: Apr 24th, 2016
+``````````````````````````````
+
+* Build number:
+    - clustercontrol-1.3.0-1393
+    - clustercontrol-controller 1.3.0-1240
+
+* ClusterControl UI:
+    - New "Install Software" option for Galera Cluster with "Create Database Cluster" and "Create Database Node"
+    - Default "Yes" act as before where ClusterControl provisions the database nodes with required packages and any existing packages could be uninstalled if required.
+    - If set to "No" then no provisioning of packages or uninstallation of any existing packages are done. It is assumed that the DB nodes have been provisioned by for example a configuration management system with all required database packages. The create cluster/node jobs will then only provision out our Galera my.cnf file and then bootstrap the cluster without doing any provisioning of software. It is important that the mysql server process is stopped before running the job with "install Software" set to "No".
+MongoDB arbiter is now shown on the "Nodes" page
+
+* ClusterControl Controller:
+    - Correct wrong assets path. Fixes missing logo in operational reports.
+    - Manual fix: Move /usr/share/cmon/assets/assets to /usr/share/cmon/assets 
+    - Support for "Install Software" option for Galera Clusters with "Create Database Cluster" and "Create Database Node"
+
+Patch release: Apr 21st, 2016
+``````````````````````````````
+
+* Build number: 
+    - clustercontrol-1.3.0-1375
+
+* UI:
+    - Fix broken Add Existing Server/Cluster dialog. 
+
+Patch release: Apr 19th, 2016
+``````````````````````````````
+
+* Build number:
+    - clustercontrol-controller 1.3.0-1234
+    - clustercontrol-1.3.0-1355
+
+* ClusterControl Controller:
+    - Prefer "netcat-openbsd" over other variants when provisioning a node.
+    - epel-release URL fix for Centos 7 (using time-proof urls).
+    - Auto schema upgrade fixes in /etc/init.d/cmon
+    - The cmon init script in 1.3.0 automatically tries to upgrade the cmon schema to the current version. 
+
+* ClusterControl UI:
+    - Create Cluster Job: Remove unused/wrong keys from the json format. 
+    - Key Management: Fix reload issues with manage key's content table.
+    - Manage-Hosts: Fix Unknown status for HAProxy and Keepalived. 
+
+Initial Release: Apr 18th, 2016
+``````````````````````````````````
+
+* Build number:
+    - clustercontrol 1.3.0-1347
+    - clustercontrol-controller 1.3.0-1228
+    - clustercontrol-cmonapi 1.3.0-183
+    - clustercontrol-nodejs 1.3.0-56
+
+* Key Management allows you to manage a set of SSL certificates and keys that can be provisioned on your clusters
+    - Create certificate authority certificates or self-signed certificates and keys
+    - Easily Enable and Disable SSL encrypted client-server connections for MySQL and Postgres based clusters
+
+* Additional Operational Reports
+    - Generate an Availability Summary of uptime/downtime for your managed clusters and see node availability and cluster state history during the reported period
+    - Generate a backup summary of backup success/failure rates for your managed clusters 
+
+* Improved Security
+    - From this version we are setting an unique Controller RPC API Token which enables token authentication for your managed clusters. No user intervention is needed when upgrading older ClusterControl versions. An unique token will be automatically generated, set and enabled for existing clusters.
+    - Custom scripts/applications utilizing the RPC API need to pass the correct token for the clusters, see http://severalnines.com/downloads/cmon/cmon-docs/current/ccrpc.html... for details on how to pass the token correctly. 
+
+* Create/Mirror Repository
+    - Mirror your database vendor’s software repository without having to actually deploy a cluster. A mirrored local repository is used in scenarios where you cannot upgrade a cluster and must lock the db versions to use.
+
+* Additional Backup Retention Periods
+    - Enable shorter retention periods
+
+* MySQL based clusters
+    - NDB/MySQL Cluster
+        - Create a production setup of NDB/MySQL Cluster from ClusterControl
+        - Deploy Management Nodes, SQL/API Nodes and Data Nodes
+    - MySQL Replication/Standalone 
+        - Easily toggle read-only mode on and off for MySQL nodes
+
+* MongoDB based clusters
+    - Create MongoDB ReplicaSet Node
+    - Support for Percona MongoDB 3.x
+    - MongoDb 2.x is no longer supported.
+
 Changes in v1.2.12
 ------------------
 
-*Jan 25th, 2016*
+Patch release: Apr 3rd, 2016
+``````````````````````````````
+
+* Build number: 
+    - clustercontrol-controller-1.2.12-1201
+    - clustercontrol-1.2.12-1261
+
+* ClusterControl Controller:
+    - Javascript fixes (1) : schema_check_nopk.js and schema_check_myisam.js did not always complete.
+    - Javascript fixes (2):  validate_sst_auth.js did not complete ok if the wsrep_sst_auth parameter contained quotes.
+    - xtrabackup failed if there monitored_mysql_root_user was anything else than ‘root’, i.e the value of monitored_mysql_root_user in cmon.cnf was not respected.
+    - xtrabackup failed if executed on an asynchronously slave connected to a Galera node.
+
+* ClusterControl UI: 
+    - MongoDb: Shards was not presented correctly
+
+Patch release: March 20th, 2016
 
 * Build number:
-	- clustercontrol-1.2.11-1007
+    - clustercontrol-controller-1.2.12-1184
+    - clustercontrol-1.2.12-1261
+
+* ClusterControl Controller:
+    - Restore: Copying files larger than 2GB failed.
+    - Clear alarms when removing a node
+    - Galera: Setting up asynchronous slave connected to Galera failed for MariaDb 10.x 
+
+* ClusterControl UI: 
+    - MaxScale: displayed as a slave in the Overview
+    - MongoDb: Shards was not presented correctly
+    - MySQL Transaction Log: Pagination issue 
+
+Patch release: March 4th, 2016
+````````````````````````````````
+
+* Build number: 
+    - clustercontrol-controller-1.2.12-1158
+    - clustercontrol-1.2.12-1195
+    - clustercontrol-cmonapi-1.2.12-171. 
+
+* ClusterControl Controller:
+    - Very old backup schedules could sometimes cause problems
+    - Improved handling for checking mount points that does not exits
+    - Query Monitor: Running Queries did not always show b/c of a problem in processlist.js
+    - MySQL User Privileges: edit privileges failed due to bug in javascript
+    - Missing explains
+
+* ClusterControl UI: 
+    - Occasionally upgrades could fail because a UI cache was not cleared
+    - LDAP fixes related to issues when upgrading from 1.2.10 to 1.2.12
+    - Showed too many node types in Query Monitor -> Running Queries drop down
+    - Missing possibility to hide graphs opened by 'Show Servers'
+
+* ClusterControl CMONAPI:
+    - Fixes to queries showing explains
+
+
+Initial Release: Feb 25th, 2016
+````````````````````````````````
+
+* Build number:
+	- clustercontrol-1.2.12-1007
 	- clustercontrol-cmonapi-1.2.12-156
 	- clustercontrol-controller-1.2.12-1096
 	- clustercontrol-nodejs-1.2.12-51

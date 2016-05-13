@@ -6,7 +6,7 @@ Provides interface for database backup and restore management, scheduling, repor
 Backup Immediately
 ``````````````````
 
-Creates an immediate backup of the database. You can choose to create a full backup using mysqldump or Percona Xtrabackup. Backups can be stored on the database host that is performing the backup, or the files can be streamed to the ClusterControl host. The backup by this feature will be a full backup. 
+Creates an immediate backup of the database. You can choose to create a full backup using mysqldump or Percona Xtrabackup (fullbackup). Backups can be stored on the database host that is performing the backup, or the files can be streamed to the ClusterControl host. The backup by this feature will be a full backup. 
 
 * **Hostname**
 	- The target database host.
@@ -22,7 +22,7 @@ Creates an immediate backup of the database. You can choose to create a full bac
 * **Backup Locks**
 	- This option is only available if xtrabackup is selected. 
 	- Yes - Uses "LOCK TABLES FOR BACKUP" where it supported when making a backup.
-	- No - Sets --no-backup-locks which use "FLUSH NO_WRITE_TO_BINLOG TABLES" and "FLUSH TABLES WITH READ LOCK" when making backup.
+	- No - Sets ``--no-backup-locks`` which use ``FLUSH NO_WRITE_TO_BINLOG TABLES`` and ``FLUSH TABLES WITH READ LOCK`` when making backup.
 
 * **Use Compression**
 	- This option is only available if xtrabackup is selected.
@@ -46,7 +46,7 @@ Creates an immediate backup of the database. You can choose to create a full bac
 	- You can opt to use another backup directory as you wish. If you leave this field blank, the system will use the default backup directory specified in the *ClusterControl > Settings > General Settings > Backup*.
 	
 * **Netcat Port**
-	- Specify the port number that will be used by ClusterControl to stream backup created on the database node. Only available if you choose *Store on Controller* in *Backup Location*.
+	- Specify the port number that will be used by ClusterControl to stream backup created on the database node. This port must be opened on both source and destination hosts. Only available if you choose *Store on Controller* in *Backup Location*.
 	
 * **Databases**
 	- List of databases retrieved from the monitored MySQL servers. Default is 'All Databases'.
@@ -61,7 +61,7 @@ Creates backup schedules of the database. You can choose to create a full or inc
 * **Start Time**
 	- Backup start time.
 
-.. note:: The time is UTC on the ClusterControl server.
+.. note:: The time is the local time on ClusterControl node.
 
 * **Backup Directory**
 	- Enter a backup directory or use default path provided by ClusterControl under *ClusterControl > Settings > Backup*.
@@ -100,7 +100,7 @@ Creates backup schedules of the database. You can choose to create a full or inc
 		- Store on Controller - Store the backup inside ClusterControl node. This requires :term:`netcat` on source and destination host. By default, ClusterControl uses port 9999 to stream the backup created on the database node to ClusterControl node.
 
 * **Netcat Port**
-	- Specify the port number that will be used by ClusterControl to stream backup created on the database node. Only available if you choose *Store on Controller* in *Backup Location*.
+	- Specify the port number that will be used by ClusterControl to stream backup created on the database node. This port must be opened on both source and destination hosts. Only available if you choose *Store on Controller* in *Backup Location*.
 
 * **Databases**
 	- List of databases retrieved from the monitored MySQL servers. Default is 'All Databases'.
@@ -183,7 +183,7 @@ Restore external backups created by user independently. The following steps will
 3. Restore the backup.
 4. Follow the instruction in the *ClusterControl > Logs > Job > Job Message* on how to bootstrap the cluster.
 
-.. Note:: Only ``xbstream``, ``xbstream.gz`` and ``.tar.gz`` extensions are supported. Note to prepare your external backup with one of these extensions beforehand.
+.. Note:: Only ``xbstream``, ``xbstream.gz`` and ``.tar.gz`` extensions are supported. Do prepare your external backup with one of these extensions beforehand.
 
 * **Restore backup on**
 	- The backup will be restored to the selected node.

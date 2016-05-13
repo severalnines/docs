@@ -211,8 +211,5 @@ Backup
 
 Manages the default backup directory and retention period.
 
-* **Backup Directory**
-	- Default backup directory. This directory will be created automatically if does not exist on the target node.
-
 * **Backup Retention Period**
 	- Backup retention period in days. Backups older than the retention period (days) will be deleted. Set to 0 for no retention.

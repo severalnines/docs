@@ -354,6 +354,6 @@ UTC is however recommended. Configure NTP client for each host with a working ti
 License
 -------
 
-ClusterControl comes in three versions, Community, Pro and Enterprise editions, within the same binary. Please review the `ClusterControl product page <http://www.severalnines.com/pricing>`_ for features comparison between these editions. To upgrade from Community to Pro or Enterprise, you would need a valid software license. When the license expires, ClusterControl defaults back to the Community Edition.
+ClusterControl comes in 4 versions - Community, Standard, Pro and Enterprise editions, within the same binary. Please review the `ClusterControl product page <http://www.severalnines.com/pricing>`_ for features comparison between these editions. To upgrade from Community to Standard, Pro or Enterprise, you would need a valid software license. When the license expires, ClusterControl defaults back to the Community Edition.
 
-All installation methods automatically configures ClusterControl with a 14-days fully functional trial license. For commercial information, please `contact us <http://www.severalnines.com/contact>`_.
+All installation methods automatically configures ClusterControl with a 30-days fully functional trial license. For commercial information, please `contact us <http://www.severalnines.com/contact>`_.

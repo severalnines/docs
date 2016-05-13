@@ -10,6 +10,11 @@ Glossary
 		
 		.. seealso:: http://en.wikipedia.org/wiki/Active_Directory
 
+    Ansible
+        Ansible is a free-software platform for configuring and managing computers, combines multi-node software deployment, ad hoc task execution, and configuration management. It manages nodes (Linux nodes must have Python 2.4 or later installed on them, Windows nodes require PowerShell 3.0 or later) over SSH or over PowerShell.
+        
+        .. seealso:: http://www.ansible.com/
+
 	arbiter
 		MongoDB instances that are part of a replica set but do not hold data. Arbiters participate in elections in order to break ties.
 		

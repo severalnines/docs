@@ -99,8 +99,14 @@ These are specific functions available for MySQL replication nodes:
 * **Start Node**
 	- This option is only available if the node is down. It starts the database instance on this node.
 
+* **Disable Read Only**
+    - Disable read-only by setting up ``SET GLOBAL read_only = OFF``. This option is only available if read-only is on.
+
+* **Enable Read Only**
+    - Enable read-only by setting up ``SET GLOBAL read_only = ON``. This option is only available if read-only is off.
+
 * **Rebuild Replication Slave**
-	- Rebuilds replication slave on this node from another master. It uses Percona Xtrabackup to stage the replication data.
+	- Rebuilds replication slave on this node from another master. It uses Percona Xtrabackup to stage the replication data. This option is only available if ClusterControl detects the node as slave.
 	
 .. caution:: 'Rebuilding Replication Slave' will wipe out the selected node's MySQL datadir.
 
@@ -108,7 +114,12 @@ These are specific functions available for MySQL replication nodes:
 	- This option is only available if the slave is stopped. It starts the slave thread.
 
 * **Stop Slave**
-	- Stops the slave thread.
+	- Stops the slave IO and SQL threads.
+    
+* **Promote Slave**
+	- Promotes the selected slave to become the new master. 
+    - If the master is currently functioning correctly, then stop application queries prior to promoting another slave to safe guard from data loss. Connections on the current running master will be killed after a 10 second grace period.
+    - This option is only available if ClusterControl detects the node as slave.
 
 MySQL single
 ''''''''''''
@@ -123,3 +134,12 @@ These are specific functions available for MySQL standalone nodes:
 	
 * **Start Node**
 	- This option is only available if the node is down. It starts the database instance on this node.
+
+* **Enable Binary Logging**
+    - This job will update the configuration of selected node to enable binary logging. A replication slave can then be added to the node, or it may be possible to use the binary log for point-in-time recovery. A server restart is needed to finalize the configuration update.
+
+* **Disable Read Only**
+    - Disable read-only by setting up ``SET GLOBAL read_only = OFF``. This option is only available if read-only is on.
+
+* **Enable Read Only**
+    - Enable read-only by setting up ``SET GLOBAL read_only = ON``. This option is only available if read-only is off.
