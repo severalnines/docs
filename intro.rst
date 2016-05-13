@@ -3,7 +3,7 @@
 Introduction
 ============
 
-This documentation covers ClusterControl version 1.2.12 which released on January 25th, 2016. This release contains key new features along with performance improvements and bug fixes. Release changelog is available `here <changelog.html>`_.
+This documentation covers ClusterControl version 1.3.0 which released on April 18th, 2016. This release contains key new features along with performance improvements and bug fixes. Release changelog is available `here <changelog.html>`_.
 
 What is ClusterControl?
 -----------------------
