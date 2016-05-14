@@ -78,24 +78,26 @@ The path of the log file to be used.
 Configuration File
 ``````````````````
 
-A single CMON Controller process is able to monitor one or more clusters. Each of the cluster requires one exclusive configuration file residing in the ``/etc/cmon.d/`` directory. For instance, the default CMON configuration file is located at ``/etc/cmon.cnf``, and commonly used to manage the first cluster (cluster_id=1). For the second cluster, it is possible to have another configuration file saved as ``/etc/cmon.d/cmon_2.cnf`` with cluster_id=2.
+A single CMON Controller process is able to monitor one or more clusters. Each of the cluster requires one exclusive configuration file residing in the ``/etc/cmon.d/`` directory. For instance, the default CMON configuration file is located at ``/etc/cmon.cnf``, and commonly used to store the default (minimal) configuration for CMON process to run. For the first cluster (cluster_id=1), the configuration options should be stored inside ``/etc/cmon.d/cmon_1.cnf``. For the second cluster, it would be ``/etc/cmon.d/cmon_2.cnf`` with ``cluster_id=2`` respectively, and so on.
 
-An example of file hierarchy is as follows:
+An example of CMON configuration file hierarchy is as follows:
 
 +----------------------------+------------------------+--------------+-----------------------------+
 | Example cluster            | Configuration file     | Cluster      | Log file location           |
 |                            |                        | identifier   |                             |
 +============================+========================+==============+=============================+
-| Cluster #1 (Galera)        | /etc/cmon.cnf          | cluster_id=1 | logfile=/var/log/cmon.log   |
+| Default configuration      | /etc/cmon.cnf          | N/A          | logfile=/var/log/cmon.log   |
 +----------------------------+------------------------+--------------+-----------------------------+
-| Cluster #2 (PXC)           | /etc/cmon.d/cmon_2.cnf | cluster_id=2 | logfile=/var/log/cmon_2.log |
+| Cluster #1 (Galera)        | /etc/cmon.d/cmon_1.cnf | cluster_id=1 | logfile=/var/log/cmon_1.log |
 +----------------------------+------------------------+--------------+-----------------------------+
-| Cluster #3 (MySQL Cluster) | /etc/cmon.d/cmon_3.cnf | cluster_id=3 | logfile=/var/log/cmon_3.log |
+| Cluster #2 (MySQL Cluster) | /etc/cmon.d/cmon_2.cnf | cluster_id=2 | logfile=/var/log/cmon_2.log |
 +----------------------------+------------------------+--------------+-----------------------------+
-| Cluster #4 (cluster type)  | /etc/cmon.d/cmon_N.cnf | cluster_id=N | logfile=/var/log/cmon_N.log |
+| Cluster #N (cluster type)  | /etc/cmon.d/cmon_N.cnf | cluster_id=N | logfile=/var/log/cmon_N.log |
 +----------------------------+------------------------+--------------+-----------------------------+
  
-The CMON Controller will import the configuration options defined in each configuration file into the CMON database and is then used to manage cluster based on the ``cluster_id`` value, representing a specific cluster.
+.. Note:: It's highly recommended to separate CMON logging for each cluster to its own log file. In the above example, we can see that ``cluster_id`` and ``logfile`` are two of the most imporant configuration options that can distinguish the cluster.
+
+The CMON Controller will import the configuration options defined in each configuration file into the CMON database during process start up. Once loaded, CMON then use all the loaded information to manage clusters based on the ``cluster_id`` value.
 
 Configuration Options
 `````````````````````
@@ -107,9 +109,10 @@ The configuration options can be divided into 4 types, with * as indicator:
 - \* - mandatory for all cluster type
 - \*\* - mandatory for Galera/MySQL replication/MySQL single instance
 - \*\*\* - mandatory for MySQL Cluster
-- \*\*\*\* - mandatory for MongoDB/TokuMX clusters
+- \*\*\*\* - mandatory for MongoDB server/cluster
+- \*\*\*\*\* - mandatory for PostgreSQL server/cluster
 
-Supported configuration options for the CMON Controller configuration file:
+Supported configuration options inside CMON Controller configuration file:
 
 General
 '''''''
@@ -152,21 +155,11 @@ CMON
 * \* CMON process identifier file directory. It's recommended not to change the default value.	
 * Example: ``pidfile=/var/run``
 
-``enable_cluster_autorecovery=<boolean integer>``
+``rpc_key=<string>``
 
-* If undefined, CMON will perform automatic recovery if it detects cluster failure. Supported values are 1 (disable cluster recovery) or 0 (enable cluster recovery).	
+* \* Unique secret token for authentication. To interact with individual cluster via CMON RPC interface (port 9500), one must use this key or else you would get 'HTTP/1.1 403 Access denied'.
+* `ClusterControl UI`_ needs this key stored as RPC API Token to communicate with CMON RPC interface. Each cluster should be configured with different ``rpc_key`` value.
 
-* Example: ``enable_cluster_autorecovery=0``
-
-``enable_node_autorecovery=<boolean integer>``
-
-* If undefined, CMON will perform automatic recovery if it detects node failure. Supported values are 1 (disable node recovery) or 0 (enable node recovery).
-* Example: ``enable_node_autorecovery=0``
-
-``enable_autorecovery=<boolean integer>``
-
-* If undefined, CMON will perform automatic recovery if it detects node or cluster failure. Supported values are 0 (disable cluster and node recovery) or 1 (enable cluster and node recovery). This setting will internally set enable_node_autorecovery and enable_cluster_autorecovery to the specified value.
-* Example: ``enable_autorecovery=0``
 
 Operating system
 ''''''''''''''''
@@ -262,6 +255,25 @@ Host monitoring
 
 * List of network interface card (NIC) to be monitored for network performance in comma separated list.	
 * Example: ``monitored_nics=eth1,eth2``
+
+Automatic recovery
+'''''''''''''''''''
+
+``enable_cluster_autorecovery=<boolean integer>``
+
+* If undefined, CMON will perform automatic recovery if it detects cluster failure. Supported values are 1 (disable cluster recovery) or 0 (enable cluster recovery).	
+
+* Example: ``enable_cluster_autorecovery=0``
+
+``enable_node_autorecovery=<boolean integer>``
+
+* If undefined, CMON will perform automatic recovery if it detects node failure. Supported values are 1 (disable node recovery) or 0 (enable node recovery).
+* Example: ``enable_node_autorecovery=0``
+
+``enable_autorecovery=<boolean integer>``
+
+* If undefined, CMON will perform automatic recovery if it detects node or cluster failure. Supported values are 0 (disable cluster and node recovery) or 1 (enable cluster and node recovery). This setting will internally set enable_node_autorecovery and enable_cluster_autorecovery to the specified value.
+* Example: ``enable_autorecovery=0``
 
 MySQL managed nodes
 '''''''''''''''''''
