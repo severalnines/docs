@@ -29,45 +29,98 @@ Even if you have previously installed from our tarball or .deb packages, it is p
 
 1) Setup the `Severalnines Repository <installation.html#severalnines-repository>`_.
 
-2) Clear yum cache so it will retrieve the latest repository list and perform the upgrade:
+2) This step is only applicable if you are **upgrading to version 1.3.0 and you have** ``cluster_id`` **parameter inside** ``/etc/cmon.cnf`` (usually when you deployed ClusterControl using Severalnines Configurator). Before performing the package upgrade as described in step #3, create a default ``/etc/cmon.cnf`` and move the current configuration into ``/etc/cmon.d`` directory. Starting from version 1.3.0, ClusterControl Controller (CMON) handles its configuration files differently, where it expects the ``/etc/cmon.cnf`` is the default configuration file containing minimal parameters. The minimal parameters are:
 
 .. code-block:: bash
 
-	yum clean all
-	yum install cmon-controller clustercontrol clustercontrol-cmonapi clustercontrol-controller clustercontrol-nodejs
+  mysql_port=[controller mysql server's mysql port]
+  mysql_password=[cmon user password]
+  mysql_hostname=[controller hostname/IP address]
+  hostname=[controller hostname/IP address]
+
+
+2a) Create a new CMON configuration directory:
+
+.. code-block:: bash
+
+  $ mkdir /etc/cmon.d
+
+2b) Check the value of ``cluster_id`` in the existing ``/etc/cmon.cnf``:
+
+.. code-block:: bash
+  
+  $ grep cluster_id /etc/cmon.cnf
+  cluster_id=1
+  
+2c) Copy the existing ``cmon.cnf`` into the configuration directory. The destination must be in ``cmon_[cluster_id].cnf``. For example, if you have ``cluster_id=1`` as retrieved in step 2b, the destination file name is ``cmon_1.cnf``:
+
+.. code-block:: bash
+  
+  $ cp /etc/cmon.cnf /etc/cmon.d/cmon_1.cnf
+  
+2d) Edit the existing ``/etc/cmon.cnf`` and remove all paramaeters except the 4 parameters mentioned in step 2, for example:
+
+.. code-block:: bash
+  
+  mysql_port=3306
+  mysql_password=cmon
+  mysql_hostname=192.168.1.13
+  hostname=192.168.1.13
+
+2e) Verify the new hierarchy of CMON configuration files. It should be similar to below:
+
+.. code-block:: bash
+
+  $ ls -1 /etc/cmon*
+  /etc/cmon.cnf
+  
+  /etc/cmon.d:
+  cmon_1.cnf
+
+Now, we can safely perform the package upgrade as described in the next steps.
+
+.. Note:: Your old configuration file now lives in ``/etc/cmon.d/cmon_[cluster_id].cnf``.
+
+
+3) Clear yum cache so it will retrieve the latest repository list and perform the upgrade:
+
+.. code-block:: bash
+
+	$ yum clean all
+	$ yum install cmon-controller clustercontrol clustercontrol-cmonapi clustercontrol-controller clustercontrol-nodejs
 
 .. Note:: cmon-controller is a transition package for clustercontrol-controller. Omit it from the command line if you previously didn't have cmon-controller package installed.
 
-3) Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.2.12, apply all SQL modification files between those versions in sequential order:
+4) Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.2.12, apply all SQL modification files between those versions in sequential order:
 
 .. code-block:: bash
 
-	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db.sql
-	mysql -f- h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.8-1.2.9.sql
-	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.9-1.2.10.sql
-	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.10-1.2.11.sql
-	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.11-1.2.12.sql
-	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_data.sql
+	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db.sql
+	$ mysql -f- h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.8-1.2.9.sql
+	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.9-1.2.10.sql
+	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.10-1.2.11.sql
+	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.11-1.2.12.sql
+	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_data.sql
 
 .. Attention:: Importing ``cmon_db.sql`` and ``cmon_data.sql`` is required on each upgrade. Importing ``cmon_db_mods`` is relative to the previous version.
 
-4) Upgrade the dcps database for ClusterControl UI:
+5) Upgrade the dcps database for ClusterControl UI:
 
 .. code-block:: bash
 
-	mysql -f -h127.0.0.1 -ucmon -p dcps < /var/www/html/clustercontrol/sql/dc-schema.sql
+	$ mysql -f -h127.0.0.1 -ucmon -p dcps < /var/www/html/clustercontrol/sql/dc-schema.sql
 
-5) Clear the ClusterControl UI cache:
-
-.. code-block:: bash
-
-	rm -f /var/www/html/clustercontrol/app/tmp/cache/models/*
-
-6) Restart the CMON controller service:
+6) Clear the ClusterControl UI cache:
 
 .. code-block:: bash
 
-	sudo service cmon restart
+	$ rm -f /var/www/html/clustercontrol/app/tmp/cache/models/*
+
+7) Restart the CMON controller service:
+
+.. code-block:: bash
+
+	$ service cmon restart
 
 Upgrade is now complete. Verify the new version at *ClusterControl UI > Settings > General Settings > Version* or by using command ``cmon -v``. You should re-login if your ClusterControl UI session is active.
 
@@ -78,51 +131,105 @@ Even if you have previously installed from our tarball or .deb packages, it is p
 
 1) Setup the `Severalnines Repository <installation.html#severalnines-repository>`_.
 
-2) Update the repository list and perform the upgrade:
+2) This step is only applicable if you are **upgrading to version 1.3.0 and you have** ``cluster_id`` **parameter inside** ``/etc/cmon.cnf`` (usually when you deployed ClusterControl using Severalnines Configurator). Before performing the package upgrade as described in step #3, create a default ``/etc/cmon.cnf`` and move the current configuration into ``/etc/cmon.d`` directory. Starting from version 1.3.0, ClusterControl Controller (CMON) handles its configuration files differently, where it expects the ``/etc/cmon.cnf`` is the default configuration file containing minimal parameters. The minimal parameters are:
 
 .. code-block:: bash
 
-	sudo apt-get update
-	sudo apt-get install cmon-controller clustercontrol clustercontrol-cmonapi clustercontrol-controller clustercontrol-nodejs
+  mysql_port=[controller mysql server's mysql port]
+  mysql_password=[cmon user password]
+  mysql_hostname=[controller hostname/IP address]
+  hostname=[controller hostname/IP address]
+
+
+2a) Create a new CMON configuration directory:
+
+.. code-block:: bash
+
+  $ mkdir /etc/cmon.d
+
+2b) Check the value of ``cluster_id`` in the existing ``/etc/cmon.cnf``:
+
+.. code-block:: bash
+  
+  $ grep cluster_id /etc/cmon.cnf
+  cluster_id=1
+
+.. Attention:: If the ``grep`` command returns nothing, you may skip the remaining sub-steps and proceed to step 3.
+
+2c) Copy the existing ``cmon.cnf`` into the configuration directory. The destination must be in ``cmon_[cluster_id].cnf``. For example, if you have ``cluster_id=1`` as retrieved in step 2b, the destination file name is ``cmon_1.cnf``:
+
+.. code-block:: bash
+  
+  $ cp /etc/cmon.cnf /etc/cmon.d/cmon_1.cnf
+  
+2d) Edit the existing ``/etc/cmon.cnf`` and remove all paramaeters except the 4 parameters mentioned in step 2, for example:
+
+.. code-block:: bash
+  
+  mysql_port=3306
+  mysql_password=cmon
+  mysql_hostname=192.168.1.13
+  hostname=192.168.1.13
+
+2e) Verify the new hierarchy of CMON configuration files. It should be similar to below:
+
+.. code-block:: bash
+
+  $ ls -1 /etc/cmon*
+  /etc/cmon.cnf
+  
+  /etc/cmon.d:
+  cmon_1.cnf
+
+Now, we can safely perform the package upgrade as described in the next steps.
+
+.. Note:: Your old configuration file now lives in ``/etc/cmon.d/cmon_[cluster_id].cnf``.
+
+3) Update the repository list and perform the upgrade:
+
+.. code-block:: bash
+
+	$ sudo apt-get update
+	$ sudo apt-get install cmon-controller clustercontrol clustercontrol-cmonapi clustercontrol-controller clustercontrol-nodejs
 
 .. Note:: cmon-controller is a transition package for clustercontrol-controller. You can omit it from the command line if you previously didn't have cmon-controller package installed.
 
-3) Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.2.12, apply all SQL modification files between those versions in sequential order:
+4) Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.2.12, apply all SQL modification files between those versions in sequential order:
 
 .. code-block:: bash
 
-	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db.sql
-	mysql -f- h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.8-1.2.9.sql
-	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.9-1.2.10.sql
-	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.10-1.2.11.sql
-	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.11-1.2.12.sql
-	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_data.sql
+	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db.sql
+	$ mysql -f- h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.8-1.2.9.sql
+	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.9-1.2.10.sql
+	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.10-1.2.11.sql
+	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.11-1.2.12.sql
+	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_data.sql
 
 .. Attention:: Importing ``cmon_db.sql`` and ``cmon_data.sql`` is required on each upgrade. Importing ``cmon_db_mods`` is relative to the previous version.
 
-4) Upgrade the dcps database for ClusterControl UI:
+5) Upgrade the dcps database for ClusterControl UI:
 
 .. code-block:: bash
 
 	# For Ubuntu 14.04/Debian 8 or later, where wwwroot is /var/www/html:
-	mysql -f -h127.0.0.1 -ucmon -p dcps < /var/www/html/clustercontrol/sql/dc-schema.sql
+	$ mysql -f -h127.0.0.1 -ucmon -p dcps < /var/www/html/clustercontrol/sql/dc-schema.sql
 	# For Debian 7 and Ubuntu 12.04, where wwwroot is /var/www:
-	mysql -f -h127.0.0.1 -ucmon -p dcps < /var/www/clustercontrol/sql/dc-schema.sql
+	$ mysql -f -h127.0.0.1 -ucmon -p dcps < /var/www/clustercontrol/sql/dc-schema.sql
 
-5) Clear the ClusterControl UI cache:
+6) Clear the ClusterControl UI cache:
 
 .. code-block:: bash
 
 	# For Ubuntu 14.04/Debian 8 or later, where wwwroot is /var/www/html:
-	rm -f /var/www/html/clustercontrol/app/tmp/cache/models/*
+	$ sudo rm -f /var/www/html/clustercontrol/app/tmp/cache/models/*
 	# For Debian 7 and Ubuntu 12.04, where wwwroot is /var/www:
-	rm -f /var/www/clustercontrol/app/tmp/cache/models/*
+	$ sudo rm -f /var/www/clustercontrol/app/tmp/cache/models/*
 
-6) Restart the CMON controller service:
+7) Restart the CMON controller service:
 
 .. code-block:: bash
 
-	sudo service cmon restart
+	$ sudo service cmon restart
 
 Upgrade is now complete. Verify the new version at *ClusterControl UI > Settings > General Settings > Version* or by using command ``cmon -v``. You should re-login if your ClusterControl UI session is active.
 
@@ -146,44 +253,98 @@ Redhat/CentOS
 	wget http://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.3.0-183-x86_64.rpm
 	wget http://severalnines.com/downloads/cmon/clustercontrol-nodejs-1.3.0-57-x86_64.rpm
 
-2) Install via yum so dependencies are met:
+2) This step is only applicable if you are **upgrading to version 1.3.0 and you have** ``cluster_id`` **parameter inside** ``/etc/cmon.cnf`` (usually when you deployed ClusterControl using Severalnines Configurator). Before performing the package upgrade as described in step #3, create a default ``/etc/cmon.cnf`` and move the current configuration into ``/etc/cmon.d`` directory. Starting from version 1.3.0, ClusterControl Controller (CMON) handles its configuration files differently, where it expects the ``/etc/cmon.cnf`` is the default configuration file containing minimal parameters. The minimal parameters are:
 
 .. code-block:: bash
 
-	yum localinstall clustercontrol-*
+  mysql_port=[controller mysql server's mysql port]
+  mysql_password=[cmon user password]
+  mysql_hostname=[controller hostname/IP address]
+  hostname=[controller hostname/IP address]
 
 
-3) Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.3.0, apply all SQL modification files between those versions in sequential order:
+2a) Create a new CMON configuration directory:
 
 .. code-block:: bash
 
-	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db.sql
-	mysql -f- h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.8-1.2.9.sql
-	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.9-1.2.10.sql
-	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.10-1.2.11.sql
-	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.11-1.2.12.sql
-    mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.12-1.3.0.sql
-	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_data.sql
+  $ mkdir /etc/cmon.d
+
+2b) Check the value of ``cluster_id`` in the existing ``/etc/cmon.cnf``:
+
+.. code-block:: bash
+  
+  $ grep cluster_id /etc/cmon.cnf
+  cluster_id=1
+  
+.. Attention:: If the ``grep`` command returns nothing, you may skip the remaining sub-steps and proceed to step 3.
+
+2c) Copy the existing ``cmon.cnf`` into the configuration directory. The destination must be in ``cmon_[cluster_id].cnf``. For example, if you have ``cluster_id=1`` as retrieved in step 2b, the destination file name is ``cmon_1.cnf``:
+
+.. code-block:: bash
+  
+  $ cp /etc/cmon.cnf /etc/cmon.d/cmon_1.cnf
+  
+2d) Edit the existing ``/etc/cmon.cnf`` and remove all paramaeters except the 4 parameters mentioned in step 2, for example:
+
+.. code-block:: bash
+  
+  mysql_port=3306
+  mysql_password=cmon
+  mysql_hostname=192.168.1.13
+  hostname=192.168.1.13
+
+2e) Verify the new hierarchy of CMON configuration files. It should be similar to below:
+
+.. code-block:: bash
+
+  $ ls -1 /etc/cmon*
+  /etc/cmon.cnf
+  
+  /etc/cmon.d:
+  cmon_1.cnf
+
+Now, we can safely perform the package upgrade as described in the next steps.
+
+.. Note:: Your old configuration file now lives in ``/etc/cmon.d/cmon_[cluster_id].cnf``.
+
+3) Install via yum so dependencies are met:
+
+.. code-block:: bash
+
+	$ yum localinstall clustercontrol-*
+
+
+4) Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.3.0, apply all SQL modification files between those versions in sequential order:
+
+.. code-block:: bash
+
+	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db.sql
+	$ mysql -f- h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.8-1.2.9.sql
+	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.9-1.2.10.sql
+	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.10-1.2.11.sql
+	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.11-1.2.12.sql
+  $ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.12-1.3.0.sql
+	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_data.sql
 
 .. Attention:: Importing ``cmon_db.sql`` and ``cmon_data.sql`` is required on each upgrade. Importing ``cmon_db_mods`` is relative to the previous version.
 
-4) Upgrade the dcps database for ClusterControl UI:
+5) Upgrade the dcps database for ClusterControl UI:
 
 .. code-block:: bash
 
-	mysql -f -h127.0.0.1 -ucmon -p dcps < /var/www/html/clustercontrol/sql/dc-schema.sql
+	$ mysql -f -h127.0.0.1 -ucmon -p dcps < /var/www/html/clustercontrol/sql/dc-schema.sql
 
-5) Clear the ClusterControl UI cache:
-
-.. code-block:: bash
-
-	rm -f /var/www/html/clustercontrol/app/tmp/cache/models/*
-
-6) Restart the CMON controller service:
+6) Clear the ClusterControl UI cache:
 
 .. code-block:: bash
 
-	sudo service cmon restart
+	$ rm -f /var/www/html/clustercontrol/app/tmp/cache/models/*
+
+7) Restart the CMON controller service:
+
+.. code-block:: bash
+
+	$ service cmon restart
 
 Upgrade is now complete. Verify the new version at *ClusterControl UI > Settings > General Settings > Version*. You should re-login if your ClusterControl UI session is active.
 
@@ -196,54 +357,108 @@ Even if you have previously installed from our tarball or .deb packages, it is p
 
 .. code-block:: bash
 
-	wget http://severalnines.com/downloads/cmon/clustercontrol-controller-1.3.0-1255-x86_64.deb
-	wget http://severalnines.com/downloads/cmon/clustercontrol_1.3.0-1420_x86_64.deb
-	wget http://severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.3.0-183_x86_64.deb
-	wget http://severalnines.com/downloads/cmon/clustercontrol-nodejs_1.3.0-57_x86_64.deb
+	$ wget http://severalnines.com/downloads/cmon/clustercontrol-controller-1.3.0-1255-x86_64.deb
+	$ wget http://severalnines.com/downloads/cmon/clustercontrol_1.3.0-1420_x86_64.deb
+	$ wget http://severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.3.0-183_x86_64.deb
+	$ wget http://severalnines.com/downloads/cmon/clustercontrol-nodejs_1.3.0-57_x86_64.deb
 
-2) Install via dpkg:
-
-.. code-block:: bash
-
-	dpkg -i clustercontrol-controller-1.2.12-1096-x86_64.deb clustercontrol_1.2.12-1007_x86_64.deb clustercontrol-cmonapi_1.2.12-156_x86_64.deb clustercontrol-nodejs_1.2.12-51_x86_64.deb
-
-3) Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.3.0, apply all SQL modification files between those versions in sequential order:
+2) This step is only applicable if you are **upgrading to version 1.3.0 and you have** ``cluster_id`` **parameter inside** ``/etc/cmon.cnf`` (usually when you deployed ClusterControl using Severalnines Configurator). Before performing the package upgrade as described in step #3, create a default ``/etc/cmon.cnf`` and move the current configuration into ``/etc/cmon.d`` directory. Starting from version 1.3.0, ClusterControl Controller (CMON) handles its configuration files differently, where it expects the ``/etc/cmon.cnf`` is the default configuration file containing minimal parameters. The minimal parameters are:
 
 .. code-block:: bash
 
-	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db.sql
-	mysql -f- h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.8-1.2.9.sql
-	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.9-1.2.10.sql
-	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.10-1.2.11.sql
-	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.11-1.2.12.sql
-    mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.12-1.3.0.sql
-	mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_data.sql
+  mysql_port=[controller mysql server's mysql port]
+  mysql_password=[cmon user password]
+  mysql_hostname=[controller hostname/IP address]
+  hostname=[controller hostname/IP address]
+
+
+2a) Create a new CMON configuration directory:
+
+.. code-block:: bash
+
+  $ mkdir /etc/cmon.d
+
+2b) Check the value of ``cluster_id`` in the existing ``/etc/cmon.cnf``:
+
+.. code-block:: bash
+  
+  $ grep cluster_id /etc/cmon.cnf
+  cluster_id=1
+
+.. Attention:: If the ``grep`` command returns nothing, you may skip the remaining sub-steps and proceed to step 3.
+
+2c) Copy the existing ``cmon.cnf`` into the configuration directory. The destination must be in ``cmon_[cluster_id].cnf``. For example, if you have cluster_id=1 as retrieved in step 2b, the destination file name is ``cmon_1.cnf``:
+
+.. code-block:: bash
+  
+  $ cp /etc/cmon.cnf /etc/cmon.d/cmon_1.cnf
+  
+2d) Edit the existing ``/etc/cmon.cnf`` and remove all paramaeters except the 4 parameters mentioned in step 2, for example:
+
+.. code-block:: bash
+  
+  mysql_port=3306
+  mysql_password=cmon
+  mysql_hostname=192.168.1.13
+  hostname=192.168.1.13
+
+2e) Verify the new hierarchy of CMON configuration files. It should be similar to below:
+
+.. code-block:: bash
+
+  $ ls -1 /etc/cmon*
+  /etc/cmon.cnf
+  
+  /etc/cmon.d:
+  cmon_1.cnf
+
+Now, we can safely perform the package upgrade as described in the next steps.
+
+.. Note:: Your old configuration file now lives in ``/etc/cmon.d/cmon_[cluster_id].cnf``.
+
+3) Install via dpkg:
+
+.. code-block:: bash
+
+	$ dpkg -i clustercontrol-controller-1.2.12-1096-x86_64.deb clustercontrol_1.2.12-1007_x86_64.deb clustercontrol-cmonapi_1.2.12-156_x86_64.deb clustercontrol-nodejs_1.2.12-51_x86_64.deb
+
+4) Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.3.0, apply all SQL modification files between those versions in sequential order:
+
+.. code-block:: bash
+
+	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db.sql
+	$ mysql -f- h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.8-1.2.9.sql
+	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.9-1.2.10.sql
+	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.10-1.2.11.sql
+	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.11-1.2.12.sql
+  $ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.12-1.3.0.sql
+	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_data.sql
 
 .. Attention:: Importing ``cmon_db.sql`` and ``cmon_data.sql`` is required on each upgrade. Importing ``cmon_db_mods`` is relative to the previous version.
 
-4) Upgrade the dcps database for ClusterControl UI:
+5) Upgrade the dcps database for ClusterControl UI:
 
 .. code-block:: bash
 
 	# For Ubuntu 14.04/Debian 8 or later, where wwwroot is /var/www/html:
-	mysql -f -h127.0.0.1 -ucmon -p dcps < /var/www/html/clustercontrol/sql/dc-schema.sql
+	$ mysql -f -h127.0.0.1 -ucmon -p dcps < /var/www/html/clustercontrol/sql/dc-schema.sql
 	# For Debian 7 and Ubuntu 12.04, where wwwroot is /var/www:
-	mysql -f -h127.0.0.1 -ucmon -p dcps < /var/www/clustercontrol/sql/dc-schema.sql
+	$ mysql -f -h127.0.0.1 -ucmon -p dcps < /var/www/clustercontrol/sql/dc-schema.sql
 
-5) Clear the ClusterControl UI cache:
+6) Clear the ClusterControl UI cache:
 
 .. code-block:: bash
 
 	# For Ubuntu 14.04/Debian 8 or later, where wwwroot is /var/www/html:
-	rm -f /var/www/html/clustercontrol/app/tmp/cache/models/*
+	$ sudo rm -f /var/www/html/clustercontrol/app/tmp/cache/models/*
 	# For Debian and Ubuntu 12.04, where wwwroot is /var/www:
-	rm -f /var/www/clustercontrol/app/tmp/cache/models/*
+	$ sudo rm -f /var/www/clustercontrol/app/tmp/cache/models/*
 
-6) Restart the CMON controller service:
+7) Restart the CMON controller service:
 
 .. code-block:: bash
 
-	sudo service cmon restart
+	$ sudo service cmon restart
 
 Upgrade is now complete. Verify the new version at *ClusterControl UI > Settings > General Settings > Version*. You should re-login if your ClusterControl UI session is active.
 
