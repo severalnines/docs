@@ -395,7 +395,7 @@ This page provides ability to create a new single node of following databases in
 * MongoDB ReplicaSet Node
 * PostgreSQL
 
-Once a single node is deployed, it can then be managed from the ClusterControl interface. Single nodes can be scaled into clusters with a single click of a button. You can scale MySQL replication with read-copy slaves, Percona XtraDB and MariaDB Galera are turned into Galera Clusters, MongoDB into a replica set and PostgreSQL into a master-slave replication at later stage via `Add Node <user-guide/mysql/overview.html#add-node>`_.
+Once a single node is deployed, it can then be managed from the ClusterControl interface. Single nodes can be scaled into clusters with a single click of a button. You can scale MySQL replication with read-copy slaves, Percona XtraDB and MariaDB Galera are turned into Galera Clusters, MongoDB into a replica set and PostgreSQL into a master-slave replication at later stage via `Add Node <mysql/overview.html#add-node>`_.
 
 MySQL Replication Master
 ''''''''''''''''''''''''
@@ -424,12 +424,12 @@ Repository                         Default Repository - Provision software by se
 Deploy                             Start the database deployment
 ================================== ===========
 
-Then, you can add a replication slave to the setup via `Add Node <user-guide/mysql/overview.html#add-node>`_. 
+Then, you can add a replication slave to the setup via `Add Node <mysql/overview.html#add-node>`_. 
 
 MySQL Galera
 '''''''''''''
 
-Deploy a single Galera node. You can then use `Add Node`_ to scale out the cluster into three or more nodes. You can also use `Create Database Cluster`_ to deploy all nodes at once.
+Deploy a single Galera node. You can then use `Add Node <mysql/overview.html#add-node>`_ to scale out the cluster into three or more nodes. You can also use `Create Database Cluster`_ to deploy all nodes at once.
 
 ================================= ===========
 Field                             Description
@@ -453,7 +453,7 @@ Repository                        Default Repository - Provision software by set
 Deploy                            Start the database deployment
 ================================= ===========
 
-Then, you can add another Galera node to the setup via `Add Node <user-guide/mysql/overview.html#add-node>`_.
+Then, you can add another Galera node to the setup via `Add Node <mysql/overview.html#add-node>`_.
 
 MongoDB ReplicaSet Node
 '''''''''''''''''''''''
@@ -482,7 +482,7 @@ Repository                          Default Repository - Provision software by s
 Deploy                              Start the database deployment.
 =================================== ===========
 
-Then, you can add a MongoDB replica node to the setup via `Add Node <user-guide/mysql/overview.html#add-node>`_.
+Then, you can add a MongoDB replica node to the setup via `Add Node <mongodb/overview.html#add-node>`_.
 
 PostgreSQL
 ''''''''''
@@ -503,7 +503,7 @@ Repository                             Default Repository - Provision software b
 Deploy                                 Start the database deployment.
 ====================================== ===========
 
-Then, you can add a replication slave to the setup via `Add Node <user-guide/mysql/overview.html#add-node>`_.
+Then, you can add a replication slave to the setup via `Add Node <postgresql/overview.html#add-node>`_.
 
 Database Cluster List
 ---------------------
