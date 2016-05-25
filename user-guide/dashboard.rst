@@ -168,7 +168,7 @@ ClusterControl is able to manage and monitor an existing MongoDB 3.x replica set
 
 * **Vendor**
 	- Percona - Percona Server for MongoDB by Percona. (formerly Tokutek)
-    - MongoDB - MongoDB Server by MongoDB Inc. (formerly 10gen)
+	- MongoDB - MongoDB Server by MongoDB Inc. (formerly 10gen)
 	
 * **Need Sudo Password**
 	- Specify the password if the SSH user that you specified under *SSH User* requires sudo password to run super-privileged commands. Ignore this if *SSH User* is root or have no sudo password.
