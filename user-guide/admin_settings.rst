@@ -314,7 +314,7 @@ Configures email notifications across clusters.
 Operational Report
 ------------------
 
-Generate, schedule and email out operational reports. The current default report shows a cluster's health and performance at the time it was generated compared to 1 day ago.
+Generate, schedule and email out operational reports. The whole idea behind creating Operational Reports is to put all of the most important data into a single document, which can be quickly reviewed to get an understanding of the state of the databases. The current default report shows a cluster's health and performance at the time it was generated compared to 1 day ago. 
  
 The report provides information about:
 	- Cluster Information
@@ -332,7 +332,7 @@ The report provides information about:
 		- Server Load
 		- Handler
 
-We will add more options and report types in future releases.
+We will add more options and report types in future releases. Check out the Operational Report walkthrough with examples in `this blog post <http://severalnines.com/blog/become-clustercontrol-dba-operational-reports-mysql-and-mariadb>`_.
 
 Operational Reports
 ````````````````````
@@ -340,7 +340,10 @@ Operational Reports
 Provides list of generated operational reports.
 
 * **Create**
-	- Create an operational report immediately.
+	- Create an operational report immediately. There are 3 types of report that you can generate:
+		- Default - Detailed information about a particular cluster, a summary of different alerts, node state, graph related to OS and database metrics for each node.
+		- Availability - Availability report on cluster, nodes and history changes.
+		- Backup - Backup summary and latest state of created backups.
 	- Specify the cluster name and operational type. Optionally, you can click on 'Add Email' button  to add recipients into the list.
 
 * **Delete**
