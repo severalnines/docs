@@ -3,22 +3,23 @@
 ClusterControl DSL
 ==================
 
-This documentation provides detailed information on ClusterControl Domain Specific Language (DSL). The DSL syntax is similar to JavaScript, with extensions to provide access to ClusterControl’s internal data structures and functions. The DSL allows you to execute SQL statements, run shell commands/programs across all your cluster hosts, and retrieve results to be processed for advisors/alerts or any other actions.
+This documentation provides detailed information on ClusterControl Domain Specific Language (DSL). The DSL syntax is similar to JavaScript, with extensions to provide access to ClusterControl’s internal data structures and functions. The CCDSL allows you to execute SQL statements, run shell commands/programs across all your cluster hosts, and retrieve results to be processed for advisors/alerts or any other actions.
 
 Introduction
 ------------
 
-This language will be provided for the users, to implement monitoring related code in a language similar to JavaScript. The code is executed on the Cmon Controller and will have access to the cluster nodes through the network.
+This language will be provided for the users, to implement monitoring related code in a language similar to JavaScript. The code is executed on the ClusterControl CMON Controller and will have access to the cluster nodes through the network.
 
 The language is different from JavaScript in some ways. Here is a list of the most important differences:
 
 * Semicolons are mandatory like in C or C++.
-* Not all numbers are handled as double precision floating point values, we have integers and even usigned long long integers. We need those to handle disk sizes, network traffic.
+* Not all numbers are handled as double precision floating point values, we have integers and even usigned long long integers. We need those to handle disk sizes and network traffic measured in bytes.
 * There are associative arrays with the data type ``Map``.
-* The arrays are two dimensional, the one dimensional arrays has the type List although not many functions are using those.
+* The arrays are two dimensional, but they can be used as one dimensional arrays (e.g. a[10, 11] and a[10] are also valid).
+* We have a ``List`` type.
 * JavaScript uses a period in function names like ``JSON.parse(text)``, here we use the C++ notation like ``JSON::parse(text)``.
 * New variables created on-the-fly in functions are local variables and not globals.
-* The language implements a C like #include preprocessor directive.
+* The language implements a C like ``#include`` preprocessor directive.
 
 Language basics
 ---------------
@@ -47,7 +48,6 @@ Here is an example of the new operator.
     a === 0 &&
     b.typeName() == "CmonHost";
 
-Types
 
 * Int
 * Bool
@@ -62,9 +62,12 @@ Types
 * CmonMySqlHost
 * CmonPostgreSqlHost
 * CmonGaleraHost
+* CmonMongoHost
+* CmonMaxScaleHost
 * CmonAdvice
 * CmonClusterConfig
 * CmonGraph
+* CmonJob
 
 Literals
 ````````
@@ -112,6 +115,7 @@ Strings literals can also be concatenated in compile time as it is seen in the C
 **Double literals.** All the numbers that are not fit to any integer types will be stored in a double type as the usual double format strings.
 
 .. code-block:: javascript
+
   var a = 10.2;
   var b = 10.8E11;
   var c = 2.8e-10;
@@ -167,12 +171,79 @@ The available error literals are the following:
     a.typeName() == "Map" &&
     a["one"]["two"] == "value";
 
+The map keys could be listed using the .keys() method:
+
+.. code-block:: javascript
+
+  // an example iteration on the map:
+  var testmap = {};
+  testmap["key1"] = "test";
+  testmap["key2"] = "test";
+  keys = testmap.keys();
+  for (i = 0; i < keys.size(); ++i)
+  {
+     print (keys[i] + ": " + testmap[keys[i]]);
+  }
+
+**Regular expression literals.** Regular expression literals are supported the same way they are supported by the JavaScript language. Here is an example that demonstrates the usage of such literals:
+
+.. code-block:: javascript
+
+  var regexp = /([0-9]+)x([0-9]+)/i;
+  var string = "s: 640x480";
+  string.replace(regexp, "$2x$1");
+  // string === "s: 480x640";
+
+Regular expressions has the type CmonRegExp.
+
+
 Functions
 ---------
 
 If the function is called with the wrong number of arguments the return value will be an '#ARGS!' error (the type of the return value will be "Error").
 
-Controller functions
+JSON Functions
+```````````````
+
+* ``Map JSON::parse(text)``
+    Parses a JSon string and returns it in a Map format.
+
+* ``String JSon::toString(map)``
+    Converts object (a constructed Map object) to a well formatted JSon string.
+
+* ``String JSON::postRequest(url, map)``
+    Sends a POST request to the specified URL using JSonized value of the 'map'.
+
+An example reply/request:
+
+.. code-block:: javascript
+
+  var req = new Map;
+  req["operation"] = "clusters";
+  var retval = JSON::postRequest("http://localhost:9500/0/clusters", req);
+  print ("retval of clusters:\n" + retval);
+
+And the raw reply:
+
+.. code-block:: javascript
+
+  {
+      "cc_timestamp": 1447936009,
+          "requestStatus": "ok",
+          "results": {
+              "exitStatus": null,
+              "fileName": "/rpc-client-test.js",
+              "messages": [
+              {
+                  "message": "retval of clusters:\\n{\n    \"cc_timestamp\": 1447936009,\n    \"clusters\": [ \n    {\n        \"clusterAutorecovery\": true,\n        \"configFile\": \"/etc/cmon.d/cmon_1.cnf\",\n        \"id\": 1,\n        \"logFile\": \"/var/log/cmon_1.log\",\n        \"name\": \"cluster_1\",\n        \"nodeAutorecovery\": true,\n        \"running\": true,\n        \"status\": 0,\n        \"statusText\": \"\",\n        \"type\": \"galera\"\n    } ],\n    \"info\": \n    {\n        \"hasLicense\": true,\n        \"licenseExpires\": 13,\n        \"licenseStatus\": \"License will expire in 13 days.\",\n        \"version\": \"1.2.12\"\n    },\n    \"requestStatus\": \"ok\"\n}"
+              }
+              ],
+              "status": "Ended"
+          },
+          "success": true
+  }
+
+Controller Functions
 ````````````````````
 
 * ``abort()``
@@ -196,7 +267,7 @@ Controller functions
   }
   var global2 = 11;
 
-Input/Output functions
+Input/Output Functions
 ``````````````````````
 
 * ``string print([value]...)``
@@ -208,7 +279,7 @@ Input/Output functions
 * ``string error([value]...)``
 	Prints all the vaues as one message with the severity set to 'critical'. Also returns the printed string.
 
-General tag functions
+General Tag Functions
 `````````````````````
 
 * ``string value.typeName()``
@@ -288,7 +359,7 @@ General tag functions
 * ``boolean value.toBoolean()``
 	Converts the value into boolean. String like "true" and "false" will be recognized, integer values will have true value when they are not equal to zero.
 
-Mathematical functions
+Mathematical Functions
 ``````````````````````
 
 * ``number rand()``
@@ -408,7 +479,7 @@ Functions providing information about values
 * ``boolean isarray(value)``
 	Returns true if the value is an array.
 
-String functions
+String Functions
 ````````````````
 
 * ``integer asc(text)``
@@ -468,7 +539,7 @@ String functions
 * ``number cdbl(value)``
 	Returns the value converted into a floating point double precision number.
 
-String tag functions
+String Tag Functions
 ````````````````````
 
 * ``int string.length()``
@@ -522,7 +593,7 @@ String tag functions
 * ``boolean string.looksIpAddress()``
 	Returns true if the string represents a valid IPv4 address.
 
-General array functions
+General Array Functions
 ````````````````````````
 
 * ``value choose(position, value, [value]...)``
@@ -549,7 +620,7 @@ General array functions
 * ``value match(value, array, [matchType])``
 	Searches for a value and returns the relative position of the item found.
 
-Statistical functions
+Statistical Functions
 ``````````````````````
 
 Statistical functions will provide statistical calculations on number sets. The values for most functions can be passed through individual arguments or using arrays. Here is an example:
@@ -638,8 +709,35 @@ Statistical functions will provide statistical calculations on number sets. The 
 * ``number intercept(knownYValues, knownXValues)``
 	Uses the "least squares" method to find the linear equation that fits the data. Returns the y-axis intersection point of the line.
 
-CmonDateTime functions
-``````````````````````
+Regular Expression Functions
+``````````````````````````````
+
+Regular expressions has the type CmonReExp with the following tag functions:
+
+* ``Bool regexp.test(String)``
+    Tests if the regular expression matches a string, returns true or false accordingly.
+
+* ``Int regexp.lastIndex()``
+    Returns the index of the string where the next match will be checked. Returns 0 if the "global" modifier is not set.
+
+* ``List regexp.match(String)``
+    Tests if the regular expression matches a string, returns a list that contains the matched text (at index 0) and all the matched text for subexpressions (from index 1).
+
+* ``Map regexp.exec(String)``
+    Checks the match on a string and returns a number of information in a map.
+
+When the toString() function is called the CmonRegExp type it supports the following format specifiers:
+
+* ``%r`` - The regular expression string itself.
+
+* ``%j`` - The regular expression and the modifiers in JavaScript notation (e.g. "/[0-9]+/ig").
+
+* ``%m`` - The matched string if there is any.
+
+* ``%nm`` - The nth matched sub-expression where n is an integer number.
+
+Date and Time Functions
+````````````````````````
 
 This type is different from the JavaScript Date type.
 
@@ -660,6 +758,8 @@ This type is different from the JavaScript Date type.
 
 * ``CmonDateTime dateTime::toString([format])``
 	Converts the date&time to string. The available formats are defined in the "cmon/io.h" header file. Here are some examples:
+
+When the toString() function is called on a CmonDateTime function and a format string is passed as the first argument the CmonDateTime will support all the format specifiers supported by the strftime() standard C library function. Please check the documentation of the strftime() for further details.
 
 .. code-block:: c++
 
@@ -714,8 +814,8 @@ This type is different from the JavaScript Date type.
 * ``int dateTime.weekday()``
 	Sunday = 1, Monday = 2,... Saturday = 7.
 
-CmonHost tag functions
-``````````````````````
+CmonHost Tag Functions
+```````````````````````
 
 Here is an example for the CmonHost tag functions. The variable host1 here has the CmonHost object type.
 
@@ -842,8 +942,10 @@ Here is an example for the CmonHost tag functions. The variable host1 here has t
 * ``boolean host.sqlPing([timeout])``
 	Executes a neutral SQL command (e.g. SELECT 1;) on the host to see if the SQL server up and able to run queries. Returns true if the SQL server returns a valid reply. If the argument is provided it controls how many seconds the the function will try to reach the server.
 
-* ``CmonMySqlHost tag functions``
-	The CmonMySqlHost inherits all the properties and tag functions of the CmonHost.
+CmonMySqlHost Tag Functions
+````````````````````````````
+
+The CmonMySqlHost inherits all the properties and tag functions of the CmonHost.
 
 * ``boolean host.isGalera()``
 	Returns true if the MySQL host is a Galera host.
@@ -854,7 +956,7 @@ Here is an example for the CmonHost tag functions. The variable host1 here has t
 * ``boolean host.readOnly()``
 	Returns the value of the 'read_only' SQL variable.
 
-CmonClusterConfig tag functions
+CmonClusterConfig Tag Functions
 ````````````````````````````````
 
 The CmonClusterConfig is a class that represents a set of configuration files found on one or more hosts of the cluster.
@@ -871,7 +973,7 @@ The CmonClusterConfig is a class that represents a set of configuration files fo
 * ``map config.save()``
 	Saves the configuration to the original host(s) using the original filename(s). The return map shall have the "success" and the "errorMessage" set to reflect if the operation was successful.
 
-CmonAdvice tag functions
+CmonAdvice Tag Functions
 ````````````````````````
 
 CmonAdvice is a class that represents an action to be taken by the administrator of the cluster advised by the advisor, a code that executed by the Cmon Controller. An advice is mostly constructed of human readable edscriptions together with some information that help tracking where and when the advice was created.
@@ -908,8 +1010,107 @@ CmonAdvice is a class that represents an action to be taken by the administrator
 
 * ``void advice.setHost(host)``
 	Sets the host for the advice so the user will know which host was investigated when the advice was given.
+  
+When the toString() function is called the CmonAdvice supports the following format specifiers:
 
-CmonGraph tag functions
+* ``%t`` - The title of the advice.
+
+* ``%j`` - The justification for the advice.
+
+* ``%a`` - The description, the advice itself.
+
+* ``%c`` - The creator of the advice.
+
+* ``%h`` - The name of the host if there is a host set for the advice.
+
+* ``%E`` - A multi line description of the advice that contain multiple properties.
+
+
+CmonJob Functions
+``````````````````
+
+The CmonJob type represents a job or a task that the Cmon controller can execute. These jobs are usually executed asynchronously. The script creates a job, stores all the necessary information in the CmonJob object and pushes into the execution queue. Then the controller executes the job and sends its results to the UI where the user can check what happened.
+
+The CmonJob type is supported from version 1.2.11 of Cmon.
+
+General Job Functions
+'''''''''''''''''''''
+
+* ``Bool job.enqueue()``
+    Checks the job for consistency and sends it to the execution queue. Returns true if everything went well.
+
+* ``String job.errorString()``
+    Returns the human readable error string describing the error or the empty string if there were no errors.
+
+* ``Int job.jobId()``
+    Returns the unique numerical ID for the job. Only jobs that are enqueued for execution has valid (greater than 0) IDs.
+
+* ``CmonJob CmonJob::getJob(jobid)``
+    Reads the job with the specified job ID from the Cmon database. Returns #N/A if the job was not found.
+
+Backup Handling
+'''''''''''''''
+
+The following methods are related to jobs that create backups.
+
+* ``CmonJob CmonJob::createBackupJob(host, dir)``
+    This function creates a CmonJob that will create a backup of the data found in a database or in all databases of a specific database server.
+
+* ``CmonJob CmonJob::createDoCheckJob()``
+    Creates a job that will trigger some checks on the controller. These checks can be used to see if there are duplicate indexes, missing indexes, database schema issues on the production system. More checks will be added later.
+
+* ``Bool job.setBackupMethod(method)``
+    Sets what kind of backup will be created, what software will be used to create the backup file. Returns true if the job is valid, all the properties are in order. Currently the following methods are supported:
+  
+  * null - If the backup method is missing one will be chosen. FIXME: some clusters might not tolerate an empty string here.
+  * "auto" - To use the default backup software for the given cluster type. (This means mysqldump now).
+  * "none" - This is the same as "auto".
+  * "mysqldump" - Use the mysqldump program to create a backup.
+  * "xtrabackupfull" - Use the xtrabackup program to create a full (not incremental) backup.
+  * "xtrabackupincr" - Use the xtrabackup program to create an incremental backup.
+  * "pgdump" - Backup method for PostgreSQL hosts using the pg_dump or pg_dumpall programs.
+
+* ``Bool job.setCompression(compression)``
+    Sets if the created backup file should be compressed.
+
+* ``Bool job.setIncludeDatabases(value)``
+    Sets which databases should be processed.
+
+* ``Bool job.setIsCcStorage(value)``
+    Sets if the Cmon Controller should store the backup file.
+
+* ``Bool job.setNetcatPort(value)``
+    Sets the netcat port that is used when copying the backup file through the network.
+
+The following example shows how easy and simple to create a job that will create a backup of the data found on one specific host.
+
+.. code-block:: javascript
+
+  //
+  // This program will create a backup job using two strings, one for hostname and
+  // one for directory name. Then the backup method is set (teh default value is
+  // "auto") and the job is send for execution.
+  //
+  var job = CmonJob::createBackupJob("127.0.0.1", "/var/tmp");
+  var passed;
+  job.setBackupMethod("mysqldump");
+  passed = job.enqueue();
+  if (passed !== true)
+  {
+      error("ERROR: ", job.errorString());
+      exit(false);
+  }
+
+
+Cluster Configuration Jobs
+'''''''''''''''''''''''''''
+
+Some functions change the state or configuration of the cluster. Adding and removing nodes, starting and stopping nodes or the entire cluster are the most important jobs in this section.
+
+* ``CmonJob CmonJob::createAddNodeJob(hostName, [install], [configFile])``
+    Creates a job that ultimately will add a new node to the cluster. The node is identified by the host name passed as the first argument. If the second argument is true the database software is also installed on the new node and so the third argument must be the file name of the configuration file template.
+
+CmonGraph Tag Functions
 ````````````````````````
 
 A CmonGraph consists of one or more plots. These plots are usually shown as lines, lines with points on them or bars to represent a number of values in a two dimensional (x/y) coordinate system. Various properties of these plots can be set using the plot index, that is a number referencing the plots from 1 to the last plot.
@@ -932,7 +1133,7 @@ A CmonGraph consists of one or more plots. These plots are usually shown as line
 * ``boolean graph.setPlotStyle(plotIdx, style)``
 	Sets what style will be used to plot the data. Check the "cmon/graph.h" include file for the available styles.
 
-Cluster functions
+Cluster Functions
 ``````````````````
 
 * ``array cluster::hosts()``
@@ -962,7 +1163,7 @@ Cluster functions
 * ``bool cluster::rollingRestart()``
 	Restarts the nodes without stopping the cluster.
 
-Cmon functions
+Cmon Functions
 ``````````````
 
 * ``text cmon::version()``
@@ -1016,7 +1217,7 @@ Cmon Database functions
 The Cmon Database is the SQL database where the Cmon stores all its internal data. This database is accessible from the JS programs.
 
 * ``Map CmonDb::executeSqlQuery(query)``
-	Executes the SQL query on the Cmon Database and returns the results. The returned map will have values for the keys "success", "errorMessage" and "result" where the value for teh ley "result" is a two dimensional array that holds the values from the SQL query.
+	Executes the SQL query on the Cmon Database and returns the results. The returned map will have values for the keys "success", "errorMessage" and "result" where the value for the "result" is a two dimensional array that holds the values from the SQL query.
 
 Examples
 --------
@@ -1027,7 +1228,7 @@ Executing SQL commands and queries
 The following example demonstrates how to execute an SQL query on an arbitrary host of a cluster and receive the results in an array. The return value of the ``host.executeSqlQuery()`` holds the success/failed status of the query, the error message and also the results in a two dimensional array.
 
 .. code-block:: c++
-
+  
   function getSqlVariable(host, variableName)
   {
     var query = "SHOW GLOBAL STATUS LIKE '$1'";
@@ -1233,7 +1434,7 @@ Configuration files
 ````````````````````
 
 .. code-block:: c++
-
+  
   function getConfiguredClientPort(host)
   {
     var config      = host.config();
@@ -1291,12 +1492,52 @@ The following example shows how to create a graph, set up with statistical data 
   graph.setData(array);
   exit(graph);
 
+The following example shows how to interact with Mongo:
+
+.. code-block:: javascript
+
+  // Mongo JS example
+  function main()
+  {
+      var hosts   = cluster::mongoNodes();
+      for (i = 0; i < hosts.size(); i++)
+      {
+          host        = hosts[i];
+          print(host.hostName());
+          var config      = host.config();
+          var variable    = config.variable("port");
+          for (idx = 0; idx < variable.size(); ++idx)
+          {
+              print("*** section  : ", variable[idx]["section"]);
+              print("*** value    : ", variable[idx]["value"]);
+              print("*** location : ", 
+                      variable[idx]["filepath"], ":", variable[idx]["linenumber"]);
+              if (variable[idx]["section"] == "client")
+                  return variable[idx]["value"].toInt();
+          }
+        
+        
+          var res= host.executeMongoQuery("{ serverStatus : 1 }");
+          print(res["result"]["host"]);
+          print(res["result"]["storageEngine"]["name"]);
+        
+          var endTime = CmonDateTime::currentDateTime();
+          var startTime = endTime - 10 * 60;
+          var stats     = host.mongoStats(startTime, endTime);
+          var array     = stats.toArray("created,interval,opcounters.command");
+          for (idx = 0; idx < array.columns(); idx++)
+          {
+              var x= 1000 * array[2, idx] / array[1, idx];
+              //print(x);
+          }
+          break;
+      }
+  }
+
 To-do
 -----
 
-* The switch and case are not implemented.
 * The typeof x is not implemented, although we have the x.typeName() for the same purpose.
-* The obj1 = {a: 1} notation is not implemented.
 * The with is not implemented.
 * Passing function object arguments as references is not implemented.
 * Implement a CmonTimer based solution to measure milliseconds.
@@ -1328,3 +1569,4 @@ Variadic functions would also be nice to have:
     return x;
   }
   sum(1, 2, 3); // returns 6
+
