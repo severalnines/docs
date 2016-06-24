@@ -67,7 +67,7 @@ User Management
 ---------------
   
 Organizations/Users
-'''''''''''''''''''
+````````````````````
 
 Manage organization and users under ClusterControl. You can have one or more organization and each organization consists of zero or more clusters and users. You can have many roles defined under ClusterControl and a user must be assigned with one role.
 
@@ -79,7 +79,7 @@ As a roundup, here is how the different entities relate to each other:
 .. Note:: ClusterControl creates 'Admin' organization by default.
 
 Users
-`````
+'''''
 
 A user belongs to one organization and assigned with a role. Users created here will be able to login and see specific cluster(s), depending on their organization and the cluster they have been assigned to.
 
@@ -95,7 +95,7 @@ Role            Description
 
 
 Access Control
-''''''''''''''
+``````````````
 
 ClusterControl uses Role-Based Access Control (RBAC) to restrict access to clusters and their respective deployment, management and monitoring features. This ensures that only authorised user requests are allowed. Access to functionality is fine-grained, allowing access to be defined by organisation or user. ClusterControl uses a permissions framework to define how a user may interact with the management and monitoring functionality, after they have been authorised to do so. 
 
@@ -104,7 +104,7 @@ You can create a custom role with its own set of access levels. Assign the role 
 .. Note:: The **Super Admin** role is not listed since it is a default role and has the highest level of privileges in ClusterControl. 
 
 Privileges
-``````````
+''''''''''
 
 ========= ===========
 Privilege Description
@@ -116,7 +116,7 @@ Modify    Similar to manage, for certain features that required modification.
 ========= ===========
 
 Feature Description
-````````````````````
+''''''''''''''''''''
 
 ============================ ============
 Feature                      Description
@@ -145,7 +145,7 @@ Feature                      Description
 ============================ ============
 
 LDAP Access
-'''''''''''
+````````````
 
 ClusterControl supports :term:`Active Directory`, :term:`FreeIPA` and :term:`LDAP` authentication. This allows users to log into ClusterControl by using their corporate credentials instead of a separate password. LDAP groups can be mapped onto ClusterControl user groups to apply roles to the entire group. It supports up to LDAPv3 protocol based on `RFC2307 <https://www.ietf.org/rfc/rfc2307.txt>`_.
 
@@ -161,7 +161,7 @@ You can map the LDAP group to corresponding ClusterControl role created under *A
 Once the LDAP settings are verified, login into ClusterControl by using the LDAP credentials (uid, cn or sAMAccountName with respective password). User will be authenticated and redirected to ClusterControl dashboard page based on the assigned role. From this point, both ClusterControl and LDAP authentications would work.
 
 Users and Groups
-````````````````
+'''''''''''''''''
 
 If LDAP authentication is enabled, you need to map ClusterControl roles with their respective LDAP groups. You can configure this by clicking on ‘+’ icon to add a group:
 
@@ -176,7 +176,7 @@ If LDAP authentication is enabled, you need to map ClusterControl roles with the
 +-----------------+-------------------------------------------------------------------------+------------------------------------+
 
 Settings
-````````
+'''''''''
 
 * **Enable LDAP Authentication**
 	- Choose whether to enable or disable LDAP authentication.
@@ -205,7 +205,7 @@ Settings
 .. Attention:: ClusterControl does not support binding against a nested directory group. Ensure each LDAP user that authenticates to ClusterControl has direct relationship to the LDAP group.
 
 FreeIPA
-```````
+''''''''
 
 ClusterControl is able to bind to a :term:`FreeIPA` server and perform lookups on compatible schema. Once the :term:`DN` for that user is retrieved, it tries to bind using the full DN (in standard tree) with the entered password to verify the LDAP group of that user.
 
@@ -215,7 +215,7 @@ Thus, for FreeIPA, the user’s and group’s DN should use compatible schema, `
    :align: center
 
 Active Directory
-`````````````````
+'''''''''''''''''
 
 Please make sure :term:`Active Directory` runs with 'Identity Management for UNIX' enabled. You can enable this under *Server Manager > Roles > Active Directory Domain Services > Add Role Services*. Detailed instructions on how to do this is explained in `this article <http://technet.microsoft.com/en-us/library/cc731178.aspx>`_.
 
@@ -235,19 +235,19 @@ Provides global MySQL user management interface across all MySQL-based cluster. 
 You can choose individual node by clicking on the respective node or all nodes in the cluster by clicking on the respective cluster in the side menu.
 
 Active Accounts
-'''''''''''''''
+````````````````
 
 Shows all active accounts across clusters, which are currently active or were connected since the last server restart.
 
 Inactive Accounts
-'''''''''''''''''
+``````````````````
 
 Shows all accounts across clusters that are not been used since the last server restart. Server must have been running for at least 8 hours to check for inactives accounts.
 
 You can drop particular accounts by clicking at the multiple checkboxes and click 'Drop User' button to initiate the action.
 
 Create Accounts
-'''''''''''''''
+````````````````
 
 Creates a new MySQL user for the chosen MySQL node or cluster. 
 
@@ -314,7 +314,7 @@ Configures email notifications across clusters.
 Operational Report
 ------------------
 
-Generate, schedule and email out operational reports. The whole idea behind creating Operational Reports is to put all of the most important data into a single document, which can be quickly reviewed to get an understanding of the state of the databases. The current default report shows a cluster's health and performance at the time it was generated compared to 1 day ago. 
+Generate, schedule and email out operational reports. The current default report shows a cluster's health and performance at the time it was generated compared to 1 day ago.
  
 The report provides information about:
 	- Cluster Information
@@ -332,7 +332,7 @@ The report provides information about:
 		- Server Load
 		- Handler
 
-We will add more options and report types in future releases. Check out the Operational Report walkthrough with examples in `this blog post <http://severalnines.com/blog/become-clustercontrol-dba-operational-reports-mysql-and-mariadb>`_.
+We will add more options and report types in future releases.
 
 Operational Reports
 ````````````````````
@@ -340,10 +340,7 @@ Operational Reports
 Provides list of generated operational reports.
 
 * **Create**
-	- Create an operational report immediately. There are 3 types of report that you can generate:
-		- Default - Detailed information about a particular cluster, a summary of different alerts, node state, graph related to OS and database metrics for each node.
-		- Availability - Availability report on cluster, nodes and history changes.
-		- Backup - Backup summary and latest state of created backups.
+	- Create an operational report immediately.
 	- Specify the cluster name and operational type. Optionally, you can click on 'Add Email' button  to add recipients into the list.
 
 * **Delete**
@@ -374,8 +371,8 @@ Key Management
 
 Key Management allows you to manage a set of SSL certificates and keys that can be provisioned on your clusters. This feature allows you to create Certificate Authority (CA) and/or self-signed certificates and keys. Then, it can be easily enable and disable SSL encryption (by using `Enable SSL Encryption <mysql/overview.html#enable-ssl-encryption>`_) for client-server connections for MySQL and Postgres based servers/clusters.
 
-Manage Keys
-````````````
+Manage
+```````
 
 Manage existing keys and certificates generated by ClusterControl.
 
@@ -389,8 +386,8 @@ Manage existing keys and certificates generated by ClusterControl.
     - Move the selected certificate to another location. Clicking on this will open another dialog box where you can create/delete a directory under ``/var/lib/cmon/ca``. Use this feature to organize and categorize the generated certificate per directory.
 
 
-Generate Key
-````````````
+Generate
+``````````
 
 By default, the generated keys and cetificates will be created under default repository at ``/var/lib/cmon/ca``. 
 
@@ -404,7 +401,7 @@ By default, the generated keys and cetificates will be created under default rep
     - Refresh the list.
 
 Self-signed Certificate Authority and Key
-'''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''
 
 Generate a self-signed Certificate Authority and Key. You can use this Certificate Authority (CA) to sign your client and server certificates.
 
@@ -452,7 +449,7 @@ Generate a self-signed Certificate Authority and Key. You can use this Certifica
     - Reset the form.
 
 Client/Server Certificates and Key
-'''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''
 
 Sign with an existing CA or generate a self-signed certificate. ClusterControl generates certificate and key depending on the type, server or client. The generated server's key and certificate can then be used by `Enable SSL Encryption <mysql/overview.html#enable-ssl-encryption>`_ feature.
 
@@ -502,6 +499,35 @@ Sign with an existing CA or generate a self-signed certificate. ClusterControl g
     
 * **Reset**
     - Reset the form.
+
+
+Import
+``````
+
+Import keys and certificates that are uploaded into ClusterControl server. Before you perform the import action, bear in mind that:
+
+1. Upload your certificate and key to a directory on the ClusterControl Controller host
+2. Uncheck the self-signed certificate checkbox if the certificate is not self-signed
+3. You need to also provide a CA certificate if the certificate is not self-signed
+4. Duplicate certificates will not be created
+
+* **Destination Path**
+  - Where you want the certificate to be imported to. Click on the file explorer window on the left to change the path.
+
+* **Save As**
+  - Certificate name.
+
+* **Certificate File**
+  - Physical path to the certificate file. For example: ``/home/user/ssl/file.crt``
+
+* **Private Key File**
+  - Physical path to the key file. For example: ``/home/user/ssl/file.key``
+
+* **Self-signed certificate**
+  - Uncheck the self-signed certificate checkbox if the certificate is not self-signed.
+
+* **Import**
+  - Start the import process.
 
 Notification Services
 ---------------------

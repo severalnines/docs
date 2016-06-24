@@ -1569,4 +1569,3 @@ Variadic functions would also be nice to have:
     return x;
   }
   sum(1, 2, 3); // returns 6
-

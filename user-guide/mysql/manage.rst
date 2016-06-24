@@ -258,11 +258,10 @@ To remove MaxScale, go to *ClusterControl > Nodes > MaxScale node* and click on 
 Create MaxScale Instance
 '''''''''''''''''''''''''
 
-* **MariaDb Repository URL**
-	- MariaDB introduced individual links to the repository where MaxScale is stored. To get your link, you should log into the `MariaDB Enterprise Portal <https://mariadb.com/my_portal/download>`_ and generate one for yourself. Once you have it, you can paste it in the MariaDB Repository URL box.
+Use this wizard to install MaxScale as MySQL load balancer.
 
 * **MaxScale Address**
-	- IP address of the node where MaxScale will be installed. ClusterControl has to be able to perform passwordless SSH to this host. 
+	- IP address of the node where MaxScale will be installed. ClusterControl must be able to perform passwordless SSH to this host. 
 
 * **MaxScale Admin Username**
 	- MaxScale admin username. Default is 'admin'.

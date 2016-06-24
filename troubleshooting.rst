@@ -100,9 +100,11 @@ Starting from ClusterControl v1.3.0, ClusterControl comes with debuginfo package
 Install Debugging Components (Redhat/CentOS)
 ````````````````````````````````````````````
 
-1. Enable the debug repo under ``/etc/yum.repos.d/CentOS-Debuginfo.repo`` and set ``enabled=1``.
+1. Enable the debug repo under /etc/yum.repos.d:
 
-2. Install yum utilities:
+ (eg.: /etc/yum.repos.d/CentOS-Debuginfo.repo set enabled=1 )
+
+2. Install Yum utilities:
 
 .. code-block:: bash
 
@@ -114,6 +116,11 @@ Install Debugging Components (Redhat/CentOS)
 
     yum -y install clustercontrol-controller-debuginfo gdb
 
+4. Thne, run:
+
+.. code-block:: bash
+
+    debuginfo-install clustercontrol-controller
 
 Install Debugging Components (Debian/Ubuntu)
 ``````````````````````````````````````````````
@@ -169,7 +176,6 @@ In such cases, generating a core dump is the only way to backtrace the issue. Ma
 
 .. code-block:: bash
 
-    /etc/init.d/cmon stop
     ulimit -c unlimited
     echo "/tmp/core.%e.%p.%h.%t" > /proc/sys/kernel/core_pattern
     cmon
@@ -191,7 +197,7 @@ If you would like to run cmon as foreground process, you can do that by invoking
 
 .. code-block:: bash
 
-	$ /etc/init.d/cmon stop
+	$ service cmon stop
 	$ cmon -d
 
 CMON will print detailed information on the screen (stdout) as well as ``/var/log/cmon.log`` or ``/var/log/cmon_[cluster ID].log``. Press ``Ctrl + C`` to terminate the process. In certain cases, the CMON  output might be needed to get insight on the problem.

@@ -115,65 +115,18 @@ Automatic Installation
 
 We have a bunch of scripts and tools to automate and simplify the installation process of ClusterControl in various environments:
 
-* Severalnines Configurator
-* Installation script
+* Severalnines Configurator (deprecated and removed)
+* Installation Script (install-cc)
 * Puppet module
 * Chef cookbooks
+* Ansible role
 * Docker image
-
-Severalnines Configurator
-`````````````````````````
-
-`Severalnines Configurator <http://www.severalnines.com/configurator>`_ is a free online tool to deploy a database cluster on your servers. It generates a deployment package based on the values you input in the wizard, the deployment package then automates the installation on your servers. Users need to prepare a group of servers for the database cluster plus one dedicated host for ClusterControl.
-
-The Configurator is able to deploy different types of database clusters as stated in the `Supported Database Server/Cluster <intro.html#supported-database-server-cluster>`_ section.
-
-.. Note:: We are strongly recommend users to install ClusterControl first, and then use *Create Database Cluster* or *Create Database Node* feature to deploy a new 
-cluster.
-
-Deployment package
-''''''''''''''''''
-
-The deployment package will generate a deployment script with ``cluster_id=1``, defined inside ``[package name]/[cluster type]/scripts/install/.s9s/config``. The scripts are indempotent, you can execute it as many time as you like and you still get the same outcome. You can change the cluster ID value to bigger than 1, which will cause the deployment scripts to assume that you are deploying a new cluster and you want to add it into an existing ClusterControl running on the same host. This will skip the ClusterControl installation part.
-
-Deployment steps
-''''''''''''''''
-
-1. Go to the `Severalnines Configurator <http://www.severalnines.com/configurator>`_, choose your database cluster and enter the details of your server environment and configuration.
-
-2. SSH into the ClusterControl host and download the deployment script
-
-.. code-block:: bash
-
-	$ wget [deployment package from online configurator page]
-
-3. Extract the deployment package:
-
-.. code-block:: bash
-
-	$ tar -xzf [deployment package]
-
-4. Navigate to the installation directory:
-
-.. code-block:: bash
-
-	$ cd [package name]/[cluster type]/scripts/install
-
-5. Execute the deployment script:
-
-.. code-block:: bash
-
-	$ bash ./deploy.sh 2>&1 | tee cc.log
-
-Answer a few questions (mostly setting up the SSH environment and firewall) and your cluster will be automatically installed. The deployment usually takes about 15 minutes. Firewall and SElinux will be disabled during the installation.
-
-Once the installation is complete, open a web browser and go https://[ClusterControl_host]/clustercontrol . Setup the default admin account by specifying a valid email address and password on the welcome page.
 
 
 Installer Script (install-cc)
 `````````````````````````````
 
-Installer script is the recommended way to install ClusterControl if you already have existing database server or cluster, though ClusterControl UI is also capable deploying a new database cluster just like `Severalnines Configurator <installation.html#severalnines-configurator>`_.
+Installer script is the recommended way to install ClusterControl. The script must be downloaded and executed on the ClusterControl node, which performs all necessary steps to install and configure the ClusterControl's packages and dependencies on that particular host. It also supports offline installation with `NO_INET=1` variable exported, however you have to have mirrored repository enabled or MySQL and Apache installed and running on that host beforehand. The script assumes that the host can install all dependencies via operating system repository.
 
 On ClusterControl server, run following commands:
 
@@ -204,7 +157,7 @@ Basically, the installation script will attempt to automate the following tasks:
 
 After the installation completes, open your web browser to http://[ClusterControl_host]/clustercontrol and create the default admin user by specifying a valid email address and password on the welcome page.
 
-Puppet module
+Puppet Module
 `````````````
 
 If you are automating your infrastructure using :term:`Puppet`, we have created a module for this purpose and it is available at `Puppet Forge <https://forge.puppetlabs.com/severalnines/clustercontrol>`_. Installing the module is as easy as:
@@ -291,11 +244,11 @@ You can either instruct the agent to pull the configuration from the Puppet mast
 
 	$ puppet agent -t
 
-Or, wait for the Puppet agent service to apply the catalog automatically (depending on the runinterval value, default is 30 minutes). Once completed, open the ClusterControl UI page at http://[ClusterControl_host]/clustercontrol and create the default admin user and password.
+Or, wait for the Puppet agent service to apply the catalog automatically (depending on the ``runinterval`` value, default is 30 minutes). Once completed, open the ClusterControl UI page at http://[ClusterControl_host]/clustercontrol and create the default admin user and password.
 
 For more example on deployments using Puppet, please refer to `this blog post <http://www.severalnines.com/blog/clustercontrol-module-puppet>`_. For more details on configuration options, please refer to `ClusterControl Puppet Module <https://forge.puppetlabs.com/severalnines/clustercontrol>`_ page.
 
-Chef cookbooks
+Chef Cookbooks
 ``````````````
 
 If you are automating your infrastructure using :term:`Chef`, we have created a cookbook for this purpose and it is available at `Chef Supermarket <https://supermarket.chef.io/cookbooks/clustercontrol>`_. Getting the cookbook is as easy as:
@@ -567,11 +520,11 @@ Then, execute the command with ``--ask-become-pass`` flag, for example:
     $ ansible-playbook cc.playbook --ask-become-pass
 
 Docker image
-````````````
+``````````````
 
 The :term:`Docker` image comes with ClusterControl installed and configured with all of its components, so you can immediately use it to manage and monitor your existing databases. 
 
-Having a Docker image for ClusterControl at the moment is convenient in terms of how quickly it is to get it up and running and it's 100% reproducible. Docker users can now start testing ClusterControl, since we have images that everyone can pull down and then launch the tool.
+Having a Docker image for ClusterControl at the moment is convenient in terms of how quickly it is to get it up and running and it's 100% reproducible. Docker users can now start testing ClusterControl, since we have the Docker image that everyone can pull down from Docker Hub and then launch the tool.
 
 It is a start and our plan is to add better integration with the Docker API in future releases in order to transparently manage Docker containers/images within ClusterControl, e.g., to launch/manage and deploy database clusters using Docker images.
 
@@ -932,6 +885,8 @@ A sample configuration will be something like this:
 
 	sudo update-rc.d cmon defaults
 	sudo service cmon start
+  sudo systemctl enable cmon
+  sudo systemctl start cmon
 
 10. Configure Apache ``AllowOverride`` and setting up SSL:
 
@@ -1192,10 +1147,10 @@ Redhat/CentOS
 
 	mkdir ~/s9s_tmp
 	cd ~/s9s_tmp
-	wget http://www.severalnines.com/downloads/cmon/clustercontrol-controller-1.2.12-1096-x86_64.rpm
-	wget http://www.severalnines.com/downloads/cmon/clustercontrol-1.2.12-1007-x86_64.rpm
-	wget http://www.severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.2.12-156-x86_64.rpm
-	wget http://severalnines.com/downloads/cmon/clustercontrol-nodejs-1.2.12-51-x86_64.rpm
+	wget http://severalnines.com/downloads/cmon/clustercontrol-controller-1.3.1-1325-x86_64.rpm
+	wget http://severalnines.com/downloads/cmon/clustercontrol-1.3.1-1655-x86_64.rpm
+	wget http://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.3.1-198-x86_64.rpm
+	wget http://severalnines.com/downloads/cmon/clustercontrol-nodejs-1.3.1-64-x86_64.rpm
 
 .. Attention:: In this example, we downloaded the package directly to simplify the package preparation step. If the ClusterControl server does not have internet connections, you should upload the packages manually to the mentioned staging path.
 
@@ -1220,10 +1175,10 @@ Debian/Ubuntu
 
 .. code-block:: bash
 
-	wget http://www.severalnines.com/downloads/cmon/clustercontrol-controller-1.2.12-1096-x86_64.deb
-	wget http://www.severalnines.com/downloads/cmon/clustercontrol_1.2.12-1007_x86_64.deb
-	wget http://www.severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.2.12-156_x86_64.deb
-	wget http://www.severalnines.com/downloads/cmon/clustercontrol-nodejs_1.2.12-51_x86_64.deb
+	wget http://severalnines.com/downloads/cmon/clustercontrol-controller-1.3.1-1325-x86_64.deb
+	wget http://severalnines.com/downloads/cmon/clustercontrol_1.3.1-1655_x86_64.deb
+	wget http://severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.3.1-198_x86_64.deb
+	wget http://severalnines.com/downloads/cmon/clustercontrol-nodejs_1.3.1-64_x86_64.deb
 
 .. Attention:: In this example, we downloaded the package directly to simplify the package preparation step. If the ClusterControl server does not have internet connections, you should upload the packages manually to the mentioned staging path.
 

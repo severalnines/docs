@@ -24,7 +24,7 @@ Starting from v1.2.12, ClusterControl consists of four components:
 ClusterControl Controller (CMON)
 --------------------------------
 
-ClusterControl Controller (CMON) is the core backend process that performs all automation and management procedures. It is usually installed as ``/usr/sbin/cmon``. It uses a collection of helper scripts in ``/usr/bin`` directory (prefixed with s9s\_) to complete specific tasks.
+ClusterControl Controller (CMON) is the core backend process that performs all automation and management procedures. It is usually installed as ``/usr/sbin/cmon``. It comes with a collection of helper scripts in ``/usr/bin`` directory (prefixed with s9s\_) to complete specific tasks. However, some of the scripts have been deprecated due to the corresponding tasks are now being handled by the CMON core process.
 
 CMON controller package is available at `Severalnines download site <http://www.severalnines.com/downloads/cmon/>`_. Redhat-based systems should download and install the RPM package while Debian-based systems should download and extract the DEB package. The package name is formatted as:
 
@@ -124,7 +124,7 @@ General
 
 ``name=<string>``
 
-* \* Cluster name.
+* \* Cluster name. The cluster name configured under *ClusterControl > DB cluster > Settings > General Settings > Cluster Name* precedes this.
 * Example: ``name=cluster_1``
 
 ``type=<string>``
@@ -142,7 +142,7 @@ CMON
 
 ``agentless=<boolean integer>``
 
-* \* CMON controller mode (deprecated). Agents are no longer supported. Supported values are 0 (agentful) or 1 (agentless - default). 
+* \* CMON controller mode (deprecated). Agents are no longer supported. 0 for agentful or 1 for agentless (default). 
 * Example: ``agentless=1``
 
 ``logfile=<path to log file>``
@@ -166,36 +166,41 @@ Operating system
 
 ``os=<string>``
 
-* \* Operating system runs across the cluster, including ClusterControl host. Supported values are 'redhat' for Redhat-based distributions (CentOS/Fedora/Amazon Linux/Oracle Linux) or 'debian' for Debian-based distributions (Debian/Ubuntu)	
+* \* Operating system runs across the cluster, including ClusterControl host. 'redhat' for Redhat-based distributions (CentOS/Fedora/Amazon Linux/Oracle Linux) or 'debian' for Debian-based distributions (Debian/Ubuntu).
 * Example: ``os=redhat``
-
-``os_user=<string>``
-
-* \* System user that will be used by CMON to perform automation tasks like cluster recovery, backups and upgrades. This user must be able to perform super-user activities.
-* Example: ``os_user=root``
 
 ``osuser=<string>``
 
-* Alias to ``os_user``.
+* \* Operating system user that will be used by CMON to perform automation tasks like cluster recovery, backups and upgrades. This user must be able to perform super-user activities.
+* Example: ``os_user=root``
+
+``os_user=<string>``
+
+* Alias to ``osuser``.
 
 ``sshuser=<string>``
 
-* Alias to ``os_user``.
+* Alias to ``osuser``.
 
 ``sudo="echo '<sudo password>' | sudo -S 2>/dev/null"``
 
-* If sudo user uses password, specify the sudo command (with sudo password) here.
+* If sudo user requires password, specify the sudo command with sudo password here. The sudo command must be trimmed by redirecting stderr to somewhere else. Therefore, it is compulsary to have ``-S 2>/dev/null`` appended in the sudo command.
 * Example: ``sudo="echo 'My5ud0' | sudo -S 2>/dev/null"``
 
 ``hostname=<string>``
 
-* Hostname or IP address of the CMON host.
+* \*Hostname or IP address of the CMON host.
 * Example: ``hostname=192.168.0.10``
 
 ``wwwroot=<path to CMONAPI and ClusterControl UI>``
 
-* \* Path to CMONAPI and ClusterControl UI. If not set, it defaults to '/var/www/html' for Redhat-based distributions or '/var/www' for Debian-based distributions.
+* Path to CMONAPI and ClusterControl UI. If not set, it defaults to '/var/www/html' for Redhat-based distributions or '/var/www' for Debian-based distributions.
 * Example: ``wwwroot=/var/www/html``
+
+``vendor=<string>``
+
+* Database vendor name. ClusterControl needs to know this in order to distinguish the vendor's relevant naming convention especially for package name, daemon name, deployment steps, recovery procedures and lots more. Supported value at the moment is percona, codership, mariadb, mongodb, oracle.
+* Example: ``vendor=codership``
 
 SSH
 '''
@@ -232,16 +237,6 @@ CMON database
 
 * \* The MySQL port used by CMON to connecto to CMON database.	
 * Example: ``mysql_port=3306``
-
-``mysql_basedir=<MySQL base directory location>``
-
-* \* The MySQL base directory used by CMON to find MySQL client related binaries.	
-* Example: ``mysql_basedir=/usr``
-
-``mysql_bindir=<MySQL binary directory location>``
-
-* \* The MySQL binary directory used by CMON to find MySQL client related binaries.	
-* Example: ``mysql_bindir=/usr/bin``
 
 Host monitoring
 '''''''''''''''
@@ -308,39 +303,78 @@ MySQL managed nodes
 * \*\*\* Exclusive for MySQL Cluster. Directory where configuration files (my.cnf/config.ini) of the cluster is stored.
 * Example: ``db_configdir=/etc/mysql``
 
+``monitored_mysql_port=<integer>``
+
+* MySQL port for the managed cluster. ClusterControl all DB nodes are running on the same MySQL port.
+* Example: ``monitored_mysql_port=3306``
+
 ``monitored_mysql_root_password=<string>``
 
 * \*\*/\*\*\* MySQL root password for the managed cluster. ClusterControl assumes all DB nodes are using the same root password. This is required when you want to scale your cluster by adding a new DB node or replication slave.
 * Example: ``monitored_mysql_root_password=r00tPassword``
 
+``mysql_basedir=<MySQL base directory location>``
+
+* \*\*/\*\*\*The MySQL base directory used by CMON to find MySQL client related binaries.	
+* Example: ``mysql_basedir=/usr``
+
+``mysql_bindir=<MySQL binary directory location>``
+
+* \*\*/\*\*\*The MySQL binary directory used by CMON to find MySQL client related binaries.	
+* Example: ``mysql_bindir=/usr/bin``
+
+``repl_user=<string>``
+
+* \*\* The MySQL replication user.
+* Example: ``repl_user=repluser``
+
+``repl_password=<string>``
+
+* \*\* Password for ``repl_user``.
+* Example: ``repl_password=ZG04Z2Jnk0MUWAZK``
+
+``auto_manage_readonly=<boolean integer>``
+
+* Enable/Disable automatic management of the MySQL server ``read_only`` variable. Default is 1 (true), which means ClusterControl will set the ``read_only=ON`` if the MySQL replication role is slave.
+* Example: ``auto_manage_readonly=0``
 
 MongoDB/TokuMX managed hosts
 ''''''''''''''''''''''''''''
 
 ``mongodb_server_addresses=<string>``
 
-* \*\*\*\* Exclusive for MongoDB/TokuMX. Comma separated list of MongoDB/TokuMX shard or replica IP addresses with port.
+* \*\*\*\* Exclusive for MongoDB. Comma separated list of MongoDB/TokuMX shard or replica IP addresses with port.
 * Example: ``mongodb_server_addresses=192.168.0.11:27017,192.168.0.12:27017,192.168.0.13:27017``
 
 ``mongoarbiter_server_addresses=<string>``
 
-* \*\*\*\* Exclusive for MongoDB/TokuMX. Comma separated list of MongoDB/TokuMX arbiter IP addresses with port.	
+* \*\*\*\* Exclusive for MongoDB. Comma separated list of MongoDB/TokuMX arbiter IP addresses with port.	
 * Example: `mongoarbiter_server_addresses=192.168.0.11:27019,192.168.0.12:27019,192.168.0.13:27019`
 
 ``mongocfg_server_addresses=<string>``
 
-* \*\*\*\* Exclusive for MongoDB/TokuMX. Comma separated list of MongoDB/TokuMX config server IP addresses with port.	
+* \*\*\*\* Exclusive for MongoDB. Comma separated list of MongoDB/TokuMX config server IP addresses with port.	
 * Example: ``mongocfg_server_addresses=192.168.0.11:27019,192.168.0.12:27019,192.168.0.13:27019``
 
 ``mongos_server_addresses=<string>``
 
-* \*\*\*\* Exclusive for MongoDB/TokuMX. Comma separated list of MongoDB/TokuMX mongos IP addresses with port.
+* \*\*\*\* Exclusive for MongoDB. Comma separated list of MongoDB/TokuMX mongos IP addresses with port.
 * Example: ``mongos_server_addresses=192.168.0.11:27017,192.168.0.12:27017,192.168.0.13:27017``
 
 ``mongodb_basedir=<location MongoDB base directory>``
 
-* \*\*\*\* Exclusive for MongoDB/TokuMX. The MongoDB/TokuMX base directory used by CMON to find mongodb client related binaries.	
+* \*\*\*\* Exclusive for MongoDB. The MongoDB base directory used by CMON to find mongodb client related binaries.	
 * Example: ``mongodb_basedir=/usr``
+
+``mongodb_user=<string>``
+
+* MongoDB admin/root username.
+* Example: ``mongodb_user=root``
+
+``mongodb_password=myadminpassword``
+
+* Password for ``mongodb_user``.
+* Example: ``mongodb_password=kPo123^^#*``
 
 Statistic collections
 '''''''''''''''''''''
@@ -370,8 +404,8 @@ Statistic collections
 * This determine whether ClusterControl should enable MySQL time machine status and variable collections. The status time machine allows you to select status variable for a time range and compare the values at the start and end of that range from ClusterControl UI. Default is 0, meaning it is disabled.
 * Example: ``enable_mysql_timemachine=1``
 
-Encryption
-''''''''''
+Encryption and Security
+''''''''''''''''''''''''
 
 ``cmondb_ssl_key=<file path>``
 
@@ -408,6 +442,10 @@ Encryption
 * Path to storage location of SSL related files. This is required when you want to add new node in an encrypted Galera cluster.	
 * Example: ``cluster_certs_store=/etc/ssl/galera/cluster_1``
 
+``rpc_key=<string>``
+
+* Authorization string that allows communication on CMON RPC interface. This value is automatically generated when new cluster/server is created or added into ClusterControl
+* Example: ``rpc_key=VJZKhr5CvEGI32dP``
 
 Agentless
 `````````

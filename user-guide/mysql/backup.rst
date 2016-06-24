@@ -106,8 +106,11 @@ Creates backup schedules of the database. You can choose to create a full or inc
 	- List of databases retrieved from the monitored MySQL servers. Default is 'All Databases'.
   
 * **Failover backup if node is down**
-	- Yes - Backup will be run on any available node if the target database node is down. If failover is enabled and the selected node is not online, the backup job elects an online node to create the backup. This ensures that a backup will be created even if the selected node is not available. If the scheduled backup is an incremental backup and a full backup does not exist on the new elected node, then a full backup will be created.
+	- Yes - Backup will be run on any available node (or selected node based on the *Backup Failover Host*) if the target database node is down. If failover is enabled and the selected node is not online, the backup job elects an online node to create the backup. This ensures that a backup will be created even if the selected node is not available. If the scheduled backup is an incremental backup and a full backup does not exist on the new elected node, then a full backup will be created.
 	- No - Backup will not run if the target database node is down.
+	
+* **Backup Failover Host**
+	- List of database host to failover in case the target node is down during the scheduled backup.
   
 Current Backup Schedule
 .......................
@@ -122,13 +125,13 @@ This section explains backup method used by ClusterControl.
 mysqldump
 .........
 
-ClusterControl performs :term:`mysqldump` against all or selected databases by using the ``--single-transaction`` option. It automatically performs mysqldump with ``--master-data=2`` if it detects binary logging is enabled on the particular node to generate binary log file and position statement in the dump file. ClusterControl generates a set of three mysqldump files with the following suffixes:
+ClusterControl performs :term:`mysqldump` against all or selected databases by using the ``--single-transaction`` option. It automatically performs mysqldump with ``--master-data=2`` if it detects binary logging is enabled on the particular node to generate binary log file and position statement in the dump file. ClusterControl generates a set of 4 mysqldump files with the following suffixes:
 
-* _data.sql - All schemas’ data.
-* _schema.sql - All schemas’ structure.
-* _mysqldb.sql - MySQL system database.
+* _data.sql.gz - Schemas’ data.
+* _schema.sql.gz - Schemas’ structure.
+* _mysqldb.sql.gz - MySQL system database.
+* _triggerseventroutines.sql.gz - MySQL triggers, event and routines.
 
-The last output of the backup file would be a gunzip compressed file, ``.tar.gz`` consists of three ``.sql.gz`` files.
 
 Percona Xtrabackup
 ..................
@@ -142,7 +145,7 @@ Since its ability to create full and incremental MySQL backups, ClusterControl m
 NDB backup (MySQL Cluster)
 ..........................
 
-NDB backup triggers 'START BACKUP' command on management node and perform mysqldump on each of the SQL nodes subsequently. These backup files will be created and streamed to ClusterControl node based on *ClusterControl > Settings > Backup > Backup Directory* location.
+NDB backup triggers ``START BACKUP`` command on management node and perform mysqldump on each of the SQL nodes subsequently. These backup files will be created and streamed to ClusterControl node based on *ClusterControl > Settings > Backup > Backup Directory* location.
 
 Reports
 ```````
@@ -164,7 +167,7 @@ ClusterControl has ability to restore backups (mysqldump and xtrabackup) created
 
 1. Stop all nodes in the cluster.
 2. Copy backup files to the selected server.
-3. Restore the backup.
+3. Prepare and restore the backup.
 4. Follow the instruction in the *ClusterControl > Logs > Job > Job Message* on how to bootstrap the cluster.
 
 * **Backup Id**
@@ -172,6 +175,9 @@ ClusterControl has ability to restore backups (mysqldump and xtrabackup) created
 
 * **Restore backup on**
 	- The backup will be restored to the selected server.
+	
+* **Restore "MySQL" Database**
+	- Mysqldump restoration will have an optional choice to restore the ``mysql`` database. If the ``cmon`` user privileges has changed, it may cause ClusterControl to stop functioning. This is fixable, of course. Default is "No".
 
 Restore External Backups
 ........................

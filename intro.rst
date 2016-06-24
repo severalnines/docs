@@ -3,7 +3,7 @@
 Introduction
 ============
 
-This documentation covers ClusterControl version 1.3.0 which released on April 18th, 2016. This release contains key new features along with performance improvements and bug fixes. Release changelog is available `here <changelog.html>`_.
+This documentation covers ClusterControl version 1.3.1 which released on May 31st, 2016. This release contains key new features along with performance improvements and bug fixes. Release changelog is available `here <changelog.html>`_.
 
 What is ClusterControl?
 -----------------------
@@ -66,7 +66,7 @@ What user really needs to do is to access ClusterControl UI located at http://[C
    :alt: Example multiple cluster deployment
    :align: center
 
-ClusterControl exposes all functionality through remote procedure calls (RPC) on port 9500 and REST API accessible at http://[ClusterControl_host]/cmonapi authenticated by an API token. The ClusterControl UI interacts with those interfaces to retrieve monitoring data (cluster load, host status, alarms, backup status etc.) or to send management commands (add/remove nodes, run backups, upgrade a cluster, etc.). The following diagram illustrates the architecture of ClusterControl:
+ClusterControl exposes all functionality through remote procedure calls (RPC) on port 9500 (authenticated by a RPC token) and REST API accessible at http://[ClusterControl_host]/cmonapi (authenticated by an API token). The ClusterControl UI interacts with those interfaces to retrieve monitoring data (cluster load, host status, alarms, backup status etc.) or to send management commands (add/remove nodes, run backups, upgrade a cluster, etc.). The following diagram illustrates the architecture of ClusterControl:
 
 .. image:: img/cc_arch.png
    :alt: ClusterControl architecture
@@ -84,7 +84,7 @@ ClusterControl is able to handle most of the administration tasks required to ma
 * Monitor database's stats, variable, log files, queries, for individual node as well as cluster-wide
 * Database configuration management
 * Database cluster/node recovery
-* Trigger alarm and send notification
+* Trigger alarm and send notifications
 * Schedule and perform database backup (mysqldump, Xtrabackup, pgdump, mongodump)
 * Database backup status
 * Restore backups (MySQL/PostgreSQL)
@@ -100,6 +100,7 @@ ClusterControl is able to handle most of the administration tasks required to ma
 * Promote MySQL slave to master
 * Set up a delayed slave
 * Stage/Failover replication slave from a master
+* Manage private keys and certificates for databases' SSL
 * and many more..
 
 For more details, please refer to `ClusterControl product page <http://severalnines.com/product/clustercontrol>`_. You might also want to look at the `ClusterControl changelog <http://support.severalnines.com/entries/21633407-ChangeLog>`_ for the latest development update.

@@ -61,7 +61,7 @@ The following software is required by ClusterControl:
 - NTP server - All servers’ time must synced under one time zone
 - netcat - for streaming backups
 
-.. Note:: If ClusterControl is installed via deployment package (generated with Severalnines Configurator), installation script (install-cc) or package manager (yum/apt), all dependencies will be automatically satisfied.*
+.. Note:: If ClusterControl is installed via installation script (install-cc) or package manager (yum/apt), all dependencies will be automatically satisfied.*
 
 Supported Browsers
 ------------------
@@ -120,7 +120,6 @@ ClusterControl requires ports used by the following services to be opened/enable
 * MySQL load balance (if HAProxy is installed on ClusterControl node - default is 3307)
 * Streaming port for mysqldump through netcat (default is 9999)
 
-
 ClusterControl supports various database and application vendors and each has its own set of standard ports that need to be reachable. Following ports and services need to be reachable by ClusterControl on the managed database nodes:
 
 +-------------------------------------------------+--------------------------------------+
@@ -138,17 +137,17 @@ ClusterControl supports various database and application vendors and each has it
 |                                                 | * 4568 (Galera IST)                  |
 |                                                 | * 9200 (HAproxy health check)        |
 +-------------------------------------------------+--------------------------------------+
-| MySQL Cluster                                   | * 22 (SSH)                           |
+| MySQL Cluster (NDB)                             | * 22 (SSH)                           |
 |                                                 | * ICMP (echo reply/request)          |
 |                                                 | * 1186 (MySQL Cluster)               |
 |                                                 | * 2200 (MySQL Cluster)               |
 |                                                 | * 3306 (MySQL)                       |
 +-------------------------------------------------+--------------------------------------+
-| MongoDB/TokuMX replica set                      | * 22 (SSH)                           |
+| MongoDB replica set                             | * 22 (SSH)                           |
 |                                                 | * ICMP (echo reply/request)          |
 |                                                 | * 27017 (mongod)                     |
 +-------------------------------------------------+--------------------------------------+
-| MongoDB/TokuMX sharded cluster                  | * 22 (SSH)                           |
+| MongoDB sharded cluster                         | * 22 (SSH)                           |
 |                                                 | * ICMP (echo reply/request)          |
 |                                                 | * 27018 (mongod)                     |
 |                                                 | * 27017 (mongos)                     |
@@ -168,7 +167,7 @@ ClusterControl supports various database and application vendors and each has it
 |                                                 | * 6033 (MaxAdmin - CLI)              |
 |                                                 | * 4006 (Round robin listener)        |
 |                                                 | * 4008 (Read/Write split listener)   |
-|                                                 | * 4442 (Debug information            |
+|                                                 | * 4442 (Debug information)           |
 +-------------------------------------------------+--------------------------------------+
 | Keepalived                                      | * 22 (SSH)                           |
 |                                                 | * ICMP (echo reply/request)          |
@@ -204,7 +203,7 @@ Operating System User
 
 ClusterControl controller (cmon) process requires a dedicated operating system user to perform various management and monitoring commands on the managed nodes. This user which is defined as ``os_user`` or ``sshuser`` in CMON configuration file, must exist on all managed nodes and it should have the ability to perform super-user commands.
 
-You are recommended to install ClusterControl as 'root', and running as root is the easiest option. If you perform the install using another user other than 'root', the following must be true:
+You are recommended to install ClusterControl as 'root', and running as root is the easiest option. If you perform the installation using another user other than 'root', the following must be true:
 
 * The OS user must exist on all nodes
 * The OS user must not be 'mysql'
@@ -219,7 +218,7 @@ Edit the sudoers with the following command (as root):
 
   visudo
 
-And add the following line at the end. Replace [OS user] with the sudo username of your choice:
+And add the following line at the end. Replace ``[OS user]`` with the sudo username of your choice:
 
 .. code-block:: bash
 
@@ -313,6 +312,8 @@ Sudoers with or without password is possible with sudo configuration option (tho
 .. code-block:: bash
 
   sudo="echo 'thesudopassword' | sudo -S 2>/dev/null"
+
+.. Attention::  Having ``2>/dev/null`` in the sudo command is mandatory to exclude stderr from the response.
 
 Don't forget to restart cmon service to load the option.
 

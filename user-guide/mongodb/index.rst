@@ -5,7 +5,7 @@ User Guide for MongoDB
 
 This user guide covers ClusterControl with MongoDB-based clusters, namely:
 
-* MongoDB/TokuMX
+* MongoDB
 	* Replica Set
 	* Sharded Cluster
 	* Replicated Sharded Cluster

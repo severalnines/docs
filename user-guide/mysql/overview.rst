@@ -124,8 +124,6 @@ If you specify a new hostname or IP address, make sure that the node is accessib
 
 This is only available for Galera Cluster, MySQL Replication (adding slave) and MySQL Cluster.
 
-.. Note:: Add node is not supported for MySQL 5.7 since Percona Xtrabackup does not support it yet.
-
 * **Hostname**
 	- IP address or :term:`FQDN` of the target node. If you already have the host added under *ClusterControl > Manage > Hosts*, you can just choose the host from the dropdown menu.
 
