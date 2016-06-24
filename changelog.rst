@@ -12,63 +12,63 @@ Patch Release: June 20th, 2016
 ````````````````````````````````
 
 * Build :
-  - clustercontrol-1.3.1-1655
-  - clustercontrol-controller-1.3.1-1324
-  - clustercontrol-cmonapi-1.3.1-198 
+	- clustercontrol-1.3.1-1655
+	- clustercontrol-controller-1.3.1-1324
+	- clustercontrol-cmonapi-1.3.1-198 
 
 * Controller
-  - Backup: Fixed an issue with long running backups and overrun of backup log entries (backup would not terminate properly)
-  Fix for automatically correcting a wrongful 'sudo' configuration.
+	- Backup: Fixed an issue with long running backups and overrun of backup log entries (backup would not terminate properly)
+	- Fix for automatically correcting a wrongful 'sudo' configuration.
 
 * UI
-  - Alarms: fixed inconsistent alarm count
-  - Jobs: Fixed a number of issues such as being able to Restart failed jobs
+	- Alarms: fixed inconsistent alarm count
+	- Jobs: Fixed a number of issues such as being able to Restart failed jobs
 
 Patch Release: June 16th, 2016
 ````````````````````````````````
 
 * Build:
-  - clustercontrol-controller-1.3.1-1304
-  - clustercontrol-1.3.1-1580
+	- clustercontrol-controller-1.3.1-1304
+	- clustercontrol-1.3.1-1580
 
 * Controller
-  - Galera: Fixed a version detection issue of the galera wsrep component.
+	- Galera: Fixed a version detection issue of the galera wsrep component.
 
 * UI
-  - Performance -> Database Growth: Fixed a JavaScript error.
+	- Performance -> Database Growth: Fixed a JavaScript error.
 
 Initial Release: May 31st, 2016
 ````````````````````````````````
 * Build:
-  - clustercontrol-1.3.1-1562
-  - clustercontrol-controller-1.3.1-1296
-  - clustercontrol-cmonapi-1.3.1-195
-  - clustercontrol-nodejs-1.3.1-64
+	- clustercontrol-1.3.1-1562
+	- clustercontrol-controller-1.3.1-1296
+	- clustercontrol-cmonapi-1.3.1-195
+	- clustercontrol-nodejs-1.3.1-64
 
 * MySQL based clusters
-  - MySQL Replication
-    - Create MySQL Replication Clusters (master + N slaves) with Percona (5.6|5.7), MariaDB (10.1) or Oracle (5.7) packages
-    - Enable SSL client/server encryption
-    - Enable/Disable automatic management of the server read_only variable by setting 'auto_manage_readonly=true|false' in the cmon.cnf file of the replication clusters. Default is true.
-  - MySQL/NDB Cluster
-    - Add Existing MySQL/NDB Cluster. Add an existing production deployed NDB Cluster. 2 MGMT Nodes, X SQL Nodes, Y Data Nodes.
-  - New Backup and Restore options
-    - Explicitly select a backup failover host to use instead of auto selecting a failover host
-    - Improved restore mysqldump files
-  - MySQL User Management
-    - General UI improvements
-    - Set accounts to require encrypted connections by enabling "REQUIRE SSL"
+	- MySQL Replication
+		- Create MySQL Replication Clusters (master + N slaves) with Percona (5.6|5.7), MariaDB (10.1) or Oracle (5.7) packages
+		- Enable SSL client/server encryption
+		- Enable/Disable automatic management of the server read_only variable by setting 'auto_manage_readonly=true|false' in the cmon.cnf file of the replication clusters. Default is true.
+	- MySQL/NDB Cluster
+		- Add Existing MySQL/NDB Cluster. Add an existing production deployed NDB Cluster. 2 MGMT Nodes, X SQL Nodes, Y Data Nodes.
+	- New Backup and Restore options
+		- Explicitly select a backup failover host to use instead of auto selecting a failover host
+		- Improved restore mysqldump files
+	- MySQL User Management
+		- General UI improvements
+		- Set accounts to require encrypted connections by enabling "REQUIRE SSL"
 
 * Key Management
-  - Import existing SSL certificates and keys. Upload your certificate, private key and CA (if any) to the ClusterControl Controller host and then import the certificate to be managed by ClusterControl. 
+	- Import existing SSL certificates and keys. Upload your certificate, private key and CA (if any) to the ClusterControl Controller host and then import the certificate to be managed by ClusterControl. 
 
 * Other
-  - Support for installing ClusterControl on MySQL 5.7
-  - Correctly show nodes that are in maintenance mode, e.g., during node recovery 
-  - Simplified MariaDB MaxScale deployment. No need to enter a MariaDB enterprise repository URL
-  - Added "Restart Node" action for all cluster types
-  - Upgrade to CakePHP 2.8.3
-  - Job Log improvements
+	- Support for installing ClusterControl on MySQL 5.7
+	- Correctly show nodes that are in maintenance mode, e.g., during node recovery 
+	- Simplified MariaDB MaxScale deployment. No need to enter a MariaDB enterprise repository URL
+	- Added "Restart Node" action for all cluster types
+	- Upgrade to CakePHP 2.8.3
+	- Job Log improvements
 
 Changes in v1.3.0
 -----------------
