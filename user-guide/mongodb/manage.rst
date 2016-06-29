@@ -7,10 +7,10 @@ Hosts
 Lists of hosts being managed by ClusterControl for the specific cluster. This includes:
 
 * ClusterControl node
-* MongoDB/TokuMX shards nodes (MongoDB replica set and sharded cluster)
-* MongoDB/TokuMX config nodes (MongoDB sharded cluster)
-* MongoDB/TokuMX mongos nodes (MongoDB sharded cluster)
-* MongoDB/TokuMX arbiter nodes (MongoDB replica set and sharded cluster)
+* MongoDB shards nodes (MongoDB replica set and sharded cluster)
+* MongoDB config nodes (MongoDB sharded cluster)
+* MongoDB mongos nodes (MongoDB sharded cluster)
+* MongoDB arbiter nodes (MongoDB replica set and sharded cluster)
 
 To remove a host, just select the host and click on the *Remove* button. 
 

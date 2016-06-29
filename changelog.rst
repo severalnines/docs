@@ -138,7 +138,7 @@ Patch release: Apr 24th, 2016
     - New "Install Software" option for Galera Cluster with "Create Database Cluster" and "Create Database Node"
     - Default "Yes" act as before where ClusterControl provisions the database nodes with required packages and any existing packages could be uninstalled if required.
     - If set to "No" then no provisioning of packages or uninstallation of any existing packages are done. It is assumed that the DB nodes have been provisioned by for example a configuration management system with all required database packages. The create cluster/node jobs will then only provision out our Galera my.cnf file and then bootstrap the cluster without doing any provisioning of software. It is important that the mysql server process is stopped before running the job with "install Software" set to "No".
-MongoDB arbiter is now shown on the "Nodes" page
+		- MongoDB arbiter is now shown on the "Nodes" page
 
 * ClusterControl Controller:
     - Correct wrong assets path. Fixes missing logo in operational reports.
@@ -439,12 +439,13 @@ Changes in v1.2.11
 
 * Controller:
 	- Backup fix to support xtrabackup 2.3
-    - Start-up bugs to initialise internal host structures
-    - netcat port defaults to 9999  (and impossible to change)
-    - Cluster failure with "Unknown database some_schema" message
-    - Remove Node: wsrep_cluster_address is not updated
-    - Corrected printout in backup
-    - Corrected sampling of wsrep_flow_cntr_sent/recv
+	- Start-up bugs to initialise internal host structures
+	- netcat port defaults to 9999 (and impossible to change)
+	- Cluster failure with "Unknown database some_schema" message
+	- Remove Node: wsrep_cluster_address is not updated
+	- Corrected printout in backup
+	- Corrected sampling of wsrep_flow_cntr_sent/recv
+
 * UI:
 	- In Cluster jobs list, Delete and Restart buttons do not work
 	- Add Replication Slave UI Dialog not showing properly
@@ -677,7 +678,7 @@ Changes in v1.2.9
 		- cluster_ssl_key= path to SSL key, for SSL encryption between CMON and managed MySQL Servers.
 		- cluster_ssl_cert = path to SSL cert, for SSL encryption between CMON and managed MySQL Servers.
 		- cluster_ssl_ca = path to SSL CA, for SSL encryption between CMON and managed MySQL Servers.
-		- cluster_certs_store = path to storage location of SSL related files, defaults to /etc/ssl/<clustertype>/<cluster_id>
+		- cluster_certs_store = path to storage location of SSL related files, defaults to ``/etc/ssl/<clustertype>/<cluster_id>``
 	* Monitoring:
 		- New binary format for host statistics which consumes less space (cpu, memory, disk, network stats)
 		- Fixed disk statistics collector to support non 4K block sizes

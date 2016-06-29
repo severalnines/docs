@@ -30,8 +30,8 @@ Cluster Settings
 * **History**
 	- Number of days you would like to keep historic data. Ensure you have enough disk space on the ClusterControl server if you want to store historic data.
 
-* **Error Log Collection Interval**
-	- How many minutes between automatic MongoDB error log retrieval.
+* **Log Interval**
+	- How many minutes between automatic MongoDB error log collection retrieval.
 
 Configure Mailserver
 ....................

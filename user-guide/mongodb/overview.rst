@@ -29,7 +29,7 @@ Adds a replica member or arbiter node.
 	- DB server - MongoDB node to be part of the same replica set.
 	- Arbiter 
 		- MongoDB arbiter node to be part of the same replica set. 
-		- You can add an arbiter to an existing MongoDB node or a new node. If you are doing this, choose "No" under *Install Software*.
+		- You can add an 	arbiter to an existing MongoDB node or a new node. If you are doing this, choose "No" under *Install Software*.
 
 * **Hostname**
 	- IP address or hostname of the target host.

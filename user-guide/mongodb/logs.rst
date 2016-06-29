@@ -22,8 +22,7 @@ FAILED   The job was stopped due to error. If fails, it should return “The job
 CMON Logs
 ``````````
 
-Centralised list of log events from the ClusterControl server and agents. You can filter the output by hostname and log level (ALL, DEBUG, INFO, WARNING, ERROR, CRITICAL, ALERT). Log events listed in this page can also be retrieved directly from CMON log file (default is ``/var/log/cmon.log``).
-
+Centralised list of log events from the ClusterControl server and agents. You can filter the output by hostname and log level (ALL, DEBUG, INFO, WARNING, ERROR, CRITICAL, ALERT). Log events listed in this page can also be retrieved directly from the CMON log file of the respective cluster ID, e.g (default is ``/var/log/cmon.log``).
 
 Error Reports
 ``````````````

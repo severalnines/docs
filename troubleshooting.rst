@@ -95,14 +95,12 @@ So attach the generated log file to your Support Issue, and we will be able to h
 Debugging ClusterControl Controller (CMON)
 ''''''''''''''''''''''''''''''''''''''''''
 
-Starting from ClusterControl v1.3.0, ClusterControl comes with debuginfo package. In case if you encounter CMON crash, please install the debuginfo package ant the necessary packages as shown below.
+Starting from ClusterControl v1.3.0, ClusterControl comes with debuginfo package. In case if you encounter CMON crash, please install the debuginfo package and the necessary packages as shown below.
 
 Install Debugging Components (Redhat/CentOS)
 ````````````````````````````````````````````
 
-1. Enable the debug repo under /etc/yum.repos.d:
-
- (eg.: /etc/yum.repos.d/CentOS-Debuginfo.repo set enabled=1 )
+1. Enable the debug repo under ``/etc/yum.repos.d/CentOS-Debuginfo.repo`` and set ``enabled=1``.
 
 2. Install Yum utilities:
 
@@ -116,7 +114,7 @@ Install Debugging Components (Redhat/CentOS)
 
     yum -y install clustercontrol-controller-debuginfo gdb
 
-4. Thne, run:
+4. Then, run:
 
 .. code-block:: bash
 
@@ -137,7 +135,7 @@ Optionally, you can
 
 .. code-block:: bash
 
-    apt-get install libstdc++6-4.8-dbg  libc6-dbg
+    apt-get install libstdc++6-4.8-dbg libc6-dbg
 
 However, this totally depends on the libstdc++6 version installed. Print the shared object dependencies using ``ldd``:
 
@@ -170,7 +168,7 @@ In this case, we have version "4.9" installed for libstc++6. Finally, install th
 Debugging Steps
 ````````````````
 
-Debugging is a program that produces a core dump. It consists of the recorded state of the working memory of a computer program at a specific time, generally when the program has crashed or otherwise terminated abnormally. ClusterControl Controller (CMON) package comes with a cron file installed under ``/etc/cron.d/`` which will auto-restart if the cmon process is terminated abnormally. Typically, you can notice if cmon process has crashed by looking at the ``dmesg`` output.
+Debugging is a program that produces a core dump. It consists of the recorded state of the working memory of a computer program at a specific time, generally when the program has crashed or otherwise terminated abnormally. ClusterControl Controller (CMON) package comes with a cron file installed under ``/etc/cron.d/`` which will auto-restart if the cmon process is terminated abnormally. Typically, you may notice if cmon process has crashed by looking at the ``dmesg`` output.
 
 In such cases, generating a core dump is the only way to backtrace the issue. Make sure you have the debugging components installed as described in the previous section beforehand. On ClusterControl node as root user, increase the CPU limit, adjust kernel's core pattern value and run CMON on foreground:
 
@@ -370,13 +368,13 @@ CMON process dies with “Critical error (mysql error code 1)”
 	(ERROR) Critical error (mysql error code 1) occured - shutting down
 
 * **Troubleshooting steps:**
-1. Run the following command on the ClusterControl host to check if the ClusterControl host has the ability to connect to the DB host with current credentials:
+	1) Run the following command on the ClusterControl host to check if the ClusterControl host has the ability to connect to the DB host with current credentials:
 
 .. code-block:: bash
 
 	$ mysql -ucmon -p -h[database node IP] -P[MySQL port] -e 'SHOW STATUS'
 
-2. Check GRANT for cmon user on each database host:
+2) Check GRANT for cmon user on each database host:
 
 .. code-block:: mysql
 

@@ -34,6 +34,10 @@ Creates backup schedules of the database.
 	- Available backup tools:
 		- mongodump - Separated compressed schema and data dump. See `mongodump`_ section.
 
+* **Failover backup if node is down**
+	- Yes - Backup will be run on any available node if the target database node is down. If failover is enabled and the selected node is not online, the backup job elects an online node to create the backup. This ensures that a backup will be created even if the selected node is not available. If the scheduled backup is an incremental backup and a full backup does not exist on the new elected node, then a full backup will be created.
+	- No - Backup will not run if the target database node is down.
+
 Current Backup Schedule
 .......................
 
