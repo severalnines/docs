@@ -3,7 +3,7 @@ Settings
 
 Admin page provides interface to manage clusters, organizations, users, roles and authentication options inside ClusterControl.
 
-.. image:: img/admin_index.png
+.. image:: img/admin_index2.png
 
 Clusters
 --------
@@ -27,8 +27,8 @@ Manage database clusters inside ClusterControl.
 
 .. Note:: You can retrieve the ClusterControl API Token value directly from ``[wwwroot]/cmonapi/config/bootstrap.php`` under ``CMON_TOKEN`` variable or from 'dcps.apis' table.
 
-Cluster Jobs
-------------
+Jobs
+-----
 
 List of jobs that have been performed related to the cluster (e.g., deploying a new cluster, adding an existing cluster and cloning). This is different from *ClusterControl > Logs > Jobs* under each database cluster. Pick a job to see its running messages.
 

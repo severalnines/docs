@@ -50,8 +50,9 @@ Opens a single-page wizard to import the configuration of the existing database 
 
 * Galera (MySQL Galera Cluster, Percona XtraDB Cluster and MariaDB Galera Cluster)
 * MySQL Replication (master-slave)
+* MySQL Cluster (NDB)
 * A pool of single-instance MySQL servers
-* MongoDB/TokuMX replica set
+* MongoDB replica set
 * PostgreSQL single-instance
 
 There are some prerequisites that need to be fulfilled prior to adding the existing setup. The existing database cluster/server must:
@@ -118,16 +119,26 @@ Choose *MySQL Galera Cluster* as the database type. Fill in all required informa
 Add existing MySQL server/replication
 ``````````````````````````````````````
 
-ClusterControl is able to manage/monitor an existing set of MySQL servers (standalone or replication). Individual hosts specified in the same list will be added to the same server group in the UI. ClusterControl assumes that you are using the same MySQL root password for all instances specified in the group, and it will determine the server role (master, slave, multi or standalone).
+ClusterControl is able to manage/monitor an existing set of MySQL servers (standalone or replication). Individual hosts specified in the same list will be added to the same server group in the UI. ClusterControl assumes that you are using the same MySQL root password for all instances specified in the group and it will attempt to determine the server role as well (master, slave, multi or standalone).
 
 Choose *MySQL Server* as the database type. Fill in all required information.
 
+* **Vendor**
+	- Percona Server by Percona
+	- MariaDB Server by MariaDB
+	- MySQL Server by Oracle
+
+* **MySQL Version**
+	- Supported version:
+		- Percona Server (5.5, 5.6, 5.7)
+		- MariaDB Server (10.1)
+		- MySQL Server (5.7)
 
 * **User**
 	- MySQL user on the target server/cluster. This user must able to perform GRANT statement. Recommended to use MySQL 'root' user.
 	
 * **Password**
-	- Password for *MySQL User*. The user must have ability to perform GRANT ClusterControl assumes that you are using the same MySQL root password for all instances specified in the group.
+	- Password for *MySQL User*. ClusterControl assumes that you are using the same MySQL root password for all instances specified in the group.
 
 * **Port**
 	- MySQL port on the target server/cluster. Default to 3306. ClusterControl assumes MySQL is running on the same port on all nodes.
@@ -157,19 +168,13 @@ Choose *MySQL Server* as the database type. Fill in all required information.
 Add existing MySQL Cluster
 ````````````````````````````
 
-ClusterControl is able to manage and monitor an existing production deployed MySQL Cluster (NDB). Minimum of 2 management nodes and 2 data nodes is required. Choose *MySQL/NDB Cluster* as the database type. Fill in all required information.
+ClusterControl is able to manage and monitor an existing production deployed MySQL Cluster (NDB). Minimum of 2 management nodes and 2 data nodes is required. 
 
-Choose *MySQL Galera Cluster* as the database type. Fill in all required information.
+Choose *MySQL/NDB Cluster* as the database type. Fill in all required information.
 
-
-* **Hostname**
-	- Please note that you only need to specify ONE Galera node and ClusterControl will discover the rest based on wsrep_cluster_address.
-	
-* **Basedir**
-	- MySQL base directory. Default is ``/usr``. ClusterControl assumes MySQL is having the same base directory on all nodes.
 
 * **Enable information_schema Queries**
-	- Use information_schema to query MySQL statistics. This is not recommended for clusters with more than 2000 tables/databases.
+	- Use information_schema to query MySQL statistics. This is not recommended for clusters with more than 2000 tables or 	databases.
 	
 * **Enable Node AutoRecovery**
 	- ClusterControl will perform automatic recovery if it detects any of the nodes in the cluster is down.
@@ -223,7 +228,7 @@ Choose *MySQL Galera Cluster* as the database type. Fill in all required informa
 		- MySQL port. Default to 3306.
 
   * **MySQL Installation Directory**
-		- MySQL server installation path.
+		- MySQL server installation path where ClusterControl can find the ``mysql`` binaries.
 
   * **Root Password** 
 		- MySQL root password.
@@ -247,7 +252,9 @@ Choose *MySQL Galera Cluster* as the database type. Fill in all required informa
 Add existing MongoDB replica set
 `````````````````````````````````
 
-ClusterControl is able to manage and monitor an existing MongoDB 3.x replica set. Choose *Mongodb Replicaset* as the database type. Fill in all required information.
+ClusterControl is able to manage and monitor an existing MongoDB 3.x replica set. 
+
+Choose *Mongodb Replicaset* as the database type. Fill in all required information.
 
 * **Vendor**
 	- Percona - Percona Server for MongoDB by Percona. (formerly Tokutek)
@@ -260,7 +267,7 @@ ClusterControl is able to manage and monitor an existing MongoDB 3.x replica set
 	- Specify the MongoDB root user. The user must have equivalent to built-in superuser role access for MongoDB 3.x.
 
 * **Password**
-	- Specify password for **User**.
+	- Specify password for *User*.
 
 * **Port**
 	- MongoDB port on the target cluster. Default to 27017. ClusterControl assumes MongoDB is running on the same port on all nodes.
@@ -287,7 +294,7 @@ Add existing PostgreSQL servers
 
 ClusterControl is able to manage/monitor an existing set of PostgreSQL 9.x servers (standalone). Individual hosts specified in the same list will be added to the same server group in the UI. ClusterControl assumes that you are using the same postgres password for all instances specified in the group.
 
-Choose Postgres Server as the database type. Fill in all required information.
+Choose *Postgres Server* as the database type. Fill in all required information.
 
 * **User**
 	- PostgreSQL user on the target server/cluster. Recommended to use PostgreSQL 'postgres' user.
@@ -392,7 +399,7 @@ Deploys a new MySQL Replication. The database cluster will be automatically adde
 	- MySQL port for all nodes. Default is 3306.
 
 * **My.cnf Template**
-	- MySQL configuration template file under ``/usr/share/cmon/templates``. Default is my.cnf.repl[version]. Keep it default is recommended.
+	- MySQL configuration template file under ``/usr/share/cmon/templates``. Default is ``my.cnf.repl[version]``. Keep the default is recommended.
 	
 * **Root Password**
 	- Specify MySQL root password. ClusterControl will configure the same MySQL root password for all instances in the cluster.
@@ -692,7 +699,7 @@ Each row represents the summarized status of a database cluster:
 |                      | * REPLICATION - MySQL replication                                                                                   |
 |                      | * GALERA - MySQL Galera Cluster, Percona XtraDB Cluster, MariaDB Galera Cluster                                     |
 |                      | * MYSQL CLUSTER - MySQL Cluster                                                                                     |
-|                      | * MONGODB - MongoDB/TokuMX replica Set, MongoDB/TokuMX Sharded Cluster, MongoDB/TokuMX Replicated Sharded Cluster   |
+|                      | * MONGODB - MongoDB replica Set, MongoDB Sharded Cluster, MongoDB Replicated Sharded Cluster                        |
 |                      | * POSTGRESQL - Standalone or Replicated PostgreSQL server                                                           |
 +----------------------+---------------------------------------------------------------------------------------------------------------------+
 | Cluster Status       | The cluster status:                                                                                                 |

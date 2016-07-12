@@ -61,7 +61,7 @@ The following software is required by ClusterControl:
 - NTP server - All servers’ time must synced under one time zone
 - netcat - for streaming backups
 
-.. Note:: If ClusterControl is installed via installation script (install-cc) or package manager (yum/apt), all dependencies will be automatically satisfied.*
+.. Note:: If ClusterControl is installed via installation script (install-cc) or package manager (yum/apt), all dependencies will be automatically satisfied.
 
 Supported Browsers
 ------------------
@@ -74,34 +74,34 @@ Ensure to keep up-to-date of these browsers as we are very likely taking advatan
 
 .. Note:: ClusterControl is built and tested only on the mentioned web browsers. Some major web browsers like Safari, Opera and Internet Explorer could also work.
 
-Supported Clusters
-------------------
+Supported Databases
+-------------------
 
 The following table shows supported database clusters with recommended minimum nodes:
 
-+----------------+----------------------------+-----------------------------------------------------------------------------+
-| Database type  | Cluster type               | Minimum recommended nodes                                                   |
-+================+============================+=============================================================================+
-| MySQL/MariaDB  | MySQL Cluster (NDB)        | 5 hosts (2 data nodes + 2 API/mgmd nodes + 1 ClusterControl node)           |
-|                +----------------------------+-----------------------------------------------------------------------------+
-|                | MySQL replication          | 3 hosts (1 master node + 1 standby master/slave + 1 ClusterControl node)    |
-|                +----------------------------+-----------------------------------------------------------------------------+
-|                | * MYSQL Galera Cluster     | 4 hosts (3 master nodes + 1 ClusterControl node)                            |
-|                | * Percona XtraDB Cluster   |                                                                             |
-|                | * MariaDB Galera Cluster   |                                                                             |
-|                +----------------------------+-----------------------------------------------------------------------------+
-|                | Single instance            | 2 hosts (1 MySQL node + 1 ClusterControl node)                              |
-+----------------+----------------------------+-----------------------------------------------------------------------------+
-| MongoDB/TokuMX | Replicated sharded cluster | 4 hosts (3 config servers/2 mongos/2 shard servers + 1 ClusterControl node) |
-|                +----------------------------+-----------------------------------------------------------------------------+
-|                | Sharded cluster            | 4 hosts (3 config servers/2 mongos/2 shard servers + 1 ClusterControl node) |
-|                +----------------------------+-----------------------------------------------------------------------------+
-|                | Replica set                | 3 hosts (2 replica servers + 1 ClusterControl node)                         |
-+----------------+----------------------------+-----------------------------------------------------------------------------+
-| PostgreSQL     | Single instance            | 2 hosts (1 PostgreSQL node + 1 ClusterControl node)                         |
-+ (>9.x)         +----------------------------+-----------------------------------------------------------------------------+
-|                | Replication                | 3 hosts (1 master node + 1 slave node + 1 ClusterControl node)              |
-+----------------+----------------------------+-----------------------------------------------------------------------------+
++----------------+----------------------------+----------------+-----------------------------------------------------------------------------+
+| Database type  | Cluster type               | Version        | Minimum recommended nodes                                                   |
++================+============================+================+=============================================================================+
+| MySQL/MariaDB  | MySQL Cluster (NDB)        | 7.1 and later  | 5 hosts (2 data nodes + 2 API/mgmd nodes + 1 ClusterControl node)           |
+|                +----------------------------+----------------+-----------------------------------------------------------------------------+
+|                | MySQL replication          | 5.5 and later  | 3 hosts (1 master node + 1 standby master/slave + 1 ClusterControl node)    |
+|                +----------------------------+----------------+-----------------------------------------------------------------------------+
+|                | * MYSQL Galera Cluster     | 5.5/5.6        | 4 hosts (3 master nodes + 1 ClusterControl node)                            |
+|                | * Percona XtraDB Cluster   | 5.5/10.0/10.1  |                                                                             |
+|                | * MariaDB Galera Cluster   | (MariaDB)      |                                                                             |
+|                +----------------------------+----------------+-----------------------------------------------------------------------------+
+|                | Single instance            | 5.5 and later  | 2 hosts (1 MySQL node + 1 ClusterControl node)                              |
++----------------+----------------------------+----------------+-----------------------------------------------------------------------------+
+| MongoDB        | Replicated sharded cluster | 3.2 and later  | 4 hosts (3 config servers/2 mongos/2 shard servers + 1 ClusterControl node) |
+|                +----------------------------+                +-----------------------------------------------------------------------------+
+|                | Sharded cluster            |                | 4 hosts (3 config servers/2 mongos/2 shard servers + 1 ClusterControl node) |
+|                +----------------------------+                +-----------------------------------------------------------------------------+
+|                | Replica set                |                | 3 hosts (2 replica servers + 1 ClusterControl node)                         |
++----------------+----------------------------+----------------+-----------------------------------------------------------------------------+
+| PostgreSQL     | Single instance            | 9.x            | 2 hosts (1 PostgreSQL node + 1 ClusterControl node)                         |
+|                +----------------------------+                +-----------------------------------------------------------------------------+
+|                | Replication                |                | 3 hosts (1 master node + 1 slave node + 1 ClusterControl node)              |
++----------------+----------------------------+----------------+-----------------------------------------------------------------------------+
 
 Firewall and Security Groups
 ----------------------------

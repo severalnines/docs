@@ -522,7 +522,6 @@ This grid appears if you have a replication slave attached to the Galera cluster
 * **Refresh**
 	- Fetch the latest update.
 
-
 MySQL single instance or replication
 ''''''''''''''''''''''''''''''''''''
 
@@ -555,14 +554,14 @@ This grid appears if you configured MySQL node to produce binary log with a uniq
 * **Host**
 	- The MySQL master hostname or IP address.
 	
+* **Read Only**
+	- Read-only status. Click on the button to change the state. It may take 10 seconds before the change is visible in the UI.
+
 * **Server ID**
 	- MySQL server ID.
-
-* **Role**
-	- Replication role.
 	
 * **Status**
-	- The state of the SQL thread. The value is identical to the State value of the SQL thread as displayed by ``SHOW PROCESSLIST``.
+	- The state of the SQL thread.
 	
 * **Executed Gtid Set**
 	- Shows the set of GTIDs for transactions that have been executed on the master.
@@ -578,6 +577,9 @@ This grid appears if you configured MySQL node to produce binary log with a uniq
 
 * **Binlog ignore db**
 	- Value of ``binlog_ignore_db`` option.
+	
+* **Refresh**
+	- Fetch the latest update.
 
 Slave Nodes Grid
 ..................
@@ -587,6 +589,9 @@ This grid appears if you have slaves replicating from a master.
 * **Host**
 	- The MySQL slave hostname or IP address.
 
+* **Read Only**
+	- Read-only status. Click on the button to change the state. It may take 10 seconds before the change is visible in the UI.
+
 * **Server ID**
 	- MySQL server ID.
 
@@ -594,13 +599,13 @@ This grid appears if you have slaves replicating from a master.
 	- Replication role. For slaves, it can be 'slave' or 'multi', where the slave also produces binary log.
 	
 * **Status**
-	- The state of the SQL thread. The value is identical to the State value of the SQL thread as displayed by ``SHOW PROCESSLIST``.
+	- The state of the SQL thread. The value is identical to the State value of the SQL thread as displayed by ``SHOW SLAVE STATUS``.
 
 * **Master Host**
 	- The master host that the slave is connected to.
 
 * **Lag**
-	- How many seconds this slave behind the master.
+	- How many seconds this slave is behind the master.
 
 * **Master Log File**
 	- The name of the master binary log file from which the I/O thread is currently reading.
@@ -629,17 +634,11 @@ Management Nodes Grid
 * **Instance**
 	- Management node hostname or IP address
 
-* **Status**
-	- The MySQL Cluster management daemon status.
-
 * **Node ID**
 	- MySQL Cluster node identifier number.
 
 * **Version**
 	- NDB version.
-
-* **Uptime**
-	- MySQL Cluster management service uptime.
 
 * **Last Updated**
 	- The last time ClusterControl fetch for node's status.
@@ -650,30 +649,35 @@ Management Nodes Grid
 SQL Nodes Grid
 ..................
 
-* **Instance**
+* **Host**
 	- SQL node hostname or IP address.
 
-* **SQL Status**
-	- The MySQL Cluster SQL/API daemon status.
+* **Connections**
+	- The number of aggregated connections across all nodes.
 
-* **Hosts Stats**
-	- Ping - ping round trip from ClusterControl host to each host in miliseconds.
-	- CPU Util - total of CPU utilization in percentage.
-	- Uptime - System host uptime.
+* **Queries**
+	- The total of queries running on the node. The total number of queries is including statements like SET, BEGIN, COMMIT, etc. These statements are frequently executed by ORMs or during creation of a connection (for instance "SET NAMES UTF8") and thus create a lot of "Queries" even though they are not any queries that read or write to the database. Therefore a sum of selects, updates, deletes and inserts will not the same as the value of "Queries".
 
-* **Server Stats**
-	- Queries - Number of queries running on the node.
-	- Connections - Number of connected thread on the node.
-	- Uptime - MySQL API service uptime.
+* **Selects**
+	- The number of current SELECT queries on the node.
 
-* **Version**
-	- MySQL Cluster and NDB versions.
+* **Inserts**
+	- The number of current INSERT queries on the node.
 
-* **Last Error**
-	- Last error when ClusterControl talks SQL to the mysql server. "Failed to connect", "connection refused etc.."
+* **Updates**
+	- The number of current UPDATE queries on the node.
+
+* **Delete**
+	- The number of current DELETE queries on the node.
+
+* **Server Version**
+	- MySQL server version.
+
+* **Uptime**
+	- MySQL service uptime.
 
 * **Last Updated**
-	- The last time ClusterControl fetch for node's status
+	- The last time ClusterControl fetch for node's status.
 	
 * **Refresh**
 	- Fetch the latest update.
@@ -683,17 +687,27 @@ Data Nodes Grid
 
 * **Instance**
 	- Data node hostname or IP address.
-
-* **Status**
-	- The data node status.
-
-* **Hosts Stats**
-	- Ping - ping round trip from ClusterControl host to each host in miliseconds.
-	- CPU Util - total of CPU utilization in percentage.
-	- Uptime - System host uptime.
-
+	
 * **Node ID**
 	- MySQL Cluster node identifier number.
+
+* **Index Memory Used**
+	- Index usage in percentage.
+
+* **Data Memory Used**
+	- Data usage in percentage.
+
+* **LongMemoryBuffer Used**
+	- LongMessageBuffer usage in percentage. This is an internal buffer used for passing messages within individual nodes and between nodes.
+
+* **RedoBuffer Used**
+	- RedoBuffer usage in percentage. RedoBuffer sets the size of the buffer in which the REDO log is written.
+
+* **RedoLog Used**
+	- RedoLog usage in percentage.
+	
+* **Uptime**
+	- MySQL NDB service uptime.
 
 * **Last Updated**
 	- The last time ClusterControl fetch for node's status
@@ -706,22 +720,22 @@ Hosts
 
 Shows collected system statistics in a table as below:
 
-* **Ping**
-	- Ping round trip from ClusterControl host to each host in milliseconds.
+* **Ping(us)**
+	- Ping round trip from ClusterControl host to each host in microseconds.
 
-* **CPU util/steal**
+* **CPU Util/Steal**
 	- Total of CPU utilization in percentage.
 
-* **Loadavg (1/5/15)**
+* **Loadavg 1/5/15**
 	- Load value captured for 1, 5 and 15 minutes average.
 
 * **Net (tx/s / rx/s)**
 	- Amount of data transmitted and received by the host.
 
-* **Disk read/sec**
+* **Disk Read/sec**
 	- Amount of disk read of ``monitored_mountpoint``.
 
-* **Disk writes/sec**
+* **Disk Writes/sec**
 	- Amount of disk write of ``monitored_mountpoints``.
 
 * **Uptime**
