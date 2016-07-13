@@ -86,8 +86,8 @@ The following table shows supported database clusters with recommended minimum n
 |                +----------------------------+----------------+-----------------------------------------------------------------------------+
 |                | MySQL replication          | 5.5 and later  | 3 hosts (1 master node + 1 standby master/slave + 1 ClusterControl node)    |
 |                +----------------------------+----------------+-----------------------------------------------------------------------------+
-|                | * MYSQL Galera Cluster     | 5.5/5.6        | 4 hosts (3 master nodes + 1 ClusterControl node)                            |
-|                | * Percona XtraDB Cluster   | 5.5/10.0/10.1  |                                                                             |
+|                | * MySQL Galera Cluster     | * 5.5/5.6      | 4 hosts (3 master nodes + 1 ClusterControl node)                            |
+|                | * Percona XtraDB Cluster   | * 5.5/10.1     |                                                                             |
 |                | * MariaDB Galera Cluster   | (MariaDB)      |                                                                             |
 |                +----------------------------+----------------+-----------------------------------------------------------------------------+
 |                | Single instance            | 5.5 and later  | 2 hosts (1 MySQL node + 1 ClusterControl node)                              |
