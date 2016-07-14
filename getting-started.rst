@@ -41,6 +41,8 @@ Setup passwordless SSH to all target nodes (ClusterControl and all database node
 	$ ssh-copy-id -i ~/.ssh/id_rsa [ClusterControl IP address]
 	$ ssh-copy-id -i ~/.ssh/id_rsa [Database nodes IP address] # repeat this to all target database nodes
 
+.. Note:: For cloud infrastructure, you may skip this step since all nodes should have been configured with a keypair. Ensure the keypair exists in the ClusterControl node and you are good for the next step.
+
 .. Attention:: If you use a non-root user, then it must be in sudoers on all nodes. Read `here <requirements.html#operating-system-user>`_ for details.
 
 *Step #4*
