@@ -540,6 +540,11 @@ File Permission
 
 CMON configuration and log files contain sensitive information e.g ``mysql_password`` or ``sudo`` where it stores user’s password. Ensure CMON configuration file, e.g ``/etc/cmon.cnf`` and ``/etc/cmon.d/cmon_[clusterid].cnf`` (if exists) have permission 700 while CMON log files, e.g ``/var/log/cmon.log`` and ``/var/log/cmon_[clusterid].log`` has 740 and both are owned by root.
 
+HTTPS
+``````
+
+By default, the installation script installs and configures a self-signed certificate for ClusterControl UI. You can access it by using by pointing your browser to https://[ClusterControl IP address]/clustercontrol. If you would like to use your own SSL certificate (e.g https://secure.domain.com/clustercontrol), just replace the key and certificate path inside Apache’s SSL configuration file and restart Apache daemon. Make sure the server's hostname matches with the SSL domain name that you would like to use.
+
 Running on Custom Port
 ----------------------
 
