@@ -543,7 +543,7 @@ CMON configuration and log files contain sensitive information e.g ``mysql_passw
 HTTPS
 ``````
 
-By default, the installation script installs and configures a self-signed certificate for ClusterControl UI. You can access it by using by pointing your browser to https://[ClusterControl IP address]/clustercontrol. If you would like to use your own SSL certificate (e.g https://secure.domain.com/clustercontrol), just replace the key and certificate path inside Apache’s SSL configuration file and restart Apache daemon. Make sure the server's hostname matches with the SSL domain name that you would like to use.
+By default, the installation script installs and configures a self-signed certificate for ClusterControl UI. You can access it by pointing your browser to https://[ClusterControl IP address]/clustercontrol. If you would like to use your own SSL certificate (e.g https://secure.domain.com/clustercontrol), just replace the key and certificate path inside Apache’s SSL configuration file and restart Apache daemon. Make sure the server's hostname matches with the SSL domain name that you would like to use.
 
 Running on Custom Port
 ----------------------
