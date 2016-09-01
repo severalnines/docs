@@ -5,13 +5,69 @@ Change Logs
 
 These change logs list details about updates in each version of ClusterControl.
 
+Changes in v1.3.2
+-----------------
+
+Initial Release: 2016-08-08 
+````````````````````````````
+* Build:
+	- clustercontrol-1.3.2-1910
+	- clustercontrol-cmonapi-1.3.2-226
+	- clustercontrol-nodejs-1.3.2-73
+	- clustercontrol-controller-1.3.2-1391
+
+* MongoDB
+	- Deploy or add existing MongoDB Sharded clusters (Percona MongoDB and MongoDB Inc v3.2)
+	- Minor re-designed overview page for sharded clusters and performance graphs
+	- Support for writing MongoDB based Advisors
+	- Support for managing MongoDB configurations
+	- Support for Percona consistent mongodb backup, https://github.com/Percona-Lab/mongodb_consistent_backup (if installed on the ClusterControl host)
+
+* New Activity Viewer
+	- Easily see Alarms and Jobs for all clusters consolidated in a single view
+
+* New Deployment and Add Existing Cluster and Servers Dialog
+	- Re-designed dialog for deploying and adding clusters
+	- Supports MySQL Replication, MySQL Galera, MySQL/NDB, MongoDB ReplicaSet, MongoDB Shards and PostgreSQL
+
 Changes in v1.3.1
 -----------------
+
+Patch release: 2016-07-28
+``````````````````````````
+
+* Build:
+	- clustercontrol-controller-1.3.1-1372
+
+* Controller
+	- Fix for a new Percona 5.6 systemd script 
+	- Fix for a new MariaDb 10.1 systemd script
+	- Fix a busy loop issue (happening after some time with Proxmox provisioned LXC containers)
+	- Recovery job marked as succeed when it is actually failed
+
+Patch release: 2016-07-18 
+``````````````````````````
+
+* Build:
+	- clustercontrol-1.3.1-1820
+	- clustercontrol-controller-1.3.1-1364
+	- clustercontrol-cmonapi-1.3.1-215 
+
+* Controller
+	- Fix for digest mails (encoding and empty bodies) with MS Exchange
+	- Fix for reports generation crashes
+
+* UI
+	- Fix for 'Create Database' returning 'unable to find host'
+	- Support for HAProxy 1.6 new stats URL format
+	- Moving File privilege to the Administration section for 'Create Account'
+	- Updated AWS SDK to 2.8.30 and removed deprecated requirement on AWS SSH Private Key File
+
 
 Patch Release: June 20th, 2016
 ````````````````````````````````
 
-* Build :
+* Build:
 	- clustercontrol-1.3.1-1655
 	- clustercontrol-controller-1.3.1-1324
 	- clustercontrol-cmonapi-1.3.1-198 
