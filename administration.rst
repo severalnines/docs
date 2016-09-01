@@ -29,7 +29,7 @@ Even if you have previously installed from our tarball or .deb packages, it is p
 
 1) Setup the `Severalnines Repository <installation.html#severalnines-repository>`_.
 
-2) This step is only applicable if you are **upgrading from earlier than version 1.3.0 and you have** ``cluster_id`` **parameter inside** ``/etc/cmon.cnf`` (usually when you deployed ClusterControl using the deprecated Severalnines Configurator). Before performing the upgrade procedure as described in step #3, create a default ``/etc/cmon.cnf`` and move the current configuration into ``/etc/cmon.d`` directory. Starting from version 1.3.0, ClusterControl Controller (CMON) handles its configuration files differently, where it expects the ``/etc/cmon.cnf`` is the default configuration file containing minimal parameters. The minimal parameters are:
+2) This step is only applicable if you are **upgrading from earlier than version 1.3.x and you have** ``cluster_id`` **parameter inside** ``/etc/cmon.cnf`` (usually when you deployed ClusterControl using the deprecated Severalnines Configurator). Before performing the upgrade procedure as described in step #3, create a default ``/etc/cmon.cnf`` and move the current configuration into ``/etc/cmon.d`` directory. Starting from version 1.3.0, ClusterControl Controller (CMON) handles its configuration files differently, where it expects the ``/etc/cmon.cnf`` is the default configuration file containing minimal parameters. The minimal parameters are:
 
 .. code-block:: bash
 
@@ -90,7 +90,7 @@ Now, we can safely perform the package upgrade as described in the next steps.
 	$ yum clean all
 	$ yum install clustercontrol clustercontrol-cmonapi clustercontrol-controller clustercontrol-nodejs
 
-4) If you are upgrading from version 1.3.0, you can skip this step. Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.3.1, apply all SQL modification files between those versions in sequential order:
+4) If you are upgrading from version 1.3.0 or later, you can skip this step. Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.3.2, apply all SQL modification files between those versions in sequential order:
 
 .. code-block:: bash
 
@@ -101,6 +101,7 @@ Now, we can safely perform the package upgrade as described in the next steps.
 	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.11-1.2.12.sql
  	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.12-1.3.0.sql
 	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.3.0-1.3.1.sql
+	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.3.1-1.3.2.sql
 	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_data.sql
 
 .. Attention:: ClusterControl 1.3.0 introduces automatic schema upgrade where it will check the CMON DB version upon startup after the upgrade. If the schema version is not as expected, it will perform the import automatically.
@@ -132,7 +133,7 @@ Even if you have previously installed from our tarball or .deb packages, it is p
 
 1) Setup the `Severalnines Repository <installation.html#severalnines-repository>`_.
 
-2) This step is only applicable if you are **upgrading from earlier than version 1.3.0 and you have** ``cluster_id`` **parameter inside** ``/etc/cmon.cnf`` (usually when you deployed ClusterControl using the deprecated Severalnines Configurator). Before performing the package upgrade as described in step #3, create a default ``/etc/cmon.cnf`` and move the current configuration into ``/etc/cmon.d`` directory. Starting from version 1.3.0, ClusterControl Controller (CMON) handles its configuration files differently, where it expects the ``/etc/cmon.cnf`` is the default configuration file containing minimal parameters. The minimal parameters are:
+2) This step is only applicable if you are **upgrading from earlier than version 1.3.x and you have** ``cluster_id`` **parameter inside** ``/etc/cmon.cnf`` (usually when you deployed ClusterControl using the deprecated Severalnines Configurator). Before performing the package upgrade as described in step #3, create a default ``/etc/cmon.cnf`` and move the current configuration into ``/etc/cmon.d`` directory. Starting from version 1.3.0, ClusterControl Controller (CMON) handles its configuration files differently, where it expects the ``/etc/cmon.cnf`` is the default configuration file containing minimal parameters. The minimal parameters are:
 
 .. code-block:: bash
 
@@ -193,7 +194,7 @@ Now, we can safely perform the package upgrade as described in the next steps.
 	$ sudo apt-get update
 	$ sudo apt-get install clustercontrol clustercontrol-cmonapi clustercontrol-controller clustercontrol-nodejs
 
-4) If you are upgrading from version 1.3.0, you can skip this step. Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.3.1, apply all SQL modification files between those versions in sequential order:
+4) If you are upgrading from version 1.3.0 or later, you can skip this step. Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.3.2, apply all SQL modification files between those versions in sequential order:
 
 .. code-block:: bash
 
@@ -203,7 +204,8 @@ Now, we can safely perform the package upgrade as described in the next steps.
 	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.10-1.2.11.sql
 	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.11-1.2.12.sql
 	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.12-1.3.0.sql
-	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.3306.0-1.3.1.sql
+	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.3.0-1.3.1.sql
+	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.3.1-1.3.2.sql
 	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_data.sql
 
 .. Attention:: ClusterControl 1.3.0 introduces automatic schema upgrade where it will check the CMON DB version upon startup after the upgrade. If the schema version is not as expected, it will perform the import automatically.
@@ -249,12 +251,12 @@ Redhat/CentOS
 
 .. code-block:: bash
 
-	wget http://severalnines.com/downloads/cmon/clustercontrol-controller-1.3.1-1325-x86_64.rpm
-	wget http://severalnines.com/downloads/cmon/clustercontrol-1.3.1-1655-x86_64.rpm
-	wget http://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.3.1-198-x86_64.rpm
-	wget http://severalnines.com/downloads/cmon/clustercontrol-nodejs-1.3.1-64-x86_64.rpm
+	wget http://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.3.2-226-x86_64.rpm
+	wget http://severalnines.com/downloads/cmon/clustercontrol-controller-1.3.2-1391-x86_64.rpm
+	wget http://severalnines.com/downloads/cmon/clustercontrol-nodejs-1.3.2-73-x86_64.rpm
+	wget http://severalnines.com/downloads/cmon/clustercontrol-1.3.2-1910-x86_64.rpm
 
-2) This step is only applicable if you are **upgrading to version 1.3.0 and you have** ``cluster_id`` **parameter inside** ``/etc/cmon.cnf`` (usually when you deployed ClusterControl using Severalnines Configurator). Before performing the package upgrade as described in step #3, create a default ``/etc/cmon.cnf`` and move the current configuration into ``/etc/cmon.d`` directory. Starting from version 1.3.0, ClusterControl Controller (CMON) handles its configuration files differently, where it expects the ``/etc/cmon.cnf`` is the default configuration file containing minimal parameters. The minimal parameters are:
+2) This step is only applicable if you are **upgrading to version 1.3.x and you have** ``cluster_id`` **parameter inside** ``/etc/cmon.cnf`` (usually when you deployed ClusterControl using Severalnines Configurator). Before performing the package upgrade as described in step #3, create a default ``/etc/cmon.cnf`` and move the current configuration into ``/etc/cmon.d`` directory. Starting from version 1.3.0, ClusterControl Controller (CMON) handles its configuration files differently, where it expects the ``/etc/cmon.cnf`` is the default configuration file containing minimal parameters. The minimal parameters are:
 
 .. code-block:: bash
 
@@ -315,7 +317,7 @@ Now, we can safely perform the package upgrade as described in the next steps.
 	$ yum localinstall clustercontrol-*
 
 
-4) If you are upgrading from version 1.3.0, you can skip this step. Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.3.1, apply all SQL modification files between those versions in sequential order:
+4) If you are upgrading from version 1.3.0 or later, you can skip this step. Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.3.2, apply all SQL modification files between those versions in sequential order:
 
 .. code-block:: bash
 
@@ -326,6 +328,7 @@ Now, we can safely perform the package upgrade as described in the next steps.
 	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.11-1.2.12.sql
 	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.12-1.3.0.sql
 	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.3.0-1.3.1.sql
+	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.3.1-1.3.2.sql
 	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_data.sql
 
 .. Attention:: ClusterControl 1.3.0 introduces automatic schema upgrade where it will check the CMON DB version upon startup after the upgrade. If the schema version is not as expected, it will perform the import automatically.
@@ -359,12 +362,12 @@ Even if you have previously installed from our tarball or .deb packages, it is p
 
 .. code-block:: bash
 
-	$ wget http://severalnines.com/downloads/cmon/clustercontrol-controller-1.3.1-1325-x86_64.deb
-	$ wget http://severalnines.com/downloads/cmon/clustercontrol_1.3.1-1655_x86_64.deb
-	$ wget http://severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.3.1-198_x86_64.deb
-	$ wget http://severalnines.com/downloads/cmon/clustercontrol-nodejs_1.3.1-64_x86_64.deb
+	wget http://severalnines.com/downloads/cmon/clustercontrol-nodejs_1.3.2-73_x86_64.deb
+	wget http://severalnines.com/downloads/cmon/clustercontrol_1.3.2-1910_x86_64.deb
+	wget http://severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.3.2-226_x86_64.deb
+	wget http://severalnines.com/downloads/cmon/clustercontrol-controller-1.3.2-1391-x86_64.deb
 
-2) This step is only applicable if you are **upgrading to version 1.3.0 and you have** ``cluster_id`` **parameter inside** ``/etc/cmon.cnf`` (usually when you deployed ClusterControl using Severalnines Configurator). Before performing the package upgrade as described in step #3, create a default ``/etc/cmon.cnf`` and move the current configuration into ``/etc/cmon.d`` directory. Starting from version 1.3.0, ClusterControl Controller (CMON) handles its configuration files differently, where it expects the ``/etc/cmon.cnf`` is the default configuration file containing minimal parameters. The minimal parameters are:
+2) This step is only applicable if you are **upgrading to version 1.3.x and you have** ``cluster_id`` **parameter inside** ``/etc/cmon.cnf`` (usually when you deployed ClusterControl using Severalnines Configurator). Before performing the package upgrade as described in step #3, create a default ``/etc/cmon.cnf`` and move the current configuration into ``/etc/cmon.d`` directory. Starting from version 1.3.0, ClusterControl Controller (CMON) handles its configuration files differently, where it expects the ``/etc/cmon.cnf`` is the default configuration file containing minimal parameters. The minimal parameters are:
 
 .. code-block:: bash
 
@@ -422,9 +425,9 @@ Now, we can safely perform the package upgrade as described in the next steps.
 
 .. code-block:: bash
 
-	$ dpkg -i clustercontrol-controller-1.2.12-1096-x86_64.deb clustercontrol_1.2.12-1007_x86_64.deb clustercontrol-cmonapi_1.2.12-156_x86_64.deb clustercontrol-nodejs_1.2.12-51_x86_64.deb
+	$ dpkg -i clustercontrol_1.3.2-1910_x86_64.deb clustercontrol-cmonapi_1.3.2-226_x86_64.deb clustercontrol-controller-1.3.2-1391-x86_64.deb clustercontrol-nodejs_1.3.2-73_x86_64.deb
 
-4) Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.3.1, apply all SQL modification files between those versions in sequential order:
+4) Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.3.2, apply all SQL modification files between those versions in sequential order:
 
 .. code-block:: bash
 
@@ -435,6 +438,7 @@ Now, we can safely perform the package upgrade as described in the next steps.
 	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.11-1.2.12.sql
 	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.2.12-1.3.0.sql
 	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.3.0-1.3.1.sql
+	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.3.1-1.3.2.sql
 	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_data.sql
 
 .. Attention:: ClusterControl 1.3.0 introduces automatic schema upgrade where it will check the CMON DB version upon startup after the upgrade. If the schema version is not as expected, it will perform the import automatically.
