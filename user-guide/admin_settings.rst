@@ -15,17 +15,11 @@ Manage database clusters inside ClusterControl.
 
 * **Change Organization** 
 	- Change organization for selected database cluster from the organization list created in *Organizations/Users* tab.
+	
+* **Change RPC API Token**
+	- This serves as the auntentication string by ClusterControl UI to connect to CMON RPC interface. Each cluster has its own unique token.
 
-* **Create DB User** 
-	- Copy an existing MySQL user (which explicitly created through ClusterControl) to other cluster or create a new MySQL user for the selected cluster. This user will be allowed to connect from the specified host to all mysql servers. 
-
-* **Assign DB User Privileges** 
-	- Assign privileges to a database user for the selected cluster.
-
-* **Show DB Users and Privileges** 
-	- Show the existing database user and privileges created by ClusterControl for the selected cluster.
-
-.. Note:: You can retrieve the ClusterControl API Token value directly from ``[wwwroot]/cmonapi/config/bootstrap.php`` under ``CMON_TOKEN`` variable or from 'dcps.apis' table.
+.. Note:: You can retrieve the ClusterControl API Token value directly from ``[wwwroot]/cmonapi/config/bootstrap.php`` or under ``CMON_TOKEN`` variable or from 'dcps.apis' table.
 
 Jobs
 -----
@@ -38,8 +32,11 @@ List of jobs that have been performed related to the cluster (e.g., deploying a 
 * **Restart**
 	- Restart a failed cluster job.
 
-* **Copy**
-	- Open a new pop-up so the user can select the command's text and copy.
+* **Copy Log**
+	- Open a new pop-up so the user can select the command's output text and copy.
+
+* **Toggle Status**
+	- Show/Hide the status statement under 'Status' column.
 
 * **Job**
 	- JSON formatted job command.
@@ -202,7 +199,7 @@ Settings
 * **Group DN**
 	- The group's distinguished name used to bind to the LDAP server.
 	
-.. Attention:: ClusterControl does not support binding against a nested directory group. Ensure each LDAP user that authenticates to ClusterControl has direct relationship to the LDAP group.
+.. Attention:: ClusterControl does not support binding against a nested directory group. Ensure each LDAP user that authenticates to ClusterControl has a direct membership to the LDAP group.
 
 FreeIPA
 ''''''''
@@ -269,9 +266,6 @@ Configures email notifications across clusters.
 
 * **Save To**
 	- Save the settings to individual or all clusters.
-
-* **Set for**
-	- Update the current settings to the selected cluster.
 
 * **Send digests at**
 	- Send a digested (summary) email at this time every dayf or the selected recipient.
@@ -341,7 +335,7 @@ Provides list of generated operational reports.
 
 * **Create**
 	- Create an operational report immediately.
-	- Specify the cluster name and operational type. Optionally, you can click on 'Add Email' button  to add recipients into the list.
+	- Specify the cluster name and operational type. Optionally, you can click on 'Add Email' button to add recipients into the list.
 
 * **Delete**
 	- Delete the selected operational report.

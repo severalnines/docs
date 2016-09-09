@@ -482,7 +482,9 @@ The simplest playbook would be:
 
     - hosts: clustercontrol-server
       roles:
-        - { role: severalnines.clustercontrol }
+        - { role: severalnines.clustercontrol, tags: controller }
+			vars:
+			  - controller: true
 
 If you would like to specify custom configuration values as explained above, create a file called ``vars/main.yml`` and include it inside the playbook:
 
@@ -492,12 +494,13 @@ If you would like to specify custom configuration values as explained above, cre
       vars:
         - vars/main.yml
         roles:
-        - { role: severalnines.clustercontrol }
+        - { role: severalnines.clustercontrol, tags: controller }
 
 Inside ``vars/main.yml``:
 
 .. code-block:: yaml
 
+    controller: true
     mysql_root_username: admin
     mysql_root_password: super-user-password
     cmon_mysql_password: super-cmon-password
@@ -511,7 +514,9 @@ If you are running as another user, ensure the user has ability to escalate as s
       become: yes
       become_user: root
       roles:
-        - { role: severalnines.clustercontrol }
+        - { role: severalnines.clustercontrol, tags: controller }
+			vars:
+			  - controller: true
 
 Then, execute the command with ``--ask-become-pass`` flag, for example:
 
@@ -665,7 +670,7 @@ Redhat/CentOS
 	mysql -uroot -p cmon < /usr/share/cmon/cmon_data.sql
 	mysql -uroot -p dcps < /var/www/html/clustercontrol/sql/dc-schema.sql
 	
-8. Generate a ClusterControl key to be used by cmonapi token and rpc_key:
+8. Generate a ClusterControl key to be used by ``CMON_TOKEN``, ``RPC_TOKEN`` and ``rpc_key``:
 
 .. code-block:: bash
 
@@ -732,15 +737,16 @@ Example as follow:
 	chown -Rf apache.apache /var/www/html/cmonapi/
 	chown -Rf apache.apache /var/www/html/clustercontrol/
 
-13. Configure MySQL credentials for the ClusterControl UI at ``/var/www/html/clustercontrol/bootstrap.php``. In most cases, you just need to update the ``DB_PASS`` parameter with the cmon user password:
+13. Use the generated value from step #8 and specify it in ``/var/www/html/clustercontrol/bootstrap.php`` under the ``RPC_TOKEN`` constant and configure MySQL credentials for the ClusterControl UI by updating the ``DB_PASS`` constant with the cmon user password:
 
 .. code-block:: php
 
 	define('DB_PASS', '[cmonpassword]');
+	define('RPC_TOKEN', '[Generated ClusterControl API token]');
 
-.. Note:: Replace ``[cmonpassword]`` with a relevant value.
+.. Note:: Replace ``[cmonpassword]`` and ``[Generated ClusterControl API token]`` with appropriate values.
 
-14. Use the generated value from step #8 and specify it in ``/var/www/html/cmonapi/bootstrap.php`` under the ``CMON_TOKEN`` parameter. It is expected for the CMON_TOKEN and rpc_key value (in cmon.cnf) are the same. Also, update the ``CC_URL`` value to be equivalent to ClusterControl URL in your environment:
+14. Use the generated value from step #8 and specify it in ``/var/www/html/cmonapi/bootstrap.php`` under the ``CMON_TOKEN`` constant. It is expected for the ``CMON_TOKEN``, ``RPC_TOKEN`` (step #13) and ``rpc_key`` (in cmon.cnf) are holding the same value. Also, update the ``CC_URL`` value to be equivalent to ClusterControl URL in your environment:
 
 .. code-block:: php
 
@@ -749,7 +755,7 @@ Example as follow:
 
 .. Note:: Replace ``[Generated ClusterControl API token]`` and ``[ClusterControl_host]`` with appropriate values.
 
-15. Configure MySQL credential for ClusterControl CMONAPI at ``/var/www/html/cmonapi/database.php``. In most cases, you just need to update the ``DB_PASS`` parameter with the cmon user password:
+15. Configure MySQL credential for ClusterControl CMONAPI at ``/var/www/html/cmonapi/database.php``. In most cases, you just need to update the ``DB_PASS`` constant with the cmon user password:
 
 .. code-block:: bash
 
@@ -786,7 +792,7 @@ Example as follow:
    :alt: Register ClusterControl API token
    :align: center
 
-You will then be redirected to the ClusterControl landing page and the installation is now complete. You can now start to manage your database cluster. Please review the User Guide for details.
+You will then be redirected to the ClusterControl landing page and the installation is now complete. You can now start to manage your database cluster. Please review the `User Guide <user-guide/>`_ for details.
 
 Debian/Ubuntu
 ``````````````
@@ -840,7 +846,7 @@ Restart the MySQL service to apply the change:
 	mysql -uroot -p -e 'GRANT ALL PRIVILEGES ON *.* TO "cmon"@"[ClusterControl main IP address]" IDENTIFIED BY "[cmonpassword]" WITH GRANT OPTION'
 	mysql -uroot -p -e 'FLUSH PRIVILEGES'
 
-.. Note:: Replace [ClusterControl main IP address] and [cmonpassword] with respective values.
+.. Note:: Replace ``[ClusterControl main IP address]`` and ``[cmonpassword]`` with respective values.
 
 7. Import cmon and dcps schema:
 
@@ -850,7 +856,7 @@ Restart the MySQL service to apply the change:
 	mysql -uroot -p cmon < /usr/share/cmon/cmon_data.sql
 	mysql -uroot -p dcps < /var/www/clustercontrol/sql/dc-schema.sql
 
-8. Generate a ClusterControl key to be used by cmonapi token and rpc_key:
+8. Generate a ClusterControl key to be used by ``CMON_TOKEN``, ``RPC_TOKEN`` and ``rpc_key``:
 
 .. code-block:: bash
 
@@ -944,15 +950,16 @@ For Ubuntu 12.04/Debian 7 and earlier:
 	chown -Rf www-data.www-data /var/www/cmonapi/
 	chown -Rf www-data.www-data /var/www/clustercontrol/
 	
-14. Configure MySQL credentials for ClusterControl UI at ``/var/www/clustercontrol/bootstrap.php``. In most cases, you just need to update the ``DB_PASS`` parameter with the cmon user password:
+14. Use the generated value from step #8 and specify it in ``/var/www/clustercontrol/bootstrap.php`` under the ``RPC_TOKEN`` constant and configure MySQL credentials for the ClusterControl UI by updating the ``DB_PASS`` constant with the cmon user password:
 
 .. code-block:: php
 
 	define('DB_PASS', '[cmonpassword]');
+	define('RPC_TOKEN', '[Generated ClusterControl API token]');
 
-.. Note:: Replace [cmonpassword] with the relevant value.
+.. Note:: Replace ``[cmonpassword]`` and ``[Generated ClusterControl API token]`` with appropriate values.
 
-15. Use the generated value from step #8 and specify it in ``/var/www/cmonapi/config/bootstrap.php`` under ``CMON_TOKEN`` parameter. Also, update the ``CC_URL`` value to be equivalent to ClusterControl URL in your environment:
+15. Use the generated value from step #8 and specify it in ``/var/www/cmonapi/bootstrap.php`` under the ``CMON_TOKEN`` constant. It is expected for the ``CMON_TOKEN``, ``RPC_TOKEN`` (step #14) and ``rpc_key`` (in cmon.cnf) are holding the same value. Also, update the ``CC_URL`` value to be equivalent to ClusterControl URL in your environment:
 
 .. code-block:: php
 
@@ -961,7 +968,7 @@ For Ubuntu 12.04/Debian 7 and earlier:
 
 .. Note:: Replace ``[Generated ClusterControl API token]`` and ``[ClusterControl_host]`` with appropriate values.
 
-16. Configure MySQL credentials for ClusterControl CMONAPI at ``/var/www/cmonapi/config/database.php``. In most cases, you just need to update the ``DB_PASS`` parameter with the cmon user password:
+16. Configure MySQL credentials for ClusterControl CMONAPI at ``/var/www/cmonapi/config/database.php``. In most cases, you just need to update the ``DB_PASS`` constant with the cmon user password:
 
 .. code-block:: php
 
@@ -995,7 +1002,7 @@ For Ubuntu 12.04/Debian 7 and earlier:
    :alt: Register ClusterControl API token
    :align: center
 
-You will then be redirected to the ClusterControl landing page and the installation is now complete. You can now start to manage your database cluster. Please review the User Guide for details.
+You will then be redirected to the ClusterControl landing page and the installation is now complete. You can now start to manage your database cluster. Please review the `User Guide <user-guide/>`_ for details.
 
 
 Offline Installation
@@ -1147,10 +1154,10 @@ Redhat/CentOS
 
 	mkdir ~/s9s_tmp
 	cd ~/s9s_tmp
-	wget http://severalnines.com/downloads/cmon/clustercontrol-controller-1.3.1-1325-x86_64.rpm
-	wget http://severalnines.com/downloads/cmon/clustercontrol-1.3.1-1655-x86_64.rpm
-	wget http://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.3.1-198-x86_64.rpm
-	wget http://severalnines.com/downloads/cmon/clustercontrol-nodejs-1.3.1-64-x86_64.rpm
+	wget http://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.3.2-226-x86_64.rpm
+	wget http://severalnines.com/downloads/cmon/clustercontrol-controller-1.3.2-1391-x86_64.rpm
+	wget http://severalnines.com/downloads/cmon/clustercontrol-nodejs-1.3.2-73-x86_64.rpm
+	wget http://severalnines.com/downloads/cmon/clustercontrol-1.3.2-1910-x86_64.rpm
 
 .. Attention:: In this example, we downloaded the package directly to simplify the package preparation step. If the ClusterControl server does not have internet connections, you should upload the packages manually to the mentioned staging path.
 
@@ -1175,10 +1182,10 @@ Debian/Ubuntu
 
 .. code-block:: bash
 
-	wget http://severalnines.com/downloads/cmon/clustercontrol-controller-1.3.1-1325-x86_64.deb
-	wget http://severalnines.com/downloads/cmon/clustercontrol_1.3.1-1655_x86_64.deb
-	wget http://severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.3.1-198_x86_64.deb
-	wget http://severalnines.com/downloads/cmon/clustercontrol-nodejs_1.3.1-64_x86_64.deb
+	wget http://severalnines.com/downloads/cmon/clustercontrol-nodejs_1.3.2-73_x86_64.deb
+	wget http://severalnines.com/downloads/cmon/clustercontrol_1.3.2-1910_x86_64.deb
+	wget http://severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.3.2-226_x86_64.deb
+	wget http://severalnines.com/downloads/cmon/clustercontrol-controller-1.3.2-1391-x86_64.deb
 
 .. Attention:: In this example, we downloaded the package directly to simplify the package preparation step. If the ClusterControl server does not have internet connections, you should upload the packages manually to the mentioned staging path.
 

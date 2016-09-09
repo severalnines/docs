@@ -3,7 +3,7 @@
 Introduction
 ============
 
-This documentation covers ClusterControl version 1.3.1 which released on May 31st, 2016. This release contains key new features along with performance improvements and bug fixes. Release changelog is available `here <changelog.html>`_.
+This documentation covers ClusterControl version 1.3.2 which released on August 8th, 2016. This release contains key new features along with performance improvements and bug fixes. Release changelog is available `here <changelog.html>`_.
 
 What is ClusterControl?
 -----------------------
@@ -41,7 +41,7 @@ ClusterControl supports following database servers/clusters:
 - MySQL Cluster (NDB)
 - MySQL Replication
 - MySQL single instance
-- MongoDB/TokuMX
+- MongoDB/Percona Server for MongoDB
 	- Replica set
 	- Sharded cluster
 	- Replicated sharded cluster
@@ -79,13 +79,13 @@ What it can do?
 
 ClusterControl is able to handle most of the administration tasks required to maintain database servers or clusters. Here are some of the tasks that ClusterControl can perform on your database infrastructure:
 
-* Monitor host statistics (CPU/RAM/disk/network)
+* Monitor host statistics (CPU/RAM/disk/network/swap)
 * Provision multiple database server/cluster in a single CMON process
 * Monitor database's stats, variable, log files, queries, for individual node as well as cluster-wide
 * Database configuration management
 * Database cluster/node recovery
 * Trigger alarm and send notifications
-* Schedule and perform database backup (mysqldump, Xtrabackup, pgdump, mongodump)
+* Schedule and perform database backup (mysqldump, Xtrabackup, pgdump, mongodump, mongodb-consistent-backup)
 * Database backup status
 * Restore backups (MySQL/PostgreSQL)
 * Upload backups to AWS S3/Glacier
@@ -103,7 +103,7 @@ ClusterControl is able to handle most of the administration tasks required to ma
 * Manage private keys and certificates for databases' SSL
 * and many more..
 
-For more details, please refer to `ClusterControl product page <http://severalnines.com/product/clustercontrol>`_. You might also want to look at the `ClusterControl changelog <http://support.severalnines.com/entries/21633407-ChangeLog>`_ for the latest development update.
+For more details, please refer to `ClusterControl product page <http://severalnines.com/product/clustercontrol>`_. You might also want to look at the `ClusterControl changelog <changelog.html>`_ for the latest development update.
 
 .. rubric:: Footnotes
 

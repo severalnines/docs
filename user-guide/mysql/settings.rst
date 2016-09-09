@@ -105,7 +105,7 @@ Configures email notifications for alarms generated for your database cluster.
 	Unknown                Other uncategorized messages.
 	====================== ===========
 
-* **Select how you wants alarms/events delivered**
+* **Select how you want alarms/events to be delivered**
 	======= ===========
 	Action  Description
 	======= ===========

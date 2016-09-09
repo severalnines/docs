@@ -23,7 +23,7 @@ Can I purchase the license for the first year only?
 
 Subscriptions are annual, and include software license, all updates and technical support. At the end of the subscription period, you can choose to renew the subscription or continue with the Community Edition. When the license expires, ClusterControl defaults to the Community Edition. 
 
-My 14-days demo license has expired but I haven't had enough time to test ClusterControl. Can I request for extension?
+My 30-days demo license has expired but I haven't had enough time to test ClusterControl. Can I request for extension?
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 Of course. Please use our contact us page or email directly to sales[at]severalnines.com 

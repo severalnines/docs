@@ -8,10 +8,7 @@ Provides summary of all database nodes in the cluster.
 Actions
 ````````
 
-Provides shortcuts to main cluster functionality. Each of database clusters has its own set of functionality as described below:
-
-MongoDB Replica Set
-'''''''''''''''''''
+Provides shortcuts to main cluster functionality.
 
 * **Add Node to Replica Set**
 	- See `Add Node to Replica Set`_.
@@ -19,6 +16,10 @@ MongoDB Replica Set
 * **Delete Cluster**
 	- Unregister a database cluster from the ClusterControl UI. This action will remove the selected CMONAPI URL and token for corresponding cluster and will NOT uninstall the actual database cluster.
 	- You can still re-register your cluster to ClusterControl at a later stage.
+
+* **Deregister Cluster from UI**
+	- Unregister a database cluster from the ClusterControl UI. 
+	- You can still re-register your cluster to ClusterControl at a later stage by using `Cluster Registrations <../../user-guide/index.html#cluster-registrations>`_.
 
 Add Node to Replica Set
 ''''''''''''''''''''''''
@@ -45,9 +46,6 @@ Adds a replica member or arbiter node.
 	
 * **Install Software**
 	- Install the required software to run the database. This includes MongoDB server/client together with dependencies.
-	
-* **Software Packages**
-	- Install MongoDB using packages defined in *ClusterControl > Manage > Software Packages*.
 
 * **Disable Firewall**
 	- Yes - To disable firewall during deployment (recommended).
@@ -56,43 +54,31 @@ Adds a replica member or arbiter node.
 * **Disable AppArmor/SELinux**
 	- Check the box to let ClusterControl disable AppArmor (Ubuntu) or SELinux (Redhat/CentOS) if enabled.
 
-opscounter
-````````````
+Shard Servers, Config Servers & Mongos Servers
+``````````````````````````````````````````````
 
-The Cluster Load graph provides overview of aggregated load on your database cluster. To jump into individual database load, click on ‘Show Servers’.
+The opscounter graph provides overview of aggregated operation on the MongoDB shard servers. For sharded cluster, there will be another two sections for Config and Mongos Servers.
 
 * **Dash Settings**
 	- Customize the Cluster Load dashboard. See `Custom Dashboard`_ section.
 
-* **Show Servers**
-	- Show real-time individual node database load.
+* **query**
+	- The number of aggregated query across all nodes.
 
-* **Show Queries**
-	- Show real-time queries across all nodes.
+* **insert**
+	- The number of aggregated insert command across all nodes.
 
-* **Sync Graphs**
-	- Sync all graph (cluster load and server load) when selecting a range.
+* **update**
+	- The number of aggregated update command across all nodes.
 
-* **Refresh Rate**
-	- The number of seconds all values should be updated under Cluster Load.
+* **delete**
+	- The number of aggregated delete command across all nodes.
 
-* **Connections**
-	- The number of aggregated connections across all nodes.
+* **getmore**
+	- The number of aggregated getmore command across all nodes.
 
-* **Selects**
-	- The number of aggregated SELECT queries across all nodes.
-
-* **Inserts**
-	- The number of aggregated INSERT queries across all nodes.
-
-* **Updates**
-	- The number of aggregated UPDATE queries across all nodes.
-
-* **Delete**
-	- The number of aggregated DELETE queries across all nodes.
-
-* **Queries**
-	- The total of all queries running across all nodes.
+* **command**
+	- The total of all commands running across all nodes.
 
 Custom Dashboard
 ````````````````
@@ -117,24 +103,23 @@ Customize your dashboard in the `Overview`_ page by selecting which metrics and 
 Nodes Statistics
 `````````````````
 
-This provides a summary of host and replication-related stats for all nodes. These values are refreshed every *Refresh rate* values defined at the top of the page. 
-
-Each database cluster has it’s own set of statistics as explained below:
-
-MongoDB Replica Set
-'''''''''''''''''''
+This provides a summary of host and replication-related stats for all nodes. Each database cluster has its own set of statistics as explained below:
 
 * **Node**
-	- MongoDB instance consists of node's IP address or hostname and MongoDB port.
+	- MongoDB instance consists of node's IP address or hostname and MongoDB service port.
 
 * **Role**
 	- Instance role:
 		- Primary - The primary node receives all write operations.
 		- Secondary - Secondaries replicate operations from the primary to maintain an identical data set.
+		- ConfigSvr - Stores the metadata for a sharded cluster.
 		- Arbiter - mongod instances that are part of a replica set but do not hold data. Arbiters participate in elections in order to break ties.
 
 * **Message**
 	- Latest MongoDB status on the instance.
+	
+* **Uptime**
+	- MongoDB service uptime.
 
 * **Global Lock**
 	- Ratio - The value of ratio displays the relationship between lockTime and totalTime. See `serverStatus.globalLock.ratio <http://docs.mongodb.org/v2.2/reference/server-status/#serverStatus.globalLock.ratio>`_.
@@ -146,35 +131,28 @@ MongoDB Replica Set
 * **Connections**
 	- The value of current corresponds to the number of connections to the database server from clients over unused available incoming connections the database can provide. See `serverStatus.connections.current <http://docs.mongodb.org/manual/reference/command/serverStatus/#serverStatus.connections.current>`_ and `serverStatus.connections.available <http://docs.mongodb.org/manual/reference/command/serverStatus/#serverStatus.connections.available>`_.
 
-* **PFs**
-	- Reports the total number of page faults that require disk operations. See `serverStatus.extra_info.page_faults <http://docs.mongodb.org/manual/reference/command/serverStatus/#serverStatus.extra_info.page_faults>`_.
-
-* **pfs/ops**
-	- Page faults ratio over operations in percentage.
-
-
 Hosts
 `````
 
 Shows collected system statistics in a grid as below:
 
 * **Ping**
-	- Ping round trip from ClusterControl host to each host in milliseconds.
+	- Ping round trip from ClusterControl host to each host in microseconds.
 
-* **CPU util/steal**
+* **CPU Util(%)**
 	- Total of CPU utilization in percentage.
 
-* **Loadavg (1/5/15)**
+* **Loadavg 1/5/15**
 	- Load value captured for 1, 5 and 15 minutes average.
 
-* **Net (tx/s / rx/s)**
+* **Net tx/s / rx/s**
 	- Amount of data transmitted and received by the host.
 
-* **Disk read/sec**
-	- Amount of disk read of ``monitored_mountpoint``.
+* **Disk Read/sec**
+	- Disk read of ``monitored_mountpoint``.
 
-* **Disk writes/sec**
-	- Amount of disk write of ``monitored_mountpoints``.
+* **Disk Writes/sec**
+	- Disk write of ``monitored_mountpoints``.
 
 * **Uptime**
 	- Host uptime.

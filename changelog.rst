@@ -8,8 +8,8 @@ These change logs list details about updates in each version of ClusterControl.
 Changes in v1.3.2
 -----------------
 
-Initial Release: 2016-08-08 
-````````````````````````````
+Initial Release: Aug 8th, 2016
+````````````````````````````````
 * Build:
 	- clustercontrol-1.3.2-1910
 	- clustercontrol-cmonapi-1.3.2-226
@@ -33,8 +33,8 @@ Initial Release: 2016-08-08
 Changes in v1.3.1
 -----------------
 
-Patch release: 2016-07-28
-``````````````````````````
+Patch release: Jul 28th, 2016
+``````````````````````````````
 
 * Build:
 	- clustercontrol-controller-1.3.1-1372
@@ -45,8 +45,8 @@ Patch release: 2016-07-28
 	- Fix a busy loop issue (happening after some time with Proxmox provisioned LXC containers)
 	- Recovery job marked as succeed when it is actually failed
 
-Patch release: 2016-07-18 
-``````````````````````````
+Patch release: Jul 5th, 2016
+``````````````````````````````
 
 * Build:
 	- clustercontrol-1.3.1-1820
@@ -64,7 +64,7 @@ Patch release: 2016-07-18
 	- Updated AWS SDK to 2.8.30 and removed deprecated requirement on AWS SSH Private Key File
 
 
-Patch Release: June 20th, 2016
+Patch Release: Jun 20th, 2016
 ````````````````````````````````
 
 * Build:
@@ -80,7 +80,7 @@ Patch Release: June 20th, 2016
 	- Alarms: fixed inconsistent alarm count
 	- Jobs: Fixed a number of issues such as being able to Restart failed jobs
 
-Patch Release: June 16th, 2016
+Patch Release: Jun 16th, 2016
 ````````````````````````````````
 
 * Build:

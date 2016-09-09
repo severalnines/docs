@@ -19,15 +19,21 @@ To remove a host, just select the host and click on the *Remove* button.
 Configurations
 ``````````````
 
-Manages the configuration files of your database nodes. From here you can edit and/or detect whether your database configuration files are in sync and do not diverge. Any changes will not take effect until the database server/process is restarted.
+Manage the configuration files of your MongoDB nodes. For MongoDB server, changes can be persisted to database variables across one node or a group of nodes at once, dynamic variables are changed directly without a restart.
 
-.. Attention:: ClusterControl does not store configuration changes history so there is no versioning. Only one version is exist at one time. It always import the latest configuration files every 30 minutes and overwrite it in cmon DB. This limitation will be improved in the upcoming release where ClusterControl shall support configuration versioning with dynamic import interval.
+.. Attention:: ClusterControl does not store configuration changes history so there is no versioning at the moment. Only one version is exist at one time. It always import the latest configuration files every 30 minutes and overwrite it in cmon DB. This limitation will be improved in the upcoming release where ClusterControl shall support configuration versioning with dynamic import interval.
 
-* **Edit/View**
-	- Edit and view your database configuration files. Any changes will not take effect until the database server/processes is restarted.
+* **Save**
+	- Save the changes that you have made and push them to the corresponding node.
 
-* **Restart**
-	- This button will only appear under *Action* when ClusterControl detects configuration changes. Click to restart the database service for selected node.
+* **Import**
+	- Re-import configuration if you have:
+		- Performed local configuration changes directly on the configuration files.
+		- Restarted the mysql servers/performed a rolling restart after a configuration change.
+	- ClusterControl will trigger a job to fetch the latest modification from each MySQL, HAProxy and Garbd node.
+
+* **Change Parameter**
+	- The selected parameter will be changed or created in the specified group option. ClusterControl will attempt to dynamically set the configuration value if the parameter is valid. Then, the change can be persisted in the configuration file.
 
 Processes
 `````````
