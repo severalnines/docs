@@ -8,6 +8,41 @@ These change logs list details about updates in each version of ClusterControl.
 Changes in v1.3.2
 -----------------
 
+Patch release: Sep 19th, 2016
+``````````````````````````````
+
+* Build:
+	- clustercontrol-1.3.2-2066
+	- clustercontrol-cmonapi-1.3.2-233
+	- clustercontrol-controller-1.3.2-1455
+
+* Controller
+	- Support for v7.4.12 in Create/Deploy MySQL/NDB Cluster (starting from controller build #1446)
+	- Option to select MongoDB consistent backup (https://github.com/Percona-Lab/mongodb_consistent_backup) is now properly shown for MongoDB Cluster if it is installed
+	- Fix importing existing MySQL Cluster/NDB cluster (added mgm nodes)
+
+* UI
+	- Fix page refresh issues on Logs->Job
+	- Fix saving confirmation issues to the Configuration Management (MySQL)
+	- Fix empty Nodes->DB Variables page (MySQL) 
+ 
+
+Patch release: Sep 5th, 2016
+``````````````````````````````
+
+* Build:
+	- clustercontrol-1.3.2-2023
+	- clustercontrol-controller-1.3.2-1431
+
+* UI
+	- Create/Import Cluster Wizard cosmetic fixes
+	- Fix Operational Reports and MySQL User Management ACL settings for custom user profiles
+	- Fix empty graphs on MongoDB Nodes->DB Performance page
+
+* Controller
+	- Fix a bug about restoring partial xtrabackups which did not work at all earlier. Now the partial xtrabackups are restored to a particular directory and the user must manually restore the tablespaces to the datadir.
+	- Fix of a bug that in some situations could cause a node to not be fully removed.
+
 Initial Release: Aug 8th, 2016
 ````````````````````````````````
 * Build:
