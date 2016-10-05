@@ -165,10 +165,19 @@ Restore Backup
 
 ClusterControl has ability to restore backups (mysqldump and xtrabackup) created by ClusterControl. The following steps will be performed:
 
+For mysqldump (online restore):
+
+1. Copy backup files to the target server.
+2. Checking disk space on the target server.
+3. Restore the backup.
+
+For Percona Xtrabackup (offline restore):
+
 1. Stop all nodes in the cluster.
-2. Copy backup files to the selected server.
-3. Prepare and restore the backup.
-4. Follow the instruction in the *ClusterControl > Logs > Job > Job Message* on how to bootstrap the cluster.
+2. Copy backup files to the target server.
+3. Checking disk space on the target server.
+4. Prepare and restore the backup.
+5. Follow the instruction in the *ClusterControl > Logs > Job > Job Message* on how to bootstrap the cluster.
 
 * **Backup Id**
 	- Selected backup ID. This is auto picked if you click the *Restore Backup* button.
