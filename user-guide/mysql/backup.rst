@@ -170,6 +170,7 @@ For mysqldump (online restore):
 1. Copy backup files to the target server.
 2. Checking disk space on the target server.
 3. Restore the backup.
+4. The rest of the member will then catch up with the target server.
 
 For Percona Xtrabackup (offline restore):
 
