@@ -32,7 +32,7 @@ Operating system
 
 ClusterControl has been tested on the following operating systems:
 
-* Redhat/CentOS/Amazon Linux/Oracle Linux 6 and later
+* Redhat/CentOS/Oracle Linux 6 and later
 * Ubuntu 12.04/14.04 LTS
 * Debian 7.0 and later
 
