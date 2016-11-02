@@ -65,3 +65,5 @@ ClusterControl collects important database logs depending on the cluster type as
 - MongoDB:
 	- MongoDB database system log
 	- mongodump backup log
+
+.. Note:: ClusterControl does not pull MySQL general logs (if enabled) due to it can easily become very huge in size.
