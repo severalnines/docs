@@ -275,7 +275,9 @@ Deploys a new MySQL (NDB) Cluster by Oracle. The cluster consists of management 
 MongoDB ReplicaSet
 ``````````````````
 
-Deploys a new MongoDB Replica Set. The database cluster will be automatically added into ClusterControl once deployed. Minimum of three nodes (excluding mongo arbiter) is required.
+Deploys a new MongoDB Replica Set. The database cluster will be automatically added into ClusterControl once deployed. Minimum of three nodes (including mongo arbiter) is recommended.
+
+.. Warning:: It is possible to deploy only 2 MongoDB nodes (with or without arbiter) but it is highly not recommended. The caveat of this approach is no automatic failovers. If the primary node goes down then manual failover is required to make the other server as primary.
 
 1) SSH Settings
 '''''''''''''''
@@ -346,7 +348,9 @@ Deploys a new MongoDB Replica Set. The database cluster will be automatically ad
 MongoDB Shards
 ``````````````
 
-Deploys a new MongoDB Replica Set. The database cluster will be automatically added into ClusterControl once deployed. Minimum of three nodes (excluding mongo arbiter) is required.
+Deploys a new MongoDB Replica Set. The database cluster will be automatically added into ClusterControl once deployed. Minimum of three nodes (including mongo arbiter) is recommended.
+
+.. Warning:: It is possible to deploy only 2 MongoDB nodes (with or without arbiter) but it is highly not recommended. The caveat of this approach is no automatic failovers. If the primary node goes down then manual failover is required to make the other server as primary.
 
 1) SSH Settings
 '''''''''''''''
