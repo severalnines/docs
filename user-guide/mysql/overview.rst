@@ -176,7 +176,7 @@ The following must be true for the masters:
 
 To configure a Galera node as master, go to *ClusterControl > Nodes > choose the mysql server > Enable Binary Logging*. In the "Enable Binary Logging" dialog, set the binary logs expiration, set "Enable GTID" to yes and "auto-restart node" to yes, then click Proceed.
 
-Or, you can also achieve the same thing manually by appending the following lines into the corresponding `my.cnf`. Do not forget to restart the MySQL server to load the changes:
+Or, you can also achieve the same thing manually by appending the following lines into the corresponding ``my.cnf``. Do not forget to restart the MySQL server to load the changes:
 
 .. code-block:: bash
 
