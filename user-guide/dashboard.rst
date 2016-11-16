@@ -277,7 +277,7 @@ MongoDB ReplicaSet
 
 Deploys a new MongoDB Replica Set. The database cluster will be automatically added into ClusterControl once deployed. Minimum of three nodes (including mongo arbiter) is recommended.
 
-.. Warning:: It is possible to deploy only 2 MongoDB nodes (with or without arbiter) but it is highly not recommended. The caveat of this approach is no automatic failover. If the primary node goes down then manual failover is required to make the other server as primary. Automatic failover works fine with 3 nodes and more.
+.. Warning:: It is possible to deploy only 2 MongoDB nodes (without arbiter) but it is highly not recommended. The caveat of this approach is no automatic failover. If the primary node goes down then manual failover is required to make the other server as primary. Automatic failover works fine with 3 nodes and more.
 
 1) SSH Settings
 '''''''''''''''
@@ -350,7 +350,7 @@ MongoDB Shards
 
 Deploys a new MongoDB Replica Set. The database cluster will be automatically added into ClusterControl once deployed. Minimum of three nodes (including mongo arbiter) is recommended.
 
-.. Warning:: It is possible to deploy only 2 MongoDB nodes (with or without arbiter) but it is highly not recommended. The caveat of this approach is no automatic failover. If the primary node goes down then manual failover is required to make the other server as primary. Automatic failover works fine with 3 nodes and more.
+.. Warning:: It is possible to deploy only 2 MongoDB nodes (without arbiter) but it is highly not recommended. The caveat of this approach is no automatic failover. If the primary node goes down then manual failover is required to make the other server as primary. Automatic failover works fine with 3 nodes and more.
 
 1) SSH Settings
 '''''''''''''''
