@@ -174,6 +174,19 @@ The following must be true for the masters:
 * ``log_slave_updates`` must be enabled
 * Master’s MySQL port is accessible by ClusterControl and slaves
 
+To configure a Galera node as master, go to *ClusterControl > Nodes > choose the mysql server > Enable Binary Logging*. In the "Enable Binary Logging" dialog, set the binary logs expiration, set "Enable GTID" to yes and "auto-restart node" to yes, then click Proceed.
+
+Or, you can also achieve the same thing manually by appending the following lines into the corresponding `my.cnf`. Do not forget to restart the MySQL server to load the changes:
+
+.. code-block:: bash
+
+	server_id=<must be unique across all mysql servers participating in replication>
+	binlog_format=ROW
+	log_slave_updates=1
+	log_bin=binlog
+	gtid_mode=ON
+	enforce_gtid_consistency=1
+
 For the slave, you would need a separate host or VM, with or without MySQL installed. If you do not have a MySQL installed, and choose ClusterControl to install the MySQL on the slave, ClusterControl will perform the necessary actions to prepare the slave, for example, configure root password (based on ``monitored_mysql_root_password``), create slave user, configure MySQL, start the server and also start the replication. The MySQL package used will be based on the Galera vendor used, for example, if you are running Percona XtraDB Cluster, ClusterControl will prepare the slave using Percona Server. Prior to the deployment, you must perform following actions:
 
 * The slave node must be accessible using passwordless SSH from the ClusterControl server
