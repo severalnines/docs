@@ -131,7 +131,7 @@ Deploys a new MySQL Replication. The database cluster will be automatically adde
 MySQL Galera 
 `````````````
 
-Deploys a new MySQL Galera Cluster. The database cluster will be automatically added into ClusterControl once deployed. Minimum of three nodes (excluding garbd) is required. Garbd can be added later after the deployment completes.
+Deploys a new MySQL Galera Cluster. The database cluster will be automatically added into ClusterControl once deployed. A minimal setup is comprised of one Galera node (no high availability, but this can later be scaled with more nodes). However, the recommendation is a minimum of three nodes for high availability. Garbd (an arbitrator) can be added later after the deployment completes if needed.
 
 1) SSH Settings
 '''''''''''''''
