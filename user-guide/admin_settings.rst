@@ -188,16 +188,16 @@ Settings
 	- The root LDAP node under which all other nodes exist in the directory structure.
 
 * **Login DN**
-	- The distinguished name used to bind to the LDAP server. This is often the administrator or manager user. This user needs to have read access to all LDAP users that require authentication. ClusterControl must do an LDAP search before any user can log in.
+	- The distinguished name used to bind to the LDAP server. This is often the administrator or manager user. It can also be a dedicated login with minimal access that should be able to return the DN of the authenticating users. ClusterControl must do an LDAP search using this DN before any user can log in. This field is case-senstive.
 
 * **Password**
 	- The password for the binding user specified in 'Login DN'.
 
 * **User DN**
-	- The user's distinguished name used to bind to the LDAP server.
+	- The user's relative distinguished name (RDN) used to bind to the LDAP server. For example, if the LDAP/AD user DN is CN=userA,OU=People,DC=ldap,DC=domain,DC=com, specify "OU=People,DC=ldap,DC=domain,DC=com". This field is case-senstive.
 
 * **Group DN**
-	- The group's distinguished name used to bind to the LDAP server.
+	- The group's relative distinguished name (RDN) used to bind to the LDAP server. For example, if the LDAP/AD group DN is  CN=DBA,OU=Group,DC=ldap,DC=domain,DC=com, specify "OU=Group,DC=ldap,DC=domain,DC=com". This field is case-senstive.
 	
 .. Attention:: ClusterControl does not support binding against a nested directory group. Ensure each LDAP user that authenticates to ClusterControl has a direct membership to the LDAP group.
 
