@@ -256,17 +256,17 @@ Automatic recovery
 
 ``enable_cluster_autorecovery=<boolean integer>``
 
-* If undefined, CMON defaults to 0 (false) and will NOT perform automatic recovery if it detects cluster failure. Supported values are 1 (cluster recovery is enabled) or 0 (cluster recovery is disabled).
+* If undefined, CMON defaults to 0 (false) and will NOT perform automatic recovery if it detects cluster failure. Supported value is 1 (cluster recovery is enabled) or 0 (cluster recovery is disabled).
 * Example: ``enable_cluster_autorecovery=1``
 
 ``enable_node_autorecovery=<boolean integer>``
 
-* If undefined, CMON default to 0 (false) and will NOT perform automatic recovery if it detects node failure. Supported values are 1 (node recovery is enabled) or 0 (node recovery is disabled).
+* If undefined, CMON default to 0 (false) and will NOT perform automatic recovery if it detects node failure. Supported value is 1 (node recovery is enabled) or 0 (node recovery is disabled).
 * Example: ``enable_node_autorecovery=1``
 
 ``enable_autorecovery=<boolean integer>``
 
-* If undefined, CMON defaults to 0 (false) and will NOT perform automatic recovery if it detects node or cluster failure. Supported values are 0 (cluster and node recovery are disabled) or 1 (cluster and node recovery are enabled). This setting will internally set ``enable_node_autorecovery`` and ``enable_cluster_autorecovery`` to the specified value.
+* If undefined, CMON defaults to 0 (false) and will NOT perform automatic recovery if it detects node or cluster failure. Supported value is 0 (cluster and node recovery are disabled) or 1 (cluster and node recovery are enabled). This setting will internally set ``enable_node_autorecovery`` and ``enable_cluster_autorecovery`` to the specified value.
 * Example: ``enable_autorecovery=1``
 
 MySQL managed nodes
