@@ -8,6 +8,47 @@ These change logs list details about updates in each version of ClusterControl.
 Changes v1.4.0
 ---------------
 
+Initial Release: Jan 3rd, 2017
+````````````````````````````````
+
+* Build:
+	- clustercontrol-1.4.0-2542
+	- clustercontrol-controller-1.4.0-1641
+
+* Controller
+	- New advisor: s9s/mysql/galera/check_gra_log_files.js monitors the growth of GRA log files.
+	- ProxySQL failed to install on Centos/RHEL7 when mysql client is missing. 
+	- SMTP/TLS bug improvements for email notifications.
+	- Backup Retention: Backups matching the retention period as not removed.
+	- Restore of Partial Backup (xtrabackup) shutdown the db nodes, but it is not necessary. 
+	- Stop Garbd failed on Centos/RHEL7 .
+
+* UI
+	- Fix in the "enable/disable node/cluster recovery" to show a confirmation dialog when changing settings.
+	- Small fix in query monitoring dialog.
+
+Initial Release: Dec 22th, 2016
+````````````````````````````````
+
+* Build: 
+	- clustercontrol-1.4.0-2527
+	- clustercontrol-controller-1.4.0-1630
+
+* Controller
+	- New Advisor (Top Queries) and fixes.
+	- Updated MySQL Group Replication (GA) to install from Oracle default MySQL repositories instead of MySQL Labs releases.
+	- Improvements to support Galera 3.19.
+	- Maintenance mode related fix for deployment jobs.
+	- ProxySQL: additional deployment option (implicit transactions).
+	- If 'vendor' is not set in the cluster's /etc/cmon.d/cmon_X.cnf file (X is the cluster id), then cmon will attempt to auto-detect the vendor. For MySQL based setups, please ensure the correct vendor is set to one of the following: percona, oracle, codership, mariadb. E.g vendor=mariadb, if you are using a mariadb based setup.
+
+* UI
+	- Query sampling time is no longer needed/used (Query Monitor settings).
+	- Added option for Implicit Transactions (ProxySQL).
+	- Text clarification when saving an existing DB user twice.
+	- Fix for correctly saving mail server settings.
+	- Fix for inconsistent password styles.
+
 Initial Release: Dec 12th, 2016
 ````````````````````````````````
 
