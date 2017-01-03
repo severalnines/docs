@@ -8,7 +8,7 @@ These change logs list details about updates in each version of ClusterControl.
 Changes v1.4.0
 ---------------
 
-Initial Release: Jan 3rd, 2017
+Patch Release: Jan 3rd, 2017
 ````````````````````````````````
 
 * Build:
@@ -27,7 +27,7 @@ Initial Release: Jan 3rd, 2017
 	- Fix in the "enable/disable node/cluster recovery" to show a confirmation dialog when changing settings.
 	- Small fix in query monitoring dialog.
 
-Initial Release: Dec 22th, 2016
+Patch Release: Dec 22th, 2016
 ````````````````````````````````
 
 * Build: 
