@@ -3,7 +3,7 @@
 Introduction
 ============
 
-This documentation covers ClusterControl version 1.3.2 which released on August 8th, 2016. This release contains key new features along with performance improvements and bug fixes. Release changelog is available `here <changelog.html>`_.
+This documentation covers ClusterControl version 1.4.0 which released on December 12th, 2016. This release contains key new features along with performance improvements and bug fixes. Release changelog is available `here <changelog.html>`_.
 
 What is ClusterControl?
 -----------------------
@@ -17,15 +17,15 @@ ClusterControl consists of four components:
 +==================================+===========================+====================================================================================+
 | ClusterControl controller (cmon) | clustercontrol-controller | The brain of ClusterControl. A backend service performing automation, management,  |
 |                                  |                           | monitoring and scheduling tasks. All the collected data will be stored directly    |
-|                                  |                           | inside CMON database                                                               |
+|                                  |                           | inside CMON database.                                                              |
 +----------------------------------+---------------------------+------------------------------------------------------------------------------------+
-| ClusterControl REST API [#f1]_   | clustercontrol-cmonapi    | Interprets request and response data between ClusterControl UI and CMON database   |
+| ClusterControl REST API [#f1]_   | clustercontrol-cmonapi    | Interprets request and response data between ClusterControl UI and CMON database.  |
 +----------------------------------+---------------------------+------------------------------------------------------------------------------------+
 | ClusterControl UI                | clustercontrol            | A modern web user interface to visualize and manage the cluster. It interacts with | 
-|                                  |                           | CMON controller via remote procedure call (RPC) or REST API interface              |
+|                                  |                           | CMON controller via remote procedure call (RPC) or REST API interface.             |
 +----------------------------------+---------------------------+------------------------------------------------------------------------------------+
 | ClusterControl NodeJS            | clustercontrol-nodejs     | This optional package is introduced in ClusterControl version 1.2.12 to provide an |
-|                                  |                           | interface for notification services and integration with 3rd party tools           |
+|                                  |                           | interface for notification services and integration with 3rd party tools.          |
 +----------------------------------+---------------------------+------------------------------------------------------------------------------------+
 
 
@@ -39,7 +39,7 @@ ClusterControl supports following database servers/clusters:
 	- Percona XtraDB Cluster (Percona)
 	- MariaDB Galera Cluster (MariaDB)
 - MySQL Cluster (NDB)
-- MySQL Replication
+- MySQL Replication (master-master and master-slave)
 - MySQL single instance
 - MongoDB/Percona Server for MongoDB
 	- Replica set
@@ -48,6 +48,16 @@ ClusterControl supports following database servers/clusters:
 - PostgreSQL
 	- Single instance
 	- Replication
+	
+Supported Load Balancer
+------------------------
+
+ClusterControl supports following routing software:
+
+- HAproxy
+- MaxScale
+- ProxySQL
+- Keepalived (virtual IP address only)
 
 How does it work?
 -----------------
@@ -72,7 +82,7 @@ ClusterControl exposes all functionality through remote procedure calls (RPC) on
    :alt: ClusterControl architecture
    :align: center
 
-ClusterControl has minimal performance impact due to its monitoring responsibility and will not cause any downtime to your database server/cluster. In fact, it will perform automatic recovery (if enabled) when it finds a failed database node.
+ClusterControl has minimal performance impact due to its monitoring responsibility and will not cause any downtime to your database server/cluster. In fact, it will perform automatic recovery (if enabled) when it finds a failed database node or cluster.
 
 What it can do?
 ---------------
@@ -93,8 +103,8 @@ ClusterControl is able to handle most of the administration tasks required to ma
 * Deploy a new database server/cluster
 * Add existing MySQL/MariaDB server/cluster, MongoDB/TokuMX replica set and PostgreSQL server
 * Scale your database cluster (add/remove Galera node, garbd and replication slave)
-* Deploy database load balancers (HAproxy and MaxScale) and virtual IP address (Keepalived)
-* Monitor HAproxy/MaxScale statistics
+* Deploy database load balancers (HAproxy, MaxScale, ProxySQL) and virtual IP address (Keepalived)
+* Monitor HAproxy/MaxScale/ProxySQL statistics
 * Manage MySQL user privileges
 * Upgrade MySQL servers
 * Promote MySQL slave to master

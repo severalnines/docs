@@ -21,8 +21,6 @@ If you encounter any problems with ClusterControl, it is highly recommended to e
 |                               +------------------------------------------------------+------------------------------------------------------+
 |                               | Redhat/CentOS                                        | Debian/Ubuntu                                        |
 +===============================+======================================================+======================================================+
-| Configurator deployment log   | [package name]/[cluster type]/scripts/install/cc.log | [package name]/[cluster type]/scripts/install/cc.log |
-+-------------------------------+------------------------------------------------------+------------------------------------------------------+
 | CMON process log              | /var/log/cmon.log or /var/log/cmon_[cluster_id].log  | /var/log/cmon.log or /var/log/cmon_[cluster_id].log  |
 +-------------------------------+------------------------------------------------------+------------------------------------------------------+
 | ClusterControl deployment log | /tmp/s9s_out_1.log                                   | /tmp/s9s_out_1.log                                   |
@@ -340,6 +338,41 @@ At this point, MySQL is already installed but it failed to bootstrap. Instead of
 ClusterControl Controller (CMON)
 --------------------------------
 
+CMON unable to restart MySQL using service command
+'''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* **Description:**
+	- When scheduling a start/restart job, ClusterControl fails to start the node with error "Command not found".
+
+* **Example error:**
+
+.. code-block:: bash
+
+	galera1.domain.com: Starting mysqld failed: Error: Command not found (host: galera1.domain.com): service mysql restart 
+	galera1.domain.com: Starting mysqld
+
+* **Troubleshooting steps:**
+	1. SSH into the DB node and check the user's enviroment path variable:
+
+.. code-block:: bash
+
+	ssh -tt -i /home/admin/.ssh/id_rsa admin@galera1.domain.com "sudo env | grep PATH"
+	PATH=/usr/local/bin:/bin:/usr/bin
+
+	2. Look at the PATH output.
+
+* **Solution:**
+	- Ensure the /sbin path is there. This way, ClusterControl can automatically locate and run the "service" command.
+	- If the /sbin path is not listed in the PATH, add it by using the following command:
+	
+.. code-block:: bash
+
+	PATH=$PATH:/sbin 
+	export PATH
+	
+	- However, the above won't persist if the user logs out from the terminal. To make it persistent, add those lines into ``/home/[ssh user]/.bash_profile`` or ``/home/[ssh user]/.bashrc``
+
+
 CMON always tries to recover failed database nodes during my maintenance window.
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
@@ -348,7 +381,7 @@ CMON always tries to recover failed database nodes during my maintenance window.
 
 * **Solution:**
 	- To disable automatic recovery temporarily, you can just click on the 'power' icon for node and cluster. Red means automatic recovery is turned off while green indicates recovery is turned on. This behaviour will not persistent if CMON is restarted.
-	- To make the above change persistent, disable node or cluster auto recovery by specifying following line inside CMON configuration file:
+	- To make the above change persistent, disable node or cluster auto recovery by specifying following line inside CMON configuration file of respective cluster. For example, if you want to disable automatic recovery for cluster ID 1, inside /etc/cmon.d/cmon_1.cnf, set the following line:
 
 .. code-block:: bash
 
@@ -398,7 +431,7 @@ Known Issues and Limitations
 
 ClusterControl is not fully tested in OS-level virtualization platform (containers) like OpenVZ. This may cause some issues in reporting of host statistics since it does not use the conventional device naming and mapping. 
 
-Known issues in ClusterControl as in v1.2.11:
+Known issues in ClusterControl:
 
 * Running two simultaneous backups (storage on Controller) on two different clusters. One will most likely fail (due to netcat port conflict)
 * Running two simultaneous HAProxy install on two different clusters (different load balancer hosts), one will most likely fail.

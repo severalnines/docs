@@ -9,7 +9,7 @@ This section provides detailed information on how to get ClusterControl installe
 Severalnines Repository
 -----------------------
 
-Severalnines provides YUM/APT repositories at http://repo.severalnines.com with instructions provided on the landing page. The Automatic Installation described in the next section is automatically configured with these repositories.
+Severalnines provides YUM/APT repositories accessible at http://repo.severalnines.com . Automatic installation procedures (as described in the `Automatic Installation`_ section) automatically configures the ClusterControl node with respective package repository.
 
 YUM repository
 ``````````````
@@ -115,7 +115,6 @@ Automatic Installation
 
 We have a bunch of scripts and tools to automate and simplify the installation process of ClusterControl in various environments:
 
-* Severalnines Configurator (deprecated and removed)
 * Installation Script (install-cc)
 * Puppet module
 * Chef cookbooks
@@ -126,7 +125,7 @@ We have a bunch of scripts and tools to automate and simplify the installation p
 Installer Script (install-cc)
 `````````````````````````````
 
-Installer script is the recommended way to install ClusterControl. The script must be downloaded and executed on the ClusterControl node, which performs all necessary steps to install and configure the ClusterControl's packages and dependencies on that particular host. It also supports offline installation with `NO_INET=1` variable exported, however you have to have mirrored repository enabled or MySQL and Apache installed and running on that host beforehand. The script assumes that the host can install all dependencies via operating system repository.
+Installer script is the recommended way to install ClusterControl. The script must be downloaded and executed on ClusterControl node, which performs all necessary steps to install and configure ClusterControl's packages and dependencies on that particular host. It also supports offline installation with `NO_INET=1` variable exported, however you need to have mirrored repository enabled or MySQL and Apache installed and running on that host beforehand. The script assumes that the host can install all dependencies via operating system repository.
 
 On ClusterControl server, run following commands:
 
@@ -136,7 +135,7 @@ On ClusterControl server, run following commands:
   $ chmod +x install-cc
   $ sudo ./install-cc   # omit sudo if you run as root
 
-If you have multiple network interface cards, assign one IP address for HOST variable as per example below:
+If you have multiple network interface cards, assign primary IP address for HOST variable as per example below:
 
 .. code-block:: bash
 
@@ -146,16 +145,15 @@ If you have multiple network interface cards, assign one IP address for HOST var
 
 Basically, the installation script will attempt to automate the following tasks:
 
-* Install and configure a MySQL server (used by ClusterControl to store monitoring data)
-* Configure ClusterControl UI and CMONAPI packages
-* Install and configure the ClusterControl controller package via package manager
-* Install ClusterControl dependencies via package manager
-* Configure Apache and SSL
-* Configure ClusterControl API URL and token
-* Configure ClusterControl Controller with minimal configuration options
-* Enable the CMON service on boot and start it up
+1. Install and configure a MySQL server (used by ClusterControl to store monitoring data)
+2. Install and configure the ClusterControl controller package via package manager
+3. Install ClusterControl dependencies via package manager
+4. Configure Apache and SSL
+5. Configure ClusterControl API URL and token
+6. Configure ClusterControl Controller with minimal configuration options
+7. Enable the CMON service on boot and start it up
 
-After the installation completes, open your web browser to http://[ClusterControl_host]/clustercontrol and create the default admin user by specifying a valid email address and password on the welcome page.
+After the installation completes, open your web browser to http://[ClusterControl_host]/clustercontrol and create the default admin user by specifying a valid email address and password in the welcome page.
 
 Puppet Module
 `````````````
@@ -584,7 +582,7 @@ Manual Installation
 
 If you want to have more control on the installation process, you may perform manual installation.
 
-.. note:: Installing and uninstalling ClusterControl shall not bring any downtime to your running database cluster.
+.. note:: Installing and uninstalling ClusterControl shall not bring any downtime to the managed database cluster.
 
 The main installation steps are:
 

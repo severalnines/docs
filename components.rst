@@ -31,8 +31,7 @@ CMON controller package is available at `Severalnines download site <http://www.
 * RPM package (Redhat-based systems): ``clustercontrol-controller-[version]-[build number]-[architecture].rpm``
 * DEB package (Debian-based systems): ``clustercontrol-controller-[version]-[build number]-[architecture].deb``
 
-
-A configuration file ``/etc/cmon.cnf`` is required to initially setup the CMON Controller. It is possible to have several configuration files each for multiple clusters as described in the next section.
+A configuration file ``/etc/cmon.cnf`` is required to initially setup the CMON Controller. It is possible to have several configuration files each for multiple clusters as described in the next sections.
 
 Command Line Arguments
 ``````````````````````
@@ -78,7 +77,59 @@ The path of the log file to be used.
 Configuration File
 ``````````````````
 
-A single CMON Controller process is able to monitor one or more clusters. Each of the cluster requires one exclusive configuration file residing in the ``/etc/cmon.d/`` directory. For instance, the default CMON configuration file is located at ``/etc/cmon.cnf``, and commonly used to store the default (minimal) configuration for CMON process to run. For the first cluster (cluster_id=1), the configuration options should be stored inside ``/etc/cmon.d/cmon_1.cnf``. For the second cluster, it would be ``/etc/cmon.d/cmon_2.cnf`` with ``cluster_id=2`` respectively, and so on.
+A single CMON Controller process is able to monitor one or more clusters. Each of the cluster requires one exclusive configuration file residing in the ``/etc/cmon.d/`` directory. For instance, the default CMON configuration file is located at ``/etc/cmon.cnf``, and commonly used to store the default (minimal) configuration for CMON process to run. 
+
+Example of the CMON main configuration file located at ``/etc/cmon.cnf``:
+
+.. code-block:: bash
+
+	mysql_port=3306
+	mysql_hostname=127.0.0.1
+	mysql_password=cm0nP4ss
+	mysql_basedir=/usr
+	hostname=10.0.0.196
+	logfile=/var/log/cmon.log
+	rpc_key=390faeffb8166277a4f25336a69efa50915635a7
+
+
+For the first cluster (cluster_id=1), the configuration options should be stored inside ``/etc/cmon.d/cmon_1.cnf``. For the second cluster, it would be ``/etc/cmon.d/cmon_2.cnf`` with ``cluster_id=2`` respectively, and so on. The following shows example content of CMON cluster's configuration file located at ``/etc/cmon.d/cmon_1.cnf``:
+
+.. code-block:: bash
+	
+	cluster_id=1
+	cmon_user=cmon
+	created_by_job=1
+	db_stats_collection_interval=30
+	enable_query_monitor=1
+	galera_vendor=codership
+	galera_version=3.x
+	group_owner=1
+	host_stats_collection_interval=60
+	hostname=10.0.0.196
+	logfile=/var/log/cmon_1.log
+	mode=controller
+	monitored_mountpoints=/var/lib/mysql/
+	monitored_mysql_port=3306
+	monitored_mysql_root_password=7XU@Wy4nqL9
+	mysql_bindir=/usr/bin/
+	mysql_hostname=127.0.0.1
+	mysql_password=cm0nP4ss
+	mysql_port=3306
+	mysql_server_addresses=10.0.0.99:3306,10.0.0.253:3306,10.0.0.181:3306
+	mysql_version=5.6
+	name='Galera Cluster'
+	os=redhat
+	osuser=root
+	owner=1
+	pidfile=/var/run
+	basedir=/usr
+	repl_password=9hHRgQLSsZz3Vd4a
+	repl_user=rpl_user
+	rpc_key=3V0RaV6dE8KSyClE
+	ssh_identity=/root/ashrafawskey.pem
+	ssh_port=22
+	type=galera
+	vendor=codership
 
 An example of CMON configuration file hierarchy is as follows:
 
@@ -95,9 +146,9 @@ An example of CMON configuration file hierarchy is as follows:
 | Cluster #N (cluster type)  | /etc/cmon.d/cmon_N.cnf | cluster_id=N | logfile=/var/log/cmon_N.log |
 +----------------------------+------------------------+--------------+-----------------------------+
  
-.. Note:: It's highly recommended to separate CMON logging for each cluster to its own log file. In the above example, we can see that ``cluster_id`` and ``logfile`` are two of the most imporant configuration options that can distinguish the cluster.
+.. Note:: It's highly recommendeded to separate CMON logging for each cluster to its own log file. In the above example, we can see that ``cluster_id`` and ``logfile`` are two imporant configuration options to distinguish the cluster.
 
-The CMON Controller will import the configuration options defined in each configuration file into the CMON database during process start up. Once loaded, CMON then use all the loaded information to manage clusters based on the ``cluster_id`` value.
+The CMON Controller will import the configuration options defined in each configuration file into the CMON database during process starts up. Once loaded, CMON then use all the loaded information to manage clusters based on the ``cluster_id`` value.
 
 Configuration Options
 `````````````````````
@@ -119,7 +170,7 @@ General
 
 ``cluster_id=<integer>``
 
-* \* Cluster identifier. This will be used by CMON to indicate which cluster to provision. It must be unique, i.e two clusters can not share the same ID.	
+* \* Cluster identifier. This will be used by CMON to indicate which cluster to provision. It must be unique, two clusters can not share the same ID.	
 * Example: ``cluster_id=1``
 
 ``name=<string>``
@@ -129,11 +180,11 @@ General
 
 ``type=<string>``
 
-* \* Cluster type. Supported values are galera, mysql_single, mongodb, postgresql_single, replication. 
+* \* Cluster type. Supported values are galera, mysql_single, mysqlcluster, mongodb, postgresql_single, replication, group_replication.
 * Example: ``type=galera``
 
 CMON
-''''
+'''''
 
 ``mode=<string>``
 
@@ -166,12 +217,12 @@ Operating system
 
 ``os=<string>``
 
-* \* Operating system runs across the cluster, including ClusterControl host. 'redhat' for Redhat-based distributions (CentOS/Fedora/Amazon Linux/Oracle Linux) or 'debian' for Debian-based distributions (Debian/Ubuntu).
+* \* Operating system runs across the cluster, including ClusterControl host. 'redhat' for Redhat-based distributions (CentOS/Red Hat Enterprise Linux/Oracle Linux) or 'debian' for Debian-based distributions (Debian/Ubuntu).
 * Example: ``os=redhat``
 
 ``osuser=<string>``
 
-* \* Operating system user that will be used by CMON to perform automation tasks like cluster recovery, backups and upgrades. This user must be able to perform super-user activities.
+* \* Operating system user that will be used by CMON to perform automation tasks like cluster recovery, backups and upgrades. This user must be able to perform super-user activities. Using root is recommended.
 * Example: ``os_user=root``
 
 ``os_user=<string>``

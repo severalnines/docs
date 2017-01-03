@@ -5,8 +5,73 @@ Change Logs
 
 These change logs list details about updates in each version of ClusterControl.
 
+Changes v1.4.0
+---------------
+
+Initial Release: Dec 12th, 2016
+````````````````````````````````
+
+* Build:
+	- clustercontrol-1.4.0-2491
+	- clustercontrol-cmonapi-1.4.0-247
+	- clustercontrol-nodejs-1.4.0-82
+	- clustercontrol-controller-1.4.0-1614
+
+* ProxySQL
+	- Deploy ProxySQL on MySQL Replication clusters (support for additional database types coming).
+	- Monitor ProxySQL performance (v1).
+
+* Experimental support for Oracle MySQL Group Replication
+	- Deploy Group Replication Clusters.
+
+* HAProxy
+	- Support Read-Write split configuration at deployment for MySQL Replication clusters.
+
+* MySQL Replication
+	- Enhanced multi-master deployment.
+	- Flexible replication-topology management.
+	- Replication error handling (Errant transactions).
+	- Automated failover.
+
+* MongoDB
+	- Convert a ReplicaSet cluster to a sharded cluster.
+	- Add or Remove shards from a sharded cluster.
+	- Add Mongos/Routers to a sharded cluster.
+	- Step down or freeze a node.
+
+* New Advisors
+	- Backup, Query Monitor and Advisors
+
+* UI
+	- A re-designed streamlined view into your scheduled and completed backups.
+	- A re-designed Query Monitor with query execution plan output (explain) for MySQL.
+	- A re-designed Advisors page that makes easier to see what needs to be acted upon.
+
+* Misc
+	- Support for Percona XtraDB Cluster 5.7
+	- New Operational Report generating available software and security packages to upgrade.
+	- New header with navigation breadcrumbs.
+	- Activity Viewer showing Cluster Logs/Events. See more fine grained levels of logs and events generated and captured by ClusterControl.
+	- Support for maintenance mode. Put individual nodes into maintenance mode which prevents ClusterControl to raise alarms and notifications during the maintenance period.
+
+.. Attention:: Upload/Download backups to AWS S3 has been temporarily removed.
+
 Changes in v1.3.2
 -----------------
+
+Path release: Oct 14th, 2016
+````````````````````````````
+
+* Build:
+	- clustercontrol-1.3.2-2167
+	- clustercontrol-controller-1.3.2-1504
+
+* Controller
+	- Allow two MongoDB Replica Set nodes to be deployed. Add an arbiter via 'Add Node'
+	- Enable MariaDB 10.0 version for Repository mirroring
+
+* UI
+	- Fixes to database growth tables. Enable sorting on database or table columns 
 
 Patch release: Sep 19th, 2016
 ``````````````````````````````

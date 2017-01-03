@@ -15,49 +15,6 @@ Manage database clusters inside ClusterControl.
 
 * **Change Organization** 
 	- Change organization for selected database cluster from the organization list created in *Organizations/Users* tab.
-	
-* **Change RPC API Token**
-	- This serves as the auntentication string by ClusterControl UI to connect to CMON RPC interface. Each cluster has its own unique token.
-
-.. Note:: You can retrieve the ClusterControl API Token value directly from ``[wwwroot]/cmonapi/config/bootstrap.php`` or under ``CMON_TOKEN`` variable or from 'dcps.apis' table.
-
-Jobs
------
-
-List of jobs that have been performed related to the cluster (e.g., deploying a new cluster, adding an existing cluster and cloning). This is different from *ClusterControl > Logs > Jobs* under each database cluster. Pick a job to see its running messages.
-
-* **Delete**
-	- Delete or kill the selected cluster job.
-
-* **Restart**
-	- Restart a failed cluster job.
-
-* **Copy Log**
-	- Open a new pop-up so the user can select the command's output text and copy.
-
-* **Toggle Status**
-	- Show/Hide the status statement under 'Status' column.
-
-* **Job**
-	- JSON formatted job command.
-
-* **Status**
-	+------------+--------------------------------------+
-	| Job status | Description                          |
-	+============+======================================+
-	| FINISHED   | The job is successfully executed.    |
-	+------------+--------------------------------------+
-	| FAILED     | The job is executed but failed.      |
-	+------------+--------------------------------------+
-	| RUNNING    | The job is started and in progress.  |
-	+------------+--------------------------------------+
-	| ABORTED    | The job is started but terminated.   |
-	+------------+--------------------------------------+
-	| DEFINED    | The job is defined and yet to start. |
-	+------------+--------------------------------------+
-
-* **Time**
-	- Time stamp on the reported status.
 
   
 User Management
@@ -66,7 +23,7 @@ User Management
 Organizations/Users
 ````````````````````
 
-Manage organization and users under ClusterControl. You can have one or more organization and each organization consists of zero or more clusters and users. You can have many roles defined under ClusterControl and a user must be assigned with one role.
+Manage organizations and users under ClusterControl. You can have one or more organization and each organization consists of zero or more clusters and users. You can have many roles defined under ClusterControl and a user must be assigned with one role.
 
 As a roundup, here is how the different entities relate to each other:
 
@@ -80,7 +37,7 @@ Users
 
 A user belongs to one organization and assigned with a role. Users created here will be able to login and see specific cluster(s), depending on their organization and the cluster they have been assigned to.
 
-Each role is defined with specific privileges under *Access Control* tab. ClusterControl default roles are Super Admin, Admin and User:
+Each role is defined with specific privileges under *Access Control*. ClusterControl default roles are Super Admin, Admin and User:
 
 =============== ============
 Role            Description
@@ -133,12 +90,15 @@ Feature                      Description
 **Add Load Balancer**        Add Load Balancer page - *ClusterControl > Actions > Add Load Balancer* and *ClusterControl > Manage > Load Balancer*
 **Clone**                    Clone Cluster page (Galera) - *ClusterControl > Actions > Clone Cluster*
 **Access All Clusters**      Access all clusters registered under the same organzation.
-**Cluster Registrations**    Cluster Registrations page - *ClusterControl > Cluster Registrations*
-**Service Providers**        Service Providers page - *ClusterControl > Service Providers*
+**Cluster Registrations**    Cluster Registrations page - *ClusterControl > Settings (top-menu) > Cluster Registrations*
+**Service Providers**        Service Providers page - *ClusterControl > Settings (top-menu) > Service Providers*
 **Search**                   Search button and page - *ClusterControl > Search*
 **Create Database Node**     Create Database Node button and page - *ClusterControl > Create Database Node*
 **Developer Studio**         Developer Studio page - *ClusterControl > Manage > Developer Studio*
-**Custom Advisors**          Customer Advisors page - *ClusterControl > Manage > Custom Advisors*
+**MySQL User Management**    MySQL user management sections - *ClusterControl > Settings (top-menu) > MySQL User Management* and *ClusterControl > Manage > Schema and Users*
+**Operation Reports**        Operational reports page - *ClusterControl > Settings (top-menu) > Operational Reports*
+**Custom Advisors**          Custom Advisors page - *ClusterControl > Manage > Custom Advisors*
+**Manage SSL**               Key Management page - *ClusterControl > Settings (top-menu) > Key Management*
 ============================ ============
 
 LDAP Access
@@ -308,7 +268,7 @@ Configures email notifications across clusters.
 Operational Report
 ------------------
 
-Generate, schedule and email out operational reports. The current default report shows a cluster's health and performance at the time it was generated compared to 1 day ago.
+Generates or creates schedule of operational reports. The current default report shows a cluster's health and performance at the time it was generated compared to 1 day ago.
  
 The report provides information about:
 	- Cluster Information
@@ -325,13 +285,12 @@ The report provides information about:
 		- Network Throughput
 		- Server Load
 		- Handler
-
-We will add more options and report types in future releases.
+	- Package Upgrade Report (generating available software and security packages to upgrade)
 
 Operational Reports
 ````````````````````
 
-Provides list of generated operational reports.
+Provides list of generated operational reports. Click on any of them will open the operational report in a new tab.
 
 * **Create**
 	- Create an operational report immediately.
@@ -346,7 +305,7 @@ Provides list of generated operational reports.
 Schedules
 `````````
 
-List of scheduled operational report. Optionally, you can click on 'Add Email' button  to add recipients into the list. asdasd
+List of scheduled operational report. Optionally, you can click on 'Add Email' button to add recipients into the list.
 
 * **Schedule**
 	- Schedule an operational report at an interval. You can schedule it daily, weekly and monthly. Optionally, you can click on 'Add Email' button  to add recipients into the list.
@@ -363,7 +322,7 @@ List of scheduled operational report. Optionally, you can click on 'Add Email' b
 Key Management
 --------------
 
-Key Management allows you to manage a set of SSL certificates and keys that can be provisioned on your clusters. This feature allows you to create Certificate Authority (CA) and/or self-signed certificates and keys. Then, it can be easily enable and disable SSL encryption (by using `Enable SSL Encryption <mysql/overview.html#enable-ssl-encryption>`_) for client-server connections for MySQL and Postgres based servers/clusters.
+Key Management allows you to manage a set of SSL certificates and keys that can be provisioned on your clusters. This feature allows you to create Certificate Authority (CA) and/or self-signed certificates and keys. Then, it can be easily enabled and disabled for MySQL and PostreSQL client-server connections using SSL encryption feature. See `Enable SSL Encryption <mysql/overview.html#enable-ssl-encryption>`_ for details.
 
 Manage
 ```````
@@ -498,7 +457,7 @@ Sign with an existing CA or generate a self-signed certificate. ClusterControl g
 Import
 ``````
 
-Import keys and certificates that are uploaded into ClusterControl server. Before you perform the import action, bear in mind that:
+Import keys and certificates into ClusterControl's certificate repository. The imported keys and certificates can then be used to enable SSL encryption for server-client connection or Galera replication at a later stage. Before you perform the import action, bear in mind to:
 
 1. Upload your certificate and key to a directory on the ClusterControl Controller host
 2. Uncheck the self-signed certificate checkbox if the certificate is not self-signed
@@ -512,10 +471,10 @@ Import keys and certificates that are uploaded into ClusterControl server. Befor
   - Certificate name.
 
 * **Certificate File**
-  - Physical path to the certificate file. For example: ``/home/user/ssl/file.crt``
+  - Physical path to the certificate file. For example: ``/home/user/ssl/file.crt``.
 
 * **Private Key File**
-  - Physical path to the key file. For example: ``/home/user/ssl/file.key``
+  - Physical path to the key file. For example: ``/home/user/ssl/file.key``.
 
 * **Self-signed certificate**
   - Uncheck the self-signed certificate checkbox if the certificate is not self-signed.
@@ -528,19 +487,19 @@ Notification Services
 
 Provides interface to manage notification service for Custom Advisor. At the moment, only external mail server and PagerDuty is supported. For list of supported plugin, you can find it at NPM page `here <https://www.npmjs.com/browse/keyword/s9s>`_. 
 
-This feature requires ClusterControl NodeJS package to be installed. If you have not configure this, please run following command on ClusterControl node:
+This feature requires ClusterControl NodeJS package to be installed. If you have not configure this, please run the following command on ClusterControl node:
 
 .. code-block:: bash
 
 	/usr/local/clustercontrol-nodejs/bin/install-cc-nodejs.sh
 
-The above command will install and configure all dependencies required including the NPM plugins. Take note that, your repository must have NPM package listed in order for the script to successfully install all the dependencies. For RHEL 7, you might need to have EPEL repository configured by using following command:
+The above command will install and configure all dependencies including the NPM plugins. Take note that, your repository must have NPM package listed in order for the script to successfully install all the dependencies. For RHEL 7, you might need to have EPEL repository configured by using the following command:
 
 .. code-block:: bash
 
 	rpm -Uhv http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
 
-Please refresh the ClusterControl UI after the installation finished.
+Please refresh the ClusterControl UI after the installation is completed.
 	
 Create Service Config
 `````````````````````
@@ -586,7 +545,7 @@ Manages provider's repository for database servers and clusters. You can have th
 3. Use Mirrored Repositories (Create new repository)
 	- Create and mirror the current database vendor's repository and then deploy using the local mirrored repository.
 	- This allows you to "freeze" the current versions of the software packages used to provision a database cluster for a specific vendor and you can later use that mirrored repository to provision the same set of versions when adding more nodes or deploying other clusters.
-	- ClusterControl sets up the mirrored repository under [Apache Document root]/cmon-repos/, which is accessible via HTTP at http://[ClusterControl IP address]/cmon-repos/
+	- ClusterControl sets up the mirrored repository under [Apache Document root]/cmon-repos/, which is accessible via HTTP at http://[ClusterControl IP address]/cmon-repos/ .
 
 Only Local Mirrored Repository will be listed and manageable here. 
 
@@ -612,11 +571,11 @@ For reference purpose, following is an example of yum definition if Local Mirror
 Cluster Registrations
 ---------------------
 
-From a ClusterControl UI instance, this enables the user register a database cluster managed by ClusterControl. For each cluster, you need to provide a ClusterControl API URL and token. This effectively establishes the communication between the UI and the controller. The ClusterControl UI can connect to multiple CMON Controller servers (via the CMON REST API) and provide a centralized view of all databases. Users need to register the CMONAPI token and URL for each cluster. 
+From a ClusterControl UI instance, this enables the user to register a database cluster managed by ClusterControl. For each cluster, you need to provide a ClusterControl API URL and token. This effectively establishes the communication between the UI and the controller. The ClusterControl UI can connect to multiple CMON Controller servers (via the CMON REST API) and provide a centralized view of all databases. Users need to register the CMONAPI token and URL for each cluster. 
 
 .. Note:: The CMONAPI token is critical and hidden under asterisk values. This token provides authentication access for ClusterControl UI to communicate with the CMON backend services directly. Please keep this token in a safe place.
 
-You can retrieve the CMONAPI token manually at ``[wwwroot]/cmonapi/config/bootstrap.php`` on line which contains ``CMON_TOKEN`` value, where ``[wwwroot]`` is location of Apache document root.
+You can retrieve the CMONAPI token manually at ``[wwwroot]/cmonapi/config/bootstrap.php`` on line containing ``CMON_TOKEN`` value, where ``[wwwroot]`` is location of Apache document root.
 
 Service Providers
 -----------------
@@ -756,7 +715,7 @@ Cluster Name       Assign this key to specific cluster.
 Subscriptions
 -------------
 
-For users with a valid subscription (Standard, Pro, Enterprise), enter your license information here to enable additional features based on the subscription. 
+For users with a valid subscription (Standalone, Advanced, Enterprise), enter your license information here to unlock additional features based on the subscription. 
 
 This functionality is also accessible per individual cluster under *Settings > Subscription*. Following screenshot shows example on filing up the license information:
 

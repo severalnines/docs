@@ -7,12 +7,13 @@ Hosts
 Lists of hosts being managed by ClusterControl for the specific cluster. This includes:
 
 * ClusterControl node
-* MySQL nodes (Galera, replication and standalone)
+* MySQL nodes (Galera, replication, group replication and standalone)
 * MySQL slave nodes (Galera and replication)
 * garbd nodes (Galera)
 * HAproxy nodes (Galera and MySQL Cluster)
 * Keepalived nodes
 * MaxScale nodes
+* ProxySQL nodes
 * MySQL API nodes (MySQL Cluster)
 * Management nodes (MySQL Cluster)
 * Data nodes (MySQL Cluster)
@@ -28,7 +29,7 @@ Configurations
 
 Manage the configuration files of your database, HAProxy and Garbd nodes. For MySQL database, changes can be persisted to database variables across one node or a group of nodes at once, dynamic variables are changed directly without a restart.
 
-.. Attention:: ClusterControl does not store configuration changes history so there is no versioning at the moment. Only one version is exist at one time. It always import the latest configuration files every 30 minutes and overwrite it in cmon DB. This limitation will be improved in the upcoming release where ClusterControl shall support configuration versioning with dynamic import interval.
+.. Note:: ClusterControl does not store configuration changes history so there is no versioning at the moment. Only one version is exist at one time. It always import the latest configuration files every 30 minutes and overwrite it in cmon DB. This limitation will be improved in the upcoming release where ClusterControl shall support configuration versioning with dynamic import interval.
 
 * **Save**
 	- Save the changes that you have made and push them to the corresponding node.
@@ -162,7 +163,7 @@ Add an existing HAproxy instance
 Keepalived
 ..........
 
-:term:`Keepalived` requires two HAProxy nodes in order to provide virtual IP address failover. By default, this IP will be assigned to Haproxy1 instance. If the node goes down, the IP will be automatically failover to Haproxy2.
+:term:`Keepalived` requires two HAProxy nodes in order to provide virtual IP address failover. By default, this IP will be assigned to HAProxy1 instance. If the node goes down, the IP will be automatically failover to HAProxy2.
 
 Create a new Keepalived instance
 '''''''''''''''''''''''''''''''''
@@ -203,7 +204,7 @@ Add an existing Keepalived instance
 Garbd
 .....
 
-Galera arbitrator daemon (:term:`garbd`) can be installed to avoid network partitioning/split-brain scenarios.
+Exclusie for Galera Cluster. Galera arbitrator daemon (:term:`garbd`) can be installed to avoid network partitioning/split-brain scenarios.
 
 Create a new Garbd instance
 '''''''''''''''''''''''''''
@@ -305,6 +306,86 @@ The only requirement is to have passwordless SSH configured between ClusterContr
 
 * **CLI Port**
 	- Port for the MaxAdmin command line interface on the target server.
+	
+ProxySQL
+.........
+
+Introduced in v1.4.0 and exclusive for MySQL Replication. By default, ClusterControl deploys ProxySQL in read/write split mode - your read-only traffic will be sent to slaves while your writes will be sent to a writable master by creating two host groups. ProxySQL will also work together with the new automatic failover mechanism added in ClusterControl 1.4.0 - once failover happens, ProxySQL will detect the new writable master and route writes to it. It all happens automatically, without any need for the user to take action.
+
+Choose where to install
+''''''''''''''''''''''''
+
+Specify the host that you want to install ProxySQL. You can use an existing database server or use another host by specifying the hostname or IPv4 address.
+
+* **Server Address**
+	- List of existing servers provisioned under ClusterControl.
+
+* **Port**
+	- ProxySQL service port. Default is 6032.
+
+* **Add a new address**
+	- Specify the hostname or IP address of the host. This host must be accessible via passwordless SSH from ClusterControl node.
+
+Add ProxySQL Users
+''''''''''''''''''
+
+Two ProxySQL Users are required, one for administration and another one for monitoring. ClusterControl will create both during deployment.
+
+* **Administration User**
+	- ProxySQL administration user name.
+
+* **Administration Password**
+	- Password *Administration User*.
+
+* **Monitor User**
+	- ProxySQL monitoring user name.
+
+* **Monitor Password**
+	- Password for *Monitor User*
+
+Add database user
+'''''''''''''''''
+
+You can use existing database user (created outside ProxySQL) or you can let ClusterControl create a new database user under this section. ProxySQL works in the middle, between application and backend MySQL servers, so the database users need to be able to connect from the ProxySQL IP address.
+
+* **Use existing DB User**
+	- DB User: The database user name.
+	- DB User Password: Password for  *DB User*.
+	
+.. Note:: The user must exist on the DB nodes, and allowed access from the ProxySQL server.
+
+* **Create new DB User**
+	- DB User: The database user name.
+	- DB Password: Password for *DB Users*.
+	- DB Name: Database name in "database.table" format. To GRANT against all tables, use wildcard, for example: "mydb.*".
+	- Type in the MySQL privilege(s): ClusterControl will load the privilege name along the key press. Multiple privileges is possible.
+
+Select instances to balance
+'''''''''''''''''''''''''''
+
+Choose which server to be included into the load balancing set.
+
+* **Server Instance**
+	- List of MySQL Replication nodes.
+	
+* **Include**
+	- Toggle to YES to include it. Otherwise, choose NO.
+
+* **Max Replication Lag**
+	- How many seconds replication lag should be allowed before marking the node as unhealthy. Default value is 10.
+
+* **Max Connection**
+	- Maximum connections to be sent to the backend servers. It's recommended to match the ``max_connections`` value of the backend servers.
+
+* **Weight**
+	- This value is used to adjust the server's weight relative to other servers. All servers will receive a load proportional to their weight relative to the sum of all weights. The higher the weight, the higher the priority.
+
+Implicit Transactions
+''''''''''''''''''''''
+
+* **Are you using implicit transactions?**
+	- YES - If you rely on ``SET AUTOCOMMIT=0`` to create a transaction.
+	- NO - If you explicitly use ``BEGIN`` or ``START TRANSACTION`` to create a transaction.
 
 Processes
 `````````
@@ -355,7 +436,7 @@ Shows all accounts across clusters that are not been used since the last server 
 
 You can drop particular accounts by clicking at the multiple checkboxes and click 'Drop User' button to initiate the action.
 
-Create Accounts
+Create Account
 '''''''''''''''
 Creates a new MySQL user for the chosen MySQL node or cluster. 
 
@@ -368,6 +449,7 @@ Password           Specify the password *Username*.
 Verify Password    Re-enter the same password for *Username*.
 All Privileges     Allow all privileges, similar to 'ALL PRIVILEGES' option.
 Database           Specify the database or table name. It can be either in '*.*', 'db_name', 'db_name.*' or 'db_name.tbl_name' format.
+Require SSL        Tick the checkbox if the user must be authenticate using SSL. The checkbox is disabled if you have not configured SSL encryption for MySQL server.
 ================== ============
 
 Upload Dumpfiles
@@ -402,7 +484,7 @@ Creates a database in the cluster:
 	- Enter the name of the database to be created.
 
 * **Create Database**
-	- Click to create a database.
+	- Creates the database. ClusterControl will ensure the database exists on all nodes in the cluster.
 
 Software Packages
 ``````````````````
@@ -418,7 +500,7 @@ Allows users to manage packages, upload new versions to ClusterControl’s repos
 	- Create the package.
 
 * **Upload**
-	- Upload files to an existing package.
+	- Uploads files to an existing package.
 
 * **Available Packages - Database Software**
 	- List of softwares and packages. The package *Selected for Deployment* will be rolled out to new nodes, and used for upgrades.
@@ -531,9 +613,9 @@ ClusterControl comes with a set of basic advisors that include rules and alerts 
 * **New**
 	- Name - Specify the file name including folders if you need. E.g. "shared/helpers/cmon.js" will create all appropriate folders if they don't exist yet.
 	- File content:
-		- Empty file - Create a new empty file.
-		- Galera Template - Create a new file containing skeleton code for Galera monitoring.
-		- Generic MySQL Template - Create a new file containing skeleton code for generic MySQL monitoring.
+		- Empty file - Creates a new empty file.
+		- Galera Template - Creates a new file containing skeleton code for Galera monitoring.
+		- Generic MySQL Template - Creates a new file containing skeleton code for generic MySQL monitoring.
 
 * **Import**
 	- Imports advisor bundle. Supported format is ``.tar.gz``. See `s9s-advisor-bundle <https://github.com/severalnines/s9s-advisor-bundle>`_.
@@ -551,13 +633,13 @@ ClusterControl comes with a set of basic advisors that include rules and alerts 
 	- Moves the file around between different subdirectories.
 
 * **Remove**
-	- Remove the script.
+	- Removes the script.
 
 * **Compile**
 	- Compiles the script.
 
 * **Compile and run**
-	- Compile and run the script. The output appears under *Message*, *Graph* or *Raw response* tab down below.
+	- Compiles and runs the script. The output appears under *Message*, *Graph* or *Raw response* tab down below.
 	- The arrow next to the “Compile and Run” button allows us to change settings for a script and, for example, pass some arguments to the ``main()`` function.
 
 * **Schedule Advisor**

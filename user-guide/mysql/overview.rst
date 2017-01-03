@@ -95,6 +95,29 @@ MySQL Standalone
 	- Unregister a database cluster from the ClusterControl UI. 
 	- You can still re-register your cluster to ClusterControl at a later stage by using `Cluster Registrations <../../user-guide/index.html#cluster-registrations>`_.
 
+MySQL Group Replication
+''''''''''''''''''''''''
+
+* **Add Replication Slave**
+	- Deploys a replication slave attached to this cluster. Choose one of the Group Replication node to be a master. See `Add Replication Slave`_.
+
+* **Bootstrap Cluster**
+	- Launches the bootstrap cluster window. Similar to *ClusterControl > Actions > Bootstrap Cluster*. ClusterControl will stop all running nodes before bootstrapping the cluster from the selected Galera node.
+
+* **Stop Cluster**
+	- Stop all nodes in the cluster.
+
+* **Delete Cluster**
+	- This action will remove the corresponding cluster from ClusterControl supervision and will NOT uninstall the actual database cluster.
+	- If you want to re-add the cluster, you have to use `Add Existing Server/Cluster <../../user-guide/index.html#add-existing-server-cluster>`_.
+
+* **Deregister Cluster from UI**
+	- Unregister a database cluster from the ClusterControl UI. 
+	- You can still re-register your cluster to ClusterControl at a later stage by using `Cluster Registrations <../../user-guide/index.html#cluster-registrations>`_.
+	
+* **Remove Node**
+	- Remove a managed node from the cluster.
+
 MySQL Cluster
 '''''''''''''
 
@@ -354,7 +377,7 @@ Handler                Shows MySQL handler status.
 Query Performance      Shows the number of "slow performing" queries such as table scans and joins without indexes.
 ====================== ===========
 
-The created custom dashboards will appear as tabs beside *Dash Settings*.
+The created custom dashboards will appear as tabs right before *Dash Settings*.
 
 * **Dashboard Name**
 	- Give a name to the dashboard.
@@ -368,7 +391,7 @@ The created custom dashboards will appear as tabs beside *Dash Settings*.
 * **Selected as Default Graph**
 	- Choose Yes if you want to set the graph as default when viewing the Overview page.
 
-.. Note:: You can rearrange dashboard order by drag and drop above.
+.. Note:: You can rearrange dashboard order by drag and drop.
 
 Server Load
 ````````````
@@ -528,6 +551,44 @@ This grid appears if you have a replication slave attached to the Galera cluster
 
 * **Retrieved Gtid Set**
 	- Shows the set of GTIDs for transactions that have been received by this slave.
+
+* **Executed Gtid Set**
+	- Shows the set of GTIDs for transactions that have been executed on the master.
+
+* **Refresh**
+	- Fetch the latest update.
+	
+MySQL Group Replication
+'''''''''''''''''''''''
+
+Master Nodes Grid
+..................
+
+This grid appears if you configured MySQL node to produce binary log with a unique ``server_id`` value.
+
+* **Host**
+	- The MySQL master hostname or IP address.
+	
+* **Read Only**
+	- Read-only status. Click on the button to change the state. It may take 10 seconds before the change is visible in the UI.
+
+* **Server ID**
+	- MySQL server ID.
+	
+* **Status**
+	- The state of the SQL thread.
+	
+* **Member Status**
+	- MySQL group replication member status.
+
+* **Worker Status**
+	- MySQL group replication worker status.
+
+* **File**
+	- Current binary log file.
+
+* **Position**
+	- Current binary log position.
 
 * **Executed Gtid Set**
 	- Shows the set of GTIDs for transactions that have been executed on the master.

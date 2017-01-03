@@ -23,28 +23,28 @@ For detailed explanation on status variables of your cluster, you can refer to f
 Advisors
 ````````
 
-Lists of scheduled Advisors' results created in Developer Studio using `ClusterControl DSL <../../dsl.html>`_.
+Lists of scheduled advisors' results created in *ClusterControl > Manage > Developer Studio* using `ClusterControl DSL <../../dsl.html>`_. You can think of it like a 'scheduled mini-program' which executes a script created in Developer Studio and produces a result containing status, advice and justification. Each advisor can be expanded and collapsed by clicking on the dropdown icon at the top right corner. 
 
-* **Expand all**
-	- Expands all advisors with detailed.
+* **Show Advisors**
+	- Filters the advisor result based on tag.
 
-* **Collapse all**
-	- Lists the advisors summary.
+* **Edit**
+	- Opens the advisor script in *Developer Studio*.
 
-* **Filter by status**
-	- Shows advisors based on status - Ok, Warning, Critical.
+* **Disable**
+	- Disables the advisor script from running.
+
+* **Status**
+	- Advisor status - Ok, Warning, Critical.
 	
 * **DB Instance**
 	- The database server the advisor running on.
 
-* **Status**
-	- Advisor status - Ok, Warning, Critical.
+* **Justification**
+	- The result of advisors' execution.
 
 * **Advice**
 	- The advisor's decision based on the justification.
-
-* **Justification**
-	- The result of advisors' execution.
 
 Health Report (Deprecated)
 ``````````````````````````
@@ -498,7 +498,7 @@ TABLE LOCK CONTENTION
 Status Time Machine
 ````````````````````
 
-.. Attention:: By default, this feature is disabled until you set ``enable_mysql_timemachine=1`` in CMON configuration file and restart CMON service to load it up.
+.. Attention:: By default, this feature is disabled until you set ``enable_mysql_timemachine=1`` in respective CMON configuration file and restart CMON service to load it up.
 
 The status time machine allows you to select status variable for a time range and compare the values at the start and end of that range. The table shows the selected status variables for the given range. Use the slider at the end of the table change the time range.
 
@@ -529,14 +529,14 @@ The status time machine allows you to select status variable for a time range an
 DB Status
 ``````````
 
-DB Status provides a quick overview of MySQL status across all your database nodes. You can use the *Search* text field to filter the result.
+DB Status provides a quick overview of MySQL status across all your database nodes, similar to ``SHOW STATUS`` statement. You can use the *Search* text field to filter the result.
 
 .. Note:: You can check *Hide all zero values* to filter out any status that returned 0.
 
 DB Variables
 ````````````
 
-DB Variables provide a quick overview of MySQL variables that are set across all your database nodes. You can use the *Search* text field to filter the result.
+DB Variables provide a quick overview of MySQL variables that are set across all your database nodes, similar to ``SHOW GLOBAL VARIABLES`` statement. You can use the *Search* text field to filter the result.
 
 .. Note:: Red text means that the variable setting is different. In some cases that is acceptable (e.g., IP address of the node).
 
@@ -567,7 +567,7 @@ Analyzes your database schemas for missing primary keys, redundant indexes and t
 	- Having duplicate keys in schemas can hurt the performance of database:
 		- They make the optimizer phase slower because MySQL needs to examine more query plans.
 		- The storage engine needs to maintain, calculate and update more index statistics.
-		- DML and even read queries can be slower because MySQL needs update fetch more data to Buffer Pool for the same load.
+		- DML and even read queries can be slower because MySQL needs update and fetch more data to Buffer Pool for the same load.
 		- Data needs more disk space so the backups will be bigger and slower.
 
 Transaction Log
@@ -577,7 +577,7 @@ Lists of long-running transactions and deadlocks across database cluster where y
 
 Click on the listed query to see the output of InnoDB status for detailed debugging.
 
-* **Db instance**
+* **Db Instance**
 	- Database instance that process the transaction.
 
 * **Host**
@@ -600,4 +600,4 @@ Click on the listed query to see the output of InnoDB status for detailed debugg
 
 * **Last Seen**
 	- When was the last time ClusterControl has seen the error.
-
+	

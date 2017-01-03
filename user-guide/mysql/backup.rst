@@ -1,12 +1,12 @@
 Backup
 -------
 
-Provides interface for database backup and restore management, scheduling, report and off-site backup. Each backup will be assigned with a backup ID and ClusterControl creates a directory under *ClusterControl > Settings > Backup > Backup Directory* accordingly to store the backups based on this ID.
+Provides interface for database backup and restore management, scheduling and reporting. Each backup will be assigned with a backup ID and ClusterControl creates a directory under *ClusterControl > Backup > Settings > Default Backup Directory* accordingly to store the backups based on this ID. On top of the page, you can see 4 function tabs followed by the created backup list underneath it.
 
-Backup Immediately
-``````````````````
+Create Backup
+`````````````
 
-Creates an immediate backup of the database. You can choose to create a full backup using mysqldump or Percona Xtrabackup (fullbackup). Backups can be stored on the database host that is performing the backup, or the files can be streamed to the ClusterControl host. The backup by this feature will be a full backup. 
+Creates a backup of the database immediately. You can choose to create a full backup using mysqldump or Percona Xtrabackup (fullbackup). Backups can be stored on the database host that is performing the backup, or the files can be streamed to the ClusterControl host. The backup created by this feature will be a full backup.
 
 * **Hostname**
 	- The target database host.
@@ -53,15 +53,15 @@ Creates an immediate backup of the database. You can choose to create a full bac
   
 .. Note:: You can check the backup status under *ClusterControl > Backup > Reports*.
 
-Backup Schedule
+Schedule Backup
 ```````````````
 
-Creates backup schedules of the database. You can choose to create a full or incremental backup using mysqldump or xtrabackup. 
+Creates backup schedules of the database. You can choose to create a full or incremental backup using mysqldump (full backup only) or xtrabackup. 
 
 * **Start Time**
 	- Backup start time.
 
-.. note:: The time is the local time on ClusterControl node.
+.. Note:: The time is the local time on ClusterControl node.
 
 * **Backup Directory**
 	- Enter a backup directory or use default path provided by ClusterControl under *ClusterControl > Settings > Backup*.
@@ -75,7 +75,7 @@ Creates backup schedules of the database. You can choose to create a full or inc
 * **Backup Locks**
 	- This option is only available if xtrabackup is selected. 
 	- Yes - Uses "LOCK TABLES FOR BACKUP" where it supported when making a backup.
-	- No - Sets --no-backup-locks which use "FLUSH NO_WRITE_TO_BINLOG TABLES" and "FLUSH TABLES WITH READ LOCK" when making backup.
+	- No - Sets ``--no-backup-locks`` which use "FLUSH NO_WRITE_TO_BINLOG TABLES" and "FLUSH TABLES WITH READ LOCK" when making backup.
 
 * **Use Compression**
 	- This option is only available if xtrabackup is selected.
@@ -112,10 +112,10 @@ Creates backup schedules of the database. You can choose to create a full or inc
 * **Backup Failover Host**
 	- List of database host to failover in case the target node is down during the scheduled backup.
   
-Current Backup Schedule
-.......................
+Scheduled backups
+`````````````````
 
-List of backup schedules. 
+List of scheduled backups. You can enable and disable the schedule by toggling it accordingly. The created schedule can only be deleted and cannot be modified.
 
 Backup Method
 `````````````
@@ -136,7 +136,7 @@ ClusterControl performs :term:`mysqldump` against all or selected databases by u
 Percona Xtrabackup
 ..................
 
-Xtrabackup is an open-source MySQL hot backup utility from Percona. It is a combination of :term:`xtrabackup` (built in C) and :term:`innobackupex` (built on Perl) and can back up data from InnoDB, :term:`XtraDB` and :term:`MyISAM` tables. Xtrabackup does not lock your database during the backup process. For large databases (100+ GB), it provides much better restoration time as compared to mysqldump. The restoration process involves preparing MySQL data from the backup files before replacing or switching it with the current data directory on the target node.
+Percona Xtrabackup is an open-source MySQL hot backup utility from Percona. It is a combination of :term:`xtrabackup` (built in C) and :term:`innobackupex` (built on Perl) and can back up data from InnoDB, :term:`XtraDB` and :term:`MyISAM` tables. Xtrabackup does not lock your database during the backup process. For large databases (100+ GB), it provides much better restoration time as compared to mysqldump. The restoration process involves preparing MySQL data from the backup files before replacing or switching it with the current data directory on the target node.
 
 Since its ability to create full and incremental MySQL backups, ClusterControl manages incremental backups, and groups the combination of full and incremental backups in a backup set. A backup set has an ID based on the latest full backup ID. All incremental backups after a full backup will be part of the same backup set. The backup set can then be restored as one single unit using `Restore Backup`_ feature.
 
@@ -147,30 +147,43 @@ NDB backup (MySQL Cluster)
 
 NDB backup triggers ``START BACKUP`` command on management node and perform mysqldump on each of the SQL nodes subsequently. These backup files will be created and streamed to ClusterControl node based on *ClusterControl > Settings > Backup > Backup Directory* location.
 
-Reports
-```````
+Backup List
+````````````
 
-Backup Report provides a list of finished backup jobs. The status can be:
+Provides a list of finished backup jobs. The status can be:
 
 ========= ===========
 Status    Description
 ========= ===========
-completed Backup was successfully created and stored in the chosen node.
-running   Backup process is running.
-failed    Backup was failed. For Xtrabackup, ClusterControl provides the backup log.
+Completed Backup was successfully created and stored in the chosen node.
+Running   Backup process is running.
+Failed    Backup was failed. For Xtrabackup, ClusterControl provides the backup log.
 ========= ===========
+
+All incremental backups are automatically grouped together under the last full backup and expandable with a drop down.
+
+* **Restore**
+	- See `Restore Backup`_.
+
+* **Log**
+	- Shows the output when ClusterControl executed the backup job.
+
+* **Delete**
+	- Removes the backup set. If you remve the backup set, all incremental backups associated with it will be removed as well.
 
 Restore Backup
 ..............
 
-ClusterControl has ability to restore backups (mysqldump and xtrabackup) created by ClusterControl. The following steps will be performed:
+Restores backup (mysqldump and xtrabackup) created by ClusterControl. You can restore up to a certain incremental backup by clicking on the *Restore* button for the respective backup ID. The following steps will be performed:
 
 For mysqldump (online restore):
 
 1. Copy backup files to the target server.
 2. Checking disk space on the target server.
-3. Restore the backup.
-4. The rest of the member will then catch up with the target server.
+3. The mysqldump files will be copied to the node.
+4. The schema, data and triggers/functions dump files are applied.
+5. Optionally restore the `mysql` database. If the `cmon` user privileges has changed it may cause ClusterControl to stop functioning. This is fixable of course.
+6. The rest of the member will then catch up with the target server.
 
 For Percona Xtrabackup (offline restore):
 
@@ -178,21 +191,35 @@ For Percona Xtrabackup (offline restore):
 2. Copy backup files to the target server.
 3. Checking disk space on the target server.
 4. Prepare and restore the backup.
-5. Follow the instruction in the *ClusterControl > Logs > Job > Job Message* on how to bootstrap the cluster.
+5. Follow the instruction in the *ClusterControl > Logs > Job > Job Message* on how to bootstrap the cluster. Alternatively, you can toggle on *Bootstrap cluster from the restored node*.
 
-* **Backup Id**
-	- Selected backup ID. This is auto picked if you click the *Restore Backup* button.
+.. Attention:: ClusterControl does not support restoring a partial backup created by xtrabackup. The restoration requires you to manually export and import tablespace into a running MySQL server. Please refer to Percona Xtrabackup documentation before performing this exercise.
 
 * **Restore backup on**
 	- The backup will be restored to the selected server.
 	
-* **Restore "MySQL" Database**
-	- Mysqldump restoration will have an optional choice to restore the ``mysql`` database. If the ``cmon`` user privileges has changed, it may cause ClusterControl to stop functioning. This is fixable, of course. Default is "No".
+* **Tmp Dir**
+	- Temporary storage for ClusterControl to prepare the big. It must be as big as the expected MySQL data directory.
 
+* **Bootstrap cluster from the restored node?**
+	- Toggle to ON if you want ClusterControl to automatically re-bootstrap the cluster on the restored node.
+
+* **Make a copy of the datadir before restoring the backup**
+	- Toggle to ON to keep the old MySQL datadir before replacing the datadir with the prepared backup.
+	
+.. Attention:: The datadir must have enough space to accomodate the restored backup.
+
+* **Restore "MySQL" Database**
+	- Exclusive to mysqldump. Toggle to ON to restore the ``mysql`` database if the backup was created by ClusterControl. If the ``cmon`` user privileges has changed, it may cause ClusterControl to stop functioning. This is fixable, of course. Default is "No".
+	
 Restore External Backups
 ........................
 
-Restore external backups created by user independently. The following steps will be performed:
+Restores external backups which does not listed in the `Backup List`_. It could be a backup created by another ClusterControl instance or the backup was created by user. 
+
+.. Attention:: An external backup must contain privileges allowing the database user 'cmon' to connect to the MySQL server or all Galera nodes, or else ClusterControl may not be able to connect and monitor/manage the database nodes.
+
+The following steps will be performed:
 
 1. Stop all nodes in the cluster.
 2. Copy backup files to the selected server.
@@ -207,45 +234,22 @@ Restore external backups created by user independently. The following steps will
 * **Backup Method**
 	- How the backup was created, either mysqldump or xtrabackup.
 
-* **Specify path to backup**
+* **Backup Path**
 	- The backup file path on ClusterControl node.
 
-Online Storage
-``````````````
+* **Tmp Dir**
+	- Temporary storage for ClusterControl to prepare the big. It must be as big as the expected MySQL data directory.
+	
+* **Bootstrap cluster from the restored node?**
+	- Toggle to ON if you want ClusterControl to automatically re-bootstrap the cluster on the restored node.
 
-Manage off-site database backups to AWS S3 or Glacier. This feature is not available for MySQL Cluster.
+* **Make a copy of the datadir before restoring the backup**
+	- Toggle to ON to keep the old MySQL datadir before replacing the datadir with the prepared backup.
+	
+.. Attention:: The datadir must have enough space to accomodate the restored backup.
 
-Backups
-.......
+* **Restore to Database**
+	- Exclusive to mysqldump. Restores the backup to a specific database name. Leave blank if you want it to restore as it is.
 
-Choose one or more backup files and click *Upload to AWS/S3* button to start uploading.
-
-* **Select SSH Key**
-	- Select existing on-premises key (if exists).
-
-* **Add Key**
-	- Open On-premises Credentials window to manage the SSH key. ClusterControl uses this key to access the node and retrieve the backup file. You can upload the same SSH key as specified at Settings > General Settings > SSH Identity.
-
-* **AWS Key Pair**
-	- Select existing AWS key pair (if exists).
-
-* **Add AWS Key**
-	- Open AWS Credentials window to manage your AWS key pair. ClusterControl uses this key to upload the backup to the chosen destination.
-
-* **Upload to**
-	- Choose the upload destination:
-		- AWS S3 - Amazon Simple Storage Service.
-		- AWS Glacier - A reliable, secure, and inexpensive service to backup and archive data. If you choose this option, you need to specify the AWS region for Glacier.
-
-* **Upload backup as**
-	- If you choose more than one backup files to upload, ClusterControl is able to upload them all separately or in a single tarball.
-
-S3/Glacier Backups
-..................
-
-Retrieve backups from S3 and Glacier. From here, you can delete the selected backup remotely.
-
-Glacier Jobs
-............
-
-Lists Glacier Jobs for a vault including jobs that are in-progress initiated by ClusterControl.
+* **Restore "MySQL" Database**
+	- Exclusive to mysqldump. Toggle to ON to restore the ``mysql`` database if the backup was created by ClusterControl. If the ``cmon`` user privileges has changed, it may cause ClusterControl to stop functioning. This is fixable, of course. Default is "No".

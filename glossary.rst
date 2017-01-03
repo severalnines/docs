@@ -99,6 +99,11 @@ Glossary
 	MyISAM
 		Previous default storage engine for MySQL for versions prior to 5.5. It doesn’t fully support transactions but in some scenarios may be faster than InnoDB. Each table is stored on disk in 3 files: .frm, .MYD, .MYI
 
+	MySQL Group Replication
+		MySQL Group Replication is a recent MySQL plugin that brings together group communication techniques and database replication, providing both a high availability and a multi-master update everywhere replication solution.
+	
+		.. seealso:: http://mysqlhighavailability.com/tag/mysql-group-replication/
+
 	mysqldump
 		The mysqldump client is a utility that performs logical backups, producing a set of SQL statements that can be run to reproduce the original schema objects, table data, or both. It dumps one or more MySQL database for backup or transfer to another SQL server.
 		
@@ -123,6 +128,11 @@ Glossary
 		In addition to single node failures, the cluster may be split into several components due to network failure. In such a situation, only one of the components can continue to modify the database state to avoid history divergence. This component is called the Primary Component (PC).
 		
 		.. seealso:: http://galeracluster.com/documentation-webpages/weightedquorum.html
+
+	ProxySQL
+		ProxySQL is an open source high-performance MySQL proxy with a GPL license.
+	
+		.. seealso:: http://www.proxysql.com/
 
 	Puppet
 		Puppet is an open source configuration management utility.

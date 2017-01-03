@@ -14,7 +14,7 @@ Following is the expected system environment for the ClusterControl host:
 * RAM: >2 GB
 * CPU: >2 cores
 * Disk space: >20 GB
-* Network: conventional network interface
+* Network: conventional network interface (eth, en, em)
 * Hardware platform:
 	* Bare-metal
 	* Virtualization
@@ -58,7 +58,7 @@ The following software is required by ClusterControl:
 - Linux Kernel Security (SElinux or AppArmor) - must be disabled or set to permissive mode
 - OpenSSH server/client
 - BASH (recommended: version 4 or later)
-- NTP server - All servers’ time must synced under one time zone
+- NTP server - All servers’ time must be synced under one time zone
 - netcat - for streaming backups
 
 .. Note:: If ClusterControl is installed via installation script (install-cc) or package manager (yum/apt), all dependencies will be automatically satisfied.
@@ -122,62 +122,68 @@ ClusterControl requires ports used by the following services to be opened/enable
 
 ClusterControl supports various database and application vendors and each has its own set of standard ports that need to be reachable. Following ports and services need to be reachable by ClusterControl on the managed database nodes:
 
-+-------------------------------------------------+--------------------------------------+
-| Database Cluster (Vendor)                       | Port/Service                         |
-+=================================================+======================================+
-| MySQL/MariaDB (Single instance and replication) | * 22 (SSH)                           |
-|                                                 | * ICMP (echo reply/request)          |
-|                                                 | * 3306 (MySQL)                       |
-+-------------------------------------------------+--------------------------------------+
-| * MySQL Galera Cluster                          | * 22 (SSH)                           |
-| * Percona XtraDB Cluster                        | * ICMP (echo reply/request)          |
-| * MariaDB Galera Cluster                        | * 3306 (MySQL)                       |
-|                                                 | * 4444 (SST)                         |
-|                                                 | * 4567 TCP/UDP (Galera)              |
-|                                                 | * 4568 (Galera IST)                  |
-|                                                 | * 9200 (HAproxy health check)        |
-+-------------------------------------------------+--------------------------------------+
-| MySQL Cluster (NDB)                             | * 22 (SSH)                           |
-|                                                 | * ICMP (echo reply/request)          |
-|                                                 | * 1186 (MySQL Cluster)               |
-|                                                 | * 2200 (MySQL Cluster)               |
-|                                                 | * 3306 (MySQL)                       |
-+-------------------------------------------------+--------------------------------------+
-| MongoDB replica set                             | * 22 (SSH)                           |
-|                                                 | * ICMP (echo reply/request)          |
-|                                                 | * 27017 (mongod)                     |
-+-------------------------------------------------+--------------------------------------+
-| MongoDB sharded cluster                         | * 22 (SSH)                           |
-|                                                 | * ICMP (echo reply/request)          |
-|                                                 | * 27018 (mongod)                     |
-|                                                 | * 27017 (mongos)                     |
-|                                                 | * 27019 (config server)              |
-+-------------------------------------------------+--------------------------------------+
-| PostgreSQL                                      | * 22 (SSH)                           |
-|                                                 | * ICMP (echo reply/request)          |
-|                                                 | * 5432 (postgres)                    |
-+-------------------------------------------------+--------------------------------------+
-| HAproxy                                         | * 22 (SSH)                           |
-|                                                 | * ICMP (echo reply/request)          |
-|                                                 | * 9600 (HAproxy stats)               |
-|                                                 | * 3307 or 33306 (MySQL load-balanced)|
-+-------------------------------------------------+--------------------------------------+
-| MaxScale                                        | * 22 (SSH)                           |
-|                                                 | * ICMP (echo reply/request)          |
-|                                                 | * 6033 (MaxAdmin - CLI)              |
-|                                                 | * 4006 (Round robin listener)        |
-|                                                 | * 4008 (Read/Write split listener)   |
-|                                                 | * 4442 (Debug information)           |
-+-------------------------------------------------+--------------------------------------+
-| Keepalived                                      | * 22 (SSH)                           |
-|                                                 | * ICMP (echo reply/request)          |
-|                                                 | * 224.0.0.0/8 (multicast request)    |
-|                                                 | * IP protocol 112 (VRRP)             |
-+-------------------------------------------------+--------------------------------------+
-| Galera Arbitrator (garbd)                       | * 22 (SSH)                           |
-|                                                 | * ICMP (echo reply/request)          |
-|                                                 | * 4567 (Galera)                      |
-+-------------------------------------------------+--------------------------------------+
++-------------------------------------------------+----------------------------------------+
+| Database Cluster (Vendor)                       | Port/Service                           |
++=================================================+========================================+
+| MySQL/MariaDB (Single instance and replication) | * 22 (SSH)                             |
+|                                                 | * ICMP (echo reply/request)            |
+|                                                 | * 3306 (MySQL)                         |
++-------------------------------------------------+----------------------------------------+
+| * MySQL Galera Cluster                          | * 22 (SSH)                             |
+| * Percona XtraDB Cluster                        | * ICMP (echo reply/request)            |
+| * MariaDB Galera Cluster                        | * 3306 (MySQL)                         |
+|                                                 | * 4444 (SST)                           |
+|                                                 | * 4567 TCP/UDP (Galera)                |
+|                                                 | * 4568 (Galera IST)                    |
+|                                                 | * 9200 (HAproxy health check)          |
++-------------------------------------------------+----------------------------------------+
+| MySQL Cluster (NDB)                             | * 22 (SSH)                             |
+|                                                 | * ICMP (echo reply/request)            |
+|                                                 | * 1186 (MySQL Cluster)                 |
+|                                                 | * 2200 (MySQL Cluster)                 |
+|                                                 | * 3306 (MySQL)                         |
++-------------------------------------------------+----------------------------------------+
+| MongoDB replica set                             | * 22 (SSH)                             |
+|                                                 | * ICMP (echo reply/request)            |
+|                                                 | * 27017 (mongod)                       |
++-------------------------------------------------+----------------------------------------+
+| MongoDB sharded cluster                         | * 22 (SSH)                             |
+|                                                 | * ICMP (echo reply/request)            |
+|                                                 | * 27018 (mongod)                       |
+|                                                 | * 27017 (mongos)                       |
+|                                                 | * 27019 (config server)                |
++-------------------------------------------------+----------------------------------------+
+| PostgreSQL                                      | * 22 (SSH)                             |
+|                                                 | * ICMP (echo reply/request)            |
+|                                                 | * 5432 (postgres)                      |
++-------------------------------------------------+----------------------------------------+
+| HAproxy                                         | * 22 (SSH)                             |
+|                                                 | * ICMP (echo reply/request)            |
+|                                                 | * 9600 (HAproxy stats)                 |
+|                                                 | * 3307 (MySQL load-balanced)           |
+|                                                 | * 3308 (MySQL load-balanced read-only) |
++-------------------------------------------------+----------------------------------------+
+| MaxScale                                        | * 22 (SSH)                             |
+|                                                 | * ICMP (echo reply/request)            |
+|                                                 | * 6033 (MaxAdmin - CLI)                |
+|                                                 | * 4006 (Round robin listener)          |
+|                                                 | * 4008 (Read/Write split listener)     |
+|                                                 | * 4442 (Debug information)             |
++-------------------------------------------------+----------------------------------------+
+| Keepalived                                      | * 22 (SSH)                             |
+|                                                 | * ICMP (echo reply/request)            |
+|                                                 | * 224.0.0.0/8 (multicast request)      |
+|                                                 | * IP protocol 112 (VRRP)               |
++-------------------------------------------------+----------------------------------------+
+| Galera Arbitrator (garbd)                       | * 22 (SSH)                             |
+|                                                 | * ICMP (echo reply/request)            |
+|                                                 | * 4567 (Galera)                        |
++-------------------------------------------------+----------------------------------------+
+| ProxySQL                                        | * 22 (SSH)                             |
+|                                                 | * ICMP (echo reply/request)            |
+|                                                 | * 6032 (ProxySQL Admin)                |
+|                                                 | * 6033 (MySQL load-balanced)           |
++-------------------------------------------------+----------------------------------------+
 
 Hostnames and IP addresses
 --------------------------
@@ -241,7 +247,7 @@ where ``[OS user]`` is the name of the user you intend to use during the install
 Passwordless SSH
 ----------------
 
-Proper passwordless SSH setup from ClusterControl node to all nodes (including ClusterControl node) is mandatory. If ClusterControl is installed using the deployment package generated from the Severalnines Configurator or using one of our bootstrap scripts, the deployment script will guide users on setting up SSH keys before proceed with the installation.
+Proper passwordless SSH setup from ClusterControl node to all nodes (including ClusterControl node) is mandatory. When adding a new node, the node must be accessible via passwordless SSH from ClusterControl beforehand.
 
 Setting up passwordless SSH
 +++++++++++++++++++++++++++
@@ -252,7 +258,7 @@ Most of the sampling tasks for controller are done locally but there are some ta
 
 .. Note:: It is *NOT* neccessary to setup two-way passwordless SSH, e.g: from the managed database node to the ClusterControl.
 
-Examples below shows how a root user on the ClusterControl host generates and copies a SSH key to a database host, 192.168.0.10:
+Examples below show how a root user on the ClusterControl host generates and copies a SSH key to a database host, 192.168.0.10:
 
 .. code-block:: bash
 
@@ -307,13 +313,13 @@ If you use DSA (CMON defaults to RSA), then you need to follow `these instructio
 Sudo password
 +++++++++++++
 
-Sudoers with or without password is possible with sudo configuration option (though it is not recommended since CMON supports alphanumeric characters only). If undefined, CMON will escalate sudo user without password. To specify the sudo password, add the following option inside the CMON configuration file:
+Sudoers with or without password is possible with sudo configuration option. If undefined, CMON will escalate to sudoer without password. To specify the sudo password, add the following option inside the CMON configuration file:
 
 .. code-block:: bash
 
   sudo="echo 'thesudopassword' | sudo -S 2>/dev/null"
 
-.. Attention::  Having ``2>/dev/null`` in the sudo command is mandatory to exclude stderr from the response.
+.. Attention::  Having ``2>/dev/null`` in the sudo command is compulsory to exclude stderr from the response.
 
 Don't forget to restart cmon service to load the option.
 
@@ -346,7 +352,7 @@ To change time zone, e.g from UTC to Pacific time:
 	$ rm /etc/localtime
 	$ ln -sf /usr/share/zoneinfo/US/Pacific localtime
 
-UTC is however recommended. Configure NTP client for each host with a working time server to avoid time drifting between hosts which could cause inaccurate reporting or graphs not being plotted properly. To immediately sync a server’s time with a time server, use following command:
+UTC is however recommended. Configure NTP client for each host with a working time server to avoid time drifting between hosts which could cause inaccurate reporting or incorrect graphs plotting. To immediately sync a server’s time with a time server, use following command:
 
 .. code-block:: bash
 

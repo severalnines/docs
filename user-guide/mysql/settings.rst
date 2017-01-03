@@ -7,7 +7,7 @@ General Settings
 ````````````````
 
 Cluster Settings
-................
+''''''''''''''''
 
 * **Cluster Name**
 	- Cluster name. This name will appear in the database cluster list and database cluster summary.
@@ -16,7 +16,7 @@ Cluster Settings
 	- The staging area is a directory (created automatically) to store intermediate data, such as mysqldumps, binaries, RPMs used in e.g installations/upgrades and automatic scaling. The staging area is automatically cleaned, but should be big to hold mysqldumps of your entire database.
 
 * **Sudo**
-	- Sudo password if running as sudoers.
+	- Sudo command password (if *SSH User** is not root) if running as sudoers. Change in CMON configuration file under ``sudo``.
 
 * **SSH User**
 	- Read-only. The user that can SSH from the ClusterControl Server to the other nodes without password. Change in CMON configuration file under ``os_user`` or osuser.
@@ -30,34 +30,49 @@ Cluster Settings
 * **History**
 	- Number of days you would like to keep historic data. Ensure you have enough disk space on the ClusterControl server if you want to store historic data.
 
-* **Error Log Collection Interval**
+* **Log Interval**
 	- How many minutes between automatic MySQL error log retrieval.
 
-Configure Mailserver
-....................
+Configure Mail Server
+''''''''''''''''''''''
 
 Configure how email notifications are to be sent. ClusterControl supports two options for sending email notifications, either using local mail commands via local MTA (Sendmail/Postfix/Exim) or using an external SMTP server. Make sure the local MTA is installed and verified with *Test Email* button.
 
-* **Use ‘mail’**
+Option 1: Sendmail
+..................
+
+* **Use 'sendmail'**
 	- Use this option to enable sendmail to send notifications. Instructions on how to set it up can be found `here <http://support.severalnines.com/entries/22897447-setting-up-mail-notifications>`_.
 
 * **Reply-to/From**
 	- Specify the sender of the email. This will appear in the ‘From’ field of mail header.
 
-* **SMTP Mailserver**
-	- SMTP mail server that you are going to use to send email.
+Option 2: SMTP Server (Recommended)
+...................................
+
+* **SMTP Server**
+	- SMTP mail server address that you are going to use to send email.
 
 * **SMTP Port**
 	- SMTP port for mail server. Usually this value is 25 or 587, depending on your SMTP mail server configuration.
 
+* **SMTP TLS/SSL required**
+	- Check this box if you want to use TLS/SSL for extra security. The mail server must support TLS/SSL.
+
 * **Username**
-	- SMTP username. Leave empty if no authentication required.
+	- SMTP user name. Leave empty if no authentication required.
 
 * **Password**
 	- SMTP password. Leave empty if no authentication required.
 
+* **Reply-to/From**
+	- Specify the sender of the email. This will appear in the ‘From’ field of mail header.
+
 * **Test Email**
 	- Test the mail settings. If successful, an email will be sent to all users in the *ClusterControl > Settings > General Settings > Cluster Settings > Email Notification*. Do not forget to add a recipient before pressing this button.
+
+Using Postfix
+.............
 
 Many of Linux distributions come with Sendmail as default MTA. To replace Sendmail and use other MTA, e.g Postfix, you just need to uninstall Sendmail, install Postfix and start the service. Following example shows commands that need to be executed on ClusterControl node as root user for RHEL:
 
@@ -70,7 +85,7 @@ Many of Linux distributions come with Sendmail as default MTA. To replace Sendma
 	$ service postfix start
 
 Email Notification
-.................. 
+'''''''''''''''''''
 
 Configures email notifications for alarms generated for your database cluster.
 
@@ -80,7 +95,7 @@ Configures email notifications for alarms generated for your database cluster.
 * **Send digests at**
 	- Send a digested (summary) email at this time every day for the selected recipient.
 
-* **Timezone**
+* **Time-zone**
 	- Timezone for the selected recipient.
 
 * **Daily limit for non-digest email as**
@@ -115,7 +130,7 @@ Configures email notifications for alarms generated for your database cluster.
 	======= ===========
 
 Version
-........
+''''''''
 
 View the database server, vendor, operating system distribution and ClusterControl version installed. Tick the "Check for updates" checkbox to get notified when a new ClusterControl version is released. New versions are made available from `our download site <http://www.severalnines.com/downloads/cmon>`_ and `Severalnines repository <../../installation.html#severalnines-repository>`_.
 
@@ -124,7 +139,7 @@ To upgrade to the latest version, see `Upgrading ClusterControl section <../../a
 Subscription
 ````````````
 
-For users with a valid subscription (Standard, Pro, Enterprise), enter your license information here to enable additional features based on the subscription. 
+For users with a valid subscription (Standalone, Advanced, Enterprise) enter your license information here to enable additional features based on the subscription. 
 
 This functionality is also globally accessible at *ClusterControl > Settings > Subscription*. Following screenshot shows example on filing up the license information:
 
@@ -185,12 +200,6 @@ Manages how ClusterControl should perform query monitoring. It determines the ou
 
 Changes happened in this page does not require the CMON service to restart.
 
-* **Query Sample Time**
-	- How many seconds between query sampling. Queries are sampled in 30 seconds chunks. This time sets how long the interval should be between each chunk.
-		- -1 - disabled (if you want to manage the query monitoring yourself)
-		- 0 - all the time.
-	- SQL performance is affected if *Query Sample Time* is too frequent and you have a lot of query traffic since the slow query log file will grow big. Setting this to 5 is a good starting point. You can also set the *Long Query Time* to capture queries taking longer than a certain time.
-
 * **MySQL Local Query Override**
 	- Choose whether you want ClusterControl to override the local MySQL query sampling:
 		- Yes - The local MySQL configuration settings inside ``my.cnf`` for ``long_query_time`` and ``log_queries_not_using_indexes`` will be used.
@@ -203,13 +212,13 @@ Changes happened in this page does not require the CMON service to restart.
 
 * **Log queries not using indexes?**
 	- Configures ClusterControl behaviour on sampling queries without indexes:
-		- Yes - Logs queries which are using indexes.
+		- Yes - Logs queries which are not using indexes.
 		- No - Ignores queries that are not using indexes (will not be accounted for in *ClusterControl > Query Monitor > Query Histogram*).
 		
 Backup
 ``````
 
-Manages the default backup directory and retention period.
+Manages the default backup retention period. This setting is also accessible directly from *ClusterControl > Backup > Settings*.
 
 * **Backup Retention Period**
 	- Backup retention period in days. Backups older than the retention period (days) will be deleted. Set to 0 for no retention.

@@ -3,25 +3,39 @@
 Nodes
 -----
 
-Provides detailed information for each node in the cluster. On the left hand column, you can find a list of all nodes that are members of the cluster including ClusterControl node. If you added slaves, HAProxy, Keepalived, MaxScale or :term:`Garbd` (Galera Arbitrator) to your cluster through ClusterControl, these will also be listed.
+Provides detailed information for each node in the cluster. On the left hand column, you can find a list of all nodes that are members of the cluster including ClusterControl node. If you added slaves, :term:`HAProxy`, :term:`Keepalived`, :term:`MaxScale`, :term:`ProxySQL` or :term:`Garbd` to your cluster through ClusterControl, these will also be listed.
 
 
 Nodes Monitoring
 ````````````````
 
-The node on the list will appear in red colour to indicate it is unhealthy. The tabs show performance and resource usage for a specific node. There are also database specific tabs depending on the type of database running on the host:
+The node on the list will appear in red colour to indicate it is unhealthy. The tabs show performance and resource usage for a specific node. There are also database specific tabs depending on the type of database running on the host.
+
+Database node status indicator:
+
+=========== ===========
+Status      Description
+=========== ===========
+OK          Indicates the node is working fine.
+WARNING     Indicates the node is degraded and not performing as expected.
+MAINTENANCE Indicates the node is under maintenance.
+PROBLEMATIC Indicates the node is down or unreachable.
+=========== ===========
+
+Controller Node
+'''''''''''''''
 
 * **Overview**
 	- Provides a summary of host information and statisic histogram including CPU, disk, network and memory usage.
-	- Database node status indicator:
 
-  =========== ===========
-  Status      Description
-  =========== ===========
-  OK          Indicates the node is working fine.
-  WARNING     Indicates the node is degraded and not performing as expected.
-  PROBLEMATIC Indicates the node is down or unreachable.
-  =========== ===========
+* **Top**
+	- Provides a snapshot view of processes running on the host, similar to :term:`top` command in Linux.
+
+Database Nodes
+'''''''''''''''
+
+* **Overview**
+	- Provides a summary of host information and statisic histogram including CPU, disk, network and memory usage.
 
 * **Top**
 	- Provides a snapshot view of processes running on the host, similar to :term:`top` command in Linux.
@@ -37,14 +51,56 @@ The node on the list will appear in red colour to indicate it is unhealthy. The 
 
 * **DB Variables**
 	- MySQL variables for this node, similar to ``SHOW VARIABLES`` command.
+	
+HAproxy Nodes
+''''''''''''''
+
+Provides detailed view of HAProxy stats, similar to HAProxy stats page. If HAproxy is deployed using ClusterControl, ClusterControl will automatically create HAProxy stats page on port 9600. You can access the page directly using the value of *Admin User* and *Admin Password* specified during the deployment at *ClusterControl > Manage > Load Balancer > Install HAProxy > Show Advanced Settings*.
+
+* **Stats URL**
+	- If you are using HAproxy 1.6 and newer, use another URL: http://[HAproxy_address]:[HAproxy_admin_port]/haproxy?stats;csv/
+
+* **Update**
+	- Updates the HAProxy stats URL.
+	
+* **Enabled**
+	- Tick on the checkbox to enable or disable the backend server from the load balancing set. This is useful during backend servers maintenance.
+
+ProxySQL Nodes
+''''''''''''''
+
+Provides detailed view of ProxySQL stats. ClusterControl connects to the ProxySQL admin interface to retrieve the stats and visualize them here.
+
+* **ProxySQL Host Groups**
+	- List of hostgroups created under this service.
+	- It also provides the status of hosts in all defined hostgroups. It shows metrics related to hostgroups - used connections, free connections, errors, number of queries executed, amount of data sent and received, latency
+	
+* **ProxySQL Stats**
+	- Graphs related to ProxySQL metrics - active transactions, data sent and received, memory utilization, number of connections and many more. This gives you insight in how ProxySQL operates and helps to catch any potential issues with the proxy layer.
 
 
 Nodes Management
-````````````````
+`````````````````
 
-The remove icon will only appear when you rollover the mouse pointer on the node icon in the left-hand column. This removes the database node from the cluster. Some of the node management jobs are cluster-specific, as described in the next sections.
+Remove Node
+''''''''''''
+
+The remove icon will only appear when you rollover the mouse pointer on the node icon in the left-hand column. This removes the database node from the cluster.
+
+Maintenance Mode
+'''''''''''''''''
+
+Puts individual nodes into maintenance mode which prevents ClusterControl to raise alarms and notifications during the maintenance period. When toggling ON, you can set the maintenance period for a pre-defined time or schedule it accordingly. Specify the reason for auditing purpose. ClusterControl will not degrade the node, hence the node's state remains as what it is unless you perform any maintenance onto it. 
+
+Alarms and notifications for this node will be activated back once the maintenance period is exceeded, or you explicitly toggling it OFF.
+
+Cluster-Specific Nodes Management
+``````````````````````````````````
+
+Some of the node management jobs are cluster-specific, as described in the next sections.
 
 .. Note:: You can monitor job's progress at *ClusterControl > Logs > Jobs*.
+
 
 Galera Cluster
 ''''''''''''''
@@ -53,7 +109,10 @@ These are specific functions available for Galera nodes:
 
 * **Shutdown Node**
 	- Stops the database instance on this node. This is not a system shut down.
-	
+
+* **Restart Node**
+	- Stops and starts the database instance on this node. This is not a system reboot.
+
 * **Reboot Host**
 	- Initiates a system reboot on this host.
 
@@ -70,6 +129,26 @@ These are specific functions available for Galera nodes:
 	
 * **Make Primary**
 	- This option is only available if the node is down. It makes sense to use it if the Galera node is down and reported as non-Primary component from the *Overview* page. ClusterControl will attempt to promote the node from non-Primary state to :term:`Primary component`.
+	
+MySQL Group Replication
+''''''''''''''''''''''''
+
+* **Shutdown Node**
+	- Stops the database instance on this node. This is not a system shut down.
+
+* **Restart Node**
+	- Stops and starts the database instance on this node. This is not a system reboot.
+	
+* **Reboot Host**
+	- Initiates a system reboot on this host.
+
+* **Rebuild Node**
+	- Rebuilds the node by streaming backup from a master node using Percona Xtrabackup. ClusterControl will automatically start the Group Replication once the rebuild job succeded.
+	
+.. caution:: 'Rebuild Node' will wipe out the node's MySQL datadir.
+	
+* **Start Node**
+	- This option is only available if the node is down. It starts the database instance on this node.
 
 MySQL Cluster
 '''''''''''''
@@ -79,6 +158,9 @@ These are specific functions available for MySQL cluster nodes:
 * **Shutdown Node**
 	- Stops the database instance on this node. This is not a system shut down.
 	
+* **Restart Node**
+	- Stops and starts the database instance on this node. This is not a system reboot.
+
 * **Reboot Host**
 	- Initiates a system reboot on this host.
 	
@@ -92,7 +174,10 @@ These are specific functions available for MySQL replication nodes:
 
 * **Shutdown Node**
 	- Stops the database instance on this node. This is not a system shut down.
-	
+
+* **Restart Node**
+	- Stops and starts the database instance on this node. This is not a system reboot.
+
 * **Reboot Host**
 	- Initiates a system reboot on this host.
 	
@@ -117,9 +202,9 @@ These are specific functions available for MySQL replication nodes:
 	- Stops the slave IO and SQL threads.
     
 * **Promote Slave**
-	- Promotes the selected slave to become the new master. 
-    - If the master is currently functioning correctly, then stop application queries prior to promoting another slave to safe guard from data loss. Connections on the current running master will be killed after a 10 second grace period.
-    - This option is only available if ClusterControl detects the node as slave.
+	- Promotes the selected slave to become the new master.
+		- If the master is currently functioning correctly, then stop application queries prior to promoting another slave to safe guard from data loss. Connections on the current running master will be killed after a 10 second grace period.
+		- This option is only available if ClusterControl detects the node as slave.
 
 MySQL single
 ''''''''''''
@@ -128,7 +213,10 @@ These are specific functions available for MySQL standalone nodes:
 
 * **Shutdown Node**
 	- Stops the database instance on this node. This is not a system shut down.
-	
+
+* **Restart Node**
+	- Stops and starts the database instance on this node. This is not a system reboot.
+
 * **Reboot Host**
 	- Initiates a system reboot on this host.
 	
