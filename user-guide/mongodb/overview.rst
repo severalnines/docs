@@ -10,8 +10,22 @@ Actions
 
 Provides shortcuts to main cluster functionality.
 
-* **Add Node to Replica Set**
-	- See `Add Node to Replica Set`_.
+* **Convert to Shard**
+	- Exclusive for MongoDB Replica Set. See `Convert to Shard`_.
+
+* **Add Node**
+	- See `Add Node`_.
+	
+* **Add Shard**
+	- Exclusive for MongoDB Sharded Cluster. See `Add Shard`_.
+
+* **Remove Shard**
+	- Exclusive for MongoDB Sharded Cluster. See `Remove Shard`_.
+
+* **Change RPC API Token**
+	- Serves as the auntentication string by ClusterControl UI to connect to CMON RPC interface. Each cluster has its own unique token.
+	
+.. Note:: You can retrieve the RPC API Token value directly from respective cmon_X.cnf, [wwwroot]/cmonapi/config/bootstrap.php under CMON_TOKEN variable or from 'dcps.apis' table.
 
 * **Delete Cluster**
 	- Unregister a database cluster from the ClusterControl UI. This action will remove the selected CMONAPI URL and token for corresponding cluster and will NOT uninstall the actual database cluster.
@@ -21,8 +35,110 @@ Provides shortcuts to main cluster functionality.
 	- Unregister a database cluster from the ClusterControl UI. 
 	- You can still re-register your cluster to ClusterControl at a later stage by using `Cluster Registrations <../../user-guide/index.html#cluster-registrations>`_.
 
+Convert to Shard
+'''''''''''''''''
+
+Converts an existing MongoDB replica set to a sharded cluster by adding mongos and config servers into the setup. 
+
+1) Configuration Servers and Routers
+....................................
+    
+*Configuration Server*
+
+* **Server Port**
+	- MongoDB config server port. Default is 27019.
+
+* **Add Configuration Servers**
+	- Specify the IP address or hostname of the MongoDB config servers. Minimum of one node is required, recommended to use three nodes.
+
+*Routers/Mongos*
+
+* **Server Port**
+	- MongoDB mongos server port. Default is 27017.
+
+* **Add More Routers**
+	- Specify the IP address or hostname of the MongoDB mongos.
+	
+2) Database Settings
+.....................
+
+* **Server Data Directory**
+	- Location of MongoDB data directory. Default is ``/var/lib/mongodb``.
+
+* **mongodb.conf Template**
+	- MongoDB configuration template file under ``/usr/share/cmon/templates``. Default is ``mongodb.conf.org``. Keep it default is recommended.
+
+* **mongos.conf Template**
+	- MongoDB configuration template file under ``/usr/share/cmon/templates``. Default is ``mongos.conf.org``. Keep it default is recommended.
+
+* **Install Software**
+    - Check the box if you use clean and minimal VMs. Existing MySQL dependencies will be removed. New packages will be installed and existing packages will be uninstalled when provisioning the node with required software.
+    - If unchecked, existing packages will not be uninstalled, and nothing will be installed. This requires that the instances have already provisioned the necessary software.
+
+* **Disable Firewall**
+	- Check the box to disable firewall (recommended).
+
+* **Disable AppArmor/SELinux**
+	- Check the box to let ClusterControl disable AppArmor (Ubuntu) or SELinux (Redhat/CentOS) if enabled (recommended).
+
+* **Deploy**
+	- Starts the MongoDB Sharded Cluster deployment.
+
+Add Shard
+'''''''''
+
+Adds a new shard. Once the new shard has been added to the cluster, the MongoDB shard router will start to assign new chunks to it, and the balancer will automatically balance all chunks over all the shards.
+
+1) Define Shards
+................
+
+* **Replica Set Name**
+	- Specify a name for this replica set shard.
+
+* **Server Port**
+	- MongoDB shard server port. Default is 27018.
+
+* **Hostname**
+	- Specify the IP address or hostname of the MongoDB shard servers. Minimum of one node is required, recommended to use three nodes.
+	
+* **Advanced Options**
+	- Click on this to open set of advanced options for this particular node in this shard:
+		- Add slave delay - Specify the amount of delayed slave in miliseconds format.
+		- Act as an arbiter - Toggle to 'Yes' if the node is arbiter node. Otherwise, choose 'No'.
+	
+2) Database Settings
+.....................
+
+* **Server Data Directory**
+	- Location of MongoDB data directory. Default is ``/var/lib/mongodb``.
+
+* **mongodb.conf Template**
+	- MongoDB configuration template file under ``/usr/share/cmon/templates``. Default is ``mongodb.conf.org``. Keep it default is recommended.
+
+* **mongos.conf Template**
+	- MongoDB configuration template file under ``/usr/share/cmon/templates``. Default is ``mongos.conf.org``. Keep it default is recommended.
+
+* **Install Software**
+    - Check the box if you use clean and minimal VMs. Existing MySQL dependencies will be removed. New packages will be installed and existing packages will be uninstalled when provisioning the node with required software.
+    - If unchecked, existing packages will not be uninstalled, and nothing will be installed. This requires that the instances have already provisioned the necessary software.
+
+* **Disable Firewall**
+	- Check the box to disable firewall (recommended).
+
+* **Disable AppArmor/SELinux**
+	- Check the box to let ClusterControl disable AppArmor (Ubuntu) or SELinux (Redhat/CentOS) if enabled (recommended).
+
+* **Deploy**
+	- Starts the MongoDB Sharded Cluster deployment.
+
+
+Add Node
+''''''''
+
+Scales the current MongoDB Replica Set or Sharded Cluster deployment by adding single shard, mongos or config server.
+
 Add Node to Replica Set
-''''''''''''''''''''''''
+........................
 
 Adds a replica member or arbiter node. 
 
@@ -30,7 +146,7 @@ Adds a replica member or arbiter node.
 	- DB server - MongoDB node to be part of the same replica set.
 	- Arbiter 
 		- MongoDB arbiter node to be part of the same replica set. 
-		- You can add an 	arbiter to an existing MongoDB node or a new node. If you are doing this, choose "No" under *Install Software*.
+		- You can add an arbiter to an existing MongoDB node or a new node. If you are doing this, choose "No" under *Install Software*.
 
 * **Hostname**
 	- IP address or hostname of the target host.
@@ -39,7 +155,7 @@ Adds a replica member or arbiter node.
 	- MongoDB port. Default is 27017 for MongoDB replica set and 3000 for MongoDB arbiter node.
 	
 * **Configuration**
-	- Configuration template must exist under *ClusterControl > Manage > Configurations > Template Configuration Files*.
+	- Configuration template must exist under *ClusterControl > Manage > Configurations > Templates*. Use the mongod (shard) configuration file for this deployment.
 
 * **Replica set**
 	- Choose the replica set.
@@ -53,6 +169,42 @@ Adds a replica member or arbiter node.
 
 * **Disable AppArmor/SELinux**
 	- Check the box to let ClusterControl disable AppArmor (Ubuntu) or SELinux (Redhat/CentOS) if enabled.
+	
+Add Routers/Mongos
+...................
+
+* **Hostname**
+	- IP address or hostname of the mongo host.
+
+* **Port**
+	- MongoDB port. Default is 27018.
+	
+* **Configuration**
+	- Configuration template must exist under *ClusterControl > Manage > Configurations > Templates*. Use the mongos configuration file for this deployment.
+	
+* **Install Software**
+	- Installs the required software to run the database. This includes MongoDB server/client together with dependencies.
+
+* **Disable Firewall**
+	- Yes - To disable firewall during deployment (recommended).
+	- No - Firewall settings will be untouched.
+
+* **Disable AppArmor/SELinux**
+	- Check the box to let ClusterControl disable AppArmor (Ubuntu) or SELinux (Redhat/CentOS) if enabled.
+
+Remove Shard
+'''''''''''''
+
+Removes or moves a replica set in a sharded cluster setup. Removing shards is a bit harder than to add a shard, as this involves moving the data to the other shards before removing the shard itself. For all data that has been sharded over all shards, this will be a job performed by the MongoDB balancer. 
+
+* **Remove Replica Set**
+	- Choose the shard you want to remove.
+
+* **Move to Replica Set**
+	- Moves the selected shards to another shard/replica set. Any non-sharded database/collection, that was assigned this shard as its primary shard, needs to be moved to another shard and made its new primary shard. For this process, MongoDB needs to know where to move these non-sharded databases/collections to.
+
+* **Remove Shard**
+	- Click the button to proceed.
 
 Shard Servers, Config Servers & Mongos Servers
 ``````````````````````````````````````````````

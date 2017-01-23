@@ -17,6 +17,11 @@ Galera Cluster
 * **Add Load Balancer**
 	- See `Add Load Balancer <manage.html#load-balancer>`_ section.
 
+* **Change RPC API Token**
+	- Serves as the auntentication string by ClusterControl UI to connect to CMON RPC interface. Each cluster has its own unique token.
+	
+.. Note:: You can retrieve the RPC API Token value directly from respective cmon_X.cnf, [wwwroot]/cmonapi/config/bootstrap.php under CMON_TOKEN variable or from 'dcps.apis' table.
+
 * **Add Replication Slave**
 	- Deploys a replication slave attached to this cluster. Choose one of the Galera node to be a master. See `Add Replication Slave`_.
 
@@ -58,6 +63,9 @@ MySQL Replication
 * **Add Load Balancer**
 	- See `Add Load Balancer <manage.html#load-balancer>`_ section.
 
+* **Change RPC API Token**
+	- Serves as the auntentication string by ClusterControl UI to connect to CMON RPC interface. Each cluster has its own unique token.
+
 * **Find Most Advanced Node**
     - Finds which is the most advanced node in the replication setup. This is very useful to determine which slaves has the most updated data before being promoted to a new master.
     
@@ -83,7 +91,10 @@ MySQL Standalone
 	
 * **Add Load Balancer**
 	- See `Add Load Balancer <manage.html#load-balancer>`_ section.
-    
+
+* **Change RPC API Token**
+	- Serves as the auntentication string by ClusterControl UI to connect to CMON RPC interface. Each cluster has its own unique token.
+
 * **Enable SSL Encryption**
     - See `Enable SSL Encryption`_ section.
 
@@ -100,6 +111,9 @@ MySQL Group Replication
 
 * **Add Replication Slave**
 	- Deploys a replication slave attached to this cluster. Choose one of the Group Replication node to be a master. See `Add Replication Slave`_.
+
+* **Change RPC API Token**
+	- Serves as the auntentication string by ClusterControl UI to connect to CMON RPC interface. Each cluster has its own unique token.
 
 * **Bootstrap Cluster**
 	- Launches the bootstrap cluster window. Similar to *ClusterControl > Actions > Bootstrap Cluster*. ClusterControl will stop all running nodes before bootstrapping the cluster from the selected Galera node.
@@ -126,6 +140,9 @@ MySQL Cluster
 
 * **Add Load Balancer**
 	- See `Add Load Balancer <manage.html#load-balancer>`_ section.
+	
+* **Change RPC API Token**
+	- Serves as the auntentication string by ClusterControl UI to connect to CMON RPC interface. Each cluster has its own unique token.
 
 * **Delete Cluster**
 	- This action will remove the corresponding cluster from ClusterControl supervision and will NOT uninstall the actual database cluster.

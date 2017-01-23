@@ -34,6 +34,60 @@ Manage the configuration files of your MongoDB nodes. For MongoDB server, change
 
 * **Change Parameter**
 	- The selected parameter will be changed or created in the specified group option. ClusterControl will attempt to dynamically set the configuration value if the parameter is valid. Then, the change can be persisted in the configuration file.
+	
+	
+Base Template Files
+...................
+
+All services configured by ClusterControl use a base configuration template available under ``/usr/share/cmon/templates`` on the ClusterControl node. The following are template files provided by ClusterControl:
+
+======================== ===========
+Filename                 Description
+======================== ===========
+config.ini.mc            MySQL Cluster configuration file (config.ini)
+garbd.cnf                Galera arbitrater daemon (garbd) configuration file.
+haproxy.cfg              HAProxy configuration template for Galera Cluster.
+haproxy_rw_split.cfg     HAProxy configuration template for read-write splitting.
+keepalived-1.2.7.conf    Legacy keepalived configuration file (pre 1.2.7). This is deprecated.
+keepalived.conf          Keepalived configuration file.
+keepalived.init          Keepalived init script.
+MaxScale_template.cnf    MaxScale configuration template.
+mongodb-2.6.conf.org     MongoDB 2.x configuration template.
+mongodb.conf.org         MongoDB 3.x configuration template.
+mongodb.conf.percona     MongoDB 3.x configuration template for Percona Server for MongoDB.
+mongos.conf.org          Mongo router (mongos) configuration template.
+my.cnf.galera            MySQL configuration template for Galera Cluster.
+my57.cnf.galera          MySQL configuration template for Galera Cluster on MySQL 5.7.
+my.cnf.grouprepl         MySQL configuration template for MySQL Group Replication.
+my.cnf.gtid_replication  MySQL configuration template for MySQL Replication with GTID.
+my.cnf.mysqlcluster      MySQL configuration template for MySQL Cluster.
+my.cnf.pxc55             MySQL configuration template for Percona XtraDB Cluster v5.5.
+my.cnf.repl57            MySQL configuration template for MySQL Replication v5.7.
+my.cnf.replication       MySQL configuration template for MySQL/MariaDB without MySQL’s GTID.
+mysqlchk.galera          MySQL health check script template for Galera Cluster.
+mysqlchk.mysql           MySQL health check script template for standalone MySQL server.
+mysqlchk_rw_split.mysql  MySQL health check script template for MySQL Replication (master-slave).
+mysqlchk_xinetd          Xinetd configuration template for MySQL health check.
+mysqld.service.override  Systemd unit file template for MySQL service.
+proxysql_template.cnf    ProxySQL configuration template.
+======================== ===========
+
+Dynamic Variables
+.................
+
+There are a number of configuration variables configurable dynamically by ClusterControl. These variables are represented with a capital letter enclosed by at sign ‘@’, for example ``@DATADIR@``. The following shows the list of variables supported by ClusterControl for MongoDB-based clusters:
+
+============================ ==============
+Variable                     Description
+============================ ==============
+``@DATADIR@``                Default is ``/var/lib/mongodb``. Value specified during cluster deployment takes precendence.
+``@MONGODB_PORT@``           Default is 27017, 27018, 27019 (depending on the cluster type). Value specified during cluster deployment takes precendence.
+``@LOGDIR@``                 Automatically configured based on vendor.
+``@HOST@``                   Automatically configured based on hostname/IP address.
+``@SMALLFILES@``             Automatically configured based on disk space.
+``@PIDFILEPATH@``            Automatically configured based on MongoDB data directory.
+``@REPLICASET_NAME@``        Default is "my_mongodb_N". Value specified during cluster deployment takes precendence.
+============================ ==============
 
 Processes
 `````````
@@ -62,25 +116,6 @@ To add a new process to be monitored by ClusterControl, click on *Add Custom Man
 
 * **Deactivate**
 	- Disable the managed process.
-
-Software Packages
-``````````````````
-Allows users to manage packages, upload new versions to ClusterControl’s repository, and select which package to use for deployments. In order to use this feature, set ``post_max_size`` and ``upload_max_filesize`` in php.ini to 256M or more. Make sure you restart Apache to apply the PHP changes. Location of :term:`php.ini` may vary depending on your operating system, infrastructure type and PHP settings.
-
-.. Note:: This feature is intended for packages installed without using package repository.
-
-* **Package Name**
-	- Assign a name for the new package.
-
-* **Create**
-	- Create the package.
-
-* **Upload**
-	- Upload files to an existing package.
-
-* **Available Packages - Database Software**
-	- List of softwares and packages. The package *Selected for Deployment* will be rolled out to new nodes, and used for deployments.
-	- Check *Delete* and click *Save*, to delete the selected package from ClusterControl server.
 
 
 Developer Studio

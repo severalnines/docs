@@ -1,7 +1,7 @@
 .. _mysql-query-monitor:
 
-Query Monitoring
-----------------
+Query Monitor
+-------------
 
 Provides summary of query processing across all nodes in the cluster.
 
@@ -10,19 +10,34 @@ Top Queries
 
 This is an aggregated list of all your top queries running on all the nodes of your database cluster. The list can be ordered by Occurrence or Execution Time, to show the most common or slowest queries respectively. It is also possible to filter and review queries from one particular node.
 
+ClusterControl gets the information in two different ways:
+
+- Queries are retrieved from PERFORMANCE_SCHEMA
+- If PERFORMANCE_SCHEMA is disabled or unavailable, ClusterControl will parse the content of the Slow Query Log
+
+For more details (including how to enable the PERFORMANCE_SCHEMA), please take a look at `this blog post <http://severalnines.com/blog/how-use-clustercontrol-query-monitor-mysql-mariadb-and-percona-server>`_.
+
 Toggle Query Monitor to ON to enable query monitoring. If Performance Schema is enabled, ClusterControl will use it to look for the slow queries. Otherwise, ClusterControl will parse the content of MySQL slow query log based on the following flow:
 
 Start: 
-	1. Start slow log.
+	1. Start slow log (during MySQL runtime).
 	2. Run it for a short period of time (a second or couple of seconds).
 	3. Stop log.
 	4. Parse log.
 	5. Truncate log (new log file).
 	6. Go to Start.
 
-The collected queries will be hashed and calculated (normalize, average, count, sort) before populated into ClusterControl UI.
+The collected queries are hashed, calculated and digested (normalize, average, count, sort) and then stored in ClusterControl.
 
 .. Attention:: By using slow query log, there is a slight chance some queries will not be captured, especially during “stop log, parse log, truncate log” parts. You can enable Performance Schema if this is not an option.
+
+If you are using the Slow Query log, only queries that exceed the “Long Query Time” will be listed here. If the data is not populated correctly and you believe that there should be something in there, it could be:
+
+- ClusterControl did not collect enough queries to summarize and populate data. Try to lower the *Long Query Time*.
+- You have configured Slow Query Log configuration options in the ``my.cnf`` of MySQL server, and *Override Local Query* is turned off. If you really want to use the value you defined inside ``my.cnf``, probably you have to lower the ``long_query_time`` value so ClusterControl can calculate a more accurate result.
+- You have another ClusterControl node pulling the Slow Query log as well (in case you have a standby ClusterControl server). Only allow one ClusterControl server to do this job.
+
+The *Long Query Time* value can be specified to a resolution of microseconds, for example 0.000001 (1 x 10 :superscript:`-6`).
 
 Settings
 ''''''''
@@ -30,11 +45,8 @@ Settings
 Click on the Settings to configure the Query Monitor settings, as explained below:
 
 * **Long Query Time**
-	- Collects queries taking longer than Long Query Time seconds:
-		- 0 - All queries.
+	- Collects queries taking longer than Long Query Time seconds, for example:
 		- 0.1 - Only queries taking more than 0.1 seconds will be accounted.
-
-.. Note:: If query monitoring is enabled but the data is not populated, consider to lower down the *Long Query Time* value, which telling ClusterControl to parse more queries and calculate a more accurate result.
 
 * **Log queries not using indexes?**
 	- Configures ClusterControl behaviour on sampling queries without indexes:
@@ -122,7 +134,8 @@ This page is auto-refresh every 30 seconds. You can change the refresh rate by c
 Query Histogram
 ````````````````
 
-Use this feature to filter the query activity for a certain time period. This feature is relative to Top Queries. If Query Monitoring is enabled and Top Queries is captured and populated, Query Historgram will summarize it and provide a filter based on timestamp. You can view the query history as old as one year ago.
+The Query Histogram is actually showing you queries that are outliers. An outlier is a query taking longer time than the normal query of that type. Use this feature to filter out the outliers for a certain time period. This feature is dependent on the Top Queries feature above. If Query Monitoring is enabled and Top Queries are captured and populated, the Query Histogram will summarize these and provide a filter based on timestamp. You can view the query history as old as one year ago.
+
 
 * **Time**
 	- The exact time when the query is captured.

@@ -500,7 +500,7 @@ Deploys a new MongoDB Sharded Cluster. The database cluster will be automaticall
 *Routers/Mongos*
 
 * **Server Port**
-	- MongoDB mongos server port. Default is 27018.
+	- MongoDB mongos server port. Default is 27017.
 
 * **Add More Routers**
 	- Specify the IP address or hostname of the MongoDB mongos.
@@ -512,7 +512,7 @@ Deploys a new MongoDB Sharded Cluster. The database cluster will be automaticall
 	- Specify a name for this replica set shard.
 
 * **Server Port**
-	- MongoDB shard server port. Default is 27017.
+	- MongoDB shard server port. Default is 27018.
 
 * **Add Node**
 	- Specify the IP address or hostname of the MongoDB shard servers. Minimum of one node is required, recommended to use three nodes.
@@ -842,7 +842,7 @@ ClusterControl is able to manage and monitor an existing MongoDB/Percona Server 
 *Configuration Server*
 
 * **Server Port**
-	- MongoDB mongos server port. Default is 27018.
+	- MongoDB mongos server port. Default is 27017.
 
 * **Add More Routers**
 	- Specify the IP address or hostname of the MongoDB mongos.

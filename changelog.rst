@@ -8,6 +8,16 @@ These change logs list details about updates in each version of ClusterControl.
 Changes v1.4.0
 ---------------
 
+Patch Release: Jan 11th, 2017
+````````````````````````````````
+* Build:
+  - clustercontrol-controller-1.4.0-1651
+
+* Controller
+	- Migration of backups: better error messages and corrections the if backup files does not exists.
+	- Sudo: corrects an issue where the sudo configuration (in case of using sudo with password) would overwrite the sudo settings.
+	- Backup: an overlapping backup schedule will fail to execute and the user is prompted to correct the backup schedule.
+
 Patch Release: Jan 3rd, 2017
 ````````````````````````````````
 

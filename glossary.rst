@@ -50,6 +50,8 @@ Glossary
 
 	FreeIPA
 		FreeIPA is a Red Hat sponsored open source project which aims to provide an easily managed Identity, Policy and Audit (IPA) suite primarily targeted towards networks of Linux and Unix computers. It is easy to install/configure, and is an integrated security information management solution combining Linux (Fedora), 389 Directory Server, MIT Kerberos, NTP, DNS, Dogtag (Certificate System).
+		
+		.. seealso:: https://www.freeipa.org/page/Main_Page
 
 	garbd
 		Galera arbitrator daemon.
@@ -85,6 +87,11 @@ Glossary
 		The Lightweight Directory Access Protocol (LDAP) is a directory service protocol that runs on a layer above the TCP/IP stack. It provides a mechanism used to connect to, search, and modify Internet directories. The LDAP directory service is based on a client-server model.
 	
 		.. seealso:: http://en.wikipedia.org/wiki/Lightweight_Directory_Access_Protocol
+
+	mongodb-consistent-backup
+		Tool for getting consistent backups from MongoDB Clusters and Replica Set.
+		
+		.. seealso:: https://github.com/Percona-Lab/mongodb_consistent_backup
 
 	mongodump
 		A utility for creating a binary export of the contents of a database. Consider using this utility as part an effective backup strategy. 
@@ -154,3 +161,5 @@ Glossary
 	
 	XtraDB
 		Percona XtraDB is an enhanced version of the InnoDB storage engine, designed to better scale on modern hardware, and including a variety of other features useful in high performance environments. It is fully backwards compatible, and so can be used as a drop-in replacement for standard InnoDB.
+		
+		.. seealso:: https://www.percona.com/doc/percona-server/5.5/percona_xtradb.html?id=Percona-XtraDB:start

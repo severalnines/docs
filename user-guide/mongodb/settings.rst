@@ -7,7 +7,7 @@ General Settings
 ````````````````
 
 Cluster Settings
-................
+'''''''''''''''''
 
 * **Cluster Name**
 	- Cluster name. This name will appear in the database cluster list and database cluster summary.
@@ -34,30 +34,46 @@ Cluster Settings
 	- How many minutes between automatic MongoDB error log collection retrieval.
 
 Configure Mailserver
-....................
+''''''''''''''''''''
 
 Configure how email notifications are to be sent. ClusterControl supports two options for sending email notifications, either using local mail commands via local MTA (Sendmail/Postfix/Exim) or using an external SMTP server. Make sure the local MTA is installed and verified with *Test Email* button.
 
-* **Use ‘mail’**
+
+Option 1: Sendmail
+..................
+
+* **Use 'sendmail'**
 	- Use this option to enable sendmail to send notifications. Instructions on how to set it up can be found `here <http://support.severalnines.com/entries/22897447-setting-up-mail-notifications>`_.
 
 * **Reply-to/From**
 	- Specify the sender of the email. This will appear in the ‘From’ field of mail header.
 
-* **SMTP Mailserver**
-	- SMTP mail server that you are going to use to send email.
+Option 2: SMTP Server (Recommended)
+...................................
+
+* **SMTP Server**
+	- SMTP mail server address that you are going to use to send email.
 
 * **SMTP Port**
 	- SMTP port for mail server. Usually this value is 25 or 587, depending on your SMTP mail server configuration.
 
+* **SMTP TLS/SSL required**
+	- Check this box if you want to use TLS/SSL for extra security. The mail server must support TLS/SSL.
+
 * **Username**
-	- SMTP username. Leave empty if no authentication required.
+	- SMTP user name. Leave empty if no authentication required.
 
 * **Password**
 	- SMTP password. Leave empty if no authentication required.
 
+* **Reply-to/From**
+	- Specify the sender of the email. This will appear in the ‘From’ field of mail header.
+
 * **Test Email**
 	- Test the mail settings. If successful, an email will be sent to all users in the *ClusterControl > Settings > General Settings > Cluster Settings > Email Notification*. Do not forget to add a recipient before pressing this button.
+
+Using Postfix
+.............
 
 Many of Linux distributions come with Sendmail as default MTA. To replace Sendmail and use other MTA, e.g Postfix, you just need to uninstall Sendmail, install Postfix and start the service. Following example shows commands that need to be executed on ClusterControl node as root user for RHEL:
 
@@ -70,7 +86,7 @@ Many of Linux distributions come with Sendmail as default MTA. To replace Sendma
 	$ service postfix start
 
 Email Notification
-.................. 
+''''''''''''''''''
 
 Configures email notifications for alarms generated for your database cluster.
 
@@ -115,7 +131,7 @@ Configures email notifications for alarms generated for your database cluster.
 	======= ===========
 
 Version
-........
+''''''''
 
 View the database server, vendor, operating system distribution and ClusterControl version installed. Check the Check for updates button to get notified when a new ClusterControl version is released. New versions are made available from `our download site <http://www.severalnines.com/downloads/cmon>`_ and `Severalnines repository <../../installation.html#severalnines-repository>`_.
 

@@ -50,16 +50,14 @@ Creates a backup of the database immediately. You can choose to create a full ba
 	
 * **Databases**
 	- List of databases retrieved from the monitored MySQL servers. Default is 'All Databases'.
-  
-.. Note:: You can check the backup status under *ClusterControl > Backup > Reports*.
 
 Schedule Backup
 ```````````````
 
 Creates backup schedules of the database. You can choose to create a full or incremental backup using mysqldump (full backup only) or xtrabackup. 
 
-* **Start Time**
-	- Backup start time.
+* **Schedule**
+	- Sets the backup schedule.
 
 .. Note:: The time is the local time on ClusterControl node.
 
@@ -122,6 +120,8 @@ Backup Method
 
 This section explains backup method used by ClusterControl.
 
+.. Note:: Backup process performed by ClusterControl is running on a background thread (RUNNING3) which doesn't block any other non-backup jobs in queue. If the backup job takes hours to complete, other non-backup jobs can still run simultaneously via the main thread (RUNNING). You can see the job progress at *ClusterControl > Logs > Jobs*.
+
 mysqldump
 .........
 
@@ -157,7 +157,7 @@ Status    Description
 ========= ===========
 Completed Backup was successfully created and stored in the chosen node.
 Running   Backup process is running.
-Failed    Backup was failed. For Xtrabackup, ClusterControl provides the backup log.
+Failed    Backup was failed.
 ========= ===========
 
 All incremental backups are automatically grouped together under the last full backup and expandable with a drop down.

@@ -18,9 +18,7 @@ You can disable the notification at *ClusterControl UI > Settings > General Sett
 Online Upgrade
 ``````````````
 
-The following upgrade procedures require internet connection on ClusterControl node.
-
-This is the recommended way to upgrade ClusterControl. We are currently standardizing the upgrade procedure through yum/apt package manager.
+This is the recommended way to upgrade ClusterControl. The following upgrade procedures require internet connection on ClusterControl node.
 
 Redhat/CentOS
 '''''''''''''
@@ -625,7 +623,7 @@ ClusterControl relies on proper IP address or hostname configuration. To migrate
 * ClusterControl CMONAPI configuration file: ``[wwwroot]/cmonapi/config/bootstrap.php``
 * HAproxy configuration file (if installed): ``/etc/haproxy/haproxy.cfg``
 
-.. Note:: Replace ``[wwwroot]`` with value defined in CMON configuration file.
+.. Note:: This section does not cover IP address migration for your database nodes. The easiest solution would be to remove the database cluster from ClusterControl UI using *Delete Cluster* and add it again by using *Import Existing Server/Cluster* in the deploy dialog.
 
 Next, revoke 'cmon' user privileges for old hosts on ClusterControl node and all managed database nodes:
 

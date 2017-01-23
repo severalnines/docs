@@ -46,10 +46,83 @@ Manage the configuration files of your database, HAProxy and Garbd nodes. For My
 
 .. Attention:: If you change a global system variable, the value is remembered and used ONLY for new connections.
 
+Base Template Files
+...................
+
+All services configured by ClusterControl use a base configuration template available under ``/usr/share/cmon/templates`` on the ClusterControl node. The following are template files provided by ClusterControl:
+
+======================== ===========
+Filename                 Description
+======================== ===========
+config.ini.mc            MySQL Cluster configuration file (config.ini)
+garbd.cnf                Galera arbitrater daemon (garbd) configuration file.
+haproxy.cfg              HAProxy configuration template for Galera Cluster.
+haproxy_rw_split.cfg     HAProxy configuration template for read-write splitting.
+keepalived-1.2.7.conf    Legacy keepalived configuration file (pre 1.2.7). This is deprecated.
+keepalived.conf          Keepalived configuration file.
+keepalived.init          Keepalived init script.
+MaxScale_template.cnf    MaxScale configuration template.
+mongodb-2.6.conf.org     MongoDB 2.x configuration template.
+mongodb.conf.org         MongoDB 3.x configuration template.
+mongodb.conf.percona     MongoDB 3.x configuration template for Percona Server for MongoDB.
+mongos.conf.org          Mongo router (mongos) configuration template.
+my.cnf.galera            MySQL configuration template for Galera Cluster.
+my57.cnf.galera          MySQL configuration template for Galera Cluster on MySQL 5.7.
+my.cnf.grouprepl         MySQL configuration template for MySQL Group Replication.
+my.cnf.gtid_replication  MySQL configuration template for MySQL Replication with GTID.
+my.cnf.mysqlcluster      MySQL configuration template for MySQL Cluster.
+my.cnf.pxc55             MySQL configuration template for Percona XtraDB Cluster v5.5.
+my.cnf.repl57            MySQL configuration template for MySQL Replication v5.7.
+my.cnf.replication       MySQL configuration template for MySQL/MariaDB without MySQL’s GTID.
+mysqlchk.galera          MySQL health check script template for Galera Cluster.
+mysqlchk.mysql           MySQL health check script template for standalone MySQL server.
+mysqlchk_rw_split.mysql  MySQL health check script template for MySQL Replication (master-slave).
+mysqlchk_xinetd          Xinetd configuration template for MySQL health check.
+mysqld.service.override  Systemd unit file template for MySQL service.
+proxysql_template.cnf    ProxySQL configuration template.
+======================== ===========
+
+Dynamic Variables
+.................
+
+There are a number of configuration variables configurable dynamically by ClusterControl. These variables are represented with a capital letter enclosed by at sign ‘@’, for example ``@DATADIR@``. The following shows the list of variables supported by ClusterControl for MySQL-based clusters:
+
+============================ ==============
+Variable                     Description
+============================ ==============
+``@BASEDIR@``                Default is ``/usr``. Value specified during cluster deployment takes precendence.
+``@DATADIR@``                Default is ``/var/lib/mysql``. Value specified during cluster deployment takes precendence.
+``@MYSQL_PORT@``             Default is 3306. Value specified during cluster deployment takes precendence.
+``@BUFFER_POOL_SIZE@``       Automatically configured based on host's RAM.
+``@LOG_FILE_SIZE@`  `        Automatically configured based on host's RAM.
+``@LOG_BUFFER_SIZE@``        Automatically configured based on host's RAM.
+``@BUFFER_POOL_INSTANCES@``  Automatically configured based on host's CPU.
+``@SERVER_ID@``              Automatically generated based on member's ``server-id``.
+``@SKIP_NAME_RESOLVE@``      Automatically configured based on MySQL variables.
+``@MAX_CONNECTIONS@``        Automatically configured based on host's RAM.
+``@ENABLE_PERF_SCHEMA@``     Default is disabled. Value specified during cluster deployment takes precendence.
+``@WSREP_PROVIDER@``         Automatically configured based on Galera vendor.
+``@HOST@``                   Automatically configured based on hostname/IP address.
+``@GCACHE_SIZE@``            Automatically configured based on disk space.
+``@SEGMENTID@``              Default is 0. Value specified during cluster deployment takes precendence.
+``@WSREP_CLUSTER_ADDRESS@``  Automatically configured based on members in the cluster.
+``@WSREP_SST_METHOD@``       Automatically configured based on Galera vendor.
+``@BACKUP_USER@``            Default is backupuser.
+``@BACKUP_PASSWORD@``        Automatically generated and configured for backupuser.
+``@GARBD_OPTIONS@``          Automatically configured based on garbd options.
+``@READ_ONLY@``              Automatically configured based on replication role.
+``@SEMISYNC@``               Default is disabled. Value specified during cluster deployment takes precendence.
+``@NDB_CONNECTION_POOL@``    Automatically configured based on host's CPU.
+``@NDB_CONNECTSTRING@``      Automatically configured based on members in the MySQL cluster.
+``@LOCAL_ADDRESS@``          Automatically configured based on host's address.
+``@GROUP_NAME@``             Default is "grouprepl". Value specified during cluster deployment takes precendence.
+``@PEERS@``                  Automatically configured based on members in the Group Replication cluster.
+============================ ==============
+
 Load Balancer
 ``````````````
 
-Manage deployment of load balancers (HAProxy and MaxScale), virtual IP address (Keepalived) and Garbd. For Galera Cluster, it is also possible to add Galera arbitrator daemon (Garbd) through this interface. You can monitor the status of the job under *ClusterControl > Logs > Jobs*.
+Manage deployment of load balancers (HAProxy, ProxySQL and MaxScale), virtual IP address (Keepalived) and Garbd. For Galera Cluster, it is also possible to add Galera arbitrator daemon (Garbd) through this interface. You can monitor the status of the job under *ClusterControl > Logs > Jobs*.
 
 HAProxy
 .......
