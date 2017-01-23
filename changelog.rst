@@ -8,13 +8,39 @@ These change logs list details about updates in each version of ClusterControl.
 Changes v1.4.0
 ---------------
 
+Patch Release: Jan 20th, 2017
+````````````````````````````````
+
+* Build:
+	- clustercontrol-1.4.0-2601
+	- clustercontrol-controller-1.4.0-1675 
+
+* UI
+	- Manage -> Configurations: Wrong args sent to change_config_param.js script
+
+* Controller
+	- Fix of crashing bug during partial restore.
+	- Graph missing from Operational Report.
+	- Replication: Stop Slave (from UI) auto restarted the slave.
+	- Adding a MySQL Node and having HAProxy caused a problem creating the s9smysqlchk user.
+
+Patch Release: Jan 13th, 2017
+````````````````````````````````
+
+* Build:
+	- clustercontrol-1.4.0-2585
+
+* UI
+	- Fix for an issue with having clusters from multiple controllers in one UI.
+
 Patch Release: Jan 11th, 2017
 ````````````````````````````````
+
 * Build:
   - clustercontrol-controller-1.4.0-1651
 
 * Controller
-	- Migration of backups: better error messages and corrections the if backup files does not exists.
+	- Migration of backups: better error messages and corrections the if backup files does not exist.
 	- Sudo: corrects an issue where the sudo configuration (in case of using sudo with password) would overwrite the sudo settings.
 	- Backup: an overlapping backup schedule will fail to execute and the user is prompted to correct the backup schedule.
 
