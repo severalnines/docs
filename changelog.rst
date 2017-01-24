@@ -37,7 +37,7 @@ Patch Release: Jan 11th, 2017
 ````````````````````````````````
 
 * Build:
-  - clustercontrol-controller-1.4.0-1651
+	- clustercontrol-controller-1.4.0-1651
 
 * Controller
 	- Migration of backups: better error messages and corrections the if backup files does not exist.
