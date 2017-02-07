@@ -77,6 +77,8 @@ MySQL Replication
 
 Deploys a new MySQL Replication. The database cluster will be automatically added into ClusterControl once deployed. Minimum of two nodes is required. The first node in the list is the master. You can add more slaves later after the deployment completes. Starting from version 1.4.0, it's possible to setup a master-master replication from scratch under 'Define Topology' tab.
 
+.. Caution:: ClusterControl sets read_only=1 on all slaves but a priviledged user (SUPER) can still write to a slave. 
+
 1) SSH Settings
 '''''''''''''''
 

@@ -8,6 +8,33 @@ These change logs list details about updates in each version of ClusterControl.
 Changes v1.4.0
 ---------------
 
+Patch Release: Feb 5th, 2017
+````````````````````````````````
+
+* Build:
+	- clustercontrol-controller-1.4.0-1703 
+
+* Controller:
+	- Permanently disabled the 'system_check.js' script as it was causing problems for some users
+	- Automatic log rotate of ``/var/log/wtmp`` when it reaches 10MB in size. 10 files are stored for history, and runs at 02:00am.
+	- Replication: A backup stored on the controller and restored on another host than the backup was created from would restore the backup on the wrong host (created host).
+	- Replication: ``FLUSH LOGS`` after failover to update ``SHOW SLAVE HOSTS``.
+	- Galera: Percona XtraDb Cluster 5.5 for Debian/Ubuntu failed to install.
+	- Clear Alarms: specify ``send_clear_alarm=1`` in ``/etc/cmon.d/cmon_X.cnf`` and restart cmon to receive email notification when a Cluster Failure, SSH failure, MySQL Disconnected, Node/Cluster Failed Recovery, and Cluster Split alarms have been resolved. ``send_clear_cluster_failure`` is an alias for this option.
+	- OS detection: Failed to detect Debian version if ``lsb_release`` was not installed.
+	- Aborted jobs now have the correct status. 
+
+Patch Release: Jan 24th, 2017
+````````````````````````````````
+* Build:
+	- clustercontrol-1.4.0-2617
+
+* UI
+	- Fix for wrong scheduled time shown in Operational Reports.
+	- Fix for inconsistent MongoDB menus.
+	- Fix for confusing 'Change Organizations' option. 
+	- You can more easily create a SuperAdmin/Root user to manage all your organizations/teams.
+
 Patch Release: Jan 20th, 2017
 ````````````````````````````````
 
@@ -787,8 +814,7 @@ Patch release: Nov 2nd, 2015
 		- MongoDB: Check if there is a new member in the replica set and then reload the config.
 		- MySQL: Bugfix for replication mysqldump backuping issues (appeared recently): lets exclude the temporary (name starts with #) DBs from backup
 		- Postgres: Add existing replication slave failed.
-		- Character set on connection + cmon.tx_deadlock_log, change to use utf8mb4 to properly encode characters in *Performance > Transaction Lo*g preventing data from being shown. Do ``mysql -ucmon -p -h127.0.0.1 cmon < /usr/share/cmon/cmon_db.sql`` to recreate this table.
-
+		- Character set on connection + cmon.tx_deadlock_log, change to use utf8mb4 to properly encode characters in *Performance > Transaction Log* preventing data from being shown. Do ``mysql -ucmon -p -h127.0.0.1 cmon < /usr/share/cmon/cmon_db.sql`` to recreate this table.
 
 Patch release: Nov 6th, 2015
 `````````````````````````````
@@ -912,21 +938,21 @@ Changes in v1.2.9
 		- cluster_ssl_cert = path to SSL cert, for SSL encryption between CMON and managed MySQL Servers.
 		- cluster_ssl_ca = path to SSL CA, for SSL encryption between CMON and managed MySQL Servers.
 		- cluster_certs_store = path to storage location of SSL related files, defaults to ``/etc/ssl/<clustertype>/<cluster_id>``
-	* Monitoring:
-		- New binary format for host statistics which consumes less space (cpu, memory, disk, network stats)
-		- Fixed disk statistics collector to support non 4K block sizes
-	* Security:
+	- Monitoring:
+		- New binary format for host statistics which consumes less space (cpu, memory, disk, network stats).
+		- Fixed disk statistics collector to support non 4K block sizes.
+	- Security:
 		- E-mails do not contain IP addresses when hostnames are specified in the cmon configuration
 		- Password will not be logged (to jobs for example) or sent anymore
-	* Alarms:
+	- Alarms:
 		- Alarm will be raised when there is a missing MySQL GRANT
 		- Alarm will be raised/sent when there is a high IO wait for a period (>=50% average in 10 minutes)
 		- New alarm for Galera configuration problems
 		- Improved alarm emails (for example: high cpu/mem usage mails will contain the output of 'top' command)
-	* RPC:
+	- RPC:
 		- Several new RPC interfaces (directly on the daemon) for jobs and statistics handling
 		- The web client has started to migrate over to use RPC API calls instead of the CMON API
-	* Testing:
+	- Testing:
 		- Acceptance testsuite which runs daily using vm instances
 
 * Other:

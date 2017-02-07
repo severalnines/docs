@@ -194,9 +194,9 @@ If you would like to run cmon as foreground process, you can do that by invoking
 .. code-block:: bash
 
 	$ service cmon stop
-	$ cmon -d
+	$ CMON_DEBUG=1 cmon -d
 
-CMON will print detailed information on the screen (stdout) as well as ``/var/log/cmon.log`` or ``/var/log/cmon_[cluster ID].log``. Press ``Ctrl + C`` to terminate the process. In certain cases, the CMON  output might be needed to get insight on the problem.
+CMON will enable LOG_DEBUG messages and print detailed information on the screen (stdout) as well as ``/var/log/cmon.log`` or ``/var/log/cmon_[cluster ID].log``. Press ``Ctrl + C`` to terminate the process. In certain cases, the CMON  output might be needed to get insight on the problem.
 
 Debugging ClusterControl UI
 '''''''''''''''''''''''''''
@@ -212,12 +212,12 @@ Where,
 - 1: Errors and warnings shown, model caches refreshed, flash messages halted.
 - 2: As in 1, but also with full debug messages and SQL output.
 
-Make sure ``[wwwroot]/clustercontrol/app/tmp`` has write permissions and is owned by Apache user for the debug and error log to be generated.
+Make sure ``[wwwroot]/clustercontrol/app/tmp`` has write permission and is owned by Apache user for the debug and error log to be generated.
 
 Deployment and Installation
 ---------------------------
 
-This section covers common issues encountered during deployment of ClusterControl or of a database cluster using a Severalnines Deployment Package. This includes issues with Deployment Packages (generated from the Online Configurator), bootstrap script or ClusterControl installation script.
+This section covers common issues encountered during ClusterControl installation or database cluster deployment via ClusterControl's *Create Database Cluster*.
 
 Deployment script stops and asks for visudo or setting up correct sudo users.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''

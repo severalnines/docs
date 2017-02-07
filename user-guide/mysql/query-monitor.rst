@@ -134,7 +134,9 @@ This page is auto-refresh every 30 seconds. You can change the refresh rate by c
 Query Histogram
 ````````````````
 
-The Query Histogram is actually showing you queries that are outliers. An outlier is a query taking longer time than the normal query of that type. Use this feature to filter out the outliers for a certain time period. This feature is dependent on the Top Queries feature above. If Query Monitoring is enabled and Top Queries are captured and populated, the Query Histogram will summarize these and provide a filter based on timestamp. You can view the query history as old as one year ago.
+The Query Histogram is actually showing you queries that are outliers. An outlier is a query taking longer time than the normal query of that type. Use this feature to filter out the outliers for a certain time period. After a number of samples and when ClusterControl has had enough stats, it can determine if latency is higher than normal (2 sigma + average_query_time) then it is an outlier, and will be added into the Query Outlier/Histogram.
+
+This feature is dependent on the Top Queries feature above. If Query Monitoring is enabled and Top Queries are captured and populated, the Query Histogram will summarize these and provide a filter based on timestamp. You can view the query history as old as one year ago.
 
 
 * **Time**
