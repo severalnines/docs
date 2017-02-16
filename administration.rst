@@ -611,6 +611,8 @@ If you intend to manually purge the monitoring data, you can truncate following 
 	mysql> TRUNCATE TABLE net_stats_history;
 	mysql> TRUNCATE TABLE mysql_global_statistics_history;
 	mysql> TRUNCATE TABLE mysql_statistics_history;
+	mysql> TRUNCATE TABLE cmon_log_entries;
+	mysql> TRUNCATE TABLE collected_logs;
 
 The CMON Controller process has internal log rotation scheduling where it will log up to 5 MB in size before archiving ``/var/log/cmon.log`` and ``/var/log/cmon_[cluster id].log``. The archived log will be named as ``cmon.log.1`` (or ``cmon_[cluster id].log.1``) sequentially, with up to 9 archived log files (total of 10 log files rotation).
 

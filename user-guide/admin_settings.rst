@@ -23,7 +23,7 @@ User Management
 Organizations/Users
 ````````````````````
 
-Manage organizations and users under ClusterControl. You can have one or more organization and each organization consists of zero or more clusters and users. You can have many roles defined under ClusterControl and a user must be assigned with one role.
+Manage organizations and users under ClusterControl. Take note that only the first user created with ClusterControl will be able to create the organizations. You can have one or more organization and each organization consists of zero or more clusters and users. You can have many roles defined under ClusterControl and a user must be assigned with one role.
 
 As a roundup, here is how the different entities relate to each other:
 
