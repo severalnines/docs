@@ -231,7 +231,6 @@ CMON unable to restart MySQL using service command
 ````````````````````````````````````````````````````
 
 * **Description:**
-
 	- When scheduling a start/restart job, ClusterControl fails to start the node with error "Command not found".
 
 * **Example error:**
@@ -242,18 +241,16 @@ CMON unable to restart MySQL using service command
 	galera1.domain.com: Starting mysqld
 
 * **Troubleshooting steps:**
-
-	1. SSH into the DB node and check the user's enviroment path variable:
+1. SSH into the DB node and check the user's enviroment path variable:
 
 .. code-block:: bash
 
 	ssh -tt -i /home/admin/.ssh/id_rsa admin@galera1.domain.com "sudo env | grep PATH"
 	PATH=/usr/local/bin:/bin:/usr/bin
 
-	2. Look at the PATH output.
+2. Look at the PATH output.
 
 * **Solution:**
-
 	- Ensure the /sbin path is there. This way, ClusterControl can automatically locate and run the "service" command.
 	- If the /sbin path is not listed in the PATH, add it by using the following command:
 	
@@ -269,19 +266,14 @@ CMON always tries to recover failed database nodes during my maintenance window.
 ````````````````````````````````````````````````````````````````````````````````
 
 * **Description:**
-
 	- By default, CMON is configured to perform recovery of failed nodes or clusters. This behaviour can be overridden by disabling automatic recovery feature or enabling maintenance mode for the node/cluster.
 
 * **Solution:**
-
-1) Enabling maintenance mode for selected nodes (recommended).
-
-	- To enable maintenance window, go to *Nodes > select the node > toggle ON on the Maintenance Mode*. You have to specify the reason and duration of maintanance window. During this period, any alarms and notifications raised for this node will be disabled. You can toggle OFF the maintenance mode at any time when the maintenance exercise is completed.
-
-2) Disabing automatic recovery.
-
-	- To disable automatic recovery temporarily, you can just click on the 'power' icon for node and cluster. Red means automatic recovery is turned off while green indicates recovery is turned on. This behaviour will not persistent if CMON is restarted.
-	- To make the above change persistent, disable node or cluster auto recovery by specifying following line inside CMON configuration file of respective cluster. For example, if you want to disable automatic recovery for cluster ID 1, inside ``/etc/cmon.d/cmon_1.cnf``, set the following line:
+	1) Enabling maintenance mode for selected nodes (recommended).
+		- To enable maintenance window, go to *Nodes > select the node > toggle ON on the Maintenance Mode*. You have to specify the reason and duration of maintanance window. During this period, any alarms and notifications raised for this node will be disabled. You can toggle OFF the maintenance mode at any time when the maintenance exercise is completed.
+	2) Disabing automatic recovery.
+		- To disable automatic recovery temporarily, you can just click on the 'power' icon for node and cluster. Red means automatic recovery is turned off while green indicates recovery is turned on. This behaviour will not persistent if CMON is restarted.
+		- To make the above change persistent, disable node or cluster auto recovery by specifying following line inside CMON configuration file of respective cluster. For example, if you want to disable automatic recovery for cluster ID 1, inside ``/etc/cmon.d/cmon_1.cnf``, set the following line:
 
 .. code-block:: bash
 
@@ -292,7 +284,6 @@ CMON process dies with “Critical error (mysql error code 1)”
 ````````````````````````````````````````````````````````````
 
 * **Description:**
-
 	- After starting CMON service, it stops and /var/log/cmon.log shows the following error.
 
 * Example error:
@@ -302,7 +293,6 @@ CMON process dies with “Critical error (mysql error code 1)”
 	(ERROR) Critical error (mysql error code 1) occured - shutting down
 
 * **Troubleshooting steps:**
-
 1) Run the following command on the ClusterControl host to check if the ClusterControl host has the ability to connect to the DB host with current credentials:
 
 .. code-block:: bash
@@ -317,7 +307,6 @@ CMON process dies with “Critical error (mysql error code 1)”
 
 
 * **Solution:**
-
 	- It is not recommended to mix public IP address and internal IP address. For the GRANT, try to use the IP address that your database nodes use to communicate with each other.
 	- If the SHOW STATUS returns ``ERROR 1130 (HY000): Host '[ClusterControl IP address]' is not allowed to connect to this``, the database host is missing the cmon user grant. Run following command to reset the cmon user privileges:
 
@@ -337,11 +326,9 @@ This section covers common issues encountered related to ClusterControl UI.
 `````````````````
 
 * **Description:**
-
 	- The ClusterControl UI shows a toaster notification (on the top right of the UI) indicating that it has authentication problem to connect to a specific cluster ID.
 
 * **Troubleshooting steps:**
-
 	- Run the following command to verify if token is set correctly for corresponding cluster:
 
 .. code-block:: mysql
@@ -349,7 +336,6 @@ This section covers common issues encountered related to ClusterControl UI.
 	mysql> SELECT cluster_id, token FROM dcps.clusters;
 	
 * **Solution:**
-
 	- In this case you need to update the token column in ``dcps.clusters`` table for the ``cluster_id={ID}`` so it matches the ``rpc_key`` in ``/etc/cmon.d/cmon_{ID}.cnf``. These tokens must match. Execute the following update query on the dpcs database:
 
 .. code-block:: mysql
@@ -361,11 +347,9 @@ This section covers common issues encountered related to ClusterControl UI.
 `````````````
 
 * **Description:**
-
 	- The ClusterControl UI shows a toaster notification (on the top right of the UI) indicating that it has authentication problem to connect to cluster 0 (0 means global view of clusters under ClusterControl management).
 
 * **Troubleshooting steps:**
-
 	- Retrieve the value of global token inside ``/etc/cmon.cnf``, ``/var/www/html/clustercontrol/bootstrap.php`` and ``/var/www/html/cmonapi/config/bootstrap.php``:
 
 .. code-block:: bash
@@ -375,7 +359,6 @@ This section covers common issues encountered related to ClusterControl UI.
 	$ grep CMON_TOKEN /var/www/html/cmonapi/config/bootstrap.php
 
 * **Solutions:**
-
 	- Verify that the ``RPC_TOKEN`` value in ``/var/www/html/clustercontrol/bootstrap.php`` and ``CMON_TOKEN`` value in ``/var/www/html/cmonapi/config/bootstrap.php`` match the token defined as ``rpc_key`` in ``/etc/cmon.cnf``. If you manipulate ``/etc/cmon.cnf`` you must restart cmon for the change to take effect.
 
 Known Issues and Limitations
