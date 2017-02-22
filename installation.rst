@@ -9,7 +9,7 @@ This section provides detailed information on how to get ClusterControl installe
 Severalnines Repository
 -----------------------
 
-Severalnines provides YUM/APT repositories accessible at http://repo.severalnines.com . Automatic installation procedures (as described in the `Automatic Installation`_ section) automatically configures the ClusterControl node with respective package repository.
+Severalnines provides YUM/APT repositories accessible at http://repo.severalnines.com . Automatic installation procedure (as described in the `Automatic Installation`_ section) automatically configures the ClusterControl node with respective package repository.
 
 YUM repository
 ``````````````
