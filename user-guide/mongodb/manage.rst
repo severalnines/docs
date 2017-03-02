@@ -162,4 +162,4 @@ ClusterControl comes with a set of basic advisors that include rules and alerts 
 * **Schedule Advisor**
 	- Schedules the script as an advisor.
 
-We have covered this in details `in this blog post <http://www.severalnines.com/blog/introducing-clustercontrol-developer-studio-creating-your-own-advisors>`_. For full documentation on ClusterControl Domain Specific Language, see `ClusterControl DSL <../../dsl.html>`_ section.
+We have covered this in details `in this blog post <https://severalnines.com/blog/clustercontrol-developer-studio-write-your-first-database-advisor>`_. For full documentation on ClusterControl Domain Specific Language, see `ClusterControl DSL <../../dsl.html>`_ section.

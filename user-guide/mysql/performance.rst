@@ -15,10 +15,10 @@ You can view graphs of different database counters on this page. You can record 
 	- Filter the status variables available in the counter list.
 	- Choose the status variables that you want to track. Check the 'On' box to the left of the counter that you want to record.
 	
-For detailed explanation on status variables of your cluster, you can refer to following pages:
+For detailed explanation on status variables of your cluster, you can refer to the following pages:
 	- MySQL: http://dev.mysql.com/doc/refman/5.6/en/server-status-variables.html
 	- Galera Cluster: http://galeracluster.com/documentation-webpages/monitoringthecluster.html
-	- MySQL Cluster: http://dev.mysql.com/doc/refman/5.6/en/mysql-cluster-status-variables.html
+	- MySQL Cluster: https://dev.mysql.com/doc/refman/5.6/en/mysql-cluster.html
 
 Advisors
 ````````

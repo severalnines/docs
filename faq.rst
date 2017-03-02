@@ -41,7 +41,7 @@ Yes, we have a reseller program. Please email us at sales[at]severalnines.com
 Who uses ClusterControl?
 ++++++++++++++++++++++++
 
-We have over 100 paying customers, including the likes of Cisco, AVG, Monster.com, Ping Identity, Technicolor and Eurovision. A list of references and case studies can be found at: http://severalnines.com/customers
+We have over 100 paying customers, including the likes of Cisco, AVG, Monster.com, Ping Identity, Technicolor and Eurovision. A list of references and case studies can be found `Severalnines Customers <http://severalnines.com/customers>`_ page.
 
 Technical
 ---------
@@ -59,7 +59,7 @@ No. ClusterControl only runs on RHEL-based and Debian-based with x86_64 architec
 How do I upgrade ClusterControl?
 ++++++++++++++++++++++++++++++++
 
-Our official upgrade instruction is available at `our documentation page <http://www.severalnines.com/docs/administration.html#upgrading-clustercontrol>`_ and `our support page <http://support.severalnines.com/entries/21095371>`_.
+Our official upgrade instruction is available at `our documentation page <administration.html#upgrading-clustercontrol>`_ and `our support page <http://support.severalnines.com/hc/en-us/articles/212425903>`_.
 
 I'm using ClusterControl community version. Which support channel should I use?
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -74,7 +74,7 @@ Yes. Starting from 1.2.11, ClusterControl does not depend on the DB nodes' opera
 Can I use ClusterControl in an internetless environment?
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-Yes. However some features might not be working well, as explained in `this page <installation.html#offline-installation>`_.
+Yes. However some features might not be working well, as explained in `Offline Installation <installation.html#offline-installation>`_ page.
 
 Can I have a mix of different SSH users per cluster?
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -96,15 +96,15 @@ Since they all leverage the same Galera library, replication performance should 
 I found a bug. Where should I report it?
 ++++++++++++++++++++++++++++++++++++++++
 
-Please report the bug by submiting ticket at https://support.severalnines.com/new. For Enterprise customers, bugfixes are provided soonest possible.
+Please report the bug by `submiting a support request <http://support.severalnines.com/hc/en-us/requests/new>`_. For Enterprise customers, bugfixes are provided soonest possible.
 
 My cluster is down. What should I do?
 +++++++++++++++++++++++++++++++++++++
 
-Please submit a ticket at https://support.severalnines.com/new. If you are a paying customer, please do this with your company email address so the ticket can be assigned to the appropriate support SLA. Please also include an `error report <http://support.severalnines.com/entries/21091498-Error-reporting->`_.
+Please submit a ticket at https://support.severalnines.com/new. If you are a paying customer, please do this with your company email address so the ticket can be assigned to the appropriate support SLA. Please also include an `error report <troubleshooting.html#error-reporting>`_.
 
 How can I submit a feature request?
 +++++++++++++++++++++++++++++++++++
 
-You can either use our `Feature Request <http://support.severalnines.com/forums/20303403-Feature-Requests>`_ page or submit a ticket to https://support.severalnines.com/new.
+You can either use our `Feature Request <http://support.severalnines.com/hc/en-us/community/topics/200447603-Feature-Requests>`_ page or submit a ticket to https://support.severalnines.com/new.
 
