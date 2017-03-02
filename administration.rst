@@ -545,7 +545,7 @@ CMON configuration and log files contain sensitive information e.g ``mysql_passw
 HTTPS
 ``````
 
-By default, the installation script installs and configures a self-signed certificate for ClusterControl UI. You can access it by pointing your browser to https://[ClusterControl IP address]/clustercontrol. If you would like to use your own SSL certificate (e.g https://secure.domain.com/clustercontrol), just replace the key and certificate path inside Apache’s SSL configuration file and restart Apache daemon. Make sure the server's hostname matches with the SSL domain name that you would like to use.
+By default, the installation script installs and configures a self-signed certificate for ClusterControl UI. You can access it by pointing your browser to :samp:`https://{ClusterControl_host}/clustercontrol`. If you would like to use your own SSL certificate (e.g :samp:`https://secure.domain.com/clustercontrol`), just replace the key and certificate path inside Apache’s SSL configuration file and restart Apache daemon. Make sure the server's hostname matches with the SSL domain name that you would like to use.
 
 Running on Custom Port
 ----------------------
@@ -564,7 +564,7 @@ ClusterControl requires same custom SSH port across all nodes in the cluster. Ma
 HTTP or HTTPS
 `````````````
 
-Running HTTP or HTTPS on custom port will change the ClusterControl UI and the CMONAPI URL e.g ``http://10.0.0.10:8080/clustercontrol`` and ``https://10.0.0.10:4433/cmonapi``. Thus, you may need to re-register the new CMONAPI URL for managed cluster at ClusterControl UI Cluster Registration page.
+Running HTTP or HTTPS on custom port will change the ClusterControl UI and the CMONAPI URL e.g :samp:`http://{ClusterControl_host}:8080/clustercontrol` and :samp:`https://{ClusterControl_host}:4433/cmonapi`. Thus, you may need to re-register the new CMONAPI URL for managed cluster at ClusterControl UI Cluster Registration page.
 
 MySQL
 `````

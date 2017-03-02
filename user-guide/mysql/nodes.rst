@@ -58,7 +58,7 @@ HAproxy Nodes
 Provides detailed view of HAProxy stats, similar to HAProxy stats page. If HAproxy is deployed using ClusterControl, ClusterControl will automatically create HAProxy stats page on port 9600. You can access the page directly using the value of *Admin User* and *Admin Password* specified during the deployment at *ClusterControl > Manage > Load Balancer > Install HAProxy > Show Advanced Settings*.
 
 * **Stats URL**
-	- If you are using HAproxy 1.6 and newer, use another URL: http://[HAproxy_address]:[HAproxy_admin_port]/haproxy?stats;csv/
+	- If you are using HAproxy 1.6 and newer, use another URL: :samp:`http://{HAproxy_host}:{HAproxy_admin_port}/haproxy?stats;csv/`
 
 * **Update**
 	- Updates the HAProxy stats URL.

@@ -139,7 +139,7 @@ Settings
 	- Choose whether to enable or disable LDAP authentication.
 
 * **LDAP Host**
-	- The LDAP server hostname or IP address. To use LDAP over SSL/TLS, specify LDAP URI, ldaps://[hostname/IP address]
+	- The LDAP server hostname or IP address. To use LDAP over SSL/TLS, specify LDAP URI, :samp:`ldaps://{LDAP_host}`.
 
 * **LDAP Port**
 	- Default is 389 and 636 for LDAP over SSL. Make sure to allow connections from ClusterControl host for both TCP and UDP protocol.
@@ -154,10 +154,10 @@ Settings
 	- The password for the binding user specified in 'Login DN'.
 
 * **User DN**
-	- The user's relative distinguished name (RDN) used to bind to the LDAP server. For example, if the LDAP/AD user DN is CN=userA,OU=People,DC=ldap,DC=domain,DC=com, specify "OU=People,DC=ldap,DC=domain,DC=com". This field is case-senstive.
+	- The user's relative distinguished name (RDN) used to bind to the LDAP server. For example, if the LDAP/AD user DN is CN=userA,OU=People,DC=ldap,DC=domain,DC=com, specify :samp:`OU=People,DC=ldap,DC=domain,DC=com`. This field is case-senstive.
 
 * **Group DN**
-	- The group's relative distinguished name (RDN) used to bind to the LDAP server. For example, if the LDAP/AD group DN is  CN=DBA,OU=Group,DC=ldap,DC=domain,DC=com, specify "OU=Group,DC=ldap,DC=domain,DC=com". This field is case-senstive.
+	- The group's relative distinguished name (RDN) used to bind to the LDAP server. For example, if the LDAP/AD group DN is  CN=DBA,OU=Group,DC=ldap,DC=domain,DC=com, specify :samp:`OU=Group,DC=ldap,DC=domain,DC=com`. This field is case-senstive.
 	
 .. Attention:: ClusterControl does not support binding against a nested directory group. Ensure each LDAP user that authenticates to ClusterControl has a direct membership to the LDAP group.
 
@@ -541,11 +541,11 @@ Manages provider's repository for database servers and clusters. You can have th
 1. Use Vendor Repositories
 	- Provision software by setting up and using the database vendor's preferred software repository. ClusterControl will always install the latest version of what is provided by database vendor repository.
 2. Do Not Setup Vendor Repositories
-	- Provision software by using the pre-existing software repository already setup on the nodes. User has to set up the software repository manually on each database node and ClusterControl will use this repository for deployment. This is good if  the database nodes are running without internet connections.
+	- Provision software by using the pre-existing software repository already setup on the nodes. User has to set up the software repository manually on each database node and ClusterControl will use this repository for deployment. This is good if the database nodes are running without internet connections.
 3. Use Mirrored Repositories (Create new repository)
 	- Create and mirror the current database vendor's repository and then deploy using the local mirrored repository.
 	- This allows you to "freeze" the current versions of the software packages used to provision a database cluster for a specific vendor and you can later use that mirrored repository to provision the same set of versions when adding more nodes or deploying other clusters.
-	- ClusterControl sets up the mirrored repository under [Apache Document root]/cmon-repos/, which is accessible via HTTP at http://[ClusterControl IP address]/cmon-repos/ .
+	- ClusterControl sets up the mirrored repository under [Apache Document root]/cmon-repos/, which is accessible via HTTP at :samp:`http://{ClusterControl_host}/cmon-repos/`.
 
 Only Local Mirrored Repository will be listed and manageable here. 
 
@@ -575,7 +575,7 @@ From a ClusterControl UI instance, this enables the user to register a database 
 
 .. Note:: The CMONAPI token is critical and hidden under asterisk values. This token provides authentication access for ClusterControl UI to communicate with the CMON backend services directly. Please keep this token in a safe place.
 
-You can retrieve the CMONAPI token manually at ``[wwwroot]/cmonapi/config/bootstrap.php`` on line containing ``CMON_TOKEN`` value, where ``[wwwroot]`` is location of Apache document root.
+You can retrieve the CMONAPI token manually at ``{wwwroot}/cmonapi/config/bootstrap.php`` on line containing ``CMON_TOKEN`` value, where ``{wwwroot}`` is location of Apache document root.
 
 Service Providers
 -----------------

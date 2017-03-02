@@ -153,7 +153,7 @@ Basically, the installation script will attempt to automate the following tasks:
 6. Configure ClusterControl Controller with minimal configuration options
 7. Enable the CMON service on boot and start it up
 
-After the installation completes, open your web browser to http://[ClusterControl_host]/clustercontrol and create the default admin user by specifying a valid email address and password in the welcome page.
+After the installation completes, open your web browser to :samp:`http://{ClusterControl_host}/clustercontrol` and create the default admin user by specifying a valid email address and password in the welcome page.
 
 Puppet Module
 `````````````
@@ -219,7 +219,7 @@ Example node definition:
     }
   }
 
-Once deployment is completed, open the ClusterControl web UI at https://[ClusterControl IP address]/clustercontrol and create a default admin login. You can now start to add existing database node/cluster, or deploy a new one. Ensure that passwordless SSH is configured properly from ClusterControl node to all DB nodes beforehand.
+Once deployment is completed, open the ClusterControl web UI at :samp:`https://{ClusterControl_host}/clustercontrol` and create a default admin login. You can now start to add existing database node/cluster, or deploy a new one. Ensure that passwordless SSH is configured properly from ClusterControl node to all DB nodes beforehand.
 
 To setup passwordless SSH on target database nodes, you can use following definition:
 
@@ -242,7 +242,7 @@ You can either instruct the agent to pull the configuration from the Puppet mast
 
 	$ puppet agent -t
 
-Or, wait for the Puppet agent service to apply the catalog automatically (depending on the ``runinterval`` value, default is 30 minutes). Once completed, open the ClusterControl UI page at http://[ClusterControl_host]/clustercontrol and create the default admin user and password.
+Or, wait for the Puppet agent service to apply the catalog automatically (depending on the ``runinterval`` value, default is 30 minutes). Once completed, open the ClusterControl UI page at :samp:`http://{ClusterControl_host}/clustercontrol` and create the default admin user and password.
 
 For more example on deployments using Puppet, please refer to `this blog post <http://www.severalnines.com/blog/clustercontrol-module-puppet>`_. For more details on configuration options, please refer to `ClusterControl Puppet Module <https://forge.puppetlabs.com/severalnines/clustercontrol>`_ page.
 
@@ -418,7 +418,7 @@ Let :term:`chef-client` run on each Chef client node and apply the cookbook:
 
 	$ sudo chef-client
 
-Once completed, open the ClusterControl UI page at http://[ClusterControl_host]/clustercontrol and create the default admin user and password. 
+Once completed, open the ClusterControl UI at :samp:`http://{ClusterControl_host}/clustercontrol` and create the default admin user and password. 
 
 For more example on deployments using Chef, please refer to `this blog post <http://www.severalnines.com/blog/chef-cookbooks-clustercontrol-management-and-monitoring-your-database-clusters>`_. For more details on configuration options, please refer to `ClusterControl Chef Cookbooks <https://supermarket.chef.io/cookbooks/clustercontrol>`_ page.
 
@@ -457,9 +457,9 @@ Or through Github:
 
     $ ansible-playbook cc.playbook
 
-4) Once ClusterControl is installed, go to http://[ClusterControl_IP_address]/clustercontrol and create the default admin user/password.
+4) Once ClusterControl is installed, go to :samp:`http://{ClusterControl_host}/clustercontrol` and create the default admin user/password.
 
-5) On ClusterControl node, setup passwordless SSH key to all target DB nodes. For example, if ClusterControl node is 192.168.0.10 and DB nodes are 192.168.0.11,192.168.0.12 and 192.168.0.13:
+5) On ClusterControl node, setup passwordless SSH key to all target DB nodes. For example, if ClusterControl node is 192.168.0.10 and DB nodes are 192.168.0.11, 192.168.0.12 and 192.168.0.13:
 
 .. code-block:: bash
 
@@ -557,7 +557,7 @@ Use the following command to run:
 
 	$ docker run -d --name clustercontrol -p 5000:80 severalnines/clustercontrol
 
-Once started, ClusterControl is accessible at http://[Docker_host]:5000/clustercontrol. You should see the welcome page to create a default admin user. Use your email address and specify passwords for that user. By default MySQL users root and cmon will be using 'password' and 'cmon' as default password respectively. You can override this value with -e flag, as example below:
+Once started, ClusterControl is accessible at :samp:`http://{Docker_host}:5000/clustercontrol`. You should see the welcome page to create a default admin user. Use your email address and specify passwords for that user. By default MySQL users root and cmon will be using 'password' and 'cmon' as default password respectively. You can override this value with -e flag, as example below:
 
 .. code-block:: bash
 
@@ -597,8 +597,9 @@ ClusterControl requires three packages to be installed and configured:
 * clustercontrol - ClusterControl web user interface
 * clustercontrol-cmonapi - ClusterControl REST API
 * clustercontrol-controller - ClusterControl CMON controller
+* clustercontrol-nodejs (optional) - ClusterControl NodeJS
 
-Steps described in following sections should be perform on ClusterControl node unless specified otherwise.
+Steps described in the following sections should be perform on ClusterControl node unless specified otherwise.
 
 Requirements
 ````````````
@@ -653,12 +654,12 @@ Redhat/CentOS
 
 	mysql -uroot -p -e 'DROP SCHEMA IF EXISTS cmon; CREATE SCHEMA cmon'
 	mysql -uroot -p -e 'DROP SCHEMA IF EXISTS dcps; CREATE SCHEMA dcps'
-	mysql -uroot -p -e 'GRANT ALL PRIVILEGES ON *.* TO "cmon"@"localhost" IDENTIFIED BY "[cmonpassword]" WITH GRANT OPTION'
-	mysql -uroot -p -e 'GRANT ALL PRIVILEGES ON *.* TO "cmon"@"127.0.0.1" IDENTIFIED BY "[cmonpassword]" WITH GRANT OPTION'
-	mysql -uroot -p -e 'GRANT ALL PRIVILEGES ON *.* TO "cmon"@"[ClusterControl main IP address]" IDENTIFIED BY "[cmonpassword]" WITH GRANT OPTION'
+	mysql -uroot -p -e 'GRANT ALL PRIVILEGES ON *.* TO "cmon"@"localhost" IDENTIFIED BY "{cmonpassword}" WITH GRANT OPTION'
+	mysql -uroot -p -e 'GRANT ALL PRIVILEGES ON *.* TO "cmon"@"127.0.0.1" IDENTIFIED BY "{cmonpassword}" WITH GRANT OPTION'
+	mysql -uroot -p -e 'GRANT ALL PRIVILEGES ON *.* TO "cmon"@"{ClusterControl main IP address}" IDENTIFIED BY "{cmonpassword}" WITH GRANT OPTION'
 	mysql -uroot -p -e 'FLUSH PRIVILEGES'
 
-.. note:: Replace ``[ClusterControl main IP address]`` and ``[cmonpassword]`` with respective values.
+.. note:: Replace ``{ClusterControl main IP address}`` and ``{cmonpassword}`` with respective values.
 
 7. Import cmon and dcps schema structure and data:
 
@@ -680,10 +681,10 @@ And configure following lines for minimal configuration options:
 .. code-block:: bash
 
     mysql_port=3306
-    mysql_hostname=[ClusterControl main IP address]
-    mysql_password=[cmonpassword]
-    hostname=[ClusterControl main IP address]
-    rpc_key=[ClusterControl API key as generated above]
+    mysql_hostname={ClusterControl main IP address}
+    mysql_password={cmonpassword}
+    hostname={ClusterControl primary IP address}
+    rpc_key={ClusterControl API key as generated above}
 
 Example as follow:
 
@@ -695,7 +696,7 @@ Example as follow:
     hostname=192.168.1.85
     rpc_key=6856d96a19d049aa8a7f4a5ba57a34740b3faf57
 
-.. Attention:: The value of ``mysql_hostname`` and ``hostname`` must be the same that you used to grant user ``cmon@[ClusterControl main IP address]`` in step #6 above.
+.. Attention:: The value of ``mysql_hostname`` and ``hostname`` must be the same that you used to grant user ``cmon@{ClusterControl primary IP address}`` in step #6 above.
 
 9. Enable CMON daemon on boot and start it:
 
@@ -739,27 +740,27 @@ Example as follow:
 
 .. code-block:: php
 
-	define('DB_PASS', '[cmonpassword]');
-	define('RPC_TOKEN', '[Generated ClusterControl API token]');
+	define('DB_PASS', '{cmonpassword}');
+	define('RPC_TOKEN', '{Generated ClusterControl API token}');
 
-.. Note:: Replace ``[cmonpassword]`` and ``[Generated ClusterControl API token]`` with appropriate values.
+.. Note:: Replace ``{cmonpassword}`` and ``{Generated ClusterControl API token}`` with appropriate values.
 
 14. Use the generated value from step #8 and specify it in ``/var/www/html/cmonapi/bootstrap.php`` under the ``CMON_TOKEN`` constant. It is expected for the ``CMON_TOKEN``, ``RPC_TOKEN`` (step #13) and ``rpc_key`` (in cmon.cnf) are holding the same value. Also, update the ``CC_URL`` value to be equivalent to ClusterControl URL in your environment:
 
 .. code-block:: php
 
-	define('CMON_TOKEN', '[Generated ClusterControl API token]');
-	define('CC_URL', 'https://[ClusterControl_host]/clustercontrol');
+	define('CMON_TOKEN', '{Generated ClusterControl API token}');
+	define('CC_URL', 'https://{ClusterControl_host}/clustercontrol');
 
-.. Note:: Replace ``[Generated ClusterControl API token]`` and ``[ClusterControl_host]`` with appropriate values.
+.. Note:: Replace ``{Generated ClusterControl API token}`` and ``{ClusterControl_host}`` with appropriate values.
 
 15. Configure MySQL credential for ClusterControl CMONAPI at ``/var/www/html/cmonapi/database.php``. In most cases, you just need to update the ``DB_PASS`` constant with the cmon user password:
 
 .. code-block:: bash
 
-	define('DB_PASS', '[cmonpasword]');
+	define('DB_PASS', '{cmonpasword}');
 
-.. Note:: Replace ``[cmonpassword]`` with a relevant value.
+.. Note:: Replace ``{cmonpassword}`` with a relevant value.
 
 16. Start the Apache web server and configure it to auto start on boot:
 
@@ -774,17 +775,17 @@ Example as follow:
 
 .. code-block:: bash
 
-	ssh-keygen -t rsa # Press enter for all prompt
+	ssh-keygen -t rsa # Press enter for all prompts
 
-19. Before importing a database cluster or single-server to ClusterControl, ensure the ClusterControl node is able to do passwordless SSH to the database host(s). Use the following command to copy the SSH key to the target hosts:
+19. Before importing a database cluster into ClusterControl, ensure the ClusterControl node is able to perform passwordless SSH to the database host(s). Use the following command to copy the SSH key to the target hosts:
 
 .. code-block:: bash
 
-	ssh-copy-id -i ~/.ssh/id_rsa [ssh user]@[IP address of the target node]
+	ssh-copy-id -i ~/.ssh/id_rsa {SSH user}@{IP address of the target node}
 
-.. Note:: Replace ``[ssh user]`` and ``[IP address of the target node]`` with appropriate values.
+.. Note:: Replace ``{SSH user}`` and ``{IP address of the target node}`` with appropriate values.
 
-20. Open ClusterControl Ui and create the default admin password by providing a valid email address and password. You will be redirted to ClusterControl default page. Go to `Cluster Registrations` and enter the generated ClusterControl API token (step #14) and URL, similar to example below:
+20. Open ClusterControl UI at :samp:`http://{ClusterControl_host}/clustercontrol` and create the default admin password by providing a valid email address and password. You will be redirected to ClusterControl default page. Go to `Cluster Registrations` and enter the generated ClusterControl API token (step #14) and URL, similar to example below:
 
 .. image:: img/cc_register_token.png
    :alt: Register ClusterControl API token
@@ -839,12 +840,12 @@ Restart the MySQL service to apply the change:
 
 	mysql -uroot -p -e 'DROP SCHEMA IF EXISTS cmon; CREATE SCHEMA cmon'
 	mysql -uroot -p -e 'DROP SCHEMA IF EXISTS dcps; CREATE SCHEMA dcps'
-	mysql -uroot -p -e 'GRANT ALL PRIVILEGES ON *.* TO "cmon"@"localhost" IDENTIFIED BY "[cmonpassword]" WITH GRANT OPTION'
-	mysql -uroot -p -e 'GRANT ALL PRIVILEGES ON *.* TO "cmon"@"127.0.0.1" IDENTIFIED BY "[cmonpassword]" WITH GRANT OPTION'
-	mysql -uroot -p -e 'GRANT ALL PRIVILEGES ON *.* TO "cmon"@"[ClusterControl main IP address]" IDENTIFIED BY "[cmonpassword]" WITH GRANT OPTION'
+	mysql -uroot -p -e 'GRANT ALL PRIVILEGES ON *.* TO "cmon"@"localhost" IDENTIFIED BY "{cmonpassword}" WITH GRANT OPTION'
+	mysql -uroot -p -e 'GRANT ALL PRIVILEGES ON *.* TO "cmon"@"127.0.0.1" IDENTIFIED BY "{cmonpassword}" WITH GRANT OPTION'
+	mysql -uroot -p -e 'GRANT ALL PRIVILEGES ON *.* TO "cmon"@"{ClusterControl main IP address}" IDENTIFIED BY "{cmonpassword}" WITH GRANT OPTION'
 	mysql -uroot -p -e 'FLUSH PRIVILEGES'
 
-.. Note:: Replace ``[ClusterControl main IP address]`` and ``[cmonpassword]`` with respective values.
+.. Note:: Replace ``{ClusterControl main IP address}`` and ``{cmonpassword}`` with respective values.
 
 7. Import cmon and dcps schema:
 
@@ -866,10 +867,10 @@ And add the following lines for minimal configuration options:
 .. code-block:: bash
 
     mysql_port=3306
-    mysql_hostname=[ClusterControl main IP address]
-    mysql_password=[cmonpassword]
-    hostname=[ClusterControl main IP address]
-    rpc_key=[ClusterControl API key as generated above]
+    mysql_hostname={ClusterControl main IP address}
+    mysql_password={cmonpassword}
+    hostname={ClusterControl primary IP address}
+    rpc_key={ClusterControl API key as generated above}
 
 A sample configuration will be something like this:
 
@@ -881,7 +882,7 @@ A sample configuration will be something like this:
     hostname=192.168.1.85
     rpc_key=6856d96a19d049aa8a7f4a5ba57a34740b3faf57
 
-.. Note:: The value of ``mysql_hostname`` and ``hostname`` must be the same that you used to grant user ``cmon@[ClusterControl main IP address]`` in step #6.
+.. Note:: The value of ``mysql_hostname`` and ``hostname`` must be identical which you used to grant user ``cmon@{ClusterControl primary IP address}`` in step #6.
 
 9. Enable CMON daemon on boot and start it:
 
@@ -952,27 +953,27 @@ For Ubuntu 12.04/Debian 7 and earlier:
 
 .. code-block:: php
 
-	define('DB_PASS', '[cmonpassword]');
-	define('RPC_TOKEN', '[Generated ClusterControl API token]');
+	define('DB_PASS', '{cmonpassword}');
+	define('RPC_TOKEN', '{Generated ClusterControl API token}');
 
-.. Note:: Replace ``[cmonpassword]`` and ``[Generated ClusterControl API token]`` with appropriate values.
+.. Note:: Replace ``{cmonpassword}`` and ``{Generated ClusterControl API token}`` with appropriate values.
 
 15. Use the generated value from step #8 and specify it in ``/var/www/cmonapi/bootstrap.php`` under the ``CMON_TOKEN`` constant. It is expected for the ``CMON_TOKEN``, ``RPC_TOKEN`` (step #14) and ``rpc_key`` (in cmon.cnf) are holding the same value. Also, update the ``CC_URL`` value to be equivalent to ClusterControl URL in your environment:
 
 .. code-block:: php
 
-	define('CMON_TOKEN', '[Generated ClusterControl API token]');
-	define('CC_URL', 'https://[ClusterControl_host]/clustercontrol');
+	define('CMON_TOKEN', '{Generated ClusterControl API token}');
+	define('CC_URL', 'https://{ClusterControl_host}/clustercontrol');
 
-.. Note:: Replace ``[Generated ClusterControl API token]`` and ``[ClusterControl_host]`` with appropriate values.
+.. Note:: Replace ``{Generated ClusterControl API token}`` and ``{ClusterControl_host}`` with appropriate values.
 
 16. Configure MySQL credentials for ClusterControl CMONAPI at ``/var/www/cmonapi/config/database.php``. In most cases, you just need to update the ``DB_PASS`` constant with the cmon user password:
 
 .. code-block:: php
 
-	define('DB_PASS', '[cmonpasword]');
+	define('DB_PASS', '{cmonpasword}');
 
-.. Note:: Replace ``[cmonpassword]`` with the relevant value.
+.. Note:: Replace ``{cmonpassword}`` with the relevant value.
 
 17. Restart Apache web server to apply the changes:
 
@@ -990,9 +991,9 @@ For Ubuntu 12.04/Debian 7 and earlier:
 
 .. code-block:: bash
 
-	ssh-copy-id -i ~/.ssh/id_rsa [ssh user]@[IP address of the target node]
+	ssh-copy-id -i ~/.ssh/id_rsa {SSH user}@{IP address of the target node}
 
-.. Note:: Replace ``[ssh user]`` and ``[IP address of the target node]`` with appropriate values.
+.. Note:: Replace ``{SSH user}`` and ``{IP address of the target node}`` with appropriate values.
 
 20. Open ClusterControl UI and create the default admin password by providing a valid email address and password. You will be redirected to ClusterControl default page. Go to `Cluster Registrations` and enter the generated ClusterControl API token (step #15) and URL, similar to example below:
 
@@ -1217,7 +1218,7 @@ Installing ClusterControl
 
 Follow the installation wizard.
 
-2. Open the browser and navigate to https://[ClusterControl_host]/clustercontrol . Setup the super admin account by specifying a valid email address and password on the welcome page.
+2. Open the browser and navigate to :samp:`https://{ClusterControl_host}/clustercontrol`. Setup the super admin account by specifying a valid email address and password on the welcome page.
 
 Post-installation
 `````````````````

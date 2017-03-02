@@ -88,6 +88,11 @@ Glossary
 	
 		.. seealso:: http://en.wikipedia.org/wiki/Lightweight_Directory_Access_Protocol
 
+	MaxScale
+		MariaDB MaxScale is a next-generation database proxy that manages security, scalability and high availability in scale-out deployments.
+		
+		.. seealso:: https://mariadb.com/products/mariadb-maxscale
+
 	mongodb-consistent-backup
 		Tool for getting consistent backups from MongoDB Clusters and Replica Set.
 		
