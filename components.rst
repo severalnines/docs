@@ -525,6 +525,31 @@ Nodes (MySQL)
 * The galera port to be used. Default is 4567.
 * Example: ``galera_port=5555``
 
+``replication_failover_whitelist=<string>``
+
+* Comma separated list of MySQL slaves which should be used as potential master candidates. If this variable is set, only those hosts will be considered. This parameter takes precedence over ``replication_failover_blacklist``.
+* Example: ``replication_failover_whitelist=192.168.1.11,192.168.1.12``
+
+``replication_failover_blacklist=<string>``
+
+* Comma separated list of MySQL slaves which will never be considered a master candidate. You can use it to list slaves that are used for backups or analytical queries. If the hardware varies between slaves, you may want to put here the slaves which use slower hardware. ``replication_failover_whitelist`` takes precedence over this parameter if it is set.
+* Example: ``replication_failover_blacklist=192.168.1.101,192.168.1.102``
+
+``replication_skip_apply_missing_txs=<boolean integer>``
+
+* Default is 0. Skip the check process for additional missing transactions before promoting a slave to a master and just use the most advanced slave. Such process may result in a serious problem though - if an errant transaction is found, replication may be broken.
+* Example: ``replication_skip_apply_missing_txs=1``
+
+``replication_stop_on_error=<boolean integer>``
+
+* Default is 1. ClusterControl will perform the MySQL master switch only once and will be aborted immediately if the switchover fails, unless the controller is restarted or you specify this variable to 0.
+* Example: ``replication_stop_on_error=0``
+
+``replication_failover_wait_to_apply_timeout=<boolean integer>``
+
+* Default is -1, which means that failover won’t happen if a master candidate is lagging. ClusterControl will wait indefinitely for it to apply all missing transactions from its relay logs. This is safe, but, if for some reason, the most up-to-date slave is lagging badly, failover may takes hours to complete. If set to 0, failover happens immediately, no matter if the master candidate is lagging or not.
+* Example: ``replication_failover_wait_to_apply_timeout=0``
+
 Nodes (MongoDB)
 '''''''''''''''
 
