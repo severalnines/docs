@@ -429,6 +429,31 @@ Monitoring
 * This determine whether ClusterControl should enable MySQL time machine status and variable collections. The status time machine allows you to select status variable for a time range and compare the values at the start and end of that range from ClusterControl UI. Default is 0, meaning it is disabled.
 * Example: ``enable_mysql_timemachine=1``
 
+``swap_warning=<integer>``
+
+* Warning alarm threshold for swap usage. Default is 5. Also configurable at *ClusterControl > {cluster_id} > Settings > Thresholds*.
+* Example: ``swap_warning=20``
+
+``swap_critical=<integer>``
+
+* Critical alarm threshold for swap usage. Default is 20. Also configurable at *ClusterControl > {cluster_id} > Settings > Thresholds*.
+* Example: ``swap_critical=40``
+
+``swap_inout_period=<integer>``
+
+* The interval for swap I/O alarms in seconds. Default is 600 (10 minutes).
+* Example: ``swap_inout_period=120``
+
+``swap_inout_warning=<integer>``
+
+* The number of pages swapped I/O for warning. Default is 10240. To determine the page size for the host, use ``getconf PAGESIZE``.
+* Example: ``swap_inout_warning=51200``
+
+``swap_inout_critical=<integer>``
+
+* The number of pages swapped I/O for critical. Default is 102400. To determine the page size for the host, use ``getconf PAGESIZE``.
+* Example: ``swap_inout_critical=102400``
+
 Management
 '''''''''''
 
