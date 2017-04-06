@@ -31,7 +31,7 @@ CMON controller package is available at `Severalnines download site <http://www.
 * RPM package (Redhat-based systems): ``clustercontrol-controller-[version]-[build number]-[architecture].rpm``
 * DEB package (Debian-based systems): ``clustercontrol-controller-[version]-[build number]-[architecture].deb``
 
-A configuration file ``/etc/cmon.cnf`` is required to initially setup the CMON Controller. It is possible to have several configuration files each for multiple clusters as described in the next sections.
+A configuration file ``/etc/cmon.cnf`` is required to initially setup the CMON Controller. It is possible to have several configuration files each for multiple clusters as described in the `Configuration File`_ section.
 
 Command Line Arguments
 ``````````````````````
