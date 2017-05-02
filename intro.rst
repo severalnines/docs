@@ -3,14 +3,14 @@
 Introduction
 ============
 
-This documentation covers ClusterControl version 1.4.0 which released on December 12th, 2016. This release contains key new features along with performance improvements and bug fixes. Release changelog is available `at Change Logs <changelog.html>`_.
+This documentation covers ClusterControl version 1.4.1 which released on April 4th, 2017. This release contains key new features along with performance improvements and bug fixes. Release changelog is available `at Change Logs <changelog.html>`_.
 
 What is ClusterControl?
 -----------------------
 
 ClusterControl is an agentless management and automation software for database clusters. It helps deploy, monitor, manage and scale your database server/cluster directly from ClusterControl user interface.
 
-ClusterControl consists of four components:
+ClusterControl consists of 5 components:
 
 +----------------------------------+---------------------------+------------------------------------------------------------------------------------+
 | Component                        | Package naming            | Role                                                                               |
@@ -26,6 +26,9 @@ ClusterControl consists of four components:
 +----------------------------------+---------------------------+------------------------------------------------------------------------------------+
 | ClusterControl NodeJS            | clustercontrol-nodejs     | This optional package is introduced in ClusterControl version 1.2.12 to provide an |
 |                                  |                           | interface for notification services and integration with 3rd party tools.          |
++----------------------------------+---------------------------+------------------------------------------------------------------------------------+
+| ClusterControl CLI               | s9s-tools                 | Open-source command line tool to manage and monitor clusters provisioned by        |
+|                                  |                           | ClusterControl.                                                                    |
 +----------------------------------+---------------------------+------------------------------------------------------------------------------------+
 
 

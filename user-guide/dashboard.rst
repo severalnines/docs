@@ -49,6 +49,14 @@ ClusterControl's top menu.
 
 List of database clusters managed under ClusterControl with summarized status. Database cluster deployed by (or added into) ClusterControl will be listed in this page. See `Database Cluster List`_ section.
 
+**Actions Menu*
+
+Provides shortcuts to main cluster functionality. 
+
+Each of database clusters has its own set of functionality:
+	- `MySQL <mysql/overview.html#actions>`_
+	- `MongoDB <mongodb/overview.html#actions>`_
+	- `PostgreSQL <postgresql/overview.html#actions>`_
 
 Deploy Database Cluster
 ------------------------

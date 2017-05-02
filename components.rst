@@ -1,9 +1,10 @@
 .. _components:
+.. include:: <isotech.txt>
 
 Components
 ==========
 
-Starting from v1.2.12, ClusterControl consists of four components:
+ClusterControl consists of 5 components:
 
 +----------------------------------+---------------------------+------------------------------------------------------------------------------------+
 | Component                        | Package naming            | Role                                                                               |
@@ -19,6 +20,9 @@ Starting from v1.2.12, ClusterControl consists of four components:
 +----------------------------------+---------------------------+------------------------------------------------------------------------------------+
 | ClusterControl NodeJS            | clustercontrol-nodejs     | This optional package is introduced in ClusterControl version 1.2.12 to provide an |
 |                                  |                           | interface for notification services and integration with 3rd party tools           |
++----------------------------------+---------------------------+------------------------------------------------------------------------------------+
+| ClusterControl CLI               | s9s-tools                 | Open-source command line tool to manage and monitor clusters provisioned by        |
+|                                  |                           | ClusterControl.                                                                    |
 +----------------------------------+---------------------------+------------------------------------------------------------------------------------+
 
 ClusterControl Controller (CMON)
@@ -552,7 +556,7 @@ Nodes (MySQL)
 
 ``replication_failover_whitelist=<string>``
 
-* Comma separated list of MySQL slaves which should be used as potential master candidates. If this variable is set, only those hosts will be considered. This parameter takes precedence over ``replication_failover_blacklist``.
+* Comma separated list of MySQL slaves which should be used as potential master candidates. If no server on the whitelist is available (up/connected) the failover will fail. If this variable is set, only those hosts will be considered. This parameter takes precedence over ``replication_failover_blacklist``.
 * Example: ``replication_failover_whitelist=192.168.1.11,192.168.1.12``
 
 ``replication_failover_blacklist=<string>``
@@ -570,10 +574,81 @@ Nodes (MySQL)
 * Default is 1. ClusterControl will perform the MySQL master switch only once and will be aborted immediately if the switchover fails, unless the controller is restarted or you specify this variable to 0.
 * Example: ``replication_stop_on_error=0``
 
-``replication_failover_wait_to_apply_timeout=<boolean integer>``
+``replication_failover_wait_to_apply_timeout=<integer>``
 
-* Default is -1, which means that failover won’t happen if a master candidate is lagging. ClusterControl will wait indefinitely for it to apply all missing transactions from its relay logs. This is safe, but, if for some reason, the most up-to-date slave is lagging badly, failover may takes hours to complete. If set to 0, failover happens immediately, no matter if the master candidate is lagging or not.
+* Candidate waits up to this many seconds to apply outstanding relay log (retrieved_gtids) before failing over. Default is -1, which means ClusterControl will wait indefinitely for it to apply all missing transactions from its relay logs. This is safe, but, if for some reason, the most up-to-date slave is lagging badly, failover may takes hours to complete. If set to 0, failover happens immediately, no matter if the master candidate is lagging or not. Default -1 seconds (wait forever). Value higher than 0 means ClusterControl will wait for the specified seconds before failover happens.
 * Example: ``replication_failover_wait_to_apply_timeout=0``
+
+``replication_stop_on_error=<boolean integer>``
+
+* Failover/switchover procedures will fail if errors are encountered that may cause data loss. Enabled by default. 0 means disable, default is 1 (true).
+* Example: ``replication_stop_on_error=0``
+
+``replication_auto_rebuild_slave=<boolean integer>``
+
+* If the SQL THREAD is stopped and error code is non-zero then the slave will be automatically rebuilt. 1 means enable, default is 0 (false).
+* Example: ``replication_auto_rebuild_slave=1``
+
+``replication_onfail_failover_script=<path to the script on ClusterControl node>``
+
+* This script executes as soon as it has been discovered that a failover is needed. If the script returns non-zero it will force the failover to abort. If the script is defined but not found, the failover will be aborted. Four arguments are supplied to the script: arg1='all servers'  arg2='oldmaster' arg3='candidate', arg4='slaves of oldmaster' and passed like this: ``scriptname arg1 arg2 arg3 arg4``.
+* The script must be accessible on the controller and executable.
+* Example: ``replication_onfail_failover_script=/usr/local/bin/failover_script.sh``
+
+``replication_pre_failover_script=<path to the script on ClusterControl node>``
+
+* This script executes before the failover happens, but after a candidate has been elected and it is possible to continue the failover process. If the script returns non-zero it will force the failover to abort. If the script is defined but not found, the failover will be aborted. The script must be accessible on the controller and executable.
+* Example: ``replication_pre_failover_script=/usr/local/bin/pre_failover_script.sh``
+
+``replication_post_failover_script=<path to the script on ClusterControl node>``
+
+* This script executes after the failover happened. If the script returns non-zero a Warning will be written in the job log. The script must be accessible on the controller and executable.
+* Example: ``replication_post_failover_script=/usr/local/bin/post_failover_script.sh``
+
+``replication_post_unsuccessful_failover_script=<path to the script on ClusterControl node>``
+
+* This script is executed after the failover attempt failed. If the script returns non-zero a Warning will be written in the job log. The script must be accessible on the controller and executable.
+* Example: ``replication_post_unsuccessful_failover_script=post_fail_failover_script.sh``
+
+``replication_failed_reslave_failover_script=<path to the script on ClusterControl node>``
+
+* This script is executed after that a new master has been promoted and if the reslaving of the slaves to the new master fails. If the script returns non-zero a Warning will be written in the job log. The script must be accessible on the controller and executable.
+* Example: ``replication_failed_reslave_failover_script=/usr/local/bin/fail_reslave_failover_script.sh``
+
+``replication_pre_switchover_script=<path to the script on ClusterControl node>``
+
+* This script executes before the switchover happens. If the script returns non-zero it will force the switchover to fail. If the script is defined but not found, the switchover will be aborted. The script must be accessible on the controller and executable.
+* Example: ``replication_pre_switchover_script=/usr/local/bin/pre_switchover_failover_script.sh``
+
+``replication_post_switchover_script=<path to the script on ClusterControl node>``
+
+* This script executes after the switchover happened. If the script returns non-zero a Warning will be written in the job log. The script must be accessible on the controller and executable.
+* Example: ``replication_post_switchover_script=/usr/local/bin/post_switchover_failover_script.sh``
+
+``replication_check_external_bf_failover=<boolean integer>``
+
+* Before attempting a failover, perform extended checks by checking the slave status to detect if the master is truly down, and also check if ProxySQL (if installed) can still see the master. If the master is detected to be functioning, then no failover will be performed. Default is 0 (false) meaning the checks are disabled. 1 means enable.
+* Example: ``replication_check_external_bf_failover=0``
+
+``replication_check_binlog_filtration_bf_failover=<boolean integer>``
+
+* Before attempting a failover, verify filration (binlog_do/ignore_db) and replication_* are identically configured on the candidate and the slaves. Default is 0 (false) meaning the checks are disabled. 1 means enable.
+* Example: ``replication_check_binlog_filtration_bf_failover=1``
+
+``schema_change_detection_address=<string>``
+
+* This option must be defined to use "Operational Report for Schema Change". Creating a report of thousands of database objects (schemas, tables etc) will take some time (about 5-10 minutes) depending on the hardware. It's recommended to configure a specific host to run this job for example on a replication slave or an asynchronous slave connected to e.g a Galera or Group Replication Cluster. For NDB this option should be set to a MySQL server used for admin purposes.
+* Example: ``schema_change_detection_address=192.168.111.53``
+
+``schema_change_detection_pause_time_ms=<integer>``
+
+* Throttle the detection process by pausing every this value, in miliseconds. For example, if defined as 3000, ClusterControl will pause the operation for every 3 seconds.
+* Example: ``schema_change_detection_pause_time_ms=3000``
+
+``schema_change_detection_databases=<string>``
+
+* Comma separated string of database names and also supports wildcards. For example 'DB%', will evaluate all database starting with "DB".
+* Example: ``schema_change_detection_databases=mydb%,shops_db,mymonitoring``
 
 Nodes (MongoDB)
 '''''''''''''''
@@ -820,6 +895,759 @@ At the time of this writing, Severalnines contributes two NodeJS plugins availab
 This package works differently if compared to ClusterControl plugin interface, whereby ClusterControl executes the plugin script if only alarm is raised/closed. Alarm's rules is hardcorded in ClusterControl which is not as dynamic as Advisors. Advisors extends the ClusterControl capability in health checks and notifications, built on top of ClusterControl Domain Specific Language (DSL). Each Advisors will have to be compiled and scheduled directly from ClusterControl's Developer Studio. The list of scheduled Custom Advisors is available at *ClusterControl > Performance > Advisors*.
 
 We have future plan to push alarms to NodeJS interface, so NodeJS can push them into a web socket, and all the subscribers (clients) will get those instantly.
+
+ClusterControl CLI
+------------------
+
+Also known as **s9s-tools** or **s9s** in short, this optional package is introduced in ClusterControl version 1.4.1. It is a command line tool to interact, control and manage database clusters using the ClusterControl Database Platform. Starting from version 1.4.1, the installer script will automatically install this package on the ClusterControl node. You can also install it on another computer or workstation to manage the database cluster remotely. All communication is encrypted and secure through SSH. The s9s command line project is open source and is located on `GitHub <https://github.com/severalnines/s9s-tools>`_.
+
+ClusterControl CLI opens a new door for cluster automation where you can easily integrate it with existing deployment automation tools like Ansible, Puppet, Chef or Salt. You can deploy, manage and monitor your cluster without having to use the ClusterControl UI. The following list shows what features are available at the moment:
+
+* Deploy and manage database clusters:
+	- MySQL
+	- PostgreSQL
+	- MongoDB to be added soon.
+* Basic monitoring features:
+	- Status of nodes and clusters.
+	- Cluster properties can be extracted.
+	- Gives detailed enough information about your clusters.
+* Management features:
+	- Create clusters (Can’t add existing cluster).
+	- Stop or start clusters.
+	- Add or remove nodes.
+	- Restart nodes in the cluster.
+	- Create database users (CREATE USER, GRANT privileges to user).
+	- Create load balancers	(HAProxy, ProxySQL, MaxScale is not supported).
+	- Create backups (Restore is not supported).
+	- Maintenance mode.
+	- Configuration changes of db nodes.
+
+The command line tool is invoked by executing a binary called ``s9s``. The commands are basically JSON messages being sent over to the ClusterControl Controller (CMON) RPC interface. Communication between the s9s (the command line tool) and the cmon process (ClusterControl Controller) is encrypted using TLS and requires the port 9501 to be opened on controller and the client host.
+
+Installation
+`````````````
+
+Package Manager (yum/apt)
+'''''''''''''''''''''''''
+
+For RHEL/CentOS, go to `this page <http://software.opensuse.org/download.html?project=home%3Akedazo&package=s9s-tools>`_. You will find complete instructions how to setup the repository and install the s9s-tools package.
+
+For Debian/Ubuntu, as sudo/root user run:
+
+.. code-block:: bash
+
+	$ add-apt-repository ppa:severalnines/s9s-tools
+	$ apt-get update
+	$ apt-get install s9s-tools
+
+Build From Source
+''''''''''''''''''
+
+To build from source may require additional packages and tools to be installed:
+
+1. Get the source code from Github:
+
+.. code-block:: bash
+
+	$ git clone https://github.com/severalnines/s9s-tools.git
+
+2. Navigate to the source code directory:
+
+.. code-block:: bash
+
+	$ cd s9s-tools
+
+.. Note:: You may need to install packages such as C/C++ compiler, autotools etc.
+
+3. Compile the code:
+
+.. code-block:: bash
+
+	$ sh autogen.sh
+	$ ./configure
+	$ make
+	$ make install
+
+It is possible to build the s9s command line client on Linux and Mac OS/X.
+
+Configuration
+``````````````
+
+The first thing that must be done is to create a user that is allowed to connect to and use the controller. Communication between the s9s command line client and the controller (the cmon process) is encrypted using TLS on port 9501. A public and private RSA key pair associated with a username is used to encrypt the communication. The s9s command line client is responsible to setup the user and the required private and public key.
+
+The command line client can be located on the same server as the controller (localhost communication) or on a remote server. The configuration differs depending on the location - localhost or remote access, and both cases are covered below.
+
+Localhost Access
+'''''''''''''''''
+
+SSH into the controller and then let us create a user called 'dba' that is allowed to access the controller. This will create the first user. 
+
+.. Important:: All users have the rights to perform all operations on the managed clusters. There is no access control or roles implemented at the moment. However, the user must be an authenticated user to be able to access the controller.
+
+.. code-block:: bash
+
+	$ s9s user --create --generate-key --controller=”https://localhost:9501” --cmon-user=dba
+	Grant user 'dba' succeeded.
+
+.. Note:: Short options exist.
+
+If this is the first time you use the s9s client, then a new directory has been created in ``$HOME/.s9s/`` storing the private/public key and a configuration file.
+
+Let us see what has been created:
+
+.. code-block:: bash
+
+	$ ls $HOME/.s9s/
+	dba.key  dba.pub  s9s.conf
+
+Viewing the configuration file we will see:
+
+.. code-block:: bash
+
+	[global]
+	cmon_user              = dba
+	# controller_host_name = localhost
+	# controller_port      = 9500
+	# rpc_tls              = false
+
+Now we need to set the ``controller_host_name`` and ``controller_port``, and the ``rpc_tls`` so the file looks:
+
+.. code-block:: bash
+
+	[global]
+	cmon_user            = dba
+	controller_host_name = localhost
+	controller_port      = 9501
+	rpc_tls              = true
+	# controller = “https://localhost:9501”
+
+In order to verify it is working you can list the available clusters:
+
+.. code-block:: bash
+
+	$ s9s cluster --list
+	cluster_1 cluster_2 cluster_3
+
+If the authentication fails you will see messages like:
+
+.. code-block:: bash
+
+	Authentication failed: User 'dba' is not found.
+
+The above means that the user has not been created. Or if there is a problem connecting to cmon:
+
+.. code-block:: bash
+
+	Authentication failed: Connect to localhost:9501 failed: "{{ Failure message }}".
+
+In this case, double check the ``~/.s9s/s9s.conf`` file and check that cmon is started with TLS:
+
+.. code-block:: bash
+
+	$ sudo grep -i tls /var/log/cmon.log
+	2016-11-28 15:00:31 : (INFO) Server started at tls://127.0.0.1:9501
+
+And also:
+
+.. code-block:: bash
+
+	$ sudo netstat -atp | grep 9501
+	tcp        0      0 localhost:9501          *:*                     LISTEN      22096/cmon
+
+To view the users, and list which is the currently used user (marked with an "A" - a short form of "Authenticated"):
+
+.. code-block:: bash
+
+	$ s9s user --list --long
+	A ID UNAME      GNAME  EMAIL REALNAME
+	-  1 system     admins -     System User
+	-  2 nobody     nobody -     -
+	A  3 dba        users  -     -
+	-  4 remote_dba users  -     -
+
+The 'nobody' user is a legacy user. No one should ever see a job issued by the user 'nobody'. The 'system' user is the ClusterControl server itself creating internal jobs (e.g internal cron jobs).
+
+Remote Access
+''''''''''''''
+
+The steps to setup the s9s command line client for remote access is similar as for localhost, except:
+
+* The s9s command line client must exist on the remote server
+* The controller (cmon) must be accepting TLS connections from the remote server.
+* The remote server can connect to the controller with key-based authentication (no password). This is required only during the user creation private/public key setup.
+
+1. Setup the bind address from cmon process as follow:
+
+.. code-block:: bash
+
+	$ vi /etc/init.d/cmon
+
+Locate the line:
+
+.. code-block:: bash
+
+	RPC_BIND_ADDRESSES=""
+
+And change to:
+
+.. code-block:: bash
+
+	RPC_BIND_ADDRESSES="127.0.0.1,10.0.1.12"
+
+Here we assume the public IP address of the controller is 10.0.1.12. Naturally, you should lock down this IP with firewall rules only allowing access from the remote servers you wish to access the controller from.
+
+2. Restart the controller and check the log:
+
+.. code-block:: bash
+
+	$ service cmon restart # sysvinit
+	$ systemctl restart cmon # systemd
+
+3. Verify the ClusterControl Controller is listening to the configured IP address on port 9501:
+
+.. code-block:: bash
+
+	$ cat /var/log/cmon.log | grep -i tls
+	2016-11-29 12:34:04 : (INFO) Server started at tls://127.0.0.1:9501
+	2016-11-29 12:34:04 : (INFO) Server started at tls://10.0.1.12:9501
+
+4. On the remote server/computer, we have to enable key-based authentication and create a user called 'remote_dba'. Create a system user called 'remote_dba':
+
+.. code-block:: bash
+
+	$ useradd -m remote_dba
+
+5. As the current user (root or sudoer for example) in the remote server, setup a passwordless SSH to the ClusterControl host. Generate one SSH key if you don't have one:
+
+.. code-block:: bash
+
+	$ ssh-keygen -t rsa # press 'Enter' for all prompts
+
+Copy the SSH public key to the ClusterControl Controller host, for example 10.0.1.12:
+
+.. code-block:: bash
+
+	$ ssh-copy-id root@10.0.1.12
+
+6. Create the s9s client user:
+
+.. code-block:: bash
+
+	$ s9s user --generate-key --create --cmon-user=remote_dba --controller=”https://10.0.1.12:9501”
+	Warning: Permanently added '10.0.1.12' (ECDSA) to the list of known hosts.
+	Connection to 10.0.1.12 closed.
+	Grant user 'remote_dba' succeeded.
+
+7. Ensure the config file located at ``~/.s9s/s9s.conf`` looks like this (take note the IP of the controller may be different):
+
+.. code-block:: bash
+
+	[global]
+	cmon_user            = remote_dba
+	controller_host_name = 10.0.1.12
+	controller_port      = 9501
+	rpc_tls              = true
+
+8. Finally, test the connection:
+
+.. code-block:: bash
+
+	$ s9s cluster --list
+	cluster_1 cluster_2 cluster_3
+
+Usage 
+``````
+
+The command line client installs manual pages and can be viewed by entering the command:
+
+.. code-block:: bash
+
+	$ man s9s-<command group>
+
+For example:
+
+.. code-block:: bash
+
+	$ man s9s
+	$ man s9s-cluster
+	$ man s9s-user
+	$ man s9s-job
+	$ man s9s-backup
+	$ man s9s-node
+	$ man s9s-maintenance
+	$ man s9s-process
+	$ man s9s-conf
+
+The general synopsis to execute commands using s9s is:
+
+.. code-block:: bash
+
+	s9s <command group> <options>
+
+s9s cluster
+'''''''''''
+
+Create, list and manipulate clusters.
+
+**Usage**
+
+.. code-block:: bash
+
+	s9s cluster {command} {options}
+
+**Command**
+
+====================================== ===========
+Name, shorthand                        Description
+====================================== ===========
+|minus|\ |minus|\ list                 List the clusters.
+|minus|\ |minus|\ stat                 Print the details of a cluster.
+|minus|\ |minus|\ create               Create and install a new cluster.
+|minus|\ |minus|\ ping                 Check the connection to the controller.
+|minus|\ |minus|\ rolling-restart      Restart the nodes without stopping the cluster.
+|minus|\ |minus|\ add-node             Add a new node to the cluster.
+|minus|\ |minus|\ remove-node          Remove a node from the cluster.
+|minus|\ |minus|\ drop                 Drop cluster from the controller.
+|minus|\ |minus|\ stop                 Stop the cluster.
+|minus|\ |minus|\ start                Start the cluster.
+|minus|\ |minus|\ create-account       Create a user account on the cluster.
+|minus|\ |minus|\ delete-account       Delete a user account on the cluster.
+|minus|\ |minus|\ create-database      Create a database on the cluster.
+====================================== ===========
+
+**Options**
+
+=============================================== ===========
+Name, shorthand                                 Description
+=============================================== ===========
+|minus|\ |minus|\ cluster-id=ID                 The ID of the cluster to manipulate.
+|minus|\ |minus|\ cluster-name=NAME             Name of the cluster to manipulate or create.
+|minus|\ |minus|\ nodes=NODE_LIST               List of nodes to work with.
+|minus|\ |minus|\ vendor=VENDOR                 The name of the software vendor.
+|minus|\ |minus|\ provider-version=VER          The version of the software.
+|minus|\ |minus|\ os-user=USERNAME              The name of the user for the SSH commands.
+|minus|\ |minus|\ cluster-type=TYPE             The type of the cluster to install.
+|minus|\ |minus|\ db-admin=USERNAME             The database admin user name.
+|minus|\ |minus|\ db-admin-passwd=PASSWD        The pasword for the database admin.
+|minus|\ |minus|\ account=NAME[:PASSWD][@HOST]  Account to be created on the cluster.
+|minus|\ |minus|\ with-database                 Create a database for the user too.
+|minus|\ |minus|\ db-name=NAME                  The name of the database.
+|minus|\ |minus|\ opt-group=NAME                The option group for configuration.
+|minus|\ |minus|\ opt-name=NAME                 The name of the configuration item.
+|minus|\ |minus|\ opt-value=VALUE               The value for the configuration item.
+|minus|\ |minus|\ wait                          Wait until the job ends.
+|minus|\ |minus|\ long, -l                      Print the detailed list.
+=============================================== ===========
+
+**Examples**
+
+Create a three-node Percona XtraDB Cluster 5.7 cluster, with OS user vagrant:
+
+.. code-block:: bash
+
+	$ s9s cluster --create --cluster-type=galera --nodes="10.10.10.10;10.10.10.11;10.10.10.12"  --vendor=percona --provider-version=5.7 --db-admin-passwd='pa$$word' --os-user=vagrant --cluster-name='galeracluster01'
+
+List all clusters with more details:
+
+.. code-block:: bash
+
+	$ s9s cluster --list --long
+
+Delete a cluster with cluster ID 1:
+
+.. code-block:: bash
+
+	$ s9s cluster --delete --cluster-id=1
+	
+Add a database node on Cluster ID 1:
+
+.. code-block:: bash
+
+	$ s9s cluster --add-node --nodes=10.10.10.14 --cluster-id=1 --wait
+
+Remove a database node from cluster ID 1:
+
+.. code-block:: bash
+
+	$ s9s cluster --remove-node
+
+s9s node
+'''''''''''
+
+View and handle nodes.
+
+**Usage**
+
+.. code-block:: bash
+
+	s9s node {command} {options}
+
+**Command**
+
+====================================== ===================
+Name, shorthand                        Description
+====================================== ===================
+|minus|\ |minus|\ list                 List the jobs found on the controller.
+|minus|\ |minus|\ stat                 Print detailed node information.
+|minus|\ |minus|\ set                  Change the properties of a node.
+|minus|\ |minus|\ list-config          Print the configuration for a node.
+|minus|\ |minus|\ change-config        Change the configuration for a node.
+|minus|\ |minus|\ pull-config          Copy configuration files from a node.
+|minus|\ |minus|\ push-config          Copy configuration files to a node.
+====================================== ===================
+
+**Options**
+
+========================================== ===========
+Name, shorthand                            Description
+========================================== ===========
+|minus|\ |minus|\ cluster-id=ID            The ID of the cluster in which the node is.
+|minus|\ |minus|\ cluster-name=NAME        Name of the cluster to list.
+|minus|\ |minus|\ nodes=NODE_LIST          The nodes to list or manipulate.
+|minus|\ |minus|\ properties=ASSIGNMENTS   Names and values of the properties to change.
+|minus|\ |minus|\ opt-group=GROUP          The configuration option group.
+|minus|\ |minus|\ opt-name=NAME            The name of the configuration option.
+|minus|\ |minus|\ opt-value=VALUE          The value of the configuration option.
+|minus|\ |minus|\ output-dir=DIR           The directory where the files are created.
+|minus|\ |minus|\ force                    Force to execute dangerous operations.
+========================================== ===========
+
+**Examples**
+
+List all nodes:
+
+.. code-block:: bash
+
+	$ s9s node --list --long
+	ST  VERSION                  CID CLUSTER        HOST       PORT COMMENT
+	go- 10.1.22-MariaDB-1~xenial   1 MariaDB Galera 10.0.0.185 3306 Up and running
+	co- 1.4.1.1856                 1 MariaDB Galera 10.0.0.205 9500 Up and running
+	go- 10.1.22-MariaDB-1~xenial   1 MariaDB Galera 10.0.0.209 3306 Up and running
+	go- 10.1.22-MariaDB-1~xenial   1 MariaDB Galera 10.0.0.82  3306 Up and running
+	Total: 4
+
+s9s backup
+'''''''''''
+
+View and create database backups. Three backup methods are supported:
+	* mysqldump
+	* xtrabackup (full)
+	* xtrabackup (incremental)
+
+The s9s client also needs to know:
+	* The cluster id of the cluster to backup.
+	* The node to backup.
+	* The databases that should be included.
+	
+.. Note:: If you are using Percona Xtrabackup, an incremental backup requires that there is already a full backup made of the same databases (all or individually specified). Otherwise, the incremental backup will be upgraded to a full backup.
+
+**Usage**
+
+.. code-block:: bash
+
+	s9s backup {command} {options}
+
+**Command**
+
+====================================== ===========
+Name, shorthand                        Description
+====================================== ===========
+|minus|\ |minus|\ list                 List the backups.
+|minus|\ |minus|\ create               Create a new backup.
+|minus|\ |minus|\ restore              Restore an existing backup.
+|minus|\ |minus|\ delete               Delete a previously created backup.
+====================================== ===========
+
+**Options**
+
+====================================== ===========
+Name, shorthand                        Description
+====================================== ===========
+|minus|\ |minus|\ cluster-id=ID        The ID of the cluster.
+|minus|\ |minus|\ backup-id=ID         The ID of the backup.
+|minus|\ |minus|\ nodes=NODELIST       The list of nodes involved in the backup.
+|minus|\ |minus|\ databases=LIST       Comma separated list of databases to archive.
+|minus|\ |minus|\ backup-method=METHOD Defines the backup program to be used.
+|minus|\ |minus|\ backup-directory=DIR The directory where the backup is placed.
+|minus|\ |minus|\ parallellism=N       Number of threads used while creating backup.
+|minus|\ |minus|\ no-compression       Do not compress the archive file.
+|minus|\ |minus|\ use-pigz             Use the pigz program to compress archive.
+|minus|\ |minus|\ on-node              Store the created backup file on the node itself.
+|minus|\ |minus|\ full-path            Print the full path of the files.
+====================================== ===========
+
+**Examples**
+
+Assume we have a data node on 10.10.10.20 (port 3306) on cluster id 2, that we want to backup all databases:
+
+.. code-block:: bash
+
+	$ s9s backup --create --backup-method=mysqldump  --cluster-id=2 --nodes=10.10.10.20:3306  --backup-directory=/storage/backups
+
+List all backups for cluster ID 2:
+
+.. code-block:: bash
+
+	$ s9s backup --list --cluster-id=2 --long --human-readable
+
+s9s job
+'''''''''''
+
+View jobs.
+
+**Usage**
+
+.. code-block:: bash
+
+	s9s job {command} {options}
+
+**Command**
+
+====================================== ===================
+Name, shorthand                        Description
+====================================== ===================
+|minus|\ |minus|\ list                 List the jobs.
+====================================== ===================
+
+**Options**
+
+========================================== ===========
+Name, shorthand                            Description
+========================================== ===========
+|minus|\ |minus|\ job-id=ID                The ID of the job.
+|minus|\ |minus|\ date-format=FORMAT       The format of the dates printed.
+|minus|\ |minus|\ from=DATE&TIME           The start of the interval to be printed.
+|minus|\ |minus|\ until=DATE&TIME          The end of the interval to be printed.
+|minus|\ |minus|\ wait                     Wait until the job ends.
+|minus|\ |minus|\ log                      Wait and monitor job messages.
+|minus|\ |minus|\ schedule=DATE&TIME       Run the job at the specified time.
+========================================== ===========
+
+**Examples**
+
+
+List jobs:
+
+.. code-block:: bash
+
+	$ s9s job --list
+	10235 RUNNING  dba     2017-01-09 10:10:17   2% Create Galera Cluster
+	10233 FAILED   dba     2017-01-09 10:09:41   0% Create Galera Cluster
+
+The s9s client will send a job that will be executed in the background by cmon. It will printout the job ID, for example:
+"Job with ID 57 registered."
+
+It is then possible to attach to the job to find out the progress:
+
+.. code-block:: bash
+
+	$ s9s job --wait --job-id=57
+
+View job log messages of job ID 10235:
+
+.. code-block:: bash
+
+	$ s9s job --log  --job-id=10235
+
+s9s maint
+'''''''''''
+
+View and manipulate maintenance periods.
+
+**Usage**
+
+.. code-block:: bash
+
+	s9s maint {command} {options}
+
+**Command**
+
+====================================== ===========
+Name, shorthand                        Description
+====================================== ===========
+|minus|\ |minus|\ list                 List the maintenance period.
+|minus|\ |minus|\ create               Create a new maintenance period.
+|minus|\ |minus|\ delete               Delete a maintenance period.
+====================================== ===========
+
+**Options**
+
+====================================== ===========
+Name, shorthand                        Description
+====================================== ===========
+|minus|\ |minus|\ cluster-id=ID        The cluster for cluster maintenance.
+|minus|\ |minus|\ nodes=NODELIST       The nodes for the node maintenances.
+|minus|\ |minus|\ full-uuid            Print the full UUID.
+|minus|\ |minus|\ start=DATE&TIME      The start of the maintenance period.
+|minus|\ |minus|\ end=DATE&TIME        The end of the maintenance period.
+|minus|\ |minus|\ reason=STRING        The reason for the maintenance.
+|minus|\ |minus|\ date-format=FORMAT   The format of the dates printed.
+|minus|\ |minus|\ uuid=UUID            The UUID to identify the maintenance period.
+====================================== ===========
+
+**Examples**
+
+List out all node under maintenance period:
+
+.. code-block:: bash
+
+	$ s9s maint --list --long
+	ST UUID    OWNER           GROUP START    END      HOST/CLUSTER REASON
+	-h 70346c3 admin@email.com       07:42:18 08:42:18 10.0.0.209   Upgrading RAM
+	Total: 1
+
+Delete a maintenance period for UUID 70346c3:
+
+.. code-block:: bash
+
+	$ s9s maint --delete --uuid=70346c3
+
+s9s process
+'''''''''''
+
+View processes running on nodes.
+
+**Usage**
+
+.. code-block:: bash
+
+	s9s process {command} {options}
+
+**Command**
+
+====================================== ===========
+Name, shorthand                        Description
+====================================== ===========
+|minus|\ |minus|\ list                 List the processes.
+|minus|\ |minus|\ top                  Continuosly print top processes.
+====================================== ===========
+
+**Options**
+
+====================================== ===========
+Name, shorthand                        Description
+====================================== ===========
+|minus|\ |minus|\ cluster-id=ID        The ID of the cluster to show.
+|minus|\ |minus|\ update-freq=SECS     The screen update frequency.
+====================================== ===========
+
+**Examples**
+
+Contiously print aggregated view of processes (similar to ``top`` output) of all nodes for cluster ID 1:
+
+.. code-block:: bash
+
+	$ s9s process --top --cluster-id=1
+
+List aggregated view of processes (similar to ``ps`` output) of all nodes for cluster ID 1:
+
+.. code-block:: bash
+
+	$ s9s process --list --cluster-id=1
+
+s9s user
+'''''''''''
+
+Manage users.
+
+**Usage**
+
+.. code-block:: bash
+
+	s9s user {command} {options}
+
+**Command**
+
+====================================== ===========
+Name, shorthand                        Description
+====================================== ===========
+|minus|\ |minus|\ create               Create a user.
+|minus|\ |minus|\ whoami               List the current user only.
+|minus|\ |minus|\ list                 List users.
+====================================== ===========
+
+**Options**
+
+====================================== ===========
+Name, shorthand                        Description
+====================================== ===========
+|minus|\ |minus|\ cmon-user, -u        Username on the CMON system.
+|minus|\ |minus|\ generate-key, -g     Generate an RSA keypair for the user.
+|minus|\ |minus|\ group                The primary group of the new user.
+|minus|\ |minus|\ create-group         Create the group if it does not exist.
+|minus|\ |minus|\ first-name           The first name of the user.
+|minus|\ |minus|\ last-name            The last name of the user.
+|minus|\ |minus|\ title                The prefix title of the user.
+|minus|\ |minus|\ email-address        The email address of the user.
+====================================== ===========
+
+**Examples**
+
+Create a remote s9s user and generate a SSH key for the user:
+
+.. code-block:: bash
+
+	$ s9s user --create --generate-key --cmon-user=dba --controller=”https://10.0.1.12:9501”
+
+List out all users:
+
+.. code-block:: bash
+
+	$ s9s user --list --long
+	A ID UNAME      GNAME  EMAIL REALNAME
+	-  1 system     admins -     System User
+	-  2 nobody     nobody -     -
+	A  3 dba        users  -     -
+	-  4 remote_dba users  -     -
+
+s9s script
+'''''''''''
+
+Manage and execute Advisor scripts available in the `Developer Studio <user-guide/mysql/manage.html#developer-studio>`_.
+
+**Usage**
+
+.. code-block:: bash
+
+	s9s script {command} {options}
+
+**Command**
+
+====================================== ===========
+Name, shorthand                        Description
+====================================== ===========
+|minus|\ |minus|\ tree                 Print the scripts available on the controller.
+|minus|\ |minus|\ execute              Execute a script.
+====================================== ===========
+
+**Options**
+
+====================================== ===========
+Name, shorthand                        Description
+====================================== ===========
+|minus|\ |minus|\ cluster-id=ID        The cluster for cluster maintenance.
+====================================== ===========
+
+**Examples**
+
+Print the scripts available for cluster ID 1:
+
+.. code-block:: bash
+
+	$ s9s script --tree --cluster-id=1
+
+
+Limitations
+````````````
+
+Currently the s9s command line tool has a user management module that is not yet fully integrated with the ClusterControl UI and ClusterControl Controller. For example, there is no RBAC (Role-Based Access Control) for a user (see Setup and Configuration how to create a user). This means that any user created to be used with the s9s command line tool has a full access to all clusters managed by the ClusterControl server.
+
+Users created by the command line client will be shown in Job Messages, but it is not possible to use this user to authenticate and login from the UI. Thus, the users created from the command line client are all super admins.
+
+Reporting Issues
+````````````````
+
+If you would encounter issues, have questions, or have any features you would like to see included, please create an issue on https://github.com/severalnines/s9s-tools/issues .
 
 .. rubric:: Footnotes
 

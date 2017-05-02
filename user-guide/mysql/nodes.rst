@@ -71,6 +71,9 @@ ProxySQL Nodes
 
 Provides detailed view of ProxySQL stats. ClusterControl connects to the ProxySQL admin interface to retrieve the stats and visualize them here.
 
+Monitor
+.......
+
 * **ProxySQL Host Groups**
 	- List of hostgroups created under this service.
 	- It also provides the status of hosts in all defined hostgroups. It shows metrics related to hostgroups - used connections, free connections, errors, number of queries executed, amount of data sent and received, latency
@@ -78,6 +81,63 @@ Provides detailed view of ProxySQL stats. ClusterControl connects to the ProxySQ
 * **ProxySQL Stats**
 	- Graphs related to ProxySQL metrics - active transactions, data sent and received, memory utilization, number of connections and many more. This gives you insight in how ProxySQL operates and helps to catch any potential issues with the proxy layer.
 
+Top Queries
+............
+
+List of queries digested by ProxySQL instance.
+
+Rules
+.....
+
+List out all query rules created under this ProxySQL instance.
+
+* **Add New Rule**
+	- Details at ProxySQL MySQL query rules `wiki site <https://github.com/sysown/proxysql/wiki/MySQL-Query-Rules>`_.
+
+* **Edit**
+	- Edit an existing query rule.
+
+* **Delete**
+	- Delete an existing query rule.
+
+Servers
+.......
+
+List out all backend servers created under this ProxySQL instance.
+
+* **Add Server**
+	- Host Details: Specify hostname or IP address with MySQL port of the backend server. The server must be provisioned by ClusterControl server.
+	- Hostgroup Id: Assign a hostgroup identifier number.
+	- Weight: Server weight when balancing.
+	- Max Replication Lag: Specify how many seconds ProxySQL should tolerate a lagging slave as healthy.
+	- Max Connection: Specify maximum number of connections allowed to access this backend server.
+	- Max Latency(ms): Specify maximum latency in microseconds 
+	- Use SSL: Use SSL to the backend server. Details at `ProxySQL SSL documentation <https://github.com/sysown/proxysql/wiki/SSL-configuration>`_.
+	- Use Compression: Use compression to the backend server.
+
+* **Host Groups**
+	- List of hostgroups created under this service. 
+	- Click on 'Edit' to edit the server details like hostgroup id, weight, max replication lag and so on.
+	- Click on 'Remove' to delete the selected server.
+
+Users
+......
+
+List out all users created under this ProxySQL.
+
+* **Add New User**
+	- Create a new user or add an existing user created on the backend MySQL server.
+
+* **Edit**
+	- Edit the selected user.
+
+* **Drop User**
+	- Drop the selected user.
+
+Variables
+..........
+
+List all ProxySQL variables for this instance. You can filter the variables using the lookup field.
 
 Nodes Management
 `````````````````

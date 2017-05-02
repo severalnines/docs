@@ -3,10 +3,177 @@
 Change Logs
 ===========
 
-These change logs list details about updates in each version of ClusterControl.
+This change logs list details about updates in each version of ClusterControl.
+
+Changes v1.4.1
+---------------
+
+Patch Release: April 24th, 2017
+``````````````````````````````````
+
+* Build:
+	- clustercontrol-1.4.1-3048
+	- clustercontrol-controller-1.4.1-1856
+	- clustercontrol-cmonapi-266
+
+* UI:
+	- Fix for empty databases list with MySQL backups.
+	- MySQL Variables page now use the RPC API.
+	- Improved deployment wizard placeholders descriptions.
+	- Enable 'restore backup' for PostgreSQL.
+	- Enable using a custom PostgreSQL port (default 5432) for deployments.
+	- Fix for allowing negative port numbers in the load balancer forms.
+	- Fix empty details on the keepalived node page.
+	- Fix for saving timezone settings other than GMT+0 with email notifications.
+
+* Controller:
+	- Fix for deploying a single MySQL replication node cluster.
+	- Require set 'force' to stop a read-write MySQL server (MySQL Replication).
+	- Fix for node(s) reconnection issue to restored master after a restore backup.
+	- Fix configuration (my.cnf) import to start immediately after a MySQL replication slave has been added (Galera) 
+	- Job log improvement. Show the command/action that was requested.
+	- Fix with MaxScale to show correct list of masters and slaves in the console.
+
+Patch Release: April 12th, 2017
+``````````````````````````````````
+
+* Build:
+	- clustercontrol-1.4.1-3002
+	- clustercontrol-controller-1.4.1-1834
+
+* UI:
+	- Fixed a bug making it impossible to restart failed jobs.
+	- Fixed a bug in the Nodes graphs which made them render wrongly
+	- Replication: Extended the Import dialog (Replication cluster) with a few more options (enable information schema queries).
+	- Galera: Added Multi Nic support for Add Replication Slave
+	- Fixed the title for the Nodes page
+	- ProxySQL: Handle latency (us/ms) and improvements to graphs.
+	- Query Monitor: Top queries useless with more than 20 queries
+	- New Operation Report - Schema Change Report. With this feature you can spot changes in your database schemas and ensure changes are sound on your system.
+
+* Controller:
+	- Fixed a bug making it impossible add an existing replication slave.
+	- Replication (Percona,MySQL): print out messages to show progress while applying relay log.
+	- Java script fixes to take the enable_is_queries setting into account
+	- SSH alarms re-organised and an alarm is raised if SSH access is determined to be too slow.
+	- GroupRepl: fixing add-replication slave bug
+	- A JS script to change password on all MySQL servers (mainly useful only for NDB)
+	- ProxySQL: small fix for ‘latency’. Older versions used Latency_ms, newer Latency_us.
+	- User option: ``enable_is_queries`` = 0|1
+	- Detect schema changes (CREATE and ALTER TABLE. Drop table is not supported yet). New options: ``schema_change_detection_address``, ``schema_change_detection_databases``, ``schema_change_detection_pause_time_ms`` must be set in ``/etc/cmon.d/cmon_X.cnf`` to enable the feature. A new Operation Report (Schema Change) must be scheduled. 
+	- Creating a report of 100 000 schemas and tables will take about 5-10 minutes depending on hardware. Configure the ``schema_change_detection_address`` to run on a replication slave or an async slave connected to e.g a Galera or Group Replication Cluster. For NDB this ``schema_change_detection_address`` should be set to a MySQL server used for admin purposes. Throttle the detection process with ``schema_change_detection_pause_time_ms. schema_change_detection_databases`` is a comma separated string of database names and also supports wildcards, e.g 'DB%', will evaluate all database starting with DB.
+
+
+Initial Release: April 4th, 2017
+``````````````````````````````````
+
+* Build:
+	- clustercontrol-1.4.1-2967
+	- clustercontrol-cmonapi-1.4.1-257
+	- clustercontrol-nodejs-1.4.1-86
+	- clustercontrol-controller-1.4.1-1811
+
+In this release we have added additional management functions for ProxySQL. You can now view queries passing through ProxySQL, create and edit query rules, host groups/servers, users and variables. We also have support for managing MySQL Galera and Replication clusters using separate managment and data/database IPs for improved security.
+
+* ProxySQL (v2):
+	- Support for MySQL Galera in addition to Replication clusters.
+	- Support for active-standby HA setup with KeepAlived.
+	- Use the Query Monitor to view query digests.
+	- Manage Query Rules (Query Caching, Query Rewrite).
+	- Manage Host Groups (Servers).
+	- Manage ProxySQL DB Users.
+	- Manage ProxySQL System Variables.
+
+* Multiple Networks/Segmented Traffic
+	- Manage MySQL Galera and Replication clusters with management/public IPs for monitoring connections and data/private IPs for replication traffic.
+	- Add Galera nodes or Replication Read Slaves with managament and data IPs.
 
 Changes v1.4.0
 ---------------
+
+Patch Release: March 29th, 2017
+````````````````````````````````
+
+* Build:
+	- clustercontrol-1.4.0-2912
+	- clustercontrol-controller-1.4.0-1798
+
+* UI:
+	- Create/Import NDB Cluster changes (remove the 15 node limitation)
+
+* Controller:
+	- Create NDB Cluster failed due to a bug in RAM detection.
+	- Replication: Roles were not updated correctly when autorecovery was disabled.
+
+Patch Release: March 13th, 2017
+````````````````````````````````
+
+* Build: 
+	- clustercontrol-1.4.0-2812
+	- clustercontrol-controller-1.4.0-1769
+
+* UI:
+	- Fix for 'Copy Log' to work again
+	- Fix broken Galera SSL encryption indicator
+	- Added support to change default ProxySQL listening port 
+	- Further hostname fixes for ProxySQL
+	- License handling fix with notifications
+	
+* Controller:
+	- Added support to change default ProxySQL listening port
+	- Syslog logging fix (command line param ``--syslog``) by adding ``ENABLE_SYSLOG=1`` into ``/etc/default/cmon`` file
+
+Patch Release: Feb 28th, 2017
+````````````````````````````````
+
+* Build: 
+	- clustercontrol-1.4.0-2743
+	- clustercontrol-controller-1748
+
+* UI:
+	- Rebuild Replication Slave did not present available masters
+	- ProxySQL deployment sends IP instead of hostnames when required 
+	- Further improvements to handle RPC API token mismatches
+
+* Controller:
+	- Workaround to handle IP addresses instead of hostnames for ProxySQL deployments
+	- Improvements to avoid create zombie processes
+	- Remove false positive SSH alarms when using a hostname in the ``cmon.cnf`` file
+	- Sending backup failure mails as "critical" notification
+
+
+Patch Release: Feb 15th, 2017
+````````````````````````````````
+
+* Build:
+	- clustercontrol-1.4.0-2709
+	- clustercontrol-controller-1725
+
+* UI:
+	- The Cluster list is no longer disappearing when the CMON process is either restarted, stopped or down
+	- Rebuild slave/change master dialog correctly populates the nodes dropdown
+	- Selecting a node action could at time cause a wrong dialog to show up
+	- Improvements to RPC API Token mismatch error messages
+	- 'Check for updates’ in the Settings page is deprecated/removed
+
+* Controller:
+	- Galera: ``wsrep_notify_cmd`` pointing to the script ``wsrep_notify_cc`` (discontinued) was invalidated wrongly.
+	- Galera: Fixes in configuration to support 2.4.5 of Percona Xtrabackup and MariaDb Cluster 10.1, due to this bug https://bugs.launchpad.net/percona-xtrabackup/+bug/1647340.
+	- Avoid samping from a failed node
+	- Deployment: removed ``--purge`` from ``apt-get remove``, to handle ``/var/lib/mysql`` as a mountpoint.
+
+Patch Release: Feb 8th, 2017
+````````````````````````````````
+
+* Build:
+	- clustercontrol-1.4.0-2659
+
+* UI:
+	- Correct filtering with config parameters in the Configuration Management
+	- Read-Only switcher removed from the Overview Page. You can now only change the read-only status from the Nodes page's action menu
+	- Fix issue with the Nodes page's action menu where the wrong action item was selected and could accidentally be performed instead
+	- Improvements to the cluster and node status updates cycles. 
+	- New <webdir>/clustercontrol/bootstrap.php variable to control refresh intervals: ``define('STATUS_REFRESH_RATE', 10000);``. Default is now 10s from before 30s.
 
 Patch Release: Feb 5th, 2017
 ````````````````````````````````

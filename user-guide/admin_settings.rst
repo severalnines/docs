@@ -285,7 +285,10 @@ The report provides information about:
 		- Network Throughput
 		- Server Load
 		- Handler
-	- Package Upgrade Report (generating available software and security packages to upgrade)
+	- Package Upgrade Report (generate available software and security packages to upgrade)
+	- Schema Change Report
+		- Detect schema changes (CREATE and ALTER TABLE. Drop table is not supported yet)
+		- Need to set ``schema_change_detection_address=1`` inside ``/etc/cmon.d/cmon_X.cnf``.
 
 Operational Reports
 ````````````````````
