@@ -986,7 +986,7 @@ SSH into the controller and then let us create a user called 'dba' that is allow
 
 .. code-block:: bash
 
-	$ s9s user --create --generate-key --controller=”https://localhost:9501” --cmon-user=dba
+	$ s9s user --create --generate-key --controller="https://localhost:9501" --cmon-user=dba
 	Grant user 'dba' succeeded.
 
 .. Note:: Short options exist.
@@ -1019,7 +1019,7 @@ Now we need to set the ``controller_host_name`` and ``controller_port``, and the
 	controller_host_name = localhost
 	controller_port      = 9501
 	rpc_tls              = true
-	# controller = “https://localhost:9501”
+	# controller = "https://localhost:9501"
 
 In order to verify it is working you can list the available clusters:
 
@@ -1133,7 +1133,7 @@ Copy the SSH public key to the ClusterControl Controller host, for example 10.0.
 
 .. code-block:: bash
 
-	$ s9s user --generate-key --create --cmon-user=remote_dba --controller=”https://10.0.1.12:9501”
+	$ s9s user --generate-key --create --cmon-user=remote_dba --controller="https://10.0.1.12:9501"
 	Warning: Permanently added '10.0.1.12' (ECDSA) to the list of known hosts.
 	Connection to 10.0.1.12 closed.
 	Grant user 'remote_dba' succeeded.
@@ -1162,7 +1162,7 @@ The command line client installs manual pages and can be viewed by entering the 
 
 .. code-block:: bash
 
-	$ man s9s-<command group>
+	$ man s9s-{command group}
 
 For example:
 
@@ -1182,7 +1182,7 @@ The general synopsis to execute commands using s9s is:
 
 .. code-block:: bash
 
-	s9s <command group> <options>
+	s9s {command group} {options}
 
 s9s cluster
 '''''''''''
@@ -1265,11 +1265,11 @@ Add a database node on Cluster ID 1:
 
 	$ s9s cluster --add-node --nodes=10.10.10.14 --cluster-id=1 --wait
 
-Remove a database node from cluster ID 1:
+Remove a database node from cluster ID 1 as a background job:
 
 .. code-block:: bash
 
-	$ s9s cluster --remove-node
+	$ s9s cluster --remove-node --nodes=10.10.10.13 --cluster-id=1
 
 s9s node
 '''''''''''
@@ -1325,6 +1325,27 @@ List all nodes:
 	go- 10.1.22-MariaDB-1~xenial   1 MariaDB Galera 10.0.0.209 3306 Up and running
 	go- 10.1.22-MariaDB-1~xenial   1 MariaDB Galera 10.0.0.82  3306 Up and running
 	Total: 4
+	
+Print the configuration for a node:
+
+.. code-block:: bash
+
+	$ s9s node --list-config --nodes=10.0.0.3
+	...
+	mysqldump   max_allowed_packet                     512M
+	mysqldump   user                                   backupuser
+	mysqldump   password                               nWC6NSm7PnnF8zQ9
+	xtrabackup  user                                   backupuser
+	xtrabackup  password                               nWC6NSm7PnnF8zQ9
+	MYSQLD_SAFE pid-file                               /var/lib/mysql/mysql.pid
+	MYSQLD_SAFE basedir                                /usr/
+	Total: 71
+
+Push a configuration option inside my.cnf (max_connections=500) on node 10.0.0.3:
+
+.. code-block:: bash
+
+	$ s9s node --change-config --nodes=10.0.0.3 --opt-group=mysqld --opt-name=max_connections --opt-value=500
 
 s9s backup
 '''''''''''
@@ -1382,7 +1403,7 @@ Assume we have a data node on 10.10.10.20 (port 3306) on cluster id 2, that we w
 
 .. code-block:: bash
 
-	$ s9s backup --create --backup-method=mysqldump  --cluster-id=2 --nodes=10.10.10.20:3306  --backup-directory=/storage/backups
+	$ s9s backup --create --backup-method=mysqldump --cluster-id=2 --nodes=10.10.10.20:3306 --backup-directory=/storage/backups
 
 List all backups for cluster ID 2:
 
@@ -1519,7 +1540,7 @@ View processes running on nodes.
 Name, shorthand                        Description
 ====================================== ===========
 |minus|\ |minus|\ list                 List the processes.
-|minus|\ |minus|\ top                  Continuosly print top processes.
+|minus|\ |minus|\ top                  Continuously print top processes.
 ====================================== ===========
 
 **Options**
@@ -1533,7 +1554,7 @@ Name, shorthand                        Description
 
 **Examples**
 
-Contiously print aggregated view of processes (similar to ``top`` output) of all nodes for cluster ID 1:
+Continuously print aggregated view of processes (similar to ``top`` output) of all nodes for cluster ID 1:
 
 .. code-block:: bash
 
@@ -1587,7 +1608,7 @@ Create a remote s9s user and generate a SSH key for the user:
 
 .. code-block:: bash
 
-	$ s9s user --create --generate-key --cmon-user=dba --controller=”https://10.0.1.12:9501”
+	$ s9s user --create --generate-key --cmon-user=dba --controller="https://10.0.1.12:9501"
 
 List out all users:
 
