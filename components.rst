@@ -899,7 +899,7 @@ We have future plan to push alarms to NodeJS interface, so NodeJS can push them 
 ClusterControl CLI
 ------------------
 
-Also known as **s9s-tools** or **s9s** in short, this optional package is introduced in ClusterControl version 1.4.1. It is a command line tool to interact, control and manage database clusters using the ClusterControl Database Platform. Starting from version 1.4.1, the installer script will automatically install this package on the ClusterControl node. You can also install it on another computer or workstation to manage the database cluster remotely. All communication is encrypted and secure through SSH. The s9s command line project is open source and is located on `GitHub <https://github.com/severalnines/s9s-tools>`_.
+Also known as **s9s-tools**, this optional package is introduced in ClusterControl version 1.4.1, which contains a binary called `s9s`. It is a command line tool to interact, control and manage database clusters using the ClusterControl Database Platform. Starting from version 1.4.1, the installer script will automatically install this package on the ClusterControl node. You can also install it on another computer or workstation to manage the database cluster remotely. All communication is encrypted and secure through SSH. The s9s command line project is open source and is located on `GitHub <https://github.com/severalnines/s9s-tools>`_.
 
 ClusterControl CLI opens a new door for cluster automation where you can easily integrate it with existing deployment automation tools like Ansible, Puppet, Chef or Salt. You can deploy, manage and monitor your cluster without having to use the ClusterControl UI. The following list shows what features are available at the moment:
 
@@ -917,8 +917,8 @@ ClusterControl CLI opens a new door for cluster automation where you can easily 
 	- Add or remove nodes.
 	- Restart nodes in the cluster.
 	- Create database users (CREATE USER, GRANT privileges to user).
-	- Create load balancers	(HAProxy, ProxySQL, MaxScale is not supported).
-	- Create backups (Restore is not supported).
+	- Create load balancers (HAProxy and ProxySQL are supported)
+	- Create and restore backups.
 	- Maintenance mode.
 	- Configuration changes of db nodes.
 
@@ -930,15 +930,65 @@ Installation
 Package Manager (yum/apt)
 '''''''''''''''''''''''''
 
-For RHEL/CentOS, go to `this page <http://software.opensuse.org/download.html?project=home%3Akedazo&package=s9s-tools>`_. You will find complete instructions how to setup the repository and install the s9s-tools package.
+The package list is available at `s9s-tools repository page <http://repo.severalnines.com/s9s-tools/>`_. 
 
-For Debian/Ubuntu, as sudo/root user run:
+RHEL/CentOS
+...........
+
+The repository files for each distribution can be downloaded directly from here:
+
+* CentOS 6: http://repo.severalnines.com/s9s-tools/CentOS_6/s9s-tools.repo
+* CentOS 7: http://repo.severalnines.com/s9s-tools/CentOS_7/s9s-tools.repo
+* RHEL 6: http://repo.severalnines.com/s9s-tools/RHEL_6/s9s-tools.repo
+* RHEL 7: http://repo.severalnines.com/s9s-tools/RHEL_7/s9s-tools.repo
+
+Installation steps are straight-forward:
+
+.. code-block:: bash
+	
+	# CentOS 7
+	$ cd /etc/yum.repos.d
+	$ wget http://repo.severalnines.com/s9s-tools/CentOS_7/s9s-tools.repo
+	$ yum install s9s-tools
+	$ s9s --help
+
+Ubuntu DEB repository (via Launchpad)
+.....................................
+
+s9s-tools package is also hosted on `Launchpad <https://launchpad.net/~severalnines/+archive/ubuntu/s9s-tools>`_. You can use the PPA to your system's Software Sources:
 
 .. code-block:: bash
 
-	$ add-apt-repository ppa:severalnines/s9s-tools
-	$ apt-get update
-	$ apt-get install s9s-tools
+	$ sudo add-apt-repository ppa:severalnines/s9s-tools
+	$ sudo apt-get update
+	$ sudo apt-get install s9s-tools
+	$ s9s --help
+
+Debian (and Ubuntu) DEB repositories
+.....................................
+
+The repository files for each distribution can be downloaded directly from here:
+
+* Debian 7 (Wheezy): http://repo.severalnines.com/s9s-tools/wheezy/
+* Debian 8 (Jessie): http://repo.severalnines.com/s9s-tools/jessie/
+* Ubuntu 12.04 (Precise): http://repo.severalnines.com/s9s-tools/precise/
+* Ubuntu 14.04 (Trusty): http://repo.severalnines.com/s9s-tools/trusty/
+* Ubuntu 16.04 (Xenial): http://repo.severalnines.com/s9s-tools/xenial/
+* Ubuntu 16.10 (Yakkety): http://repo.severalnines.com/s9s-tools/yakkety/
+* Ubuntu 17.04 (Zesty): http://repo.severalnines.com/s9s-tools/zesty/
+
+To install, one would do:
+
+.. code-block:: bash
+
+	# Available distros: wheezy, jessie, precise, trusty, xenial, yakkety, zesty
+	$ DISTRO=jessie
+	$ wget -qO - http://repo.severalnines.com/s9s-tools/${DISTRO}/Release.key | sudo apt-key add -
+	$ echo "deb http://repo.severalnines.com/s9s-tools/${DISTRO}/ ./" | sudo tee /etc/apt/sources.list.d/s9s-tools.list
+	$ sudo apt-get update
+	$ sudo apt-get install s9s-tools
+	$ s9s --help
+
 
 Build From Source
 ''''''''''''''''''
@@ -957,16 +1007,26 @@ To build from source may require additional packages and tools to be installed:
 
 	$ cd s9s-tools
 
-.. Note:: You may need to install packages such as C/C++ compiler, autotools etc.
-
-3. Compile the code:
+3. You may need to install packages such as C/C++ compiler, autotools, openssl-devel etc:
 
 .. code-block:: bash
 
-	$ sh autogen.sh
+	# RHEL/CentOS
+	$ yum groupinstall "Development Tools"
+	$ yum install automake git openssl-devel
+	
+	# Ubuntu/Debian
+	$ sudo apt-get install build-essential automake git libssl-dev byacc flex
+
+4. Compile the source code:
+
+.. code-block:: bash
+
+	$ ./autogen.sh
 	$ ./configure
 	$ make
 	$ make install
+	$ s9s --help
 
 It is possible to build the s9s command line client on Linux and Mac OS/X.
 
@@ -1094,7 +1154,9 @@ And change to:
 
 	RPC_BIND_ADDRESSES="127.0.0.1,10.0.1.12"
 
-Here we assume the public IP address of the controller is 10.0.1.12. Naturally, you should lock down this IP with firewall rules only allowing access from the remote servers you wish to access the controller from.
+Here we assume the public IP address of the controller is 10.0.1.12. 
+
+.. Attention:: Naturally, you should lock down this IP with firewall rules only allowing access from the remote servers you wish to access the controller from.
 
 2. Restart the controller and check the log:
 
@@ -1259,11 +1321,17 @@ Delete a cluster with cluster ID 1:
 
 	$ s9s cluster --delete --cluster-id=1
 	
-Add a database node on Cluster ID 1:
+Add a new database node on Cluster ID 1:
 
 .. code-block:: bash
 
 	$ s9s cluster --add-node --nodes=10.10.10.14 --cluster-id=1 --wait
+
+Create an HAproxy load balancer, 192.168.55.198 on cluster ID 1:
+
+.. code-block:: bash
+
+	s9s cluster --add-node --cluster-id=1 --nodes="haproxy://192.168.55.198" --wait
 
 Remove a database node from cluster ID 1 as a background job:
 
@@ -1360,6 +1428,8 @@ The s9s client also needs to know:
 	* The node to backup.
 	* The databases that should be included.
 	
+By default, the backups will be stored on the controller node. If you wish to store the backup on the data node, you can set the flag ``--on-node``.
+	
 .. Note:: If you are using Percona Xtrabackup, an incremental backup requires that there is already a full backup made of the same databases (all or individually specified). Otherwise, the incremental backup will be upgraded to a full backup.
 
 **Usage**
@@ -1411,6 +1481,14 @@ List all backups for cluster ID 2:
 
 	$ s9s backup --list --cluster-id=2 --long --human-readable
 
+.. Note:: Omit the ``--cluster-id=2`` and to see the backup records for all your cluster.
+
+Restore backup ID 3 on cluster ID 2:
+
+.. code-block:: bash
+	
+	$ s9s backup --restore --cluster-id=2 --backup-id=3 --wait
+
 s9s job
 '''''''''''
 
@@ -1428,6 +1506,8 @@ View jobs.
 Name, shorthand                        Description
 ====================================== ===================
 |minus|\ |minus|\ list                 List the jobs.
+|minus|\ |minus|\ log                  Inspect the job messages.
+|minus|\ |minus|\ wait                 Attach to a job and see the progress and status.
 ====================================== ===================
 
 **Options**
@@ -1439,8 +1519,6 @@ Name, shorthand                            Description
 |minus|\ |minus|\ date-format=FORMAT       The format of the dates printed.
 |minus|\ |minus|\ from=DATE&TIME           The start of the interval to be printed.
 |minus|\ |minus|\ until=DATE&TIME          The end of the interval to be printed.
-|minus|\ |minus|\ wait                     Wait until the job ends.
-|minus|\ |minus|\ log                      Wait and monitor job messages.
 |minus|\ |minus|\ schedule=DATE&TIME       Run the job at the specified time.
 ========================================== ===========
 
