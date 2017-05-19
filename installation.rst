@@ -135,11 +135,17 @@ On ClusterControl server, run following commands:
   $ chmod +x install-cc
   $ sudo ./install-cc   # omit sudo if you run as root
 
-If you have multiple network interface cards, assign primary IP address for HOST variable as per example below:
+If you have multiple network interface cards, assign primary IP address for `HOST` variable as per example below:
 
 .. code-block:: bash
 
   $ HOST=192.168.1.10 ./install-cc # as root or sudo user
+
+By default, the script will allocate 50% of the host's RAM to InnoDB buffer pool. You can change this by assigning a value in MB for `INNODB_BUFFER_POOL_SIZE` variable as per example below:
+
+.. code-block:: bash
+
+	$ INNODB_BUFFER_POOL_SIZE=512 ./install-cc # as root or sudo user
 
 .. Note:: ClusterControl relies on a MySQL server as a data repository for the clusters it manages and an Apache server for the User Interface. The installation script will always install an Apache server on the host. An existing MySQL server can be used or a new MySQL server install is configured for minimum system requirements. If you have a larger server please make the necessary changes to the my.cnf file and restart the MySQL server after the installation.
 
