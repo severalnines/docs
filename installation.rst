@@ -125,7 +125,7 @@ We have a bunch of scripts and tools to automate and simplify the installation p
 Installer Script (install-cc)
 `````````````````````````````
 
-Installer script is the recommended way to install ClusterControl. The script must be downloaded and executed on ClusterControl node, which performs all necessary steps to install and configure ClusterControl's packages and dependencies on that particular host. It also supports offline installation with `NO_INET=1` variable exported, however you need to have mirrored repository enabled or MySQL and Apache installed and running on that host beforehand. The script assumes that the host can install all dependencies via operating system repository.
+Installer script is the recommended way to install ClusterControl. The script must be downloaded and executed on ClusterControl node, which performs all necessary steps to install and configure ClusterControl's packages and dependencies on that particular host. It also supports offline installation with ``NO_INET=1`` variable exported, however you need to have mirrored repository enabled or MySQL and Apache installed and running on that host beforehand. The script assumes that the host can install all dependencies via operating system repository.
 
 On ClusterControl server, run following commands:
 
@@ -135,13 +135,13 @@ On ClusterControl server, run following commands:
   $ chmod +x install-cc
   $ sudo ./install-cc   # omit sudo if you run as root
 
-If you have multiple network interface cards, assign primary IP address for `HOST` variable as per example below:
+If you have multiple network interface cards, assign primary IP address for ``HOST`` variable as per example below:
 
 .. code-block:: bash
 
   $ HOST=192.168.1.10 ./install-cc # as root or sudo user
 
-By default, the script will allocate 50% of the host's RAM to InnoDB buffer pool. You can change this by assigning a value in MB for `INNODB_BUFFER_POOL_SIZE` variable as per example below:
+By default, the script will allocate 50% of the host's RAM to InnoDB buffer pool. You can change this by assigning a value in MB for ``INNODB_BUFFER_POOL_SIZE`` variable as per example below:
 
 .. code-block:: bash
 
