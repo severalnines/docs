@@ -8,6 +8,74 @@ This change logs list details about updates in each version of ClusterControl.
 Changes v1.4.1
 ---------------
 
+Patch Release: June 19th, 2017
+``````````````````````````````````
+
+* Build:
+	- clustercontrol-1.4.1-3384
+
+* UI:
+	- Fix for setting the Settings->Backup's retention period. In future versions *Settings -> Backups* will be deprecated/removed and can be accessed from the Backup page instead.
+	- Fix inconsistent backup executed and next execution time and timezones displayed. UTC timezone is used across the backup page for now.
+	- *Performance -> Transaction Log* is disabled as default. Added a slider to set sampling interval.
+	- 'Add Node' and 'Add Existing Node' now has a data directory input field to change the data directory used for the new node.
+
+Patch Release: May 24th, 2017
+``````````````````````````````````
+
+* Build: 
+	- clustercontrol-1.4.1-3181
+
+* UI:
+	- Alarm category in the Activity Viewer is now correctly showing the component name instead of the type name.
+	- Fix to show correct server name in the individual server load graphs.
+	- Fix regression/empty table for *Performance -> DB Variables*.
+	- Fix to enable editable dropdown to the Add Existing Keepalived form for HAProxy.
+	- Support for using a custom port when adding a MySQL Asynchronous Slave (MySQL Replication)
+	- Fix for *Configuration Management -> Change* to list only valid nodes.
+	- *Performance -> Status Time Machine* is now deprecated/removed.
+
+Patch Release: May 20th, 2017
+``````````````````````````````````
+
+* Build:
+	- clustercontrol-controller-1902
+
+* Controller:
+	- Disable by default tx deadlock detection as it takes a lot of CPU. Added new param: ``db_deadlock_check_interval``
+	- How often to check for deadlocks. 0 means disabled (default). Specified in seconds. (default: 0).
+	- Enable in ``/etc/cmon.d/cmon_X.cnf`` (if you want to enable it, then 20 is a good value) and restart cmon.
+	- Sample controller IP seen by MySQL nodes once after every cmon restart.
+	- logrotate (wtmp) more often and restart accounts-daemon
+	- A fix of ``show_db_users`` and ``show_db_unusued_accounts`` java scripts.
+
+Patch Release: May 12th, 2017
+``````````````````````````````````
+
+* Build:
+	- clustercontrol-1.4.1-3121
+	- clustercontrol-controller-1.4.1-1890
+	- clustercontrol-cmonapi-274
+
+* UI:
+	- ProxySQL: Fix wrong IP in proxysql selected node header.
+	- PostgreSQL fixes:
+		- Overview page no longer cause high load on the web client
+		- *Performance -> DB Variables* is now loading up correctly
+		- Tooltips added for the graphs
+	- LDAP authentication attempts are logged to a separate log file, ``{webdir}/clustercontrol/app/log/cc-ldap.log``
+	- Minor improvements on how multiple recipients for email notifications are added.
+
+* Controller:
+	- Galera: Fixed a bug in clone cluster
+	- Deployment: Fixed a bug using hostnames, which could cause grant/privilege errors from controller preventing the controller to connect to the managed nodes.
+	- ProxySQL: hashing of passwords in the ``mysql_users`` table.
+	- Backup Reports: Properly transform IP's into hostnames in backup report (due to a previous UI bug, some backups&schedules are used IPs instead of hostnames)
+	- MongoDB: Degraded cluster state reported after removing shard
+
+* CMONAPI:
+	- Fixed an issue causing not all recipients to be listed under Settings (top menu) -> Email Notifications
+
 Patch Release: April 24th, 2017
 ``````````````````````````````````
 
