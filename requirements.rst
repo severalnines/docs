@@ -25,6 +25,7 @@ Following is the expected system environment for the ClusterControl host:
 * Tested cloud platform:
 	* AWS EC2
 	* RackSpace Cloud
+	* Digital Ocean
 * Internet connection (for selected cluster deployment)
 
 Operating system
