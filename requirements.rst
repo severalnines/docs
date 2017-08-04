@@ -107,7 +107,7 @@ The following table shows supported database clusters with recommended minimum n
 Firewall and Security Groups
 ----------------------------
 
-If you used Severalnines Configurator to deploy a cluster, the deployment script disables firewalls by default to minimize the possibilities of failure during the cluster deployment. Once it is completed, it is important to secure the ClusterControl node and the database cluster. We recommend user to isolate their database infrastructure from the public Internet and just whitelist the known hosts or networks to connect to the database cluster.
+It is important to secure the ClusterControl node and the database cluster. We recommend user to isolate their database infrastructure from the public Internet and just whitelist the known hosts or networks to connect to the database cluster.
 
 ClusterControl requires ports used by the following services to be opened/enabled:
 
@@ -117,8 +117,9 @@ ClusterControl requires ports used by the following services to be opened/enable
 * HTTPS (default is 443)
 * MySQL (default is 3306)
 * CMON RPC (default is 9500)
-* HAProxy stats (if installed on ClusterControl node - default is 9600)
-* MySQL load balance (if HAProxy is installed on ClusterControl node - default is 3307)
+* CMON RPC TLS (default is 9501)
+* CMON Events (default is 9510)
+* CMON SSH (default is 9511)
 * Streaming port for mysqldump through netcat (default is 9999)
 
 ClusterControl supports various database and application vendors and each has its own set of standard ports that need to be reachable. Following ports and services need to be reachable by ClusterControl on the managed database nodes:

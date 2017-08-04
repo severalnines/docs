@@ -6,7 +6,7 @@ Provides summary of all database nodes in the cluster. This page is accessible o
 Actions
 ```````
 
-Provides shortcuts to main cluster functionality. Each of database clusters has its own set of functionality as described below:
+Provides shortcuts to main cluster functionality. Each database cluster has its own set of functionality as described below:
 
 Galera Cluster
 ''''''''''''''

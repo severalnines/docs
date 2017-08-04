@@ -1537,35 +1537,9 @@ The following example shows how to interact with Mongo:
 To-do
 -----
 
-* The typeof x is not implemented, although we have the x.typeName() for the same purpose.
-* The with is not implemented.
+* The ``typeof x`` is not implemented, although we have the ``x.typeName()`` for the same purpose.
+* The ``with`` is not implemented.
 * Passing function object arguments as references is not implemented.
 * Implement a CmonTimer based solution to measure milliseconds.
 * Functions inside functions are not implemented.
 * bash host {...}
-
-This looks promising... somewhat beneficial...
-
-.. code-block:: javascript
-
-  var myStructure = {
-    name: {
-      first: "Mel",
-      last: "Smith"
-    },
-    age: 33,
-    hobbies: ["chess", "jogging"]
-  };
-
-Variadic functions would also be nice to have:
-
-.. code-block:: javascript
-
-  var sum = function() {
-    var i, x = 0;
-    for (i = 0; i < arguments.length; ++i) {
-      x += arguments[i];
-    }
-    return x;
-  }
-  sum(1, 2, 3); // returns 6

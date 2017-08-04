@@ -5,8 +5,132 @@ Change Logs
 
 This change logs list details about updates in each version of ClusterControl.
 
+Changes v1.4.2
+---------------
+
+Patch Release: July 24th, 2017
+``````````````````````````````````
+
+* Build:
+	- clustercontrol-1.4.2-3505
+	- clustercontrol-notifications-1.4.2-57
+	- clustercontrol-ssh-1.4.2-25
+	- clustercontrol-controller-1.4.2-2013
+
+* Controller:
+	- ProxySQL log rotate: ProxySQL logs can grow big very fast.
+	- PostgreSQL:  Improved master failure handling to prevent an old master from being accidentally restarted.
+	- Galera/Replication: Adding a node did not update the loadbalancer HAProxy correctly. Xinetd was not started.
+	- Minor fixes to printouts in cmon log file.
+
+* UI:
+	- Add support to disable automatic node discovery at import time for Galera cluster. Manually add IPs/hostnames.
+	- Add support to filter by host for PostgreSQL's Query Monitoring.
+	- Fix a race condition for ProxySQL graphs that would eventually consume all memory and crash the browser.
+	- Fix escapes in match patterns for ProxySQL.
+	- Remove execution flag for systemd service files for cmon-events and cmon-ssh.
+
+Patch Release: July 11th, 2017
+``````````````````````````````````
+
+* Build:
+	- clustercontrol-3465
+
+* UI:
+	- Fix master selection dropdown for add node. No longer shows non-master nodes.
+	- Fix transient node switching glitch in the nodes page.
+	- Fix regression of minimum 2 SQL nodes at deployment (MySQL/NDB). No longer required.
+	- Fix node selection dropdown when restoring a mysqldump. Only masters allowed.
+	- Add standalone option when importing a MySQL Replication cluster.
+	- Remove ProxySQL load balancer option with MySQL/NDB Cluster. Currently not supported.
+	- Fix activity viewer next/prev causing page to scroll.
+	- Fix missing sudo password if it was set when verifying/checking a host with deployment/add nodes.
+
+Patch Release: July 4th, 2017
+``````````````````````````````````
+
+* Build:
+	- clustercontrol-controller-1981
+
+* Controller:
+	- Fixed a cmon grant error (for root and cmon passwords like "!password$$")
+	- Skip .sst from db_growth calculation.
+	- Restore mysqldump bugfix (for strange passwords)
+	- Properly escape cmon password
+	- Don't do smartctl on /dev/mapper devices at all
+	- MySQL:
+		- Deployment (MySQL5.7 templates): added ``ignore-db-dir=lost+found``
+		- Backup: Improved passsword handling of backupuser
+		- Backup: Add compression level for backups
+	- ProxySQL:
+		- Can't remove node when the node is unreachable
+	- PostgreSQL:
+		- Fix a minor systemd override file access rights issue.
+		- Put slave to failed state when replication is known to be broken
+		- Fix a minor systemd ``override.conf`` file access rights issue
+		- An important bugfix for failover (the solution for the nodes stuck in 'startup' replication state)
+	- MySQL Replication:
+		- deeper external checks when there is a master failure. Try to connect from the slaves to the master using the mysql client to determine if the slave can see the master or get's an 2003/2013 error.
+	- Galera:
+		- Rolling-restart could fail due to an old value of the node's cluster size. Collect the wsrep variables before checking the cluster size and this is now done in a time controlled loop.
+
+Initial Release: June 21st, 2017
+``````````````````````````````````
+
+* Build:
+	- clustercontrol-1.4.2-3421
+	- clustercontrol-controller-1969
+	- clustercontrol-cmonapi-279
+	- clustercontrol-notifications-14.2-53
+	- clustercontrol-ssh-1.4.2-21
+
+* ProxySQL:
+	* Copy, Export and Import ProxySQL configurations to/from other instances to make them in sync.
+	* Add Existing standalone ProxySQL instance.
+	* Add Existing Keepalived in active/passive setups with ProxySQL.
+	* Support for 3 ProxySQL instances with a Keepalived active/passive setup.
+	* Simplified Query Cache creation.
+	* Query hits column
+
+* Backup:
+	* Verify/Restore a mysqldump on standalone host that is not part of your clusters.
+	* Verify/Restore an xtrabackup on standalone host that is not part of your clusters.
+	* Customize your backup schedule by using the cron format.
+
+* Notifications (clustercontrol-notifications):
+	* Send Alarms and Events to PagerDuty, VictorOps, OpsGenie, Slack, Telegram or user registered Webhooks.
+
+* Web SSH Console (clustercontrol-ssh):
+	* Open a terminal window to any cluster nodes.
+	* Only supported with Apache 2.4+.
+
+* PostgreSQL:
+	* New Master - Slave(s) cluster deployment wizard (streaming replication).
+	* Automated failover and slave to master promotion.
+	* Rebuild slave.
+
+* Misc:
+	* Fixed TLS connection issues for e-mail sending (SMTP).
+	* Improved configuration handling of include/includeDir directives. 
+	* Database user management RPC API for the s9s command line client.
+	* Continuous improvements to UX/UI.
+	* New cmon-events process to handle notifications to 3rd party services.
+	* New cmon-ssh process to handle Web SSH console access.
+	* Improved error reporting for troubleshooting/support.
+	* Use a custom mysql port when adding a MySQL Asynchronous slave (MySQL Galera).
+
+
 Changes v1.4.1
 ---------------
+
+Patch Release: June 20th, 2017
+``````````````````````````````````
+
+* Build:
+	- clustercontrol-1.4.1-3393
+
+* UI:
+	- Fix for a build issue on Ubuntu/Debian. 
 
 Patch Release: June 19th, 2017
 ``````````````````````````````````

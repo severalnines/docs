@@ -8,12 +8,7 @@ This section provides detailed information on how to administer ClusterControl.
 Upgrading ClusterControl
 ------------------------
 
-There are several ways to upgrade ClusterControl to the latest version. However, we recommend users to perform `Online Upgrade`_ where the instuctions are mostly up-to-date. By default, the ClusterControl UI will notify users of the latest release available via the notification bar, as shown in the following screenshot:
-
-.. image:: img/docs_notification_update.png
-   :align: center
-
-You can disable the notification at *ClusterControl UI > Settings > General Settings > Version > uncheck “Check for updates”*. We recommend our users to keep up-to-date with the latest release once it is available. Details of changes in each release can be found in the `Change Logs <changelog.html>`_.
+There are several ways to upgrade ClusterControl to the latest version. However, we recommend users to perform `Online Upgrade`_ where the instuctions are mostly up-to-date.
 
 Online Upgrade
 ``````````````
@@ -23,18 +18,16 @@ This is the recommended way to upgrade ClusterControl. The following upgrade pro
 Redhat/CentOS
 '''''''''''''
 
-Even if you have previously installed from our tarball or .deb packages, it is possible to switch to yum repository and perform the upgrade.
-
 1) Setup the `Severalnines Repository <installation.html#severalnines-repository>`_.
 
-2) This step is only applicable if you are **upgrading from earlier than version 1.3.x and you have** ``cluster_id`` **parameter inside** ``/etc/cmon.cnf`` (usually when you deployed ClusterControl using the deprecated Severalnines Configurator). Before performing the upgrade procedure as described in step #3, create a default ``/etc/cmon.cnf`` and move the current configuration into ``/etc/cmon.d`` directory. Starting from version 1.3.0, ClusterControl Controller (CMON) handles its configuration files differently, where it expects the ``/etc/cmon.cnf`` is the default configuration file containing minimal parameters. The minimal parameters are:
+2) This step is only applicable if you are **upgrading from version older than 1.3.x and you have** ``cluster_id`` **parameter inside** ``/etc/cmon.cnf`` (usually when you deployed ClusterControl using the deprecated Severalnines Configurator). Before performing the upgrade procedure as described in step #3, create a default ``/etc/cmon.cnf`` and move the current configuration into ``/etc/cmon.d`` directory. Starting from version 1.3.0, ClusterControl Controller (CMON) handles its configuration files differently, where it expects the ``/etc/cmon.cnf`` is the default configuration file containing minimal parameters. The minimal parameters are:
 
 .. code-block:: bash
 
-  mysql_port=[controller mysql server's mysql port]
-  mysql_password=[cmon user password]
-  mysql_hostname=[controller hostname/IP address]
-  hostname=[controller hostname/IP address]
+  mysql_port={controller mysql server port}
+  mysql_password={cmon user password}
+  mysql_hostname={controller hostname/IP address}
+  hostname={controller hostname/IP address}
 
 2a) Create a new CMON configuration directory:
 
@@ -51,7 +44,7 @@ Even if you have previously installed from our tarball or .deb packages, it is p
 
 .. Attention:: If the ``grep`` command returns nothing, you can skip the remaining sub-steps and proceed to step 3.
 
-2c) Copy the existing ``cmon.cnf`` into the configuration directory. The destination must be in ``cmon_[cluster_id].cnf``. For example, if you have ``cluster_id=1`` as retrieved in step 2b, the destination file name is ``cmon_1.cnf``:
+2c) Copy the existing ``cmon.cnf`` into the configuration directory. The destination must be in ``cmon_{cluster_id}.cnf``. For example, if you have ``cluster_id=1`` as retrieved in step 2b, the destination file name is ``cmon_1.cnf``:
 
 .. code-block:: bash
   
@@ -78,7 +71,7 @@ Even if you have previously installed from our tarball or .deb packages, it is p
 
 Now, we can safely perform the package upgrade as described in the next steps.
 
-.. Note:: Your old configuration file now lives in ``/etc/cmon.d/cmon_[cluster_id].cnf``.
+.. Note:: Your old configuration file now lives in ``/etc/cmon.d/cmon_{cluster_id}.cnf``.
 
 
 3) Clear yum cache so it will retrieve the latest repository list and perform the upgrade:
@@ -86,9 +79,9 @@ Now, we can safely perform the package upgrade as described in the next steps.
 .. code-block:: bash
 
 	$ yum clean all
-	$ yum install clustercontrol clustercontrol-cmonapi clustercontrol-controller clustercontrol-nodejs
+	$ yum install clustercontrol clustercontrol-cmonapi clustercontrol-controller clustercontrol-ssh clustercontrol-notifications
 
-4) If you are upgrading from version 1.3.0 or later, you can skip this step. Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.4.1, apply all SQL modification files between those versions in sequential order:
+4) If you are upgrading from version 1.3.0 or later, you can skip this step. Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.4.2, apply all SQL modification files between those versions in sequential order:
 
 .. code-block:: bash
 
@@ -102,6 +95,7 @@ Now, we can safely perform the package upgrade as described in the next steps.
 	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.3.1-1.3.2.sql
 	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.3.2-1.4.0.sql
 	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.4.0-1.4.1.sql
+	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.4.1-1.4.2.sql
 	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_data.sql
 
 .. Attention:: ClusterControl 1.3.0 introduces automatic schema upgrade where it will check the CMON DB version upon startup after the upgrade. If the schema version is not as expected, it will perform the import automatically.
@@ -118,31 +112,39 @@ Now, we can safely perform the package upgrade as described in the next steps.
 
 	$ rm -f /var/www/html/clustercontrol/app/tmp/cache/models/*
 
-7) Restart the CMON controller service:
+7) Restart the ClusterControl services:
+
+For sysvinit and upstart:
 
 .. code-block:: bash
 
-	$ service cmon restart # sysvinit
-	$ systemctl restart cmon # systemd
+	$ service cmon restart
+	$ service cmon-ssh restart
+	$ service cmon-events restart
+
+For systemd:
+
+.. code-block:: bash
+
+	$ systemctl restart cmon
+	$ systemctl restart cmon-ssh
+	$ systemctl restart cmon-events
 
 Upgrade is now complete. Verify the new version at *ClusterControl UI > Settings > General Settings > Version* or by using command ``cmon -v``. You should re-login if your ClusterControl UI session is active.
 
 Debian/Ubuntu
 '''''''''''''
 
-Even if you have previously installed from our tarball or .deb packages, it is possible to switch to apt repository and perform the upgrade.
-
 1) Setup the `Severalnines Repository <installation.html#severalnines-repository>`_.
 
-2) This step is only applicable if you are **upgrading from earlier than version 1.3.x and you have** ``cluster_id`` **parameter inside** ``/etc/cmon.cnf`` (usually when you deployed ClusterControl using the deprecated Severalnines Configurator). Before performing the package upgrade as described in step #3, create a default ``/etc/cmon.cnf`` and move the current configuration into ``/etc/cmon.d`` directory. Starting from version 1.3.0, ClusterControl Controller (CMON) handles its configuration files differently, where it expects the ``/etc/cmon.cnf`` is the default configuration file containing minimal parameters. The minimal parameters are:
+2) This step is only applicable if you are **upgrading from version older than 1.3.x and you have** ``cluster_id`` **parameter inside** ``/etc/cmon.cnf`` (usually when you deployed ClusterControl using the deprecated Severalnines Configurator). Before performing the package upgrade as described in step #3, create a default ``/etc/cmon.cnf`` and move the current configuration into ``/etc/cmon.d`` directory. Starting from version 1.3.0, ClusterControl Controller (CMON) handles its configuration files differently, where it expects the ``/etc/cmon.cnf`` is the default configuration file containing minimal parameters. The minimal parameters are:
 
 .. code-block:: bash
 
-  mysql_port=[controller mysql server's mysql port]
-  mysql_password=[cmon user password]
-  mysql_hostname=[controller hostname/IP address]
-  hostname=[controller hostname/IP address]
-
+  mysql_port={controller mysql server port}
+  mysql_password={cmon user password}
+  mysql_hostname={controller hostname/IP address}
+  hostname={controller hostname/IP address}
 
 2a) Create a new CMON configuration directory:
 
@@ -159,7 +161,7 @@ Even if you have previously installed from our tarball or .deb packages, it is p
 
 .. Attention:: If the ``grep`` command returns nothing, you can skip the remaining sub-steps and proceed to step 3.
 
-2c) Copy the existing ``cmon.cnf`` into the configuration directory. The destination must be in ``cmon_[cluster_id].cnf``. For example, if you have ``cluster_id=1`` as retrieved in step 2b, the destination file name is ``cmon_1.cnf``:
+2c) Copy the existing ``cmon.cnf`` into the configuration directory. The destination must be in ``cmon_{cluster_id}.cnf``. For example, if you have ``cluster_id=1`` as retrieved in step 2b, the destination file name is ``cmon_1.cnf``:
 
 .. code-block:: bash
   
@@ -186,16 +188,16 @@ Even if you have previously installed from our tarball or .deb packages, it is p
 
 Now, we can safely perform the package upgrade as described in the next steps.
 
-.. Note:: Your old configuration file now lives in ``/etc/cmon.d/cmon_[cluster_id].cnf``.
+.. Note:: Your old configuration file now lives in ``/etc/cmon.d/cmon_{cluster_id}.cnf``.
 
 3) Update the repository list and perform the upgrade:
 
 .. code-block:: bash
 
 	$ sudo apt-get update
-	$ sudo apt-get install clustercontrol clustercontrol-cmonapi clustercontrol-controller clustercontrol-nodejs
+	$ sudo apt-get install clustercontrol clustercontrol-cmonapi clustercontrol-controller clustercontrol-ssh clustercontrol-notifications
 
-4) If you are upgrading from version 1.3.0 or later, you can skip this step. Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.4.1, apply all SQL modification files between those versions in sequential order:
+4) If you are upgrading from version 1.3.0 or later, you can skip this step. Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.4.2, apply all SQL modification files between those versions in sequential order:
 
 .. code-block:: bash
 
@@ -209,6 +211,7 @@ Now, we can safely perform the package upgrade as described in the next steps.
 	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.3.1-1.3.2.sql
 	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.3.2-1.4.0.sql
 	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.4.0-1.4.1.sql
+	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.4.1-1.4.2.sql
 	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_data.sql
 
 .. Attention:: ClusterControl 1.3.0 introduces automatic schema upgrade where it will check the CMON DB version upon startup after the upgrade. If the schema version is not as expected, it will perform the import automatically.
@@ -231,12 +234,23 @@ Now, we can safely perform the package upgrade as described in the next steps.
 	# For Debian 7 and Ubuntu 12.04, where wwwroot is /var/www:
 	$ sudo rm -f /var/www/clustercontrol/app/tmp/cache/models/*
 
-7) Restart the CMON controller service:
+7) Restart the ClusterControl services:
+
+For sysvinit and upstart:
 
 .. code-block:: bash
 
-	$ sudo service cmon restart # sysvinit
-	$ sudo systemctl restart cmon # systemd
+	$ service cmon restart
+	$ service cmon-ssh restart
+	$ service cmon-events restart
+
+For systemd:
+
+.. code-block:: bash
+
+	$ systemctl restart cmon
+	$ systemctl restart cmon-ssh
+	$ systemctl restart cmon-events
 
 Upgrade is now complete. Verify the new version at *ClusterControl UI > Settings > General Settings > Version* or by using command ``cmon -v``. You should re-login if your ClusterControl UI session is active.
 
@@ -255,19 +269,20 @@ Redhat/CentOS
 
 .. code-block:: bash
 
-	wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.4.1-257-x86_64.rpm
-	wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.4.1-1834-x86_64.rpm
-	wget https://severalnines.com/downloads/cmon/clustercontrol-nodejs-1.4.1-86-x86_64.rpm
-	wget https://severalnines.com/downloads/cmon/clustercontrol-1.4.1-3002-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-1.4.2-3505-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.4.2-279-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.4.2-2013-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications-1.4.2-57-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh-1.4.2-25-x86_64.rpm
 
-2) This step is only applicable if you are **upgrading to version 1.3.x and you have** ``cluster_id`` **parameter inside** ``/etc/cmon.cnf`` (usually when you deployed ClusterControl using Severalnines Configurator). Before performing the package upgrade as described in step #3, create a default ``/etc/cmon.cnf`` and move the current configuration into ``/etc/cmon.d`` directory. Starting from version 1.3.0, ClusterControl Controller (CMON) handles its configuration files differently, where it expects the ``/etc/cmon.cnf`` is the default configuration file containing minimal parameters. The minimal parameters are:
+2) This step is only applicable if you are **upgrading from version older than 1.3.x and you have** ``cluster_id`` **parameter inside** ``/etc/cmon.cnf`` (usually when you deployed ClusterControl using Severalnines Configurator). Before performing the package upgrade as described in step #3, create a default ``/etc/cmon.cnf`` and move the current configuration into ``/etc/cmon.d`` directory. Starting from version 1.3.0, ClusterControl Controller (CMON) handles its configuration files differently, where it expects the ``/etc/cmon.cnf`` is the default configuration file containing minimal parameters. The minimal parameters are:
 
 .. code-block:: bash
 
-  mysql_port=[controller mysql server's mysql port]
-  mysql_password=[cmon user password]
-  mysql_hostname=[controller hostname/IP address]
-  hostname=[controller hostname/IP address]
+  mysql_port={controller mysql server port}
+  mysql_password={cmon user password}
+  mysql_hostname={controller hostname/IP address}
+  hostname={controller hostname/IP address}
 
 
 2a) Create a new CMON configuration directory:
@@ -285,7 +300,7 @@ Redhat/CentOS
   
 .. Attention:: If the ``grep`` command returns nothing, you may skip the remaining sub-steps and proceed to step 3.
 
-2c) Copy the existing ``cmon.cnf`` into the configuration directory. The destination must be in ``cmon_[cluster_id].cnf``. For example, if you have ``cluster_id=1`` as retrieved in step 2b, the destination file name is ``cmon_1.cnf``:
+2c) Copy the existing ``cmon.cnf`` into the configuration directory. The destination must be in ``cmon_{cluster_id}.cnf``. For example, if you have ``cluster_id=1`` as retrieved in step 2b, the destination file name is ``cmon_1.cnf``:
 
 .. code-block:: bash
   
@@ -312,7 +327,7 @@ Redhat/CentOS
 
 Now, we can safely perform the package upgrade as described in the next steps.
 
-.. Note:: Your old configuration file now lives in ``/etc/cmon.d/cmon_[cluster_id].cnf``.
+.. Note:: Your old configuration file now lives in ``/etc/cmon.d/cmon_{cluster_id}.cnf``.
 
 3) Install via yum so dependencies are met:
 
@@ -321,7 +336,7 @@ Now, we can safely perform the package upgrade as described in the next steps.
 	$ yum localinstall clustercontrol-*
 
 
-4) If you are upgrading from version 1.3.0 or later, you can skip this step. Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.4.1, apply all SQL modification files between those versions in sequential order:
+4) If you are upgrading from version 1.3.0 or later, you can skip this step. Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.4.2, apply all SQL modification files between those versions in sequential order:
 
 .. code-block:: bash
 
@@ -335,6 +350,7 @@ Now, we can safely perform the package upgrade as described in the next steps.
 	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.3.1-1.3.2.sql
 	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.3.2-1.4.0.sql
 	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.4.0-1.4.1.sql
+	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.4.1-1.4.2.sql
 	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_data.sql
 
 .. Attention:: ClusterControl 1.3.0 introduces automatic schema upgrade where it will check the CMON DB version upon startup after the upgrade. If the schema version is not as expected, it will perform the import automatically.
@@ -351,38 +367,47 @@ Now, we can safely perform the package upgrade as described in the next steps.
 
 	$ rm -f /var/www/html/clustercontrol/app/tmp/cache/models/*
 
-7) Restart the CMON controller service:
+7) Restart the ClusterControl services:
+
+For sysvinit and upstart:
 
 .. code-block:: bash
 
-	$ service cmon restart # sysvinit
-	$ systemctl restart cmon # systemd
+	$ service cmon restart
+	$ service cmon-ssh restart
+	$ service cmon-events restart
+
+For systemd:
+
+.. code-block:: bash
+
+	$ systemctl restart cmon
+	$ systemctl restart cmon-ssh
+	$ systemctl restart cmon-events
 
 Upgrade is now complete. Verify the new version at *ClusterControl UI > Settings > General Settings > Version*. You should re-login if your ClusterControl UI session is active.
 
 Debian/Ubuntu
 .............
 
-Even if you have previously installed from our tarball or .deb packages, it is possible to switch to apt repository and perform the upgrade.
-
 1) Download the latest version of ClusterControl related DEB packages from `Severalnines download site <http://www.severalnines.com/downloads/cmon/>`_:
 
 .. code-block:: bash
 
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol_1.4.1-3002_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-nodejs_1.4.1-86_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.4.1-257_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.4.1-1834-x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol_1.4.2-3505_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.4.2-279_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.4.2-2013-x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications_1.4.2-57_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh_1.4.2-25_x86_64.deb
 
-2) This step is only applicable if you are **upgrading to version 1.3.x and you have** ``cluster_id`` **parameter inside** ``/etc/cmon.cnf`` (usually when you deployed ClusterControl using Severalnines Configurator). Before performing the package upgrade as described in step #3, create a default ``/etc/cmon.cnf`` and move the current configuration into ``/etc/cmon.d`` directory. Starting from version 1.3.0, ClusterControl Controller (CMON) handles its configuration files differently, where it expects the ``/etc/cmon.cnf`` is the default configuration file containing minimal parameters. The minimal parameters are:
+2) This step is only applicable if you are **upgrading from version older than 1.3.x and you have** ``cluster_id`` **parameter inside** ``/etc/cmon.cnf`` (usually when you deployed ClusterControl using Severalnines Configurator). Before performing the package upgrade as described in step #3, create a default ``/etc/cmon.cnf`` and move the current configuration into ``/etc/cmon.d`` directory. Starting from version 1.3.0, ClusterControl Controller (CMON) handles its configuration files differently, where it expects the ``/etc/cmon.cnf`` is the default configuration file containing minimal parameters. The minimal parameters are:
 
 .. code-block:: bash
 
-  mysql_port=[controller mysql server's mysql port]
-  mysql_password=[cmon user password]
-  mysql_hostname=[controller hostname/IP address]
-  hostname=[controller hostname/IP address]
-
+  mysql_port={controller mysql server's mysql port}
+  mysql_password={cmon user password}
+  mysql_hostname={controller hostname/IP address}
+  hostname={controller hostname/IP address}
 
 2a) Create a new CMON configuration directory:
 
@@ -399,7 +424,7 @@ Even if you have previously installed from our tarball or .deb packages, it is p
 
 .. Attention:: If the ``grep`` command returns nothing, you may skip the remaining sub-steps and proceed to step 3.
 
-2c) Copy the existing ``cmon.cnf`` into the configuration directory. The destination must be in ``cmon_[cluster_id].cnf``. For example, if you have cluster_id=1 as retrieved in step 2b, the destination file name is ``cmon_1.cnf``:
+2c) Copy the existing ``cmon.cnf`` into the configuration directory. The destination must be in ``cmon_{cluster_id}.cnf``. For example, if you have cluster_id=1 as retrieved in step 2b, the destination file name is ``cmon_1.cnf``:
 
 .. code-block:: bash
   
@@ -426,15 +451,15 @@ Even if you have previously installed from our tarball or .deb packages, it is p
 
 Now, we can safely perform the package upgrade as described in the next steps.
 
-.. Note:: Your old configuration file now lives in ``/etc/cmon.d/cmon_[cluster_id].cnf``.
+.. Note:: Your old configuration file now lives in ``/etc/cmon.d/cmon_{cluster_id}.cnf``.
 
 3) Install via dpkg:
 
 .. code-block:: bash
 
-	$ dpkg -i clustercontrol_1.4.1-3002_x86_64.deb clustercontrol-cmonapi_1.4.1-257_x86_64.deb clustercontrol-controller-1.4.1-1834-x86_64.deb clustercontrol-nodejs_1.4.1-86_x86_64.deb
+	$ dpkg -i clustercontrol_1.4.2-3505_x86_64.deb clustercontrol-cmonapi_1.4.2-279_x86_64.deb clustercontrol-controller-1.4.2-2013-x86_64.deb clustercontrol-notifications_1.4.2-57_x86_64.deb clustercontrol-ssh_1.4.2-25_x86_64.deb
 
-4) Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.4.1, apply all SQL modification files between those versions in sequential order:
+4) Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.4.2, apply all SQL modification files between those versions in sequential order:
 
 .. code-block:: bash
 
@@ -448,6 +473,7 @@ Now, we can safely perform the package upgrade as described in the next steps.
 	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.3.1-1.3.2.sql
 	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.3.2-1.4.0.sql
 	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.4.0-1.4.1.sql
+	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_db_mods-1.4.1-1.4.2.sql
 	$ mysql -f -h127.0.0.1 -ucmon -p cmon < /usr/share/cmon/cmon_data.sql
 
 .. Attention:: ClusterControl 1.3.0 introduces automatic schema upgrade where it will check the CMON DB version upon startup after the upgrade. If the schema version is not as expected, it will perform the import automatically.
@@ -470,12 +496,23 @@ Now, we can safely perform the package upgrade as described in the next steps.
 	# For Debian and Ubuntu 12.04, where wwwroot is /var/www:
 	$ sudo rm -f /var/www/clustercontrol/app/tmp/cache/models/*
 
-7) Restart the CMON controller service:
+7) Restart the ClusterControl services:
+
+For sysvinit and upstart:
 
 .. code-block:: bash
 
-	$ sudo service cmon restart # sysvinit
-	$ sudo systemctl restart cmon # systemd
+	$ service cmon restart
+	$ service cmon-ssh restart
+	$ service cmon-events restart
+
+For systemd:
+
+.. code-block:: bash
+
+	$ systemctl restart cmon
+	$ systemctl restart cmon-ssh
+	$ systemctl restart cmon-events
 
 Upgrade is now complete. Verify the new version at *ClusterControl UI > Settings > General Settings > Version*. You should re-login if your ClusterControl UI session is active.
 
@@ -487,6 +524,9 @@ The backup tool in ``s9s_upgrade_cmon`` is deprecated. To backup ClusterControl 
 ClusterControl CMON Controller
 ````````````````````````````````
 
+* CMON binary: ``/usr/sbin/cmon``
+* CMON SSH binary: ``/usr/sbin/cmon-ssh``
+* CMON Events binary: ``/usr/sbin/cmon-events``
 * CMON main configuration file: ``/etc/cmon.cnf``
 * CMON configuration directory and all its content: ``/etc/cmon.d/*``
 * CMON cron file: ``/etc/cron.d/cmon``
@@ -535,9 +575,9 @@ ClusterControl requires ports used by the following services to be opened/enable
 * HTTPS (default is 443)
 * MySQL (default is 3306)
 * CMON RPC (default is 9500)
-* HAproxy statistic page (if HAproxy is installed on ClusterControl node - default is 9600)
-* MySQL load balance through HAproxy (if HAproxy is installed on ClusterControl node - default is 3307 or 33306)
-* MySQL load balance through MaxScale (if MaxScale is installed on ClusterControl node - default is 6033)
+* CMON RPC-TLS (default is 9501)
+* CMON Events (default is 9510)
+* CMON SSH (default is 9511)
 * Streaming port for database backup through netcat (default is 9999)
 
 SSH
@@ -576,7 +616,7 @@ ClusterControl requires same custom SSH port across all nodes in the cluster. Ma
 HTTP or HTTPS
 `````````````
 
-Running HTTP or HTTPS on custom port will change the ClusterControl UI and the CMONAPI URL e.g :samp:`http://{ClusterControl_host}:8080/clustercontrol` and :samp:`https://{ClusterControl_host}:4433/cmonapi`. Thus, you may need to re-register the new CMONAPI URL for managed cluster at ClusterControl UI Cluster Registration page.
+Running HTTP or HTTPS on custom port will change the ClusterControl UI and the CMONAPI URL e.g :samp:`http://{ClusterControl_host}:8080/clustercontrol` and :samp:`https://{ClusterControl_host}:4433/cmonapi`. Thus, you may need to re-register the new CMONAPI URL for managed cluster at ClusterControl UI `Cluster Registration <user-guide/index.html#cluster-registrations>`_ page.
 
 MySQL
 `````
@@ -586,14 +626,14 @@ If you are running MySQL for CMON database on different ports, several areas nee
 +-----------------------------------------+-------------------------------------------------+-----------------------------------------+
 | Area                                    | File                                            | Example                                 |
 +=========================================+=================================================+=========================================+
-| CMON configuration file                 | ``/etc/cmon.cnf`` or ``/etc/cmon.d/cmon_N.cnf`` | ``mysql_port=[custom_port]``            |
+| CMON configuration file                 | ``/etc/cmon.cnf`` or ``/etc/cmon.d/cmon_N.cnf`` | ``mysql_port={custom_port}``            |
 +-----------------------------------------+-------------------------------------------------+-----------------------------------------+
-| ClusterControl CMONAPI database setting | ``wwwroot/cmonapi/config/database.php``         | ``define('DB_PORT', '[custom_port]');`` |
+| ClusterControl CMONAPI database setting | ``{wwwroot}/cmonapi/config/database.php``       | ``define('DB_PORT', '{custom_port}');`` |
 +-----------------------------------------+-------------------------------------------------+-----------------------------------------+
-| ClusterControl UI database setting      | ``wwwroot/clustercontrol/bootstrap.php``        | ``define('DB_PORT', '[custom_port]');`` |
+| ClusterControl UI database setting      | ``{wwwroot}/clustercontrol/bootstrap.php``      | ``define('DB_PORT', '{custom_port}');`` |
 +-----------------------------------------+-------------------------------------------------+-----------------------------------------+
 
-.. Note:: Where ``[wwwroot]`` is equal to the Apache document root and ``[custom_port]`` is the MySQL custom port.
+.. Note:: Where ``{wwwroot}`` is the Apache document root and ``{custom_port}`` is the MySQL custom port.
 
 HAProxy
 ```````
@@ -602,7 +642,7 @@ By default, HAproxy statistic page will be configured to run on port 9600. To ch
 
 .. code-block:: bash
 
-	listen admin_page 0.0.0.0:[your custom port]
+	listen admin_page 0.0.0.0:{your custom port}
 
 Save and restart the HAproxy service.
 
@@ -626,44 +666,44 @@ If you intend to manually purge the monitoring data, you can truncate following 
 	mysql> TRUNCATE TABLE cmon_log_entries;
 	mysql> TRUNCATE TABLE collected_logs;
 
-The CMON Controller process has internal log rotation scheduling where it will log up to 5 MB in size before archiving ``/var/log/cmon.log`` and ``/var/log/cmon_[cluster id].log``. The archived log will be named as ``cmon.log.1`` (or ``cmon_[cluster id].log.1``) sequentially, with up to 9 archived log files (total of 10 log files rotation).
+The CMON Controller process has internal log rotation scheduling where it will log up to 5 MB in size before archiving ``/var/log/cmon.log`` and ``/var/log/cmon_{cluster id}.log``. The archived log will be named as ``cmon.log.1`` (or ``cmon_{cluster id}.log.1``) sequentially, with up to 9 archived log files (total of 10 log files rotation).
 
 Migrating IP Address or Hostname
 --------------------------------
 
-ClusterControl relies on proper IP address or hostname configuration. To migrate to a new set of IP address or hostname, please update the old IP address/hostname occurrences in following files:
+ClusterControl relies on proper IP address or hostname configuration. To migrate to a new set of IP address or hostname, please update the old IP address/hostname occurrences in the following files:
 
 * CMON configuration file: ``/etc/cmon.cnf`` and ``/etc/cmon.d/cmon_N.cnf`` (``hostname`` and ``mysql_hostname`` values)
-* ClusterControl CMONAPI configuration file: ``[wwwroot]/cmonapi/config/bootstrap.php``
+* ClusterControl CMONAPI configuration file: ``{wwwroot}/cmonapi/config/bootstrap.php``
 * HAproxy configuration file (if installed): ``/etc/haproxy/haproxy.cfg``
 
-.. Note:: This section does not cover IP address migration for your database nodes. The easiest solution would be to remove the database cluster from ClusterControl UI using *Delete Cluster* and add it again by using *Import Existing Server/Cluster* in the deploy dialog.
+.. Note:: This section does not cover IP address migration of your database nodes. The easiest solution would be to remove the database cluster from ClusterControl UI using *Delete Cluster* and add it again by using *Import Existing Server/Cluster* in the deployment dialog.
 
 Next, revoke 'cmon' user privileges for old hosts on ClusterControl node and all managed database nodes:
 
 .. code-block:: mysql
 
-	REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'cmon'@'[old ClusterControl IP address or hostname]';
+	mysql> REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'cmon'@'{old ClusterControl IP address or hostname}';
 
 Then, grant cmon user with new IP address or hostname on ClusterControl node and all managed database nodes:
 
 .. code-block:: mysql
 
-	GRANT ALL PRIVILEGES ON *.* TO 'cmon'@'[new ClusterControl IP address or hostname]' IDENTIFIED BY '[mysql password]' WITH GRANT OPTION;
-	FLUSH PRIVILEGES;
+	mysql> GRANT ALL PRIVILEGES ON *.* TO 'cmon'@'{new ClusterControl IP address or hostname}' IDENTIFIED BY '{mysql password}' WITH GRANT OPTION;
+	mysql> FLUSH PRIVILEGES;
 
 Or, instead of revoke and re-grant, you can just simply update the MySQL user table:
 
 .. code-block:: mysql
 
-	UPDATE mysql.user SET host='[new IP address]' WHERE host='[old IP address]';
-	FLUSH PRIVILEGES;
+	mysql> UPDATE mysql.user SET host='{new IP address}' WHERE host='{old IP address}';
+	mysql> FLUSH PRIVILEGES;
 
 Restart CMON service to apply the changes:
 
 .. code-block:: bash
 
-	service cmon restart
+	$ service cmon restart
 
 Examine the output of the CMON log file to verify the IP migration status. The CMON Controller should report errors and shut down if it can not connect to the specified database hosts or the CMON database. Once the CMON Controller is started, you can remove the old IP addresses/hostname from the managed host list at *ClusterControl > Manage > Hosts*.
 
@@ -709,28 +749,28 @@ On ClusterControl server, get :term:`s9s-admin tools` from our `Github repositor
 
 .. code-block:: bash
 
-	git clone https://github.com/severalnines/s9s-admin.git
+	$ git clone https://github.com/severalnines/s9s-admin.git
 
 If you have already cloned s9s-admin, it's important for you to update it first:
 
 .. code-block:: bash
 
-	cd s9s-admin
-	git pull
+	$ cd s9s-admin
+	$ git pull
 
 To change password for the 'cmon' user:
 
 .. code-block:: bash
 
-	cd s9s-admin/ccadmin
-	./s9s_change_passwd --cmon -i1 -p <current cmon password> -n <new cmon password>
+	$ cd s9s-admin/ccadmin
+	$ ./s9s_change_passwd --cmon -i1 -p <current cmon password> -n <new cmon password>
 
 To change password for the 'root' user:
 
 .. code-block:: bash
 
-	cd s9s-admin/ccadmin
-	./s9s_change_passwd --root -i1 -p <cmon password> -o <old root password> -n <new root password>
+	$ cd s9s-admin/ccadmin
+	$ ./s9s_change_passwd --root -i1 -p <cmon password> -o <old root password> -n <new root password>
 
 .. Warning:: The script only supports alpha-numeric characters. Special characters like "$!%?" will not work.
 
@@ -741,40 +781,39 @@ If ClusterControl is installed on a dedicated host (i.e., not co-located with yo
 
 .. code-block:: mysql
 
-	REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'cmon'@'[ClusterControl address or hostname]';
+	mysql> REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'cmon'@'[ClusterControl address or hostname]';
 
 If ClusterControl is installed through Severalnines repository, use following command to uninstall via respective package manager:
 
 .. code-block:: bash
 
-	yum remove -y clustercontrol clustercontrol-cmonapi clustercontrol-controller clustercontrol-nodejs # Redhat/CentOS
-	sudo apt-get remove -y clustercontrol clustercontrol-cmonapi clustercontrol-controller clustercontrol-nodejs # Debian/Ubuntu
+	$ yum remove -y clustercontrol clustercontrol-cmonapi clustercontrol-controller clustercontrol-ssh clustercontrol-notifications # Redhat/CentOS
+	$ sudo apt-get remove -y clustercontrol clustercontrol-cmonapi clustercontrol-controller clustercontrol-ssh clustercontrol-notifications # Debian/Ubuntu
 
 Else, to uninstall ClusterControl Controller manually so you can to re-use the host for other purposes, kill the CMON process and remove all ClusterControl related files and databases:
 
 .. code-block:: bash
 
-	killall -9 cmon
-	rm -rf /usr/sbin/cmon
-	rm -rf /usr/bin/cmon*
-	rm -rf /usr/bin/s9s_*
-	rm -rf /usr/local/cmon*
-	rm -rf /usr/share/cmon*
-	rm -rf /etc/init.d/cmon
-	rm -rf /etc/cron.d/cmon
-	rm -rf /var/log/cmon*
-	rm -rf /etc/cmon*
-	rm -rf [wwwroot]/cmon*
-	rm -rf [wwwroot]/clustercontrol*
-	rm -rf [wwwroot]/cc-*
+	$ killall -9 cmon
+	$ rm -rf /usr/sbin/cmon*
+	$ rm -rf /usr/bin/cmon*
+	$ rm -rf /usr/bin/s9s_*
+	$ rm -rf /usr/share/cmon*
+	$ rm -rf /etc/init.d/cmon
+	$ rm -rf /etc/cron.d/cmon
+	$ rm -rf /var/log/cmon*
+	$ rm -rf /etc/cmon*
+	$ rm -rf {wwwroot}/cmon*
+	$ rm -rf {wwwroot}/clustercontrol*
+	$ rm -rf {wwwroot}/cc-*
 
 For CMON and ClusterControl UI databases and privileges:
 
 .. code-block:: mysql
 
-	DROP SCHEMA cmon;
-	DROP SCHEMA dcps;
-	REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'cmon'@'[ClusterControl address or hostname]';
-	REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'cmon'@'127.0.0.1';
+	mysql> DROP SCHEMA cmon;
+	mysql> DROP SCHEMA dcps;
+	mysql> REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'cmon'@'{ClusterControl address or hostname}';
+	mysql> REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'cmon'@'127.0.0.1';
 
-.. Note:: Replace ``[wwwroot]`` with value defined in CMON configuration file.
+.. Note:: Replace ``{wwwroot}`` with value defined in CMON configuration file.

@@ -4,26 +4,29 @@
 Components
 ==========
 
-ClusterControl consists of 5 components:
+ClusterControl consists of 6 components:
 
-+----------------------------------+---------------------------+------------------------------------------------------------------------------------+
-| Component                        | Package naming            | Role                                                                               |
-+==================================+===========================+====================================================================================+
-| ClusterControl controller (cmon) | clustercontrol-controller | The brain of ClusterControl. A backend service performing automation, management,  |
-|                                  |                           | monitoring and scheduling tasks. All the collected data will be stored directly    |
-|                                  |                           | inside CMON database                                                               |
-+----------------------------------+---------------------------+------------------------------------------------------------------------------------+
-| ClusterControl REST API [#f1]_   | clustercontrol-cmonapi    | Interprets request and response data between ClusterControl UI and CMON database   |
-+----------------------------------+---------------------------+------------------------------------------------------------------------------------+
-| ClusterControl UI                | clustercontrol            | A modern web user interface to visualize and manage the cluster. It interacts with | 
-|                                  |                           | CMON controller via remote procedure call (RPC) or REST API interface              |
-+----------------------------------+---------------------------+------------------------------------------------------------------------------------+
-| ClusterControl NodeJS            | clustercontrol-nodejs     | This optional package is introduced in ClusterControl version 1.2.12 to provide an |
-|                                  |                           | interface for notification services and integration with 3rd party tools           |
-+----------------------------------+---------------------------+------------------------------------------------------------------------------------+
-| ClusterControl CLI               | s9s-tools                 | Open-source command line tool to manage and monitor clusters provisioned by        |
-|                                  |                           | ClusterControl.                                                                    |
-+----------------------------------+---------------------------+------------------------------------------------------------------------------------+
++------------------------------------+------------------------------+------------------------------------------------------------------------------------+
+| Component                          | Package naming               | Role                                                                               |
++====================================+==============================+====================================================================================+
+| ClusterControl controller (cmon)   | clustercontrol-controller    | The brain of ClusterControl. A backend service performing automation, management,  |
+|                                    |                              | monitoring and scheduling tasks. All the collected data will be stored directly    |
+|                                    |                              | inside CMON database.                                                              |
++------------------------------------+------------------------------+------------------------------------------------------------------------------------+
+| ClusterControl REST API [#f1]_     | clustercontrol-cmonapi       | Interprets request and response data between ClusterControl UI and CMON database.  |
++------------------------------------+------------------------------+------------------------------------------------------------------------------------+
+| ClusterControl UI                  | clustercontrol               | A modern web user interface to visualize and manage the cluster. It interacts with | 
+|                                    |                              | CMON controller via remote procedure call (RPC) or REST API interface.             |
++------------------------------------+------------------------------+------------------------------------------------------------------------------------+
+| ClusterControl SSH                 | clustercontrol-ssh           | Optional package introduced in ClusterControl version 1.4.2 for ClusterControl's   |
+|                                    |                              | web SSH console. Only works with Apache 2.4+.                                      |
++------------------------------------+------------------------------+------------------------------------------------------------------------------------+
+| ClusterControl Notifications       | clustercontrol-notifications | Optional package introduced in ClusterControl version 1.4.2 to provide an          |
+|                                    |                              | interface for notification services and integration with third party tools.        |
++------------------------------------+------------------------------+------------------------------------------------------------------------------------+
+| ClusterControl CLI                 | s9s-tools                    | Open-source command line tool to manage and monitor clusters provisioned by        |
+|                                    |                              | ClusterControl.                                                                    |
++------------------------------------+------------------------------+------------------------------------------------------------------------------------+
 
 ClusterControl Controller (CMON)
 --------------------------------
@@ -776,7 +779,7 @@ Encryption and Security
 Agentless
 `````````
 
-Starting from version 1.2.5, ClusterControl introduces an agentless mode of operation. There is now no need to install agents on the managed nodes. User only need to install the CMON controller package on the ClusterControl host, and make sure that passwordless SSH and the CMON database user GRANTs are properly set up on each of the managed hosts.
+Starting from version 1.2.5, ClusterControl introduces an agentless mode of operation. There is no need to install agents on the managed nodes. Users only need to install the CMON controller package on the ClusterControl host, and make sure that passwordless SSH and the CMON database user GRANTs are properly set up on each of the managed hosts.
 
 The agentless mode is the default and recommended type of setup. Starting from version 1.2.9, an agentful setup is no longer supported.
 
@@ -797,10 +800,8 @@ Note that there is no 1.2.1 to 1.2.2 SQL modification file. That means there is 
 
 .. code-block:: bash
 
-	mysql -f -ucmon -p[cmon_password] -h[mysql_hostname] -P[mysql_port] cmon < /usr/share/cmon/cmon_db.sql
-	mysql -f -ucmon -p[cmon_password] -h[mysql_hostname] -P[mysql_port] cmon < /usr/share/cmon/cmon_data.sql
-
-.. Note:: Replace the variables in square brackets with respective values defined in CMON configuration file.
+	mysql -f -ucmon -p{cmon_password} -h{mysql_hostname} -P{mysql_port} cmon < /usr/share/cmon/cmon_db.sql
+	mysql -f -ucmon -p{cmon_password} -h{mysql_hostname} -P{mysql_port} cmon < /usr/share/cmon/cmon_data.sql
 
 MySQL user 'cmon' needs to have proper access to CMON DB by performing following grant:
 
@@ -808,19 +809,19 @@ Grant all privileges to 'cmon' at ``hostname`` value (as defined in CMON configu
 
 .. code-block:: mysql
 
-	GRANT ALL PRIVILEGES ON *.* TO 'cmon'@'[hostname]' IDENTIFIED BY '[mysql_password]' WITH GRANT OPTION;
+	GRANT ALL PRIVILEGES ON *.* TO 'cmon'@'{hostname}' IDENTIFIED BY '{mysql_password}' WITH GRANT OPTION;
 
 Grant all privileges for 'cmon' at 127.0.0.1 on ClusterControl host:
 
 .. code-block:: mysql
 
-	GRANT ALL PRIVILEGES ON *.* TO 'cmon'@'127.0.0.1' IDENTIFIED BY '[mysql_password]' WITH GRANT OPTION;
+	GRANT ALL PRIVILEGES ON *.* TO 'cmon'@'127.0.0.1' IDENTIFIED BY '{mysql_password}' WITH GRANT OPTION;
 
 For each managed database server, on the managed database server, grant all privileges to cmon at controller's ``hostname`` value (as defined in CMON configuration file) on each of the managed database host:
 
 .. code-block:: mysql
 
-	GRANT ALL PRIVILEGES ON *.* TO 'cmon'@'[hostname]' IDENTIFIED BY '[mysql_password]' WITH GRANT OPTION;
+	GRANT ALL PRIVILEGES ON *.* TO 'cmon'@'{hostname}' IDENTIFIED BY '{mysql_password}' WITH GRANT OPTION;
 
 Don't forget to run ``FLUSH PRIVILEGES`` on each of the above statement so the grant will be kept after restart. If users deploy using the deployment package generated from the Severalnines Cluster Configurator and installer script, this should be configured correctly.
 
@@ -850,7 +851,7 @@ By default, the CMONAPI is running on Apache and located under ``/var/www/html/c
 
 The CMONAPI page can be accessed through following URL:
 
-**http|https://[ClusterControl IP address or hostname]/cmonapi**
+:samp:`https://{ClusterControl IP address or hostname}/cmonapi`
 
 Both ClusterControl CMONAPI and UI must be running on the same version to avoid misinterpretation of request and response data. For instance, ClusterControl UI version 1.2.6 needs to connect to the CMONAPI version 1.2.6.
 
@@ -881,20 +882,57 @@ Similar to the CMONAPI, the ClusterControl UI is running on Apache and located u
 
 ClusterControl UI page can be accessed through following URL: 
 
-**http|https://[ClusterControl IP address or hostname]/clustercontrol**
+:samp:`https://[ClusterControl IP address or hostname]/clustercontrol`
 
 Please refer to `User Guide <user-guide/index.html>`_ for more details on the functionality available in the ClusterControl UI.
 
-ClusterControl NodeJS
----------------------
+ClusterControl SSH
+-------------------
 
-This optional package is introduced in ClusterControl version 1.2.12 to provide an interface for notification services and integration with 3rd party tools like PagerDuty or external mail system. It allows NodeJS to be triggered as part of pseudo-javascript from Developer Studio when the values for the Custom Advisors meet the actual system values.
+This optional package is introduced in ClusterControl v1.4.2. This module provides the ability to connect to SSH console to any of your cluster hosts directly via ClusterControl UI. This can be very useful if you need to quickly log into a database server and access the command line. The package installs a binary called ``cmon-ssh`` located under ``/usr/sbin`` directory and by default listens to port 9511 on the ClusterControl node. It interacts directly with the target host via SSH protocol using the credential (``os_user`` and ``ssh_identity``) configured when deploying or importing the cluster into ClusterControl.
 
-At the time of this writing, Severalnines contributes two NodeJS plugins available at `NPM page <https://www.npmjs.com/search?q=s9s-plugin>`_.
+The SSH module need to be enabled in order to use the feature. If the package is installed directly via package manager, the required steps are configured automatically. The steps are:
 
-This package works differently if compared to ClusterControl plugin interface, whereby ClusterControl executes the plugin script if only alarm is raised/closed. Alarm's rules is hardcorded in ClusterControl which is not as dynamic as Advisors. Advisors extends the ClusterControl capability in health checks and notifications, built on top of ClusterControl Domain Specific Language (DSL). Each Advisors will have to be compiled and scheduled directly from ClusterControl's Developer Studio. The list of scheduled Custom Advisors is available at *ClusterControl > Performance > Advisors*.
+1) Enable the SSH module inside ``clustercontrol/bootstrap.php`` file:
 
-We have future plan to push alarms to NodeJS interface, so NodeJS can push them into a web socket, and all the subscribers (clients) will get those instantly.
+.. code-block:: php
+
+	define('SSH_ENABLED', true);
+
+2) Set up the RewriteRule inside Apache configuration file (above the ``<Directory/>`` definitions):
+
+.. code-block:: bash
+
+	# ClusterControl SSH
+	RewriteEngine On
+	RewriteRule ^/clustercontrol/ssh/term$ /clustercontrol/ssh/term/ [R=301]
+	RewriteRule ^/clustercontrol/ssh/term/ws/(.*)$ ws://127.0.0.1:9511/ws/$1 [P,L]
+	RewriteRule ^/clustercontrol/ssh/term/(.*)$ http://127.0.0.1:9511/$1 [P]
+
+3) Enable the following Apache modules:
+
+.. code-block:: bash
+
+	a2enmod proxy proxy_http proxy_wstunnel
+
+Communication is based on HTTPS, so it is possible to access your servers from behind a firewall that restricts Internet access to only port 443. Access to WebSSH is configurable by the ClusterControl admin through the GUI.
+
+.. Warning:: ClusterControl does not provide extra layers of authentication and authorization when accessing the cluster from web-based SSH terminal. User who has access to the cluster in the ClusterControl UI may capable of accessing the terminal as a privileged user. Use `Access Control <user-guide/index.html#access-control>`_ to limit them.
+
+ClusterControl Notifications
+----------------------------
+
+This optional package is introduced in ClusterControl v1.4.2, deprecating the previous version of ClusterControl NodeJS package (which served the same purpose). Alarms and events can now easily be sent to incident management services like PagerDuty, VictorOps and OpsGenie. You can also run any command available in the `ClusterControl CLI`_ from your CCBot-enabled chat services like Slack and Telegram. Additionally, it provides a generic webhook if you want to integrate with other services to act on status changes in your clusters. The direct connections with these popular incident communication services allow you to customize how you are alerted from ClusterControl when something goes wrong with your database environments.
+
+The package installs a binary called ``cmon-events`` located under ``/usr/sbin`` directory and by default listens to port 9510 on the ClusterControl node.
+
+Additional resources on setting up integration with third-party tools are listed below:
+	* Blogs:
+		* `Introducing the ClusterControl Alerting Integrations <https://severalnines.com/blog/introducing-clustercontrol-alerting-integrations>`_
+		* `Video: ClusterControl ChatOps Integrations - Product Demonstration <https://severalnines.com/blog/video-clustercontrol-chatops-integrations-product-demonstration>`_
+	* Documentation:
+		* `Integrations <user-guide/index.html#integrations>`_
+
 
 ClusterControl CLI
 ------------------
@@ -1739,7 +1777,7 @@ Print the scripts available for cluster ID 1:
 Limitations
 ````````````
 
-Currently the s9s command line tool has a user management module that is not yet fully integrated with the ClusterControl UI and ClusterControl Controller. For example, there is no RBAC (Role-Based Access Control) for a user (see Setup and Configuration how to create a user). This means that any user created to be used with the s9s command line tool has a full access to all clusters managed by the ClusterControl server.
+Currently the s9s command line tool has a user management module that is not yet fully integrated with ClusterControl UI and ClusterControl Controller. For example, there is no RBAC (Role-Based Access Control) for a user (see Setup and Configuration how to create a user). This means that any user created to be used with the s9s command line tool has a full access to all clusters managed by the ClusterControl server.
 
 Users created by the command line client will be shown in Job Messages, but it is not possible to use this user to authenticate and login from the UI. Thus, the users created from the command line client are all super admins.
 

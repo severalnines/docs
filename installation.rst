@@ -151,13 +151,13 @@ By default, the script will allocate 50% of the host's RAM to InnoDB buffer pool
 
 Basically, the installation script will attempt to automate the following tasks:
 
-1. Install and configure a MySQL server (used by ClusterControl to store monitoring data)
-2. Install and configure the ClusterControl controller package via package manager
-3. Install ClusterControl dependencies via package manager
-4. Configure Apache and SSL
-5. Configure ClusterControl API URL and token
-6. Configure ClusterControl Controller with minimal configuration options
-7. Enable the CMON service on boot and start it up
+1. Install and configure a MySQL server (used by ClusterControl to store monitoring data).
+2. Install and configure the ClusterControl controller package via package manager.
+3. Install ClusterControl dependencies via package manager.
+4. Configure Apache and SSL.
+5. Configure ClusterControl API URL and token.
+6. Configure ClusterControl Controller with minimal configuration options.
+7. Enable the CMON service on boot and start it up.
 
 After the installation completes, open your web browser to :samp:`http://{ClusterControl_host}/clustercontrol` and create the default admin user by specifying a valid email address and password in the welcome page.
 
@@ -446,14 +446,14 @@ Ansible Galaxy:
 
 .. code-block:: bash
 
-    $ ansible-galaxy install severalnines.clustercontrol
+	$ ansible-galaxy install severalnines.clustercontrol
 
 Or through Github:
 
 .. code-block:: bash
 
-    $ git clone https://github.com/severalnines/ansible-clustercontrol
-    $ cp -rf ansible-clustercontrol /etc/ansible/roles/severalnines.clustercontrol
+	$ git clone https://github.com/severalnines/ansible-clustercontrol
+	$ cp -rf ansible-clustercontrol /etc/ansible/roles/severalnines.clustercontrol
 
 2. Create a playbook. See `Example Playbook`_ section.
 
@@ -461,7 +461,7 @@ Or through Github:
 
 .. code-block:: bash
 
-    $ ansible-playbook cc.playbook
+	$ ansible-playbook cc.playbook
 
 4) Once ClusterControl is installed, go to :samp:`http://{ClusterControl_host}/clustercontrol` and create the default admin user/password.
 
@@ -469,9 +469,9 @@ Or through Github:
 
 .. code-block:: bash
 
-    $ ssh-copy-id 192.168.0.11 # DB1
-    $ ssh-copy-id 192.168.0.12 # DB2
-    $ ssh-copy-id 192.168.0.13 # DB3
+	$ ssh-copy-id 192.168.0.11 # DB1
+	$ ssh-copy-id 192.168.0.12 # DB2
+	$ ssh-copy-id 192.168.0.13 # DB3
 
 .. Note:: Enter the password to complete the passwordless SSH setup.
 
@@ -504,11 +504,11 @@ Inside ``vars/main.yml``:
 
 .. code-block:: yaml
 
-    controller: true
-    mysql_root_username: admin
-    mysql_root_password: super-user-password
-    cmon_mysql_password: super-cmon-password
-    cmon_mysql_port: 3307
+	controller: true
+	mysql_root_username: admin
+	mysql_root_password: super-user-password
+	cmon_mysql_password: super-cmon-password
+	cmon_mysql_port: 3307
 
 If you are running as another user, ensure the user has ability to escalate as super user via sudo. Example playbook for Ubuntu 12.04 with sudo password enabled:
 
@@ -600,10 +600,11 @@ The main installation steps are:
 
 ClusterControl requires three packages to be installed and configured:
 
-* clustercontrol - ClusterControl web user interface
-* clustercontrol-cmonapi - ClusterControl REST API
-* clustercontrol-controller - ClusterControl CMON controller
-* clustercontrol-nodejs (optional) - ClusterControl NodeJS
+* clustercontrol - ClusterControl web user interface.
+* clustercontrol-cmonapi - ClusterControl REST API.
+* clustercontrol-controller - ClusterControl CMON controller.
+* clustercontrol-notifications - ClusterControl notification module, if you would like to integrate with third-party tools like PagerDuty and Slack.
+* clustercontrol-ssh - ClusterControl web-based SSH module, if you would like to access the host via SSH directly from ClusterControl UI.
 
 Steps described in the following sections should be perform on ClusterControl node unless specified otherwise.
 
@@ -612,11 +613,11 @@ Requirements
 
 Make sure the following is ready prior to this installation:
 
-* You already have a database cluster up and running
-* Verify that sudo is working properly if you are using a non-root user
-* ClusterControl node must able to connect to all database nodes
-* Passwordless SSH from ClusterControl node to all nodes (including the ClusterControl node itself) has been configured correctly
-* You must have internet connection on ClusterControl node during the installation process
+* You already have a database cluster up and running.
+* Verify that sudo is working properly if you are using a non-root user.
+* ClusterControl node must able to connect to all database nodes.
+* Passwordless SSH from ClusterControl node to all nodes (including the ClusterControl node itself) has been configured correctly.
+* You must have internet connection on ClusterControl node during the installation process.
 
 Redhat/CentOS
 ``````````````
@@ -627,43 +628,43 @@ Redhat/CentOS
 
 .. code-block:: bash
 
-	sed -i 's|SELINUX=enforcing|SELINUX=disabled|g' /etc/selinux/config
-	setenforce 0
-	service iptables stop # RedHat/CentOS 6
-	systemctl stop firewalld # RedHat/CentOS 7
+	$ sed -i 's|SELINUX=enforcing|SELINUX=disabled|g' /etc/selinux/config
+	$ setenforce 0
+	$ service iptables stop # RedHat/CentOS 6
+	$ systemctl stop firewalld # RedHat/CentOS 7
 
 3. Install required packages via package manager:
 
 .. code-block:: bash
 
-	yum -y install curl mailx cronie nc bind-utils mysql mysql-server
+	$ yum -y install curl mailx cronie nc bind-utils mysql mysql-server
 
 4. Install ClusterControl packages:
 
 .. code-block:: bash
 
-	yum -y install clustecontrol clustercontrol-cmonapi clustercontrol-controller clustercontrol-nodejs
+	$ yum -y install clustecontrol clustercontrol-cmonapi clustercontrol-controller clustercontrol-ssh clustercontrol-notifications
 
 5. Start MySQL server (MariaDB for Redhat/CentOS 7), enable it on boot and set a MySQL root password:
 
 .. code-block:: bash
 
-	service mysqld start # Redhat/CentOS 6
-	systemctl start mariadb.service # Redhat/CentOS 7
-	chkconfig mysqld on # Redhat/CentOS 6
-	systemctl enable mariadb.service # Redhat/CentOS 7
-	mysqladmin -uroot password 'themysqlrootpassword'
+	$ service mysqld start # Redhat/CentOS 6
+	$ systemctl start mariadb.service # Redhat/CentOS 7
+	$ chkconfig mysqld on # Redhat/CentOS 6
+	$ systemctl enable mariadb.service # Redhat/CentOS 7
+	$ mysqladmin -uroot password 'themysqlrootpassword'
 	
 6. Create two databases called cmon and dcps and grant the cmon user:
 
 .. code-block:: bash
 
-	mysql -uroot -p -e 'DROP SCHEMA IF EXISTS cmon; CREATE SCHEMA cmon'
-	mysql -uroot -p -e 'DROP SCHEMA IF EXISTS dcps; CREATE SCHEMA dcps'
-	mysql -uroot -p -e 'GRANT ALL PRIVILEGES ON *.* TO "cmon"@"localhost" IDENTIFIED BY "{cmonpassword}" WITH GRANT OPTION'
-	mysql -uroot -p -e 'GRANT ALL PRIVILEGES ON *.* TO "cmon"@"127.0.0.1" IDENTIFIED BY "{cmonpassword}" WITH GRANT OPTION'
-	mysql -uroot -p -e 'GRANT ALL PRIVILEGES ON *.* TO "cmon"@"{ClusterControl main IP address}" IDENTIFIED BY "{cmonpassword}" WITH GRANT OPTION'
-	mysql -uroot -p -e 'FLUSH PRIVILEGES'
+	$ mysql -uroot -p -e 'DROP SCHEMA IF EXISTS cmon; CREATE SCHEMA cmon'
+	$ mysql -uroot -p -e 'DROP SCHEMA IF EXISTS dcps; CREATE SCHEMA dcps'
+	$ mysql -uroot -p -e 'GRANT ALL PRIVILEGES ON *.* TO "cmon"@"localhost" IDENTIFIED BY "{cmonpassword}" WITH GRANT OPTION'
+	$ mysql -uroot -p -e 'GRANT ALL PRIVILEGES ON *.* TO "cmon"@"127.0.0.1" IDENTIFIED BY "{cmonpassword}" WITH GRANT OPTION'
+	$ mysql -uroot -p -e 'GRANT ALL PRIVILEGES ON *.* TO "cmon"@"{ClusterControl main IP address}" IDENTIFIED BY "{cmonpassword}" WITH GRANT OPTION'
+	$ mysql -uroot -p -e 'FLUSH PRIVILEGES'
 
 .. note:: Replace ``{ClusterControl main IP address}`` and ``{cmonpassword}`` with respective values.
 
@@ -671,76 +672,91 @@ Redhat/CentOS
 
 .. code-block:: bash
 
-	mysql -uroot -p cmon < /usr/share/cmon/cmon_db.sql
-	mysql -uroot -p cmon < /usr/share/cmon/cmon_data.sql
-	mysql -uroot -p dcps < /var/www/html/clustercontrol/sql/dc-schema.sql
+	$ mysql -uroot -p cmon < /usr/share/cmon/cmon_db.sql
+	$ mysql -uroot -p cmon < /usr/share/cmon/cmon_data.sql
+	$ mysql -uroot -p dcps < /var/www/html/clustercontrol/sql/dc-schema.sql
 	
 8. Generate a ClusterControl key to be used by ``CMON_TOKEN``, ``RPC_TOKEN`` and ``rpc_key``:
 
 .. code-block:: bash
 
-    python -c 'import uuid; print uuid.uuid4()' | sha1sum | cut -f1 -d' '
-    6856d96a19d049aa8a7f4a5ba57a34740b3faf57
+	$ python -c 'import uuid; print uuid.uuid4()' | sha1sum | cut -f1 -d' '
+	6856d96a19d049aa8a7f4a5ba57a34740b3faf57
 
 And configure following lines for minimal configuration options:
 
 .. code-block:: bash
 
-    mysql_port=3306
-    mysql_hostname={ClusterControl main IP address}
-    mysql_password={cmonpassword}
-    hostname={ClusterControl primary IP address}
-    rpc_key={ClusterControl API key as generated above}
+	mysql_port=3306
+	mysql_hostname={ClusterControl main IP address}
+	mysql_password={cmonpassword}
+	hostname={ClusterControl primary IP address}
+	rpc_key={ClusterControl API key as generated above}
 
 Example as follow:
 
 .. code-block:: bash
 
-    mysql_port=3306
-    mysql_hostname=192.168.1.85
-    mysql_password=cmon
-    hostname=192.168.1.85
-    rpc_key=6856d96a19d049aa8a7f4a5ba57a34740b3faf57
+	mysql_port=3306
+	mysql_hostname=192.168.1.85
+	mysql_password=cmon
+	hostname=192.168.1.85
+	rpc_key=6856d96a19d049aa8a7f4a5ba57a34740b3faf57
 
 .. Attention:: The value of ``mysql_hostname`` and ``hostname`` must be the same that you used to grant user ``cmon@{ClusterControl primary IP address}`` in step #6 above.
 
-9. Enable CMON daemon on boot and start it:
+9. Enable CMON daemons on boot and start them:
+
+For sysvinit:
 
 .. code-block:: bash
 
-	chkconfig cmon on # Redhat/CentOS 6
-	service cmon start # Redhat/CentOS 6
-	systemctl enable cmon # Redhat/CentOS 7
-	systemctl start cmon # Redhat/CentOS 7
+	$ chkconfig cmon on
+	$ chkconfig cmon-ssh on
+	$ chkconfig cmon-events on
+	$ service cmon start
+	$ service cmon-ssh start
+	$ service cmon-events start
+
+For systemd:
+
+.. code-block:: bash
+
+	$ systemctl enable cmon
+	$ systemctl enable cmon-ssh
+	$ systemctl enable cmon-events
+	$ systemctl start cmon
+	$ systemctl start cmon-ssh
+	$ systemctl start cmon-events
 
 10. Configure Apache to use ``AllowOverride=All`` and set up SSL key and certificate:
 
 .. code-block:: bash
 
-	cp -f /var/www/html/cmonapi/ssl/server.crt /etc/pki/tls/certs/s9server.crt
-	cp -f /var/www/html/cmonapi/ssl/server.key /etc/pki/tls/private/s9server.key
-	rm -rf /var/www/html/cmonapi/ssl
-	sed -i 's|AllowOverride None|AllowOverride All|g' /etc/httpd/conf/httpd.conf
-	sed -i 's|AllowOverride None|AllowOverride All|g' /etc/httpd/conf.d/ssl.conf
-	sed -i 's|^SSLCertificateFile.*|SSLCertificateFile /etc/pki/tls/certs/s9server.crt|g' /etc/httpd/conf.d/ssl.conf
-	sed -i 's|^SSLCertificateKeyFile.*|SSLCertificateKeyFile /etc/pki/tls/private/s9server.key|g' /etc/httpd/conf.d/ssl.conf
+	$ cp -f /var/www/html/cmonapi/ssl/server.crt /etc/pki/tls/certs/s9server.crt
+	$ cp -f /var/www/html/cmonapi/ssl/server.key /etc/pki/tls/private/s9server.key
+	$ rm -rf /var/www/html/cmonapi/ssl
+	$ sed -i 's|AllowOverride None|AllowOverride All|g' /etc/httpd/conf/httpd.conf
+	$ sed -i 's|AllowOverride None|AllowOverride All|g' /etc/httpd/conf.d/ssl.conf
+	$ sed -i 's|^SSLCertificateFile.*|SSLCertificateFile /etc/pki/tls/certs/s9server.crt|g' /etc/httpd/conf.d/ssl.conf
+	$ sed -i 's|^SSLCertificateKeyFile.*|SSLCertificateKeyFile /etc/pki/tls/private/s9server.key|g' /etc/httpd/conf.d/ssl.conf
 
 11. Copy the ClusterControl UI and CMONAPI default files:
 
 .. code-block:: bash
 
-	cp -f /var/www/html/clustercontrol/bootstrap.php.default /var/www/html/clustercontrol/bootstrap.php
-	cp -f /var/www/html/cmonapi/config/bootstrap.php.default /var/www/html/cmonapi/config/bootstrap.php
-	cp -f /var/www/html/cmonapi/config/database.php.default /var/www/html/cmonapi/config/database.php
+	$ cp -f /var/www/html/clustercontrol/bootstrap.php.default /var/www/html/clustercontrol/bootstrap.php
+	$ cp -f /var/www/html/cmonapi/config/bootstrap.php.default /var/www/html/cmonapi/config/bootstrap.php
+	$ cp -f /var/www/html/cmonapi/config/database.php.default /var/www/html/cmonapi/config/database.php
 
 12. Assign correct ownership and permission:
 
 .. code-block:: bash
 
-	chmod -R 777 /var/www/html/clustercontrol/app/tmp
-	chmod -R 777 /var/www/html/clustercontrol/app/upload
-	chown -Rf apache.apache /var/www/html/cmonapi/
-	chown -Rf apache.apache /var/www/html/clustercontrol/
+	$ chmod -R 777 /var/www/html/clustercontrol/app/tmp
+	$ chmod -R 777 /var/www/html/clustercontrol/app/upload
+	$ chown -Rf apache.apache /var/www/html/cmonapi/
+	$ chown -Rf apache.apache /var/www/html/clustercontrol/
 
 13. Use the generated value from step #8 and specify it in ``/var/www/html/clustercontrol/bootstrap.php`` under the ``RPC_TOKEN`` constant and configure MySQL credentials for the ClusterControl UI by updating the ``DB_PASS`` constant with the cmon user password:
 
@@ -772,26 +788,26 @@ Example as follow:
 
 .. code-block:: bash
 
-	service httpd start # Redhat/CentOS 6
-	chkconfig httpd on # Redhat/CentOS 6
-	systemctl start httpd # Redhat/CentOS 7
-	systemctl enable httpd # Redhat/CentOS 6
+	$ service httpd start # Redhat/CentOS 6
+	$ chkconfig httpd on # Redhat/CentOS 6
+	$ systemctl start httpd # Redhat/CentOS 7
+	$ systemctl enable httpd # Redhat/CentOS 6
 
 17. Generate a SSH key to be used by ClusterControl so it can perform passwordless SSH to database hosts. If you are running as sudoer, the SSH key should be located under ``/home/$USER/.ssh/id_rsa``:
 
 .. code-block:: bash
 
-	ssh-keygen -t rsa # Press enter for all prompts
+	$ ssh-keygen -t rsa # Press enter for all prompts
 
 19. Before importing a database cluster into ClusterControl, ensure the ClusterControl node is able to perform passwordless SSH to the database host(s). Use the following command to copy the SSH key to the target hosts:
 
 .. code-block:: bash
 
-	ssh-copy-id -i ~/.ssh/id_rsa {SSH user}@{IP address of the target node}
+	$ ssh-copy-id -i ~/.ssh/id_rsa {SSH user}@{IP address of the target node}
 
 .. Note:: Replace ``{SSH user}`` and ``{IP address of the target node}`` with appropriate values.
 
-20. Open ClusterControl UI at :samp:`http://{ClusterControl_host}/clustercontrol` and create the default admin password by providing a valid email address and password. You will be redirected to ClusterControl default page. Go to `Cluster Registrations` and enter the generated ClusterControl API token (step #14) and URL, similar to example below:
+20. Open ClusterControl UI at :samp:`http://{ClusterControl_host}/clustercontrol` and create the default admin password by providing a valid email address and password. You will be redirected to ClusterControl default page. Go to *Cluster Registrations* and enter the generated ClusterControl API token (step #14) and URL, similar to example below:
 
 .. image:: img/cc_register_token.png
    :alt: Register ClusterControl API token
@@ -810,23 +826,23 @@ The following steps should be performed on the ClusterControl node, unless speci
 
 .. code-block:: bash
 
-	sudo /etc/init.d/apparmor stop
-	sudo /etc/init.d/apparmor teardown
-	sudo update-rc.d -f apparmor remove
-	sudo service iptables stop
+	$ sudo /etc/init.d/apparmor stop
+	$ sudo /etc/init.d/apparmor teardown
+	$ sudo update-rc.d -f apparmor remove
+	$ sudo service iptables stop
 
 3. Install ClusterControl dependencies:
 
 .. code-block:: bash
 
-	sudo apt-get update
-	sudo apt-get install -y curl mailutils dnsutils mysql-client mysql-server
+	$ sudo apt-get update
+	$ sudo apt-get install -y curl mailutils dnsutils mysql-client mysql-server
 
 4. Install the ClusterControl controller package:
 
 .. code-block:: bash
 
-	sudo apt-get install -y clustercontrol-controller clustercontrol clustercontrol-cmonapi clustercontrol-nodejs
+	$ sudo apt-get install -y clustercontrol-controller clustercontrol clustercontrol-cmonapi clustercontrol-ssh clustercontrol-notifications
 
 5. Comment the following line inside ``/etc/mysql/my.cnf`` to allow MySQL to listen on all interfaces:
 
@@ -838,18 +854,18 @@ Restart the MySQL service to apply the change:
 
 .. code-block:: bash
 
-	service mysql restart
+	$ service mysql restart
 
 6. Create two databases called cmon and dcps and grant user cmon:
 
 .. code-block:: bash
 
-	mysql -uroot -p -e 'DROP SCHEMA IF EXISTS cmon; CREATE SCHEMA cmon'
-	mysql -uroot -p -e 'DROP SCHEMA IF EXISTS dcps; CREATE SCHEMA dcps'
-	mysql -uroot -p -e 'GRANT ALL PRIVILEGES ON *.* TO "cmon"@"localhost" IDENTIFIED BY "{cmonpassword}" WITH GRANT OPTION'
-	mysql -uroot -p -e 'GRANT ALL PRIVILEGES ON *.* TO "cmon"@"127.0.0.1" IDENTIFIED BY "{cmonpassword}" WITH GRANT OPTION'
-	mysql -uroot -p -e 'GRANT ALL PRIVILEGES ON *.* TO "cmon"@"{ClusterControl main IP address}" IDENTIFIED BY "{cmonpassword}" WITH GRANT OPTION'
-	mysql -uroot -p -e 'FLUSH PRIVILEGES'
+	$ mysql -uroot -p -e 'DROP SCHEMA IF EXISTS cmon; CREATE SCHEMA cmon'
+	$ mysql -uroot -p -e 'DROP SCHEMA IF EXISTS dcps; CREATE SCHEMA dcps'
+	$ mysql -uroot -p -e 'GRANT ALL PRIVILEGES ON *.* TO "cmon"@"localhost" IDENTIFIED BY "{cmonpassword}" WITH GRANT OPTION'
+	$ mysql -uroot -p -e 'GRANT ALL PRIVILEGES ON *.* TO "cmon"@"127.0.0.1" IDENTIFIED BY "{cmonpassword}" WITH GRANT OPTION'
+	$ mysql -uroot -p -e 'GRANT ALL PRIVILEGES ON *.* TO "cmon"@"{ClusterControl main IP address}" IDENTIFIED BY "{cmonpassword}" WITH GRANT OPTION'
+	$ mysql -uroot -p -e 'FLUSH PRIVILEGES'
 
 .. Note:: Replace ``{ClusterControl main IP address}`` and ``{cmonpassword}`` with respective values.
 
@@ -857,92 +873,107 @@ Restart the MySQL service to apply the change:
 
 .. code-block:: bash
 
-	mysql -uroot -p cmon < /usr/share/cmon/cmon_db.sql
-	mysql -uroot -p cmon < /usr/share/cmon/cmon_data.sql
-	mysql -uroot -p dcps < /var/www/clustercontrol/sql/dc-schema.sql
+	$ mysql -uroot -p cmon < /usr/share/cmon/cmon_db.sql
+	$ mysql -uroot -p cmon < /usr/share/cmon/cmon_data.sql
+	$ mysql -uroot -p dcps < /var/www/clustercontrol/sql/dc-schema.sql
 
 8. Generate a ClusterControl key to be used by ``CMON_TOKEN``, ``RPC_TOKEN`` and ``rpc_key``:
 
 .. code-block:: bash
 
-	python -c 'import uuid; print uuid.uuid4()' | sha1sum | cut -f1 -d' '
+	$ python -c 'import uuid; print uuid.uuid4()' | sha1sum | cut -f1 -d' '
 	6856d96a19d049aa8a7f4a5ba57a34740b3faf57
 
 And add the following lines for minimal configuration options:
 
 .. code-block:: bash
 
-    mysql_port=3306
-    mysql_hostname={ClusterControl main IP address}
-    mysql_password={cmonpassword}
-    hostname={ClusterControl primary IP address}
-    rpc_key={ClusterControl API key as generated above}
+	mysql_port=3306
+	mysql_hostname={ClusterControl main IP address}
+	mysql_password={cmonpassword}
+	hostname={ClusterControl primary IP address}
+	rpc_key={ClusterControl API key as generated above}
 
 A sample configuration will be something like this:
 
 .. code-block:: bash
 
-    mysql_port=3306
-    mysql_hostname=192.168.1.85
-    mysql_password=cmon
-    hostname=192.168.1.85
-    rpc_key=6856d96a19d049aa8a7f4a5ba57a34740b3faf57
+	mysql_port=3306
+	mysql_hostname=192.168.1.85
+	mysql_password=cmon
+	hostname=192.168.1.85
+	rpc_key=6856d96a19d049aa8a7f4a5ba57a34740b3faf57
 
 .. Note:: The value of ``mysql_hostname`` and ``hostname`` must be identical which you used to grant user ``cmon@{ClusterControl primary IP address}`` in step #6.
 
-9. Enable CMON daemon on boot and start it:
+9. Enable CMON daemons on boot and start them:
+
+For sysvinit/upstart:
 
 .. code-block:: bash
 
-	sudo update-rc.d cmon defaults
-	sudo service cmon start
-  sudo systemctl enable cmon
-  sudo systemctl start cmon
+	$ sudo update-rc.d cmon defaults
+	$ sudo update-rc.d cmon-ssh defaults
+	$ sudo update-rc.d cmon-events defaults
+	$ service cmon start
+	$ service cmon-ssh start
+	$ service cmon-events start
+
+For systemd:
+
+.. code-block:: bash
+
+	$ systemctl enable cmon
+	$ systemctl enable cmon-ssh
+	$ systemctl enable cmon-events
+	$ systemctl start cmon
+	$ systemctl start cmon-ssh
+	$ systemctl start cmon-events
 
 10. Configure Apache ``AllowOverride`` and setting up SSL:
 
 .. code-block:: bash
 
-	cp -f /var/www/cmonapi/ssl/server.crt /etc/ssl/certs/s9server.crt
-	cp -f /var/www/cmonapi/ssl/server.key /etc/ssl/certs/s9server.key
-	rm -rf /var/www/cmonapi/ssl
-	sed -i 's|AllowOverride None|AllowOverride All|g' /etc/apache2/sites-available/default
-	sed -i 's|AllowOverride None|AllowOverride All|g' /etc/apache2/sites-available/default-ssl
-	sed -i 's|^[ \t]*SSLCertificateFile.*|SSLCertificateFile /etc/ssl/certs/s9server.crt|g' /etc/apache2/sites-available/default-ssl
-	sed -i 's|^[ \t]*SSLCertificateKeyFile.*|SSLCertificateKeyFile /etc/ssl/certs/s9server.key|g' /etc/apache2/sites-available/default-ssl
+	$ cp -f /var/www/cmonapi/ssl/server.crt /etc/ssl/certs/s9server.crt
+	$ cp -f /var/www/cmonapi/ssl/server.key /etc/ssl/certs/s9server.key
+	$ rm -rf /var/www/cmonapi/ssl
+	$ sed -i 's|AllowOverride None|AllowOverride All|g' /etc/apache2/sites-available/default
+	$ sed -i 's|AllowOverride None|AllowOverride All|g' /etc/apache2/sites-available/default-ssl
+	$ sed -i 's|^[ \t]*SSLCertificateFile.*|SSLCertificateFile /etc/ssl/certs/s9server.crt|g' /etc/apache2/sites-available/default-ssl
+	$ sed -i 's|^[ \t]*SSLCertificateKeyFile.*|SSLCertificateKeyFile /etc/ssl/certs/s9server.key|g' /etc/apache2/sites-available/default-ssl
 
 For Ubuntu 14.04, it runs on Apache 2.4 which has a slightly different configuration than above:
 
 .. code-block:: bash
 
-	cp -f /var/www/cmonapi/ssl/server.crt /etc/ssl/certs/s9server.crt
-	cp -f /var/www/cmonapi/ssl/server.key /etc/ssl/certs/s9server.key
-	rm -rf /var/www/cmonapi/ssl
-	cp -f /var/www/clustercontrol/app/tools/apache2/s9s.conf /etc/apache2/sites-available/
-	cp -f /var/www/clustercontrol/app/tools/apache2/s9s-ssl.conf /etc/apache2/sites-available/
-	rm -f /etc/apache2/sites-enabled/000-default.conf
-	rm -f /etc/apache2/sites-enabled/default-ssl.conf
-	rm -f /etc/apache2/sites-enabled/001-default-ssl.conf
-	ln -sfn /etc/apache2/sites-available/s9s.conf /etc/apache2/sites-enabled/001-s9s.conf
-	ln -sfn /etc/apache2/sites-available/s9s-ssl.conf /etc/apache2/sites-enabled/001-s9s-ssl.conf
-	sed -i 's|^[ \t]*SSLCertificateFile.*|SSLCertificateFile /etc/ssl/certs/s9server.crt|g' /etc/apache2/sites-available/s9s-ssl.conf
-	sed -i 's|^[ \t]*SSLCertificateKeyFile.*|SSLCertificateKeyFile /etc/ssl/certs/s9server.key|g' /etc/apache2/sites-available/s9s-ssl.conf
+	$ cp -f /var/www/cmonapi/ssl/server.crt /etc/ssl/certs/s9server.crt
+	$ cp -f /var/www/cmonapi/ssl/server.key /etc/ssl/certs/s9server.key
+	$ rm -rf /var/www/cmonapi/ssl
+	$ cp -f /var/www/clustercontrol/app/tools/apache2/s9s.conf /etc/apache2/sites-available/
+	$ cp -f /var/www/clustercontrol/app/tools/apache2/s9s-ssl.conf /etc/apache2/sites-available/
+	$ rm -f /etc/apache2/sites-enabled/000-default.conf
+	$ rm -f /etc/apache2/sites-enabled/default-ssl.conf
+	$ rm -f /etc/apache2/sites-enabled/001-default-ssl.conf
+	$ ln -sfn /etc/apache2/sites-available/s9s.conf /etc/apache2/sites-enabled/001-s9s.conf
+	$ ln -sfn /etc/apache2/sites-available/s9s-ssl.conf /etc/apache2/sites-enabled/001-s9s-ssl.conf
+	$ sed -i 's|^[ \t]*SSLCertificateFile.*|SSLCertificateFile /etc/ssl/certs/s9server.crt|g' /etc/apache2/sites-available/s9s-ssl.conf
+	$ sed -i 's|^[ \t]*SSLCertificateKeyFile.*|SSLCertificateKeyFile /etc/ssl/certs/s9server.key|g' /etc/apache2/sites-available/s9s-ssl.conf
 
 11. Enable Apache’s SSL and rewrite module and create a symlink to sites-enabled for default HTTPS virtual host:
 
 .. code-block:: bash
 
-	a2enmod ssl
-	a2enmod rewrite
-	a2ensite default-ssl
+	$ a2enmod ssl
+	$ a2enmod rewrite
+	$ a2ensite default-ssl
 
 12. Copy the ClusterControl UI and CMONAPI default files:
 
 .. code-block:: bash
 
-	cp -f /var/www/clustercontrol/bootstrap.php.default /var/www/clustercontrol/bootstrap.php
-	cp -f /var/www/cmonapi/config/bootstrap.php.default /var/www/cmonapi/config/bootstrap.php
-	cp -f /var/www/cmonapi/config/database.php.default /var/www/cmonapi/config/database.php
+	$ cp -f /var/www/clustercontrol/bootstrap.php.default /var/www/clustercontrol/bootstrap.php
+	$ cp -f /var/www/cmonapi/config/bootstrap.php.default /var/www/cmonapi/config/bootstrap.php
+	$ cp -f /var/www/cmonapi/config/database.php.default /var/www/cmonapi/config/database.php
 
 13. Assign correct ownership and permissions:
 
@@ -950,10 +981,10 @@ For Ubuntu 12.04/Debian 7 and earlier:
 
 .. code-block:: bash
 
-	chmod -R 777 /var/www/clustercontrol/app/tmp
-	chmod -R 777 /var/www/clustercontrol/app/upload
-	chown -Rf www-data.www-data /var/www/cmonapi/
-	chown -Rf www-data.www-data /var/www/clustercontrol/
+	$ chmod -R 777 /var/www/clustercontrol/app/tmp
+	$ chmod -R 777 /var/www/clustercontrol/app/upload
+	$ chown -Rf www-data.www-data /var/www/cmonapi/
+	$ chown -Rf www-data.www-data /var/www/clustercontrol/
 	
 14. Use the generated value from step #8 and specify it in ``/var/www/clustercontrol/bootstrap.php`` under the ``RPC_TOKEN`` constant and configure MySQL credentials for the ClusterControl UI by updating the ``DB_PASS`` constant with the cmon user password:
 
@@ -985,19 +1016,19 @@ For Ubuntu 12.04/Debian 7 and earlier:
 
 .. code-block:: bash
 
-	sudo service apache2 restart
+	$ sudo service apache2 restart
 
 18. Generate an SSH key to be used by ClusterControl so it can perform passwordless SSH to the database hosts. If you are running as sudoer, the SSH key should be located under ``/home/$USER/.ssh/id_rsa``:
 
 .. code-block:: bash
 
-	ssh-keygen -t rsa # Press enter for all prompt
+	$ ssh-keygen -t rsa # Press enter for all prompt
 
 19. Before importing a database cluster or single-server to ClusterControl, ensure the ClusterControl host is able to do passwordless SSH to the database host(s). Use following command to copy the SSH key to the target host:
 
 .. code-block:: bash
 
-	ssh-copy-id -i ~/.ssh/id_rsa {SSH user}@{IP address of the target node}
+	$ ssh-copy-id -i ~/.ssh/id_rsa {SSH user}@{IP address of the target node}
 
 .. Note:: Replace ``{SSH user}`` and ``{IP address of the target node}`` with appropriate values.
 
@@ -1042,7 +1073,7 @@ Redhat/CentOS 6
 
 .. code-block:: bash
 
-	mount /dev/cdrom /media/CentOS
+	$ mount /dev/cdrom /media/CentOS
 
 3. Disable the default repository by adding ``enabled=0`` to "base", "updates" and "extras" directives. You should have something like this inside ``/etc/yum.repos.d/CentOS-Base.repo``:
 
@@ -1073,7 +1104,6 @@ Redhat/CentOS 6
   gpgcheck=1
   gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
   enabled=0
-  …
 
 4. Update the "enabled" value under the ``c6-media`` directive in ``/etc/yum.repos.d/CentOS-Media.repo``, as shown below:
 
@@ -1112,10 +1142,10 @@ Debian 7
 
 .. code-block:: bash
 
-	mkdir /mnt/debian-dvd1 /mnt/debian-dvd2 /mnt/debian-dvd3
-	mount debian-7.6.0-amd64-DVD-1.iso /mnt/debian-dvd1
-	mount debian-7.6.0-amd64-DVD-2.iso /mnt/debian-dvd2
-	mount debian-7.6.0-amd64-DVD-3.iso /mnt/debian-dvd3
+	$ mkdir /mnt/debian-dvd1 /mnt/debian-dvd2 /mnt/debian-dvd3
+	$ mount debian-7.6.0-amd64-DVD-1.iso /mnt/debian-dvd1
+	$ mount debian-7.6.0-amd64-DVD-2.iso /mnt/debian-dvd2
+	$ mount debian-7.6.0-amd64-DVD-3.iso /mnt/debian-dvd3
 
 3. Add the following lines into /etc/apt/sources.list and comment other lines:
 
@@ -1143,26 +1173,27 @@ Redhat/CentOS
 
 .. code-block:: bash
 
-	yum install -y mysql mysql-server
-	chkconfig mysqld on
-	service mysqld start
+	$ yum install -y mysql mysql-server
+	$ chkconfig mysqld on
+	$ service mysqld start
 
 2. Configure MySQL root password for the newly installed MySQL server:
 
 .. code-block:: bash
 
-	mysqladmin -uroot password yourR00tP4ssw0rd
+	$ mysqladmin -uroot password yourR00tP4ssw0rd
 
-3. Create the staging directory called ``s9s_tmp`` and download/upload the latest version of clustercontrol, clustercontrol-cmonapi and clustercontrol-controller RPM packages from the `Severalnines download page <http://www.severalnines.com/downloads/cmon/>`_:
+3. Create the staging directory called ``s9s_tmp`` and download/upload the latest version of clustercontrol RPM packages from the `Severalnines download page <http://www.severalnines.com/downloads/cmon/>`_:
 
 .. code-block:: bash
 
-	mkdir ~/s9s_tmp
-	cd ~/s9s_tmp
-	wget http://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.3.2-226-x86_64.rpm
-	wget http://severalnines.com/downloads/cmon/clustercontrol-controller-1.3.2-1391-x86_64.rpm
-	wget http://severalnines.com/downloads/cmon/clustercontrol-nodejs-1.3.2-73-x86_64.rpm
-	wget http://severalnines.com/downloads/cmon/clustercontrol-1.3.2-1910-x86_64.rpm
+	$ mkdir ~/s9s_tmp
+	$ cd ~/s9s_tmp
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-1.4.2-3505-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.4.2-279-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.4.2-2013-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications-1.4.2-57-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh-1.4.2-25-x86_64.rpm
 
 .. Attention:: In this example, we downloaded the package directly to simplify the package preparation step. If the ClusterControl server does not have internet connections, you should upload the packages manually to the mentioned staging path.
 
@@ -1170,9 +1201,9 @@ Redhat/CentOS
 
 .. code-block:: bash
 
-	cd ~
-	wget http://www.severalnines.com/downloads/cmon/install-cc.sh
-	chmod 755 install-cc.sh
+	$ cd ~
+	$ wget http://www.severalnines.com/downloads/cmon/install-cc.sh
+	$ chmod 755 install-cc.sh
 
 Debian/Ubuntu
 '''''''''''''
@@ -1181,16 +1212,19 @@ Debian/Ubuntu
 
 .. code-block:: bash
 
-	sudo apt-get install -y --force-yes mysql-client mysql-server
+	$ sudo apt-get install -y --force-yes mysql-client mysql-server
 
-2. Create the staging directory called ``s9s_tmp`` and download the latest version of clustercontrol, clustercontrol-cmonapi and clustercontrol-controller DEB packages from `Severalnines download page <http://www.severalnines.com/downloads/cmon/>`_:
+2. Create the staging directory called ``s9s_tmp`` and download the latest version of clustercontrol DEB packages from `Severalnines download page <http://www.severalnines.com/downloads/cmon/>`_:
 
 .. code-block:: bash
 
-	wget http://severalnines.com/downloads/cmon/clustercontrol-nodejs_1.3.2-73_x86_64.deb
-	wget http://severalnines.com/downloads/cmon/clustercontrol_1.3.2-1910_x86_64.deb
-	wget http://severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.3.2-226_x86_64.deb
-	wget http://severalnines.com/downloads/cmon/clustercontrol-controller-1.3.2-1391-x86_64.deb
+	$ mkdir ~/s9s_tmp
+	$ cd ~/s9s_tmp
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol_1.4.2-3505_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.4.2-279_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.4.2-2013-x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications_1.4.2-57_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh_1.4.2-25_x86_64.deb
 
 .. Attention:: In this example, we downloaded the package directly to simplify the package preparation step. If the ClusterControl server does not have internet connections, you should upload the packages manually to the mentioned staging path.
 
@@ -1198,9 +1232,9 @@ Debian/Ubuntu
 
 .. code-block:: bash
 
-	cd ~
-	wget http://www.severalnines.com/downloads/cmon/install-cc.sh
-	sudo chmod 755 install-cc.sh
+	$ cd ~
+	$ wget http://www.severalnines.com/downloads/cmon/install-cc.sh
+	$ sudo chmod 755 install-cc.sh
 
 Installing ClusterControl
 `````````````````````````
@@ -1229,18 +1263,18 @@ Follow the installation wizard.
 Post-installation
 `````````````````
 
-Once ClusterControl is up and running, you can point it to your existing clusters and/or single-instance MySQL/MariaDB instances and start managing them from one place. Make sure passwordless SSH is configured from ClusterControl node to your database nodes.
+Once ClusterControl is up and running, you can point it to your existing clusters or new database hosts and start managing them from one place. Make sure passwordless SSH is configured from ClusterControl node to your database nodes.
 
 1. Generate a SSH key on ClusterControl node:
 
 .. code-block:: bash
 
-	ssh-keygen -t rsa # press Enter on all prompts
+	$ ssh-keygen -t rsa # press Enter on all prompts
 
 2. Setup passwordless SSH to ClusterControl and database nodes:
 
 .. code-block:: bash
 
-	ssh-copy-id -i ~/.ssh/id_rsa [os_user]@[IP address/hostname]
+	$ ssh-copy-id -i ~/.ssh/id_rsa {os_user}@{IP address/hostname}
 
 Repeat step 2 for all database hosts that you are going to manage (including the ClusterControl node itself).

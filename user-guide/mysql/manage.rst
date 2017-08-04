@@ -29,7 +29,7 @@ Configurations
 
 Manage the configuration files of your database, HAProxy and Garbd nodes. For MySQL database, changes can be persisted to database variables across one node or a group of nodes at once, dynamic variables are changed directly without a restart.
 
-.. Note:: ClusterControl does not store configuration changes history so there is no versioning at the moment. Only one version is exist at one time. It always import the latest configuration files every 30 minutes and overwrite it in cmon DB. This limitation will be improved in the upcoming release where ClusterControl shall support configuration versioning with dynamic import interval.
+.. Note:: ClusterControl does not store configuration changes history so there is no versioning at the moment. Only one version is exist at one time. It imports the latest configuration files every 30 minutes and overwrites it in CMON database. This limitation will be improved in the upcoming release where ClusterControl shall support configuration versioning with dynamic import interval.
 
 * **Save**
 	- Save the changes that you have made and push them to the corresponding node.
@@ -122,19 +122,128 @@ Variable                     Description
 Load Balancer
 ``````````````
 
-Manage deployment of load balancers (HAProxy, ProxySQL and MaxScale), virtual IP address (Keepalived) and Garbd. For Galera Cluster, it is also possible to add Galera arbitrator daemon (Garbd) through this interface. You can monitor the status of the job under *ClusterControl > Logs > Jobs*.
+Manage deployment of load balancers (HAProxy, ProxySQL and MaxScale), virtual IP address (Keepalived) and Garbd. For Galera Cluster, it is also possible to add Galera arbitrator daemon (Garbd) through this interface. You can monitor the status of the job under *ClusterControl > Activity > Jobs*.
+
+ProxySQL
+.........
+
+Introduced in v1.4.0 and exclusive for MySQL-based clusters. By default, ClusterControl deploys ProxySQL in read/write split mode - your read-only traffic will be sent to slaves while your writes will be sent to a writable master by creating two host groups. ProxySQL will also work together with the new automatic failover mechanism added in ClusterControl 1.4.0 - once failover happens, ProxySQL will detect the new writable master and route writes to it. It all happens automatically, without any user intervention.
+
+Deploy ProxySQL
+''''''''''''''''
+
+**Choose where to install**
+
+Specify the host that you want to install ProxySQL. You can use an existing database server or use another new host by specifying the hostname or IPv4 address.
+
+* **Server Address**
+	- List of existing servers provisioned under ClusterControl.
+
+* **Port**
+	- ProxySQL load-balanced port. Default is 6033.
+
+* **Add a new address**
+	- Specify the hostname or IP address of the host. This host must be accessible via passwordless SSH from ClusterControl node.
+
+**ProxySQL Configuration**
+
+* **Import Configuration**
+	- Deploys a new ProxySQL based on an existing ProxySQL instance. The source instance must be added first into ClusterControl. Once added, you can choose the source ProxySQL instance from a dropdown list.
+
+**ProxySQL User Credentials**
+
+Two ProxySQL users are required, one for administration and another one for monitoring. ClusterControl will create both during deployment.
+
+* **Administration User**
+	- ProxySQL administration user name.
+
+* **Administration Password**
+	- Password *Administration User*.
+
+* **Monitor User**
+	- ProxySQL monitoring user name.
+
+* **Monitor Password**
+	- Password for *Monitor User*
+
+**Add database user**
+
+You can use existing database user (created outside ProxySQL) or you can let ClusterControl create a new database user under this section. ProxySQL works in the middle, between application and backend MySQL servers, so the database users need to be able to connect from the ProxySQL IP address.
+
+* **Use existing DB User**
+	- DB User: The database user name.
+	- DB User Password: Password for  *DB User*.
+	
+.. Note:: The user must exist on the DB nodes, and allowed access from the ProxySQL server.
+
+* **Create new DB User**
+	- DB User: The database user name.
+	- DB Password: Password for *DB Users*.
+	- DB Name: Database name in "database.table" format. To GRANT against all tables, use wildcard, for example: "mydb.*".
+	- Type in the MySQL privilege(s): ClusterControl will load the privilege name along the key press. Multiple privileges is possible.
+
+**Select instances to balance**
+
+Choose which server to be included into the load balancing set.
+
+* **Server Instance**
+	- List of MySQL servers monitored by ClusterControl.
+	
+* **Include**
+	- Toggle to YES to include it. Otherwise, choose NO.
+
+* **Max Replication Lag**
+	- How many seconds replication lag should be allowed before marking the node as unhealthy. Default value is 10.
+
+* **Max Connection**
+	- Maximum connections to be sent to the backend servers. It's recommended to match or lower than the ``max_connections`` value of the backend servers.
+
+* **Weight**
+	- This value is used to adjust the server's weight relative to other servers. All servers will receive a load proportional to their weight relative to the sum of all weights. The higher the weight, the higher the priority.
+
+**Implicit Transactions**
+
+* **Are you using implicit transactions?**
+	- YES - If you rely on ``SET AUTOCOMMIT=0`` to create a transaction.
+	- NO - If you explicitly use ``BEGIN`` or ``START TRANSACTION`` to create a transaction.
+	
+Import ProxySQL
+'''''''''''''''
+
+If you already have ProxySQL installed in your setup, you can easily import it into ClusterControl to benefit from monitoring and management of the instance.
+
+**Existing ProxySQL location**
+
+* **Server Address**
+	- Specify the hostname or IP address. You can choose from the dropdown list and type in the new host.
+
+* **Listening Port**
+	- ProxySQL load-balanced port. Default is 6033.
+	
+**ProxySQL Configuration**
+
+* **Import Configuration**
+	- Adds an existing ProxySQL instance and import the configuration from another existing instance. The source instance must be added first into ClusterControl. Once added, you can choose the source ProxySQL instance from a dropdown list.
+
+**ProxySQL User Credentials**
+
+* **Administration User**
+	- ProxySQL administration user name.
+
+* **Administration Password**
+	- Password for *Administration User*.
 
 HAProxy
 .......
 
-Installs and configures an :term:`HAProxy` instance on a selected node. ClusterControl will automatically install and configure HAproxy, install ``mysqlcheck`` script (to report the MySQL healthiness) on each of database nodes as part of xinetd service and start the HAproxy service. Once the installation is complete, MySQL will listen on *Listen Port* (3307 by default) on the configured node.
+Installs and configures an :term:`HAProxy` instance. ClusterControl will automatically install and configure HAproxy, install ``mysqlcheck`` script (to report the MySQL healthiness) on each of database nodes as part of xinetd service and start the HAProxy service. Once the installation is complete, MySQL will listen on *Listen Port* (3307 by default) on the configured node.
 
 This feature is indempotent, you can execute it as many times as you want and it will always reinstall everything as configured.
 
 .. seealso:: `MySQL Load Balancing with HAProxy - Tutorial <http://www.severalnines.com/resources/clustercontrol-mysql-haproxy-load-balancing-tutorial>`_.
 
-Create a new HAproxy instance
-'''''''''''''''''''''''''''''
+Deploy HAProxy
+'''''''''''''''
 
 * **HAProxy Address**
 	- Select on which host to add the load balancer. If the host is not provisioned in ClusterControl (see `Hosts`_), type in the IP address. The required files will be installed on the new host. Note that ClusterControl will access the new host using passwordless SSH.
@@ -152,15 +261,14 @@ Create a new HAproxy instance
 		- source - The same client IP address will always reach the same server as long as no server goes down.
 
 * **Install from Package Manager**
-	- Install HAproxy package through package manager.
+	- Install HAProxy package through package manager.
 	
 * **Build from Source**
 	- ClusterControl will compile the latest available source package downloaded from http://www.haproxy.org/#down. 
 	- This option is only required if you intend to use the latest version of HAProxy or if you are having problem with the package manager of your OS distribution. Some older OS versions do not have HAProxy in their package repositories.
 
 
-Advanced Settings
-'''''''''''''''''
+**Advanced Settings**
 	
 * **Stats Socket**
 	- Specify the path to bind a UNIX socket for HAproxy statistics. See `stats socket <http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#stats%20socket>`_.
@@ -192,8 +300,7 @@ Advanced Settings
 * **xinetd allow connections from**
 	- The specified subnet will be allowed to access the ``mysqlcheck`` via as xinetd service, which listens on port 9200 on each of the database nodes. To allow connections from all IP address, use the default value, 0.0.0.0/0.
 
-Server instances in the load balancer
-'''''''''''''''''''''''''''''''''''''
+**Server instances in the load balancer**
 
 * **Include**
 	- Select MySQL servers in your cluster that will be included in the load balancing set.
@@ -203,11 +310,8 @@ Server instances in the load balancer
 		- Active - The server is actively used in load balancing.
 		- Backup - The server is only used in load balancing when all other non-backup servers are unavailable.
 
-* **Remove**
-	- Remove the selected HAProxy node.
-
-Add an existing HAproxy instance
-''''''''''''''''''''''''''''''''
+Import HAProxy
+''''''''''''''
 
 * **HAProxy Address**
 	- Select on which host to add the load balancer. If the host is not provisioned in ClusterControl (see `Hosts`_), type in the IP address. The required files will be installed on the new host. Note that ClusterControl will access the new host using passwordless SSH.
@@ -216,10 +320,10 @@ Add an existing HAproxy instance
 	- Specify the command line that ClusterControl should use to start the HAproxy service.
 
 * **Port**
-	- Port to listen HAproxy admin/statistic page (if enable).
+	- Port to listen HAProxy admin/statistic page (if enable).
 	
 * **Admin User**
-	- Admin username to access HAproxy statistic page. See `stats auth <http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#4-stats%20auth>`_.
+	- Admin username to access HAProxy statistic page. See `stats auth <http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#4-stats%20auth>`_.
 	
 * **Admin Password**
 	- Password for *Admin User*. See `stats auth <http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#4-stats%20auth>`_.
@@ -227,72 +331,75 @@ Add an existing HAproxy instance
 * **LB Name**
 	- Name for the backend. No whitespace or tab allowed.
 	
-* **HAproxy Config**
-	- Location of HAproxy configuration file on the target node.
+* **HAProxy Config**
+	- Location of HAProxy configuration file on the target node.
 
 * **Stats Socket**
-	- Specify the path to bind a UNIX socket for HAproxy statistics. See `stats socket <http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#stats%20socket>`_.
+	- Specify the path to bind a UNIX socket for HAProxy statistics. See `stats socket <http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#stats%20socket>`_.
 
 Keepalived
 ..........
 
-:term:`Keepalived` requires two HAProxy nodes in order to provide virtual IP address failover. By default, this IP will be assigned to HAProxy1 instance. If the node goes down, the IP will be automatically failover to HAProxy2.
+:term:`Keepalived` requires two HAProxy nodes or two or more ProxySQL instances in order to provide virtual IP address failover. By default, this IP address will be assigned to instance 'Keepalived 1'. If the node goes down, the IP address will be automatically failover to 'Keepalived 2' accordingly.
 
-Create a new Keepalived instance
-'''''''''''''''''''''''''''''''''
+Deploy Keepalived
+'''''''''''''''''
 
-* **Haproxy1**
-	- Select the primary HAProxy node (installed or imported using `HAProxy`_).
+* **Select type of loadbalancer**
+	- Only two types of loadbalancers are supported to integrate with Keepalived, HAProxy and ProxySQL. For ProxySQL, you can deploy more than 2 Keepalived instances.
+
+* **Keepalived 1**
+	- Select the primary Keepalived node (installed or imported using `HAProxy`_ or `ProxySQL`_).
 	
-* **Haproxy2**
-	- Select the secondary HAProxy node (installed or imported using `HAProxy`_).
+* **Keepalived 2**
+	- Select the secondary Keepalived node (installed or imported using `HAProxy`_ or `ProxySQL`_).
 
 * **Virtual IP**
 	- Assigns a virtual IP address. The IP address should not exist in any node in the cluster to avoid conflict.
 
 * **Network Interface** 
-	- Specify a network interface to bind the virtual IP address.
+	- Specify a network interface to bind the virtual IP address. This interface must able to communicate with other Keepalived instances and support IP protocol 112 (VRRP) and unicasting.
 
 * **Install Keepalived**
 	- Starts installation of Keepalived.
 	
-Add an existing Keepalived instance
-'''''''''''''''''''''''''''''''''''
+Import Keepalived
+'''''''''''''''''
 
-* **Haproxy1**
-	- Select the primary HAProxy node (installed or imported using `HAProxy`_).
+* **Keepalived 1**
+	- Specify the IP address or hostname of the primary Keepalived node.
 	
-* **Haproxy2**
-	- Select the secondary HAProxy node (installed or imported using `HAProxy`_).
+* **Add Keepalived Instance**
+	- Shows additional input field for secondary Keepalived node.
+
+* **Remove Keepalived Instance**
+	- Hides additional input field for secondary Keepalived node.
 
 * **Virtual IP**
 	- Assigns a virtual IP address. The IP address should not exist in any node in the cluster to avoid conflict.
 
-* **Network Interface** 
-	- Specify a network interface to bind the virtual IP address.
-
-* **Install Keepalived**
-	- Starts installation of Keepalived.
+* **Deploy Keepalived**
+	- Starts the import of Keepalived job.
 
 Garbd
 .....
 
-Exclusie for Galera Cluster. Galera arbitrator daemon (:term:`garbd`) can be installed to avoid network partitioning/split-brain scenarios.
+Exclusive for Galera Cluster. Galera arbitrator daemon (:term:`garbd`) can be installed to avoid network partitioning or split-brain scenarios.
 
-Create a new Garbd instance
-'''''''''''''''''''''''''''
+Deploy Garbd
+''''''''''''
 
 * **Garbd Address**
 	- Manually specify the new garbd hostname or IP address or select a host from the list. That host cannot be an existing Galera node.
     
 * **CmdLine**
-	- Garbd command line used to start garbd process on the target node.
+	- Garbd command line to start garbd process on the target node.
 
-* **Install Garbd**
-	- Starts the installation of garbd.
+* **Deploy Garbd**
+	- Starts the garbd deployment.
     
-Add an existing Garbd instance
-''''''''''''''''''''''''''''''
+Import Garbd
+'''''''''''''
 
 * **Garbd Address**
 	- Manually specify the new garbd hostname or IP address or select a host from the list. That host cannot be an existing Galera node.
@@ -301,36 +408,25 @@ Add an existing Garbd instance
     - Garbd port. Default is 4567.
 
 * **CmdLine**
-	- Garbd command line used to start garbd process on the target node.
+	- Garbd command line to start garbd process on the target node.
 
 * **Install Garbd**
-	- Starts the import of garbd.
-
-Remove Garbd
-'''''''''''''
-
-* **Remove**
-	- Remove the selected garbd node. This will:
-    
-		1. Stop garbd service on that node.
-		2. Remove the process monitoring and node from ClusterControl.
-
-.. Note:: Removing garbd from ClusterControl does not uninstall the existing garbd packages.
+	- Starts the garbd import job.
 
 MaxScale
 ........
 
-MaxScale is an is an intelligent proxy that allows forwarding of database statements to one or more database servers using complex rules, a semantic understanding of the database statements and the roles of the various servers within the backend cluster of databases.
+MaxScale is an intelligent proxy that allows forwarding of database statements to one or more database servers using complex rules, a semantic understanding of the database statements and the roles of the various servers within the backend cluster of databases.
 
-You can deploy or add existing MaxScale node as a load balancer and query router for your Galera Cluster, MySQL/MariaDB replication and MySQL cluster. For new deployment using ClusterControl, by default it will create two production services:
+You can deploy or import existing MaxScale node as a load balancer and query router for your Galera Cluster, MySQL/MariaDB replication and MySQL Cluster. For new deployment using ClusterControl, by default it will create two production services:
 
 * RW - Implements a read-write split access.
 * RR - Implements round-robin access.
 
 To remove MaxScale, go to *ClusterControl > Nodes > MaxScale node* and click on the '-' icon next to it. We have published a blog post with deployment example in `this blog post <http://severalnines.com/blog/how-deploy-and-manage-maxscale-using-clustercontrol>`_.
 
-Create MaxScale Instance
-'''''''''''''''''''''''''
+Deploy MaxScale 
+''''''''''''''''
 
 Use this wizard to install MaxScale as MySQL load balancer.
 
@@ -356,10 +452,10 @@ Use this wizard to install MaxScale as MySQL load balancer.
 	- Port for MaxAdmin command line interface. Default is 6603
 
 * **RR Port**
-	- Port for round-robin access. Default is 4006.
+	- Port for round-robin listener. Default is 4006.
 
 * **RW Port**
-	- Port for read-write split access. Default is 4008.
+	- Port for read-write split listener. Default is 4008.
 
 * **Debug Port**
 	- Port for MaxScale debug information. Default it 4442.
@@ -367,10 +463,10 @@ Use this wizard to install MaxScale as MySQL load balancer.
 * **Include**
 	- Select MySQL servers in your cluster that will be included in the load balancing set.
 
-Add Existing MaxScale
-'''''''''''''''''''''
+Import MaxScale
+'''''''''''''''
 
-If you already have MaxScale installed in your setup, you can easily add it to ClusterControl to benefit from health monitoring and access to MaxAdmin - MaxScale’s CLI from the same interface you use to manage the database nodes. 
+If you already have MaxScale installed in your setup, you can easily import it into ClusterControl to benefit from health monitoring and access to MaxAdmin - MaxScale’s CLI from the same interface you use to manage the database nodes.
 
 The only requirement is to have passwordless SSH configured between ClusterControl node and host where MaxScale is running.
 
@@ -380,85 +476,6 @@ The only requirement is to have passwordless SSH configured between ClusterContr
 * **CLI Port**
 	- Port for the MaxAdmin command line interface on the target server.
 	
-ProxySQL
-.........
-
-Introduced in v1.4.0 and exclusive for MySQL Replication. By default, ClusterControl deploys ProxySQL in read/write split mode - your read-only traffic will be sent to slaves while your writes will be sent to a writable master by creating two host groups. ProxySQL will also work together with the new automatic failover mechanism added in ClusterControl 1.4.0 - once failover happens, ProxySQL will detect the new writable master and route writes to it. It all happens automatically, without any need for the user to take action.
-
-Choose where to install
-''''''''''''''''''''''''
-
-Specify the host that you want to install ProxySQL. You can use an existing database server or use another host by specifying the hostname or IPv4 address.
-
-* **Server Address**
-	- List of existing servers provisioned under ClusterControl.
-
-* **Port**
-	- ProxySQL service port. Default is 6032.
-
-* **Add a new address**
-	- Specify the hostname or IP address of the host. This host must be accessible via passwordless SSH from ClusterControl node.
-
-Add ProxySQL Users
-''''''''''''''''''
-
-Two ProxySQL Users are required, one for administration and another one for monitoring. ClusterControl will create both during deployment.
-
-* **Administration User**
-	- ProxySQL administration user name.
-
-* **Administration Password**
-	- Password *Administration User*.
-
-* **Monitor User**
-	- ProxySQL monitoring user name.
-
-* **Monitor Password**
-	- Password for *Monitor User*
-
-Add database user
-'''''''''''''''''
-
-You can use existing database user (created outside ProxySQL) or you can let ClusterControl create a new database user under this section. ProxySQL works in the middle, between application and backend MySQL servers, so the database users need to be able to connect from the ProxySQL IP address.
-
-* **Use existing DB User**
-	- DB User: The database user name.
-	- DB User Password: Password for  *DB User*.
-	
-.. Note:: The user must exist on the DB nodes, and allowed access from the ProxySQL server.
-
-* **Create new DB User**
-	- DB User: The database user name.
-	- DB Password: Password for *DB Users*.
-	- DB Name: Database name in "database.table" format. To GRANT against all tables, use wildcard, for example: "mydb.*".
-	- Type in the MySQL privilege(s): ClusterControl will load the privilege name along the key press. Multiple privileges is possible.
-
-Select instances to balance
-'''''''''''''''''''''''''''
-
-Choose which server to be included into the load balancing set.
-
-* **Server Instance**
-	- List of MySQL Replication nodes.
-	
-* **Include**
-	- Toggle to YES to include it. Otherwise, choose NO.
-
-* **Max Replication Lag**
-	- How many seconds replication lag should be allowed before marking the node as unhealthy. Default value is 10.
-
-* **Max Connection**
-	- Maximum connections to be sent to the backend servers. It's recommended to match the ``max_connections`` value of the backend servers.
-
-* **Weight**
-	- This value is used to adjust the server's weight relative to other servers. All servers will receive a load proportional to their weight relative to the sum of all weights. The higher the weight, the higher the priority.
-
-Implicit Transactions
-''''''''''''''''''''''
-
-* **Are you using implicit transactions?**
-	- YES - If you rely on ``SET AUTOCOMMIT=0`` to create a transaction.
-	- NO - If you explicitly use ``BEGIN`` or ``START TRANSACTION`` to create a transaction.
 
 Processes
 `````````

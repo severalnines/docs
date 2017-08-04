@@ -174,7 +174,13 @@ All incremental backups are automatically grouped together under the last full b
 Restore Backup
 ..............
 
-Restores backup (mysqldump and xtrabackup) created by ClusterControl. You can restore up to a certain incremental backup by clicking on the *Restore* button for the respective backup ID. The following steps will be performed:
+Restores mysqldump or Percona Xtrabackup created by ClusterControl. ClusterControl supports two restoration options:
+- Restore on node
+- Restore and verify on standalone host
+
+**Restore on node***
+
+You can restore up to a certain incremental backup by clicking on the *Restore* button for the respective backup ID. The following steps will be performed:
 
 For mysqldump (online restore):
 
@@ -182,8 +188,8 @@ For mysqldump (online restore):
 2. Checking disk space on the target server.
 3. The mysqldump files will be copied to the node.
 4. The schema, data and triggers/functions dump files are applied.
-5. Optionally restore the `mysql` database. If the `cmon` user privileges has changed it may cause ClusterControl to stop functioning. This is fixable of course.
-6. The rest of the member will then catch up with the target server.
+5. Optionally restore the 'mysql' database. If the 'cmon' user privileges has changed it may cause ClusterControl to stop functioning.
+6. The rest of the members will then catch up with the target server.
 
 For Percona Xtrabackup (offline restore):
 
@@ -210,8 +216,27 @@ For Percona Xtrabackup (offline restore):
 .. Attention:: The datadir must have enough space to accomodate the restored backup.
 
 * **Restore "MySQL" Database**
-	- Exclusive to mysqldump. Toggle to ON to restore the ``mysql`` database if the backup was created by ClusterControl. If the ``cmon`` user privileges has changed, it may cause ClusterControl to stop functioning. This is fixable, of course. Default is "No".
+	- Exclusive to mysqldump. Toggle to ON to restore the ``mysql`` database if the backup was created by ClusterControl. If the ``cmon`` user privileges has changed, it may cause ClusterControl to stop functioning. This is fixable. Default is "No".
+
+**Restore and verify on standalone host**
+
+Performs restoration on a standalone host and verify the backup. This requires a dedicated host which is not part of the cluster. ClusterControl will first deploy a MySQL instance on the target host, start the service, copy the backup from the backup repository and start performing the restoration. Once done, you can have an option either shutdown the server once restored or let it run so you can conduct investigation on the server.
+
+You can monitor the job progress under *Activity > Jobs > Verify Backup* to see if the restoration status.
+
+* **Restore backup on**
+	- Specify the FQDN or IP address of the standalone host.
+
+* **Install Software**
+	- A new MySQL server will be installed and setup if 'Install Software' has been enabled otherwise an existing running MySQL server on the target host will be used. If there is an existing MySQL server installed or running, it will be stopped and removed before ClusterControl performs the installation.
 	
+* **Disable Firewall**
+	- Check the box to disable firewall (recommended).
+
+* **Shutdown the server after the backup have been restored**
+	- Select "Yes" if you want ClusterControl to shutdown the server after restoration completes. Select "No" if you want to let it run after restoration completes and the node will be listed under `Nodes`_ tab. You are then responsible for removing the MySQL server.
+
+
 Restore External Backups
 ........................
 

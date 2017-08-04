@@ -1,3 +1,6 @@
+.. _admin_settings:
+
+
 Settings
 ========
 
@@ -90,15 +93,17 @@ Feature                      Description
 **Add Load Balancer**        Add Load Balancer page - *ClusterControl > Actions > Add Load Balancer* and *ClusterControl > Manage > Load Balancer*
 **Clone**                    Clone Cluster page (Galera) - *ClusterControl > Actions > Clone Cluster*
 **Access All Clusters**      Access all clusters registered under the same organzation.
-**Cluster Registrations**    Cluster Registrations page - *ClusterControl > Settings (top-menu) > Cluster Registrations*
 **Service Providers**        Service Providers page - *ClusterControl > Settings (top-menu) > Service Providers*
 **Search**                   Search button and page - *ClusterControl > Search*
 **Create Database Node**     Create Database Node button and page - *ClusterControl > Create Database Node*
 **Developer Studio**         Developer Studio page - *ClusterControl > Manage > Developer Studio*
 **MySQL User Management**    MySQL user management sections - *ClusterControl > Settings (top-menu) > MySQL User Management* and *ClusterControl > Manage > Schema and Users*
-**Operation Reports**        Operational reports page - *ClusterControl > Settings (top-menu) > Operational Reports*
+**Operational Reports**      Operational reports page - *ClusterControl > Settings (top-menu) > Operational Reports*
+**Integrations**             Integrations page - *ClusterControl > Settings (top-menu) > Integrations*
+**Web SSH**                  Web-based SSH on every managed node - *ClusterControl > Nodes > Node Actions > SSH Console*
+**Cluster Registrations**    Cluster Registrations page - *ClusterControl > Settings (top-menu) > Cluster Registrations*
 **Custom Advisors**          Custom Advisors page - *ClusterControl > Manage > Custom Advisors*
-**Manage SSL**               Key Management page - *ClusterControl > Settings (top-menu) > Key Management*
+**SSL Key Management**       Key Management page - *ClusterControl > Settings (top-menu) > Key Management*
 ============================ ============
 
 LDAP Access
@@ -222,15 +227,27 @@ Database           Specify the database or table name. It can be either in '*.*'
 Email Notifications
 -------------------
 
-Configures email notifications across clusters.
+Configures global email notifications across clusters.
 
-* **Save To**
-	- Save the settings to individual or all clusters.
+* **Add Recipient**
+	- Creates a new recipient by specifying an email address. A newly created recipient will be listed under 'External' organzation.
+	
+* **Delete Recipient**
+	- Removes an existing recipient. 
+
+* **Save**
+	- Save the settings to individual cluster.
+	
+* **Remove**
+	- Remove
+
+* **Save to all Clusters**
+	- Save the settings to all clusters.
 
 * **Send digests at**
 	- Send a digested (summary) email at this time every dayf or the selected recipient.
 
-* **Timezone**
+* **Time-zone**
 	- Timezone for the selected recipient.
 
 * **Daily limit for non-digest email as**
@@ -240,22 +257,23 @@ Configures email notifications across clusters.
 	====================== ===========
 	Event                  Description
 	====================== ===========
-	Network                Network related messages, e.g host unreachable, SSH issues.
+	All Event Categories   All events.
+	Network                Network related messages, e.g. host unreachable, SSH issues.
 	CmonDatabase           Internal CMON database related messages.
 	Mail                   Mail system related messages.
-	Cluster                Cluster related messages, e.g cluster failed.
-	ClusterConfiguration   Cluster configuration messages, e.g software configuration messages.
+	Cluster                Cluster related messages, e.g. cluster failed.
+	ClusterConfiguration   Cluster configuration messages, e.g. software configuration messages.
 	ClusterRecovery        Recovery messages like cluster or node recovery failures.
-	Node                   Message related to nodes, e.g node disconnected, missing GRANT, failed to start HAproxy, failed to start NDB cluster nodes.
-	Host                   Host related messages, e.g CPU/disk/RAM/swap alarms.
-	DbHealth               Database health related messages, e.g memory usage of mysql servers, connections.
+	Node                   Message related to nodes, e.g. node disconnected, missing GRANT, failed to start HAproxy, failed to start NDB cluster nodes.
+	Host                   Host related messages, e.g. CPU/disk/RAM/swap alarms.
+	DbHealth               Database health related messages, e.g. memory usage of mysql servers, connections.
 	DbPerformance          Alarms for long running transactions and deadlocks
 	SoftwareInstallation   Software installation related messages.
 	Backup                 Messages about backups.
 	Unknown                Other uncategorized messages.
 	====================== ===========
 
-* **Select how you wants alarms/events delivered**
+* **Select how you want alarms/events delivered**
 	======= ===========
 	Action  Description
 	======= ===========
@@ -264,6 +282,60 @@ Configures email notifications across clusters.
 	Digest  Send a summary of alarms raised everyday at *Send digests at*
 	======= ===========
 
+Integrations
+-------------
+
+Configures third-party integration on events triggered by ClusterControl. 
+
+Supported services are:
+
++-------------------------------+-----------------+----------+
+|  Incident management services | Chat services   | Others   |
++===============================+=================+==========+
+| PagerDuty                     | Slack           | Webhooks |
++-------------------------------+-----------------+          |
+| VictorOps                     | Telegram        |          |
++-------------------------------+                 |          |
+| OpsGenie                      |                 |          |
++-------------------------------+-----------------+----------+
+	
+* **Add new integration**
+	* Open the service integration configuration wizard.
+
+* **Select service**
+	* Pick a service that you want to configure. Different service requires different set of options.
+	
+* **Select Details**
+	* Specify a name for this integration together with the corresponding service key. The service key can be retrieved from the provider website. Click on the "Test" button to verify if ClusterControl is able to connect with the service provider.
+
+* **Select Sender and Event Triggers**
+	* Specify the cluster name and together with ClusterControl event that you would like to trigger for incident. You can define multiple values for both fields. Details on the events is described in the following table:
+
+	====================== ===========
+	Event                  Description
+	====================== ===========
+	All Events             All ClusterControl events including warning and critical events.
+	All Warning Events     All ClusterControl warning events, e.g. cluster degradation, network glitch.
+	All Critical Events    All ClusterControl critical events, e.g. cluster failed, host failed.
+	Network                Network related events, e.g. host unreachable, SSH issues.
+	CMON Database          Internal CMON database related events, e.g. unable to connect to CMON database, datadir mounted as read-only.
+	Mail                   Mail system related events, e.g. unable to send mail, mail server unreachable.
+	Cluster                Cluster related events, e.g. cluster failed, cluster degradation, time drifting.
+	Cluster Configuration  Cluster configuration events, e.g. SST account mismatch.
+	Cluster Recovery       Recovery events, e.g. cluster or node recovery failures.
+	Node                   Node related events, e.g. node disconnected, missing GRANT, failed to start HAproxy, failed to start NDB cluster nodes.
+	Host                   Host related messages, e.g. CPU/disk/RAM/swap exceeds thresholds, memory full.
+	Database Health        Database health related events, e.g. memory usage of mysql servers, connections, missing primary key.
+	Database Performance   Alarms for long running transactions, replication lag and deadlocks.
+	Software Installation  Software installation related events, e.g. license expiration.
+	Backup                 Backups related events, e.g. backup failed.
+	====================== ===========
+
+* **Edit**
+	- Edit the selected integration.
+
+* **Delete**
+	- Remove the selected integration.
 	
 Operational Report
 ------------------
