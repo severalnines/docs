@@ -94,7 +94,7 @@ Variable                     Description
 ``@DATADIR@``                Default is ``/var/lib/mysql``. Value specified during cluster deployment takes precendence.
 ``@MYSQL_PORT@``             Default is 3306. Value specified during cluster deployment takes precendence.
 ``@BUFFER_POOL_SIZE@``       Automatically configured based on host's RAM.
-``@LOG_FILE_SIZE@`  `        Automatically configured based on host's RAM.
+``@LOG_FILE_SIZE@``          Automatically configured based on host's RAM.
 ``@LOG_BUFFER_SIZE@``        Automatically configured based on host's RAM.
 ``@BUFFER_POOL_INSTANCES@``  Automatically configured based on host's CPU.
 ``@SERVER_ID@``              Automatically generated based on member's ``server-id``.

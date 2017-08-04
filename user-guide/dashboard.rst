@@ -6,7 +6,7 @@ This page is the landing page once you logged in. It provides a summary of datab
 .. image:: img/cc_cluster_list_142.png
    :align: center
 
-*Section 1*
+*Top Menu*
 
 ClusterControl's top menu.
 
@@ -45,7 +45,7 @@ ClusterControl's top menu.
 * **Logout**
 	- Logs out from ClusterControl and return to login page.
 	
-*Section 2*
+*Cluster List*
 
 List of database clusters managed by ClusterControl with summarized status. Database cluster deployed by (or added into) ClusterControl will be listed in this page. See `Database Cluster List`_ section.
 
