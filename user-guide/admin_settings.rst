@@ -236,10 +236,10 @@ Configures global email notifications across clusters.
 	- Removes an existing recipient. 
 
 * **Save**
-	- Save the settings to individual cluster.
+	- Saves the settings to individual cluster.
 	
 * **Remove**
-	- Remove
+	- Unassigns the settings for the individual cluster to the selected recipient.
 
 * **Save to all Clusters**
 	- Save the settings to all clusters.
@@ -300,7 +300,7 @@ Supported services are:
 +-------------------------------+-----------------+----------+
 	
 * **Add new integration**
-	* Open the service integration configuration wizard.
+	* Opens the service integration configuration wizard.
 
 * **Select service**
 	* Pick a service that you want to configure. Different service requires different set of options.
