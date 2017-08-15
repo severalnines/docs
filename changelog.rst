@@ -8,6 +8,60 @@ This change logs list details about updates in each version of ClusterControl.
 Changes v1.4.2
 ---------------
 
+Patch Release: August 14th, 2017
+````````````````````````````````
+* Build: 
+	- clustercontrol-1.4.2-3574
+	- clustercontrol-controller-1.4.2-2045
+
+* UI: 
+	- Group Replication: Create Cluster job did not submit the sudo password if set.
+	- Galera: Restore backup host dropdown was empty unless the Galera node had log_bin enabled.
+	- Postgres: small UI fix to remove empty columns.
+
+* Controller:
+	- MySQL(all variants)/PostgreSQL: use socat for streaming when it is available. 
+	- MySQL (all variants): Super read-only causing create database to fail during restore.
+	- MySQL (all variants): Backup, failed to read included config files from my.cnf (!includedir), if the included config dir was empty.
+	- Error reporter: drop -W option from netstat (not supported by rhel/centos 6.x).
+	- Error reporter: Add missing dependencies for error-reporter (tar/gzip) for minimal distros (eg.: containers.
+	- MongoDb: Backup creation fix (for case when ssh user is not allowed to ssh to the controller itself).
+	- ProxySQL: Installing an improved galera checker script for new ProxySQL installations.
+	- ProxySQL: A fix to auto-restart a failed ProxySQL node.
+	- Docker: Small fix to support HAProxy with Docker.
+	- Docker: Do not set ulimit inside a container (as this makes some operation failing inside docker).
+	- Query Monitor: Doesn't collect queries with mysql local override and PS=off.
+	- Replication: do not recover a user shutdown node
+
+Patch Release: August 1st, 2017
+```````````````````````````````
+
+* Build: 
+	- clustercontrol-1.4.2-3538
+
+* UI:
+	- Fix password reset script for php v7.
+	- Fix LDAP regression with Active Directory and "samba account".
+
+Patch Release: July 31st, 2017
+````````````````````````````````
+
+* Build:
+	- clustercontrol-1.4.2-3531
+
+* UI:
+	- Fix host filtering for Query Monitor.
+	- Fix LDAP login regression.
+	- Fix to show all databases for Group Replication backups.
+
+Patch Release: July 27th, 2017
+``````````````````````````````````
+* Build:
+	- clustercontrol-ssh-1.4.2-26
+
+* UI: 
+	- Fix not fatal duplicated symlink error creation at post-installation.
+
 Patch Release: July 24th, 2017
 ``````````````````````````````````
 
