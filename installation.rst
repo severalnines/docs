@@ -643,7 +643,7 @@ Redhat/CentOS
 
 .. code-block:: bash
 
-	$ yum -y install clustecontrol clustercontrol-cmonapi clustercontrol-controller clustercontrol-ssh clustercontrol-notifications
+	$ yum -y install clustercontrol clustercontrol-cmonapi clustercontrol-controller clustercontrol-ssh clustercontrol-notifications
 
 5. Start MySQL server (MariaDB for Redhat/CentOS 7), enable it on boot and set a MySQL root password:
 
