@@ -8,6 +8,42 @@ This change logs list details about updates in each version of ClusterControl.
 Changes v1.4.2
 ---------------
 
+Patch Release: August 25th, 2017
+````````````````````````````````
+
+* Build:
+	- clustercontrol-controller-1.4.2-2063
+
+* Controller:
+	- HAProxy: A problem with hidden properties made it impossible to view HAProxy details in the UI unless the stats admin user and password was not admin/admin. 
+	- Alarms: Possibility to disable the SwapV2 alarms (set swap_inout_period=0 in cmon_X.cnf)
+
+Patch Release: August 24th, 2017
+````````````````````````````````
+
+* Build:
+	- clustercontrol-1.4.2-3629
+
+* UI:
+	- Configuration Management: Correctly exclude non DB nodes from drop downs.
+
+Patch Release: August 22nd, 2017
+````````````````````````````````
+
+* Build: 
+	- clustercontrol-1.4.2-3607
+	- clustercontrol-controller-2058
+
+* UI:
+	- Group Replication: SUDO password not set in job.
+	- MySQL (all variants): Password validation updated to support more characters.
+	- MySQL (all variants): Import existing MySQL cluster fails if specified user is other than ‘root’.
+
+* Controller:
+	- PostgreSQL: A problem restoring abackup on the specified node (by job: server_address, UI sends master/writable) is fixed.
+	- Error reporting: Important error reporter fix to be more tolerant of empty/invalid filenames.
+	- Replication: Cluster state was not set if node/cluster recovery was disabled.
+
 Patch Release: August 14th, 2017
 ````````````````````````````````
 * Build: 
