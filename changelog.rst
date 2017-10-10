@@ -8,6 +8,37 @@ This change logs list details about updates in each version of ClusterControl.
 Changes v1.4.2
 ---------------
 
+Patch Release: Oct 3rd, 2017
+`````````````````````````````
+
+* Build: 
+	- clustercontrol-notifications-1.4.2-62
+	- clustercontrol-ssh-1.4.2-32
+
+* UI:
+	- System V Init - Prevent/disable the 'cmon-events' process to start (by cron or manually) when ``<webroot>/clustercontrol/bootstrap.php`` has set ``define('CMON_EVENTS_ENABLED', false);``.
+	- System V Init - Prevent/disable the 'cmon-ssh' process to start (by cron or manually) when ``<webroot>/clustercontrol/bootstrap.php`` has set ``define('SSH_ENABLED', false);``.
+
+Patch Release: Sept 11th, 2017
+````````````````````````````````
+
+* Build:
+	- clustercontrol-1.4.2-3699
+	- clustercontrol-controller-1.4.2-2091
+
+* UI:
+	- Non-default cluster specific SSH port support for host validation when adding a new or an existing node.
+	- Show all valid nodes for 'Rebuild Replication Slave' and 'Change Replication Master'. All nodes with binary logging enabled is a valid option.
+	- Minor filtering fixes to 'Manage -> Schemas and Users'.
+	- Removed controller host from PostgreSQL's query monitor.
+	- Minor performance optimization. Removed redundant repeated timezone call.
+
+* Controller:
+	- Use cluster specific SSH settings for host validation when adding a new or an existing node.
+	- New error report tarball naming convention - error-report-TIMESTAMP-clusterCID.tar.gz.
+	- Include backup records and backup schedules in the error reports.
+	- Minor fix to backup scheduling when using advanced cron format.
+
 Patch Release: August 25th, 2017
 ````````````````````````````````
 
@@ -16,7 +47,7 @@ Patch Release: August 25th, 2017
 
 * Controller:
 	- HAProxy: A problem with hidden properties made it impossible to view HAProxy details in the UI unless the stats admin user and password was not admin/admin. 
-	- Alarms: Possibility to disable the SwapV2 alarms (set swap_inout_period=0 in cmon_X.cnf)
+	- Alarms: Possibility to disable the SwapV2 alarms (set ``swap_inout_period=0`` in cmon_X.cnf)
 
 Patch Release: August 24th, 2017
 ````````````````````````````````
