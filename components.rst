@@ -1054,7 +1054,7 @@ To build from source may require additional packages and tools to be installed:
 	$ yum install automake git openssl-devel
 	
 	# Ubuntu/Debian
-	$ sudo apt-get install build-essential automake git libssl-dev byacc flex
+	$ sudo apt-get install build-essential automake git libssl-dev byacc flex bison
 
 4. Compile the source code:
 
@@ -1087,7 +1087,12 @@ SSH into the controller and then let us create a user called 'dba' that is allow
 	$ s9s user --create --generate-key --controller="https://localhost:9501" --cmon-user=dba
 	Grant user 'dba' succeeded.
 
-.. Note:: Short options exist.
+If you built from source, the command would be:
+
+.. code-block:: bash
+
+	$ s9s user --create --generate-key --controller="https://localhost:9501" dba
+	Grant user 'dba' succeeded.
 
 If this is the first time you use the s9s client, then a new directory has been created in ``$HOME/.s9s/`` storing the private/public key and a configuration file.
 
