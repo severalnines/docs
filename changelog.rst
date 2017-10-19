@@ -11,6 +11,21 @@ Changes v1.4.2
 Patch Release: Oct 3rd, 2017
 `````````````````````````````
 
+* Build:
+	- clustercontrol-controller-1.4.2-2161
+
+* Controller:
+	- Backups: Always execute commands on controller, only use the seen address (from node's POV) for constructing the netcat sender command line.
+	- s9s_error_reporter: Updates for better compatibility with all s9s cli version.
+	- s9s_error_reporter: Prevent error reporting from being blocked by other jobs.
+	- Deployment failure on MariaDB 10.2 and 10.1 for Galera Custer - mariadb-compat does not exist on Debian.
+	- mysqldump: Handling the backup compression level (bugfix)
+	- Galera (all vendors): ``mysql_upgrade`` must only run if ``monitored_mysql_root_password`` is set. The upgrade will failed if not possible to connect
+	- Galera: Fix advisor to handle ``wsrep_cluster_address`` arguments
+
+Patch Release: Oct 3rd, 2017
+`````````````````````````````
+
 * Build: 
 	- clustercontrol-notifications-1.4.2-62
 	- clustercontrol-ssh-1.4.2-32
