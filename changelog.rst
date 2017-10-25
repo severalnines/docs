@@ -8,6 +8,35 @@ This change logs list details about updates in each version of ClusterControl.
 Changes v1.4.2
 ---------------
 
+Patch Release: Oct 25th, 2017
+``````````````````````````````
+
+* Build: 
+	- clustercontrol-1.4.2-3958
+	- clustercontrol-controller-1.4.2-2179
+
+* Controller:
+	- Only collect the relevant log files from each host
+	- Accounts daemon fix, to prevent doing any operations on accounts-daemon if running the environment as root or if it is not started.
+	- Group-replication bugfixes
+	- Galera: Add replicaiton slave: Properly detect if a replication slave is actually connected to the master.
+	- error-reporter: include node type(s) in the host directory names
+	- CmonDB 'alarm' table UTF-8 changes
+	- HAProxy config check
+
+* UI:
+	- Resend alarm emails
+	- Removed banner from the Add Existing Slave, making it hard to understand what would happen.
+	- Set default value as "1" by default for Compression Level for mysqldump.
+	- Galera: Overview Page, "Flow Control Paused" now shows floating points value
+	- Host statistics graphs, issue with multicore CPU graphing
+	- More verbosity when capturing LDAP logs
+	- Configuration Management: Applied the byte conversion mechanism for the mysql change parameter dialog.
+	- Fixed the save settings for property 'History' and removed property 'SSH Options'
+	- ProxySQL: Query Rules, added IN () format to match pattern generation
+	- Query Monitor: Adding query outliers explanation in Overview page
+	- Query Monitor: Renamed Query Histogram to Query Outliers to match what it actually is.
+
 Patch Release: Oct 3rd, 2017
 `````````````````````````````
 
