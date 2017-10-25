@@ -33,9 +33,9 @@ Operating system
 
 ClusterControl has been tested on the following operating systems:
 
-* Redhat/CentOS/Oracle Linux 6 and later
+* Redhat/CentOS 6.x/7.x
 * Ubuntu 12.04/14.04/16.04 LTS
-* Debian 7.0 and later
+* Debian 7.x/8.x
 
 The following do not work:
 
