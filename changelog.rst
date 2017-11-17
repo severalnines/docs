@@ -5,8 +5,79 @@ Change Logs
 
 This change logs list details about updates in each version of ClusterControl.
 
-Changes v1.4.2
----------------
+Changes in v1.5.0
+-----------------
+
+Initial Release: Nov 13th, 2017
+``````````````````````````````
+
+* Build:
+	- clustercontrol-1.5.0-4088
+	- clustercontrol-controller-1.5.0-2224
+	- clustercontrol-cmonapi-1.5.0-290
+	- clustercontrol-notifications-1.5.0-67
+	- clustercontrol-ssh-1.5.0-37
+	- clustercontrol-cloud-1.5.0-31
+	- clustercontrol-clud-1.5.0-31
+
+In this release we have started to add integrations with cloud services and initially plan to add support for the major public cloud providers - Amazon Web Services, Google Cloud and Azure.
+
+We are reintroducing backup to the cloud where you can now manually upload or schedule backups to be stored on AWS S3 and Google Cloud Storage. You can then download and restore backups from the cloud in case of local backup storage disasters or if you need to reduce local disk space usage for your backups.
+
+For MySQL based clusters we have added support for MariaDB 10.2 and you can now choose to initially stage a slave from an existing backup instead of staging from a master. Individual databases (mysqldump only) can be backed up with separate dumps/files, and you can trigger verification/restoring of a backup to happen after N hours after a scheduled backup has completed.
+
+PostgreSQL has an additional backup method ``pg_basebackup`` that can be used for online binary backups. Backups taken with ``pg_basebackup`` can be used later for point-in-time recovery and as the starting point for a log shipping or streaming replication standby servers. We have also added support for synchronous replication failover and deploying HAProxy with Keepalived (for load balancing HA) to be used with PostgreSQL clusters.
+
+Load balancers (HAProxy) can be deployed by explicitly selecting the public/management IP for connecting and provisioning the software. Especially useful for cloud environments if you are provisioning/managing over a public network.
+
+We also have some additional improvements for ProxySQL. You can add or modify schedulers and also mass import existing database users into your ProxySQL instances to quickly setup access.
+
+**Feature Details**
+
+* Cloud Services (AWS S3 and Google Cloud Storage):
+	- Manual upload or schedule backups to be uploaded after completion to the cloud.
+	- Download and restore backups from a cloud storage.
+
+* Backup (MySQL):
+	- Backup individual databases separately (mysqldump only).
+	- Upload, download and restore backups stored in the cloud.
+	- Trigger a verification and restore of a backup after N hours of completion.
+	- Rebuild a replication slave by staging it from an existing backup.
+	- Add a new replication slave by staging it from an existing backup.
+
+* PostgreSQL:
+	- New backup method ``pg_basebackup`` which makes a binary copy of the database files.
+	- Synchronous replication failover (support for ``synchronous_standby_names``).
+	- Support for HAProxy with Keepalived.
+	- Support for PostgreSql 10.
+
+* ProxySQL:
+	- Mass import existing database users into ProxySQL.
+	- Add and modify scheduler scripts.
+
+* Misc:
+	- MariaDB v10.2 support (Galera and MySQL Replication).
+	- MySQL Cluster(NDB) v7.5 support.
+	- Added support to show and filter DB status variables for MongoDB nodes.
+	- HTML formatted alarm and digest emails.
+	- Multiple NICs supports when deploying Load balancers (HAProxy).
+	- Continuous improvements to UX/UI and performance.
+	- New cmon-cloud process and clud client to handle cloud services.
+	- New Report: Database Growth 
+
+Changes in v1.4.2
+-----------------
+
+Patch Release: Oct 30th, 2017
+``````````````````````````````
+
+* Build:
+	- clustercontrol-controller-1.4.2-2189
+
+* Controller:
+	- MySQL based cluster: if the 'mysql' database was explicitly backed up, then it was restored in the wrong way causing permission denied and the restore to fail.
+	- Galera: codership repository fixes
+	- Debian Jessie (Debian 9) support.
 
 Patch Release: Oct 25th, 2017
 ``````````````````````````````
@@ -285,8 +356,8 @@ Initial Release: June 21st, 2017
 	* Use a custom mysql port when adding a MySQL Asynchronous slave (MySQL Galera).
 
 
-Changes v1.4.1
----------------
+Changes in v1.4.1
+------------------
 
 Patch Release: June 20th, 2017
 ``````````````````````````````````
@@ -445,8 +516,8 @@ In this release we have added additional management functions for ProxySQL. You 
 	- Manage MySQL Galera and Replication clusters with management/public IPs for monitoring connections and data/private IPs for replication traffic.
 	- Add Galera nodes or Replication Read Slaves with managament and data IPs.
 
-Changes v1.4.0
----------------
+Changes in v1.4.0
+-----------------
 
 Patch Release: March 29th, 2017
 ````````````````````````````````
