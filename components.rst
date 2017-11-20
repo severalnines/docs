@@ -965,6 +965,18 @@ The command line tool is invoked by executing a binary called ``s9s``. The comma
 Installation
 `````````````
 
+We have built an installer script for s9s-tools available at `http://repo.severalnines.com/s9s-tools/install-s9s-tools.sh <http://repo.severalnines.com/s9s-tools/install-s9s-tools.sh>`_. 
+
+On ClusterControl host (or any client host):
+
+.. code-block:: bash
+
+	$ wget http://repo.severalnines.com/s9s-tools/install-s9s-tools.sh
+	$ chmod 755 install-s9s-tools.sh
+	$ ./install-s9s-tools.sh
+
+If you would like to install it manually, please refer to the next section, `Package Manager (yum/apt)`_.
+
 Package Manager (yum/apt)
 '''''''''''''''''''''''''
 
@@ -990,19 +1002,7 @@ Installation steps are straight-forward:
 	$ yum install s9s-tools
 	$ s9s --help
 
-Ubuntu DEB repository (via Launchpad)
-.....................................
-
-s9s-tools package is also hosted on `Launchpad <https://launchpad.net/~severalnines/+archive/ubuntu/s9s-tools>`_. You can use the PPA to your system's Software Sources:
-
-.. code-block:: bash
-
-	$ sudo add-apt-repository ppa:severalnines/s9s-tools
-	$ sudo apt-get update
-	$ sudo apt-get install s9s-tools
-	$ s9s --help
-
-Debian (and Ubuntu) DEB repositories
+Debian (and Ubuntu) DEB Repositories
 .....................................
 
 The repository files for each distribution can be downloaded directly from here:
