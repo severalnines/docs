@@ -975,7 +975,7 @@ download           Download a file from the cloud.
 rm                 Delete a file on the cloud.
 clouds             List supported cloud providers.
 help, h            Shows a list of commands or help for one command.
-====================================== ===========
+================== ===========
 
 **Global Options**
 
