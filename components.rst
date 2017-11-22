@@ -922,7 +922,7 @@ Communication is based on HTTPS, so it is possible to access your servers from b
 ClusterControl Notifications
 ----------------------------
 
-This optional package is introduced in ClusterControl v1.4.2, deprecating the previous version of ClusterControl NodeJS package (which served the same purpose). Alarms and events can now easily be sent to incident management services like PagerDuty, VictorOps and OpsGenie. You can also run any command available in the `ClusterControl CLI`_ from your CCBot-enabled chat services like Slack and Telegram. Additionally, it provides a generic webhook if you want to integrate with other services to act on status changes in your clusters. The direct connections with these popular incident communication services allow you to customize how you are alerted from ClusterControl when something goes wrong with your database environments.
+This optional package is introduced in ClusterControl v1.4.2, deprecating the previous version of ClusterControl NodeJS package (which served the same purpose). Alarms and events can now easily be sent to incident management services like PagerDuty, VictorOps and OpsGenie. You can also run any command available in the `ClusterControl CLI`_ from your CCBot-enabled chat services like Slack and Telegram. Additionally, it provides a generic web hook if you want to integrate with other services to act on status changes in your clusters. The direct connections with these popular incident communication services allow you to customize how you are alerted from ClusterControl when something goes wrong with your database environments.
 
 The package installs a binary called ``cmon-events`` located under ``/usr/sbin`` directory and by default listens to port 9510 on the ClusterControl node.
 
@@ -932,6 +932,64 @@ Additional resources on setting up integration with third-party tools are listed
 		* `Video: ClusterControl ChatOps Integrations - Product Demonstration <https://severalnines.com/blog/video-clustercontrol-chatops-integrations-product-demonstration>`_
 	* Documentation:
 		* `Integrations <user-guide/index.html#integrations>`_
+
+ClusterControl Cloud
+--------------------
+
+This optional package is introduced in ClusterControl v1.5. The package name is ``clustercontrol-cloud`` and it provides an UI extension in ClusterControl under `Integrations <user-guide/index.html#integrations>`_. After adding the cloud provider credentials, you can do basic instance operations directly from ClusterControl UI like listing, starting, stopping and deleting the existing instances. See `Integrations <user-guide/index.html#integrations>`_ for details.
+
+This package installs the following new files:
+	* ``/etc/cron.d/cmon-cloud`` - Cron job to monitor ``cmon-cloud`` process.
+	* ``/etc/rc.d/init.d/cmon-cloud`` - Sysvinit script.
+	* ``/etc/systemd/system/cmon-cloud.service`` - Systemd unit file.
+	* ``/usr/sbin/cmon-cloud`` - The executable binary file.
+
+By default, this service will use port 9518 on localhost interface. Cloud credentials are stored under ``/var/lib/cmon/`` with permission set to root only.
+
+.. Note:: ClusterControl Cloud is a reintroduction of a deprecated feature called 'Service Providers', available in ClusterControl 1.4 and older. 
+
+ClusterControl Cloud Upload Download (CLUD)
+-------------------------------------------
+
+This optional package is a complementary of `ClusterControl Cloud`_ and is introduced in ClusterControl v1.5. The package name is ``clustercontrol-clud`` (abbreviation of **CL**oud **U**pload **D**ownload) and is the command line interface for ClusterControl to interact with the cloud providers when uploading and downloading backups. You can think of it as a cloud file manager. No extra configuration is required.
+
+This package installs the following file:
+	* ``/usr/sbin/clud`` - The executable binary file.
+	
+Usage
+``````
+
+The general synopsis to execute commands using ``clud`` is:
+
+.. code-block:: bash
+
+	clud {global options} command {command option} {arguments...}
+	
+**Command**
+
+================== ===========
+Name, shorthand    Description
+================== ===========
+upload             Upload a file to the cloud.
+download           Download a file from the cloud.
+rm                 Delete a file on the cloud.
+clouds             List supported cloud providers.
+help, h            Shows a list of commands or help for one command.
+====================================== ===========
+
+**Global Options**
+
+=============================================== ===========
+Name, shorthand                                 Description
+=============================================== ===========
+|minus|\ |minus|\ cloud                         Use this cloud for the action.
+|minus|\ |minus|\ service                       Use this service within the cloud.
+|minus|\ |minus|\ credentials                   Raw credentials JSON.
+|minus|\ |minus|\ credentials-file              Take credentials from this file instead of using STDIN input.
+|minus|\ |minus|\ auto-create-bucket            Use this flag if the bucket should be auto-created if not exists.
+|minus|\ |minus|\ help, -h                      Show help.
+|minus|\ |minus|\ version                       Print the version.
+=============================================== ===========
 
 
 ClusterControl CLI
@@ -1283,7 +1341,7 @@ For example:
 	$ man s9s-process
 	$ man s9s-conf
 
-The general synopsis to execute commands using s9s is:
+The general synopsis to execute commands using ``s9s`` is:
 
 .. code-block:: bash
 
