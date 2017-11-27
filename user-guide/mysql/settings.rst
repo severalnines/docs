@@ -13,13 +13,13 @@ Cluster Settings
 	- Cluster name. This name will appear in the database cluster list and database cluster summary.
 
 * **Staging Area**
-	- The staging area is a directory (created automatically) to store intermediate data, such as mysqldumps, binaries, RPMs used in e.g installations/upgrades and automatic scaling. The staging area is automatically cleaned, but should be big to hold mysqldumps of your entire database.
+	- The staging area is a directory (created automatically) to store intermediate data, such as dump files, binaries, RPMs used in e.g installations/upgrades and automatic scaling. The staging area is automatically cleaned, but should be big to hold dump files of your entire database.
 
 * **Sudo**
 	- Sudo command password (if *SSH User** is not root) if running as sudoers. Change in CMON configuration file under ``sudo``.
 
 * **SSH User**
-	- Read-only. The user that can SSH from the ClusterControl Server to the other nodes without password. Change in CMON configuration file under ``os_user`` or osuser.
+	- Read-only. The user that can SSH from the ClusterControl Server to the other nodes without password. Change in CMON configuration file under ``os_user`` or ``osuser``.
 
 * **SSH Identity**
 	- Read-only. Change in CMON configuration file under ``ssh_identity``.
@@ -111,7 +111,7 @@ Configures email notifications for alarms generated for your database cluster.
 	Cluster                Cluster related messages, e.g cluster failed.
 	ClusterConfiguration   Cluster configuration messages, e.g software configuration messages.
 	ClusterRecovery        Recovery messages like cluster or node recovery failures.
-	Node                   Message related to nodes, e.g node disconnected, missing GRANT, failed to start HAproxy, failed to start NDB cluster nodes.
+	Node                   Message related to nodes, e.g node disconnected, missing GRANT, failed to start HAProxy, failed to start NDB cluster nodes.
 	Host                   Host related messages, e.g CPU/disk/RAM/swap alarms.
 	DbHealth               Database health related messages, e.g memory usage of mysql servers, connections.
 	DbPerformance          Alarms for long running transactions and deadlocks
@@ -132,29 +132,12 @@ Configures email notifications for alarms generated for your database cluster.
 Version
 ''''''''
 
-View the database server, vendor, operating system distribution and ClusterControl version installed. Tick the "Check for updates" checkbox to get notified when a new ClusterControl version is released. New versions are made available from `our download site <http://www.severalnines.com/downloads/cmon>`_ and `Severalnines repository <../../installation.html#severalnines-repository>`_.
-
-To upgrade to the latest version, see `Upgrading ClusterControl section <../../administration.html#upgrading-clustercontrol>`_.
-
-Subscription
-````````````
-
-For users with a valid subscription (Standalone, Advanced, Enterprise) enter your license information here to enable additional features based on the subscription. 
-
-This functionality is also globally accessible at *ClusterControl > Settings > Subscription*. Following screenshot shows example on filing up the license information:
-
-.. image:: img/subscription.png
-
-.. Attention:: Make sure you copy the subscription information as they are, with no leading/trailing spaces.
-
-The license key is validated during runtime. Reload your web browser after registering the license.
-
-.. Note:: When the license expires, ClusterControl defaults back to the Community Edition. For features comparison, please refer to `ClusterControl product page <http://www.severalnines.com/pricing>`_.
+Lists out the version of ClusterControl components loaded on the node.
 
 Thresholds
 ``````````
 
-Provides thresholds for warnings and criticals event. Thresholds specify the threshold level at which an alarm will be triggered and notification will be sent via email to the list of recipients configured in the `Email Notification`_. Set your alarm thresholds for:
+Provides thresholds for warnings and critical event. Thresholds specify the threshold level at which an alarm will be triggered and notification will be sent via email to the list of recipients configured in the `Email Notification`_. Set your alarm thresholds for:
 
 * CPU, RAM, disk space and swap utilization
 * MySQL server memory utilization
@@ -196,7 +179,7 @@ Manages how ClusterControl should perform query monitoring. It determines the ou
 
 * *ClusterControl > Overview > Cluster-Wide Queries*
 * *ClusterControl > Query Monitoring > Top Queries*
-* *ClusterConrol > Query Monitoring > Query Histogram*
+* *ClusterControl > Query Monitoring > Query Outliers*
 
 Changes happened in this page does not require the CMON service to restart.
 
@@ -206,19 +189,11 @@ Changes happened in this page does not require the CMON service to restart.
 		- No - ClusterControl uses *Long Query Time* and *Log queries not using indexes* will be used across all MySQL Servers.
 
 * **Long Query Time**
-	- Collects queries taking longer than Long Query Time seconds:
+	- Collects queries taking longer than *Long Query Time* seconds:
 		- 0 - All queries.
 		- 0.1 - Only queries taking more than 0.1 seconds will be accounted.
 
 * **Log queries not using indexes?**
-	- Configures ClusterControl behaviour on sampling queries without indexes:
+	- Configures ClusterControl behavior on sampling queries without indexes:
 		- Yes - Logs queries which are not using indexes.
-		- No - Ignores queries that are not using indexes (will not be accounted for in *ClusterControl > Query Monitor > Query Histogram*).
-		
-Backup
-``````
-
-Manages the default backup retention period. This setting is also accessible directly from *ClusterControl > Backup > Settings*.
-
-* **Backup Retention Period**
-	- Backup retention period in days. Backups older than the retention period (days) will be deleted. Set to 0 for no retention.
+		- No - Ignores queries that are not using indexes (will not be accounted for in *ClusterControl > Query Monitor > Query Outliers*).

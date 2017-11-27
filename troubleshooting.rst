@@ -19,7 +19,7 @@ If you encounter any problems with ClusterControl, it is highly recommended to e
 +-------------------------------+------------------------------------------------------+------------------------------------------------------+
 | Log Type                      |                                          Default Location                                                   |
 |                               +------------------------------------------------------+------------------------------------------------------+
-|                               | Redhat/CentOS                                        | Debian/Ubuntu                                        |
+|                               | RedHat/CentOS                                        | Debian/Ubuntu                                        |
 +===============================+======================================================+======================================================+
 | CMON process log              | /var/log/cmon.log or /var/log/cmon_[cluster_id].log  | /var/log/cmon.log or /var/log/cmon_[cluster_id].log  |
 +-------------------------------+------------------------------------------------------+------------------------------------------------------+
@@ -50,7 +50,7 @@ If the above does not address the issues you are having, please refer to our `kn
 Error Reporting
 '''''''''''''''
 
-ClusterControl provides error reporting tool called ``s9s_error_reporter``. This can greatly facilitate the troubleshooting process as it collects the necessary information on the entire database cluster setup and archives it in a package. You can use this tool to generate error reports, and then attach the generated tarball package to the Support Ticket.
+ClusterControl provides error reporting tool called ``s9s_error_reporter``. This can greatly facilitate the troubleshooting process as it collects the necessary information on the entire database cluster setup and archives it in a package. You can use this tool to generate error reports, and then attach the generated tar ball package to the Support Ticket.
 
 Run all commands below on the ClusterControl node:
 
@@ -95,12 +95,12 @@ Debugging ClusterControl Controller (CMON)
 
 Starting from ClusterControl v1.3.0, ClusterControl comes with debuginfo package. In case if you encounter CMON crash, please install the debuginfo package and the necessary packages as shown below.
 
-Install Debugging Components (Redhat/CentOS)
+Install Debugging Components (RedHat/CentOS)
 ````````````````````````````````````````````
 
 1. Enable the debug repo under ``/etc/yum.repos.d/CentOS-Debuginfo.repo`` and set ``enabled=1``.
 
-2. Install Yum utilities:
+2. Install yum utilities:
 
 .. code-block:: bash
 
@@ -241,7 +241,7 @@ CMON unable to restart MySQL using service command
 	galera1.domain.com: Starting mysqld
 
 * **Troubleshooting steps:**
-1. SSH into the DB node and check the user's enviroment path variable:
+1. SSH into the DB node and check the user's environment path variable:
 
 .. code-block:: bash
 
@@ -266,13 +266,13 @@ CMON always tries to recover failed database nodes during my maintenance window.
 ````````````````````````````````````````````````````````````````````````````````
 
 * **Description:**
-	- By default, CMON is configured to perform recovery of failed nodes or clusters. This behaviour can be overridden by disabling automatic recovery feature or enabling maintenance mode for the node/cluster.
+	- By default, CMON is configured to perform recovery of failed nodes or clusters. This behavior can be overridden by disabling automatic recovery feature or enabling maintenance mode for the node/cluster.
 
 * **Solution:**
 	1) Enabling maintenance mode for selected nodes (recommended).
-		- To enable maintenance window, go to *Nodes > select the node > toggle ON on the Maintenance Mode*. You have to specify the reason and duration of maintanance window. During this period, any alarms and notifications raised for this node will be disabled. You can toggle OFF the maintenance mode at any time when the maintenance exercise is completed.
-	2) Disabing automatic recovery.
-		- To disable automatic recovery temporarily, you can just click on the 'power' icon for node and cluster. Red means automatic recovery is turned off while green indicates recovery is turned on. This behaviour will not persistent if CMON is restarted.
+		- To enable maintenance window, go to *Nodes > select the node > toggle ON on the Maintenance Mode*. You have to specify the reason and duration of maintenance window. During this period, any alarms and notifications raised for this node will be disabled. You can toggle OFF the maintenance mode at any time when the maintenance exercise is completed.
+	2) Disabling automatic recovery.
+		- To disable automatic recovery temporarily, you can just click on the 'power' icon for node and cluster. Red means automatic recovery is turned off while green indicates recovery is turned on. This behavior will not persistent if CMON is restarted.
 		- To make the above change persistent, disable node or cluster auto recovery by specifying following line inside CMON configuration file of respective cluster. For example, if you want to disable automatic recovery for cluster ID 1, inside ``/etc/cmon.d/cmon_1.cnf``, set the following line:
 
 .. code-block:: bash
@@ -290,7 +290,7 @@ CMON process dies with “Critical error (mysql error code 1)”
 
 .. code-block:: bash
 
-	(ERROR) Critical error (mysql error code 1) occured - shutting down
+	(ERROR) Critical error (mysql error code 1) occurred - shutting down
 
 * **Troubleshooting steps:**
 1) Run the following command on the ClusterControl host to check if the ClusterControl host has the ability to connect to the DB host with current credentials:

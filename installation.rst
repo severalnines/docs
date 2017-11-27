@@ -588,7 +588,7 @@ Manual Installation
 
 If you want to have more control on the installation process, you may perform manual installation.
 
-.. note:: Installing and uninstalling ClusterControl shall not bring any downtime to the managed database cluster.
+.. note:: Installing and uninstalling ClusterControl should not bring any downtime to the managed database cluster.
 
 The main installation steps are:
 
@@ -598,13 +598,21 @@ The main installation steps are:
 
 .. note:: On step #3, performing installation using the post-installation script is highly recommended. Manual installation instructions are provided in this guide for advanced users and reference.
 
-ClusterControl requires three packages to be installed and configured:
+ClusterControl requires three mandatory packages to be installed and configured, with optional packages for specific functionality:
+
+
+Mandatory packages:
 
 * clustercontrol - ClusterControl web user interface.
 * clustercontrol-cmonapi - ClusterControl REST API.
 * clustercontrol-controller - ClusterControl CMON controller.
+
+Optional packages:
+
 * clustercontrol-notifications - ClusterControl notification module, if you would like to integrate with third-party tools like PagerDuty and Slack.
 * clustercontrol-ssh - ClusterControl web-based SSH module, if you would like to access the host via SSH directly from ClusterControl UI.
+* clustercontrol-cloud - ClusterControl cloud module, if you would like to manage your cloud instances directly from ClusterControl UI.
+* clustercontrol-clud - ClusterControl cloud file manager module, if you would like to upload and download backups from cloud storage. Require ``clustercontrol-cloud``.
 
 Steps described in the following sections should be perform on ClusterControl node unless specified otherwise.
 
@@ -643,7 +651,7 @@ Redhat/CentOS
 
 .. code-block:: bash
 
-	$ yum -y install clustercontrol clustercontrol-cmonapi clustercontrol-controller clustercontrol-ssh clustercontrol-notifications
+	$ yum -y install clustercontrol clustercontrol-cmonapi clustercontrol-controller clustercontrol-ssh clustercontrol-notifications clustercontrol-cloud clustercontrol-clud
 
 5. Start MySQL server (MariaDB for Redhat/CentOS 7), enable it on boot and set a MySQL root password:
 
@@ -714,9 +722,11 @@ For sysvinit:
 	$ chkconfig cmon on
 	$ chkconfig cmon-ssh on
 	$ chkconfig cmon-events on
+	$ chkconfig cmon-cloud on
 	$ service cmon start
 	$ service cmon-ssh start
 	$ service cmon-events start
+	$ service cmon-cloud start
 
 For systemd:
 
@@ -725,9 +735,11 @@ For systemd:
 	$ systemctl enable cmon
 	$ systemctl enable cmon-ssh
 	$ systemctl enable cmon-events
+	$ systemctl enable cmon-cloud
 	$ systemctl start cmon
 	$ systemctl start cmon-ssh
 	$ systemctl start cmon-events
+	$ systemctl start cmon-cloud
 
 10. Configure Apache to use ``AllowOverride=All`` and set up SSL key and certificate:
 
@@ -842,7 +854,7 @@ The following steps should be performed on the ClusterControl node, unless speci
 
 .. code-block:: bash
 
-	$ sudo apt-get install -y clustercontrol-controller clustercontrol clustercontrol-cmonapi clustercontrol-ssh clustercontrol-notifications
+	$ sudo apt-get install -y clustercontrol-controller clustercontrol clustercontrol-cmonapi clustercontrol-ssh clustercontrol-notifications clustercontrol-cloud clustercontrol-clud
 
 5. Comment the following line inside ``/etc/mysql/my.cnf`` to allow MySQL to listen on all interfaces:
 
@@ -915,9 +927,11 @@ For sysvinit/upstart:
 	$ sudo update-rc.d cmon defaults
 	$ sudo update-rc.d cmon-ssh defaults
 	$ sudo update-rc.d cmon-events defaults
+	$ sudo update-rc.d cmon-cloud defaults
 	$ service cmon start
 	$ service cmon-ssh start
 	$ service cmon-events start
+	$ service cmon-cloud start
 
 For systemd:
 
@@ -926,9 +940,11 @@ For systemd:
 	$ systemctl enable cmon
 	$ systemctl enable cmon-ssh
 	$ systemctl enable cmon-events
+	$ systemctl enable cmon-cloud
 	$ systemctl start cmon
 	$ systemctl start cmon-ssh
 	$ systemctl start cmon-events
+	$ systemctl start cmon-cloud
 
 10. Configure Apache ``AllowOverride`` and setting up SSL:
 
@@ -1049,7 +1065,7 @@ The installer script (install-cc) also supports offline installations by specify
 * `Backup > Online Storage` - requires connection to AWS.
 * `Service Providers > AWS Instances` - requires connection to AWS.
 * `Service Providers > AWS VPC` - requires connection to AWS.
-* `Manage > Load Balancer` - requires connection to EPEL & MariaDB repository/HAproxy download site.
+* `Manage > Load Balancer` - requires connection to EPEL & MariaDB repository/HAProxy download site.
 * `Manage > Upgrades` - requires connection to provider's repository.
 
 Prior to the offline install, make sure you meet the following requirements for the ClusterControl node:
@@ -1062,9 +1078,9 @@ Prior to the offline install, make sure you meet the following requirements for 
 Setting up Offline Repository
 `````````````````````````````
 
-The installer script requires an offline repository so it can automate the dependencies installation process. In this documentation, we provide steps to configure offline repository on Redhat/CentOS 6 and Debian 7. 
+The installer script requires an offline repository so it can automate the dependencies installation process. In this documentation, we provide steps to configure offline repository on RedHat/CentOS 6 and Debian 7. 
 
-Redhat/CentOS 6
+RedHat/CentOS 6
 '''''''''''''''
 
 1. Insert the DVD installation disc into the DVD drive.
@@ -1166,7 +1182,7 @@ Make sure the last step does not produce any error.
 Pre-installation
 ````````````````
 
-Redhat/CentOS
+RedHat/CentOS
 '''''''''''''
 
 1. The offline installation script will need a running MySQL server on the host. Install MySQL server and client, enable it starts on boot and start the service:
@@ -1189,11 +1205,13 @@ Redhat/CentOS
 
 	$ mkdir ~/s9s_tmp
 	$ cd ~/s9s_tmp
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-1.4.2-3505-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.4.2-279-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.4.2-2013-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications-1.4.2-57-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh-1.4.2-25-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-1.5.0-4088-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.5.0-290-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.5.0-2230-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications-1.5.0-67-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh-1.5.0-37-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud-1.5.0-31-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud-1.5.0-31-x86_64.rpm
 
 .. Attention:: In this example, we downloaded the package directly to simplify the package preparation step. If the ClusterControl server does not have internet connections, you should upload the packages manually to the mentioned staging path.
 
@@ -1220,11 +1238,13 @@ Debian/Ubuntu
 
 	$ mkdir ~/s9s_tmp
 	$ cd ~/s9s_tmp
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol_1.4.2-3505_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.4.2-279_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.4.2-2013-x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications_1.4.2-57_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh_1.4.2-25_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol_1.5.0-4088_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.5.0-290_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.5.0-2230-x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications_1.5.0-67_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh_1.5.0-37_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud_1.5.0-31_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud_1.5.0-31_x86_64.deb
 
 .. Attention:: In this example, we downloaded the package directly to simplify the package preparation step. If the ClusterControl server does not have internet connections, you should upload the packages manually to the mentioned staging path.
 

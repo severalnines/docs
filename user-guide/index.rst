@@ -4,7 +4,7 @@
 User Guide
 ==========
 
-This documentation provides detailed user guide for ClusterControl UI.
+This documentation provides a detailed user guide for ClusterControl UI.
 
 .. include:: dashboard.rst
 .. include:: admin_settings.rst

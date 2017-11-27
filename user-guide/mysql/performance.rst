@@ -53,7 +53,7 @@ Health Report (Deprecated)
 
 ClusterControl uses a number of best practice advisors to create a Health Report for your cluster. These advisors automatically examine your node configurations and performance levels, and identify any deviations from best practice rules. 
 
-This tab provides a quick overview of the overall health of your database nodes. A new tab will appear for each category of Advisors, in case there are alarms in that category. See `Database Performance Advisor`_ section for detailed explaination.
+This tab provides a quick overview of the overall health of your database nodes. A new tab will appear for each category of Advisors, in case there are alarms in that category. See `Database Performance Advisor`_ section for detailed explanation.
 
 * **Help**
 	- Health Report Guide - This will open the ClusterControl documentation page for health report status in details.
@@ -108,9 +108,10 @@ where,
 
 	Global\ Buffers& = innodb\_buffer\_pool\_size \\
 	& \quad + innodb\_additional\_mem\_pool\_size \\
-	& \quad + innodb\_log\_buffer\_pool\_size \\
+	& \quad + innodb\_log\_buffer\_size \\
 	& \quad + query\_cache\_size \\
-	& \quad + key\_buffer\_size
+	& \quad + key\_buffer\_size \\
+	& \quad + tmp\_table\_size
 	
 .. math::
 
@@ -498,7 +499,7 @@ TABLE LOCK CONTENTION
 Status Time Machine
 ````````````````````
 
-.. Attention:: By default, this feature is disabled until you set ``enable_mysql_timemachine=1`` in respective CMON configuration file and restart CMON service to load it up.
+.. Attention:: By default, this feature is disabled unless you set ``enable_mysql_timemachine=1`` in respective CMON configuration file and restart CMON service to load it up.
 
 The status time machine allows you to select status variable for a time range and compare the values at the start and end of that range. The table shows the selected status variables for the given range. Use the slider at the end of the table change the time range.
 

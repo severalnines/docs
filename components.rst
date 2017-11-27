@@ -4,12 +4,12 @@
 Components
 ==========
 
-ClusterControl consists of 6 components:
+ClusterControl consists of a number of components:
 
 +------------------------------------+------------------------------+------------------------------------------------------------------------------------+
 | Component                          | Package naming               | Role                                                                               |
 +====================================+==============================+====================================================================================+
-| ClusterControl controller (cmon)   | clustercontrol-controller    | The brain of ClusterControl. A backend service performing automation, management,  |
+| ClusterControl Controller (cmon)   | clustercontrol-controller    | The brain of ClusterControl. A backend service performing automation, management,  |
 |                                    |                              | monitoring and scheduling tasks. All the collected data will be stored directly    |
 |                                    |                              | inside CMON database.                                                              |
 +------------------------------------+------------------------------+------------------------------------------------------------------------------------+
@@ -18,24 +18,31 @@ ClusterControl consists of 6 components:
 | ClusterControl UI                  | clustercontrol               | A modern web user interface to visualize and manage the cluster. It interacts with | 
 |                                    |                              | CMON controller via remote procedure call (RPC) or REST API interface.             |
 +------------------------------------+------------------------------+------------------------------------------------------------------------------------+
-| ClusterControl SSH                 | clustercontrol-ssh           | Optional package introduced in ClusterControl version 1.4.2 for ClusterControl's   |
+| ClusterControl SSH                 | clustercontrol-ssh           | Optional package introduced in ClusterControl 1.4.2 for ClusterControl's           |
 |                                    |                              | web SSH console. Only works with Apache 2.4+.                                      |
 +------------------------------------+------------------------------+------------------------------------------------------------------------------------+
-| ClusterControl Notifications       | clustercontrol-notifications | Optional package introduced in ClusterControl version 1.4.2 to provide an          |
+| ClusterControl Notifications       | clustercontrol-notifications | Optional package introduced in ClusterControl 1.4.2 providing a service and user   |
 |                                    |                              | interface for notification services and integration with third party tools.        |
++------------------------------------+------------------------------+------------------------------------------------------------------------------------+
+| ClusterControl Cloud               | clustercontrol-cloud         | Optional package introduced in ClusterControl 1.5 providing a service and user     |
+|                                    |                              | interface for integration with cloud providers.                                    |
++------------------------------------+------------------------------+------------------------------------------------------------------------------------+
+| ClusterControl Cloud File Manager  | clustercontrol-clud          | Optional package introduced in ClusterControl 1.5 providing a command-line         |
+|                                    |                              | interface to interact with storage objects on cloud.                               |
 +------------------------------------+------------------------------+------------------------------------------------------------------------------------+
 | ClusterControl CLI                 | s9s-tools                    | Open-source command line tool to manage and monitor clusters provisioned by        |
 |                                    |                              | ClusterControl.                                                                    |
 +------------------------------------+------------------------------+------------------------------------------------------------------------------------+
 
+
 ClusterControl Controller (CMON)
 --------------------------------
 
-ClusterControl Controller (CMON) is the core backend process that performs all automation and management procedures. It is usually installed as ``/usr/sbin/cmon``. It comes with a collection of helper scripts in ``/usr/bin`` directory (prefixed with s9s\_) to complete specific tasks. However, some of the scripts have been deprecated due to the corresponding tasks are now being handled by the CMON core process.
+ClusterControl Controller (CMON) is the core backend process that performs all automation and management procedures. It is installed as ``/usr/sbin/cmon``. It comes with a collection of helper scripts in ``/usr/bin`` directory (prefixed with s9s\_) to complete specific tasks. However, some of the scripts have been deprecated due to the corresponding tasks are now being handled by the CMON core process.
 
-CMON controller package is available at `Severalnines download site <http://www.severalnines.com/downloads/cmon/>`_. Redhat-based systems should download and install the RPM package while Debian-based systems should download and extract the DEB package. The package name is formatted as:
+CMON controller package is available at `Severalnines download site <http://www.severalnines.com/downloads/cmon/>`_. RedHat-based systems should download and install the RPM package while Debian-based systems should download and extract the DEB package. The package name is formatted as:
 
-* RPM package (Redhat-based systems): ``clustercontrol-controller-[version]-[build number]-[architecture].rpm``
+* RPM package (RedHat-based systems): ``clustercontrol-controller-[version]-[build number]-[architecture].rpm``
 * DEB package (Debian-based systems): ``clustercontrol-controller-[version]-[build number]-[architecture].deb``
 
 A configuration file ``/etc/cmon.cnf`` is required to initially setup the CMON Controller. It is possible to have several configuration files each for multiple clusters as described in the `Configuration File`_ section.
@@ -98,7 +105,7 @@ The path of the log file to be used.
 
 ``-P, --cmondb-password=PASSWORD``
 
-* Uses the password to access teh CMON database.
+* Uses the password to access the CMON database.
 
 ``-H, --cmondb-host=HOSTNAME``
 
@@ -185,16 +192,16 @@ An example of CMON configuration file hierarchy is as follows:
 | Cluster #N (cluster type)  | /etc/cmon.d/cmon_N.cnf | cluster_id=N | logfile=/var/log/cmon_N.log |
 +----------------------------+------------------------+--------------+-----------------------------+
  
-.. Note:: It's highly recommendeded to separate CMON logging for each cluster to its own log file. In the above example, we can see that ``cluster_id`` and ``logfile`` are two imporant configuration options to distinguish the cluster.
+.. Note:: It's highly recommended to separate CMON logging for each cluster to its own log file. In the above example, we can see that ``cluster_id`` and ``logfile`` are two important configuration options to distinguish the cluster.
 
 The CMON Controller will import the configuration options defined in each configuration file into the CMON database during process starts up. Once loaded, CMON then use all the loaded information to manage clusters based on the ``cluster_id`` value.
 
 Configuration Options
 `````````````````````
 
-All of the options and values as described below must not contain any whitespace between them. Any changes to the CMON configuration file requires a CMON service restart before they are applied. The s
+All of the options and values as described below must not contain any whitespace between them. Any changes to the CMON configuration file requires a CMON service restart before they are applied.
 
-The configuration options can be divided into a number of types:
+The configuration options can be divided into the following categories:
 
 1. General
 2. CMON
@@ -205,7 +212,7 @@ The configuration options can be divided into a number of types:
 7. Management
 8. Security & Encryption
 
-Following is the list of common configuration options inside CMON Controller configuration file. You can also see them by using ``--help-config`` parameter in the terminal:
+Following is the list of common configuration options inside CMON configuration file. You can also see them by using ``--help-config`` parameter in the terminal:
 
 .. code-block:: bash
 
@@ -287,7 +294,7 @@ Operating system
 
 ``os=<string>``
 
-* Operating system runs across the cluster, including ClusterControl host. 'redhat' for Redhat-based distributions (CentOS/Red Hat Enterprise Linux/Oracle Linux) or 'debian' for Debian-based distributions (Debian/Ubuntu).
+* Operating system runs across the cluster, including ClusterControl host. 'redhat' for RedHat-based distributions (CentOS/Red Hat Enterprise Linux/Oracle Linux) or 'debian' for Debian-based distributions (Debian/Ubuntu).
 * Example: ``os=redhat``
 
 ``osuser=<string>``
@@ -305,7 +312,7 @@ Operating system
 
 ``sudo="echo '<sudo password>' | sudo -S 2>/dev/null"``
 
-* The command used to obtain superuser permissions. If sudo user requires password, specify the sudo command with sudo password here. The sudo command must be trimmed by redirecting stderr to somewhere else. Therefore, it is compulsary to have ``-S 2>/dev/null`` appended in the sudo command.
+* The command used to obtain superuser permissions. If sudo user requires password, specify the sudo command with sudo password here. The sudo command must be trimmed by redirecting stderr to somewhere else. Therefore, it is compulsory to have ``-S 2>/dev/null`` appended in the sudo command.
 * Example: ``sudo="echo 'My5ud0' | sudo -S 2>/dev/null"``
 
 ``sudo_opts=<command>``
@@ -319,7 +326,7 @@ Operating system
 
 ``wwwroot=<path to CMONAPI and ClusterControl UI>``
 
-* Path to CMONAPI and ClusterControl UI. If not set, it defaults to '/var/www/html' for Redhat-based distributions or '/var/www' for Debian-based distributions.
+* Path to CMONAPI and ClusterControl UI. If not set, it defaults to '/var/www/html' for RedHat-based distributions or '/var/www' for Debian-based distributions.
 * Example: ``wwwroot=/var/www/html``
 
 ``vendor=<string>``
@@ -383,7 +390,7 @@ Monitoring
 
 ``monitored_mountpoints=<list of paths to be monitored>``
 
-* The MySQL/MongoDB/TokuMX/PostgreSQL data directory used by database nodes for disk performance in comma separated list.	
+* The MySQL/MongoDB/PostgreSQL data directory used by database nodes for disk performance in comma separated list.	
 * Example: ``monitored_mountpoints=/var/lib/mysql,/mnt/data/mysql``
 
 ``monitored_nics=<list of NICs to be monitored>``
@@ -403,7 +410,7 @@ Monitoring
 
 ``lb_stats_collection_interval=<integer>``
 
-* Load balancer stats collection interval. Default is 30.
+* Load balancer stats collection interval. Default is 15.
 * Example: ``lb_stats_collection_interval=30``
 
 ``db_schema_stats_collection_interval=<integer>``
@@ -415,6 +422,11 @@ Monitoring
 
 * Database log files collection interval. Default is 600.
 * Example: ``db_log_collection_interval=600``
+
+``db_deadlock_check_interval=<integer>``
+
+* How often to check for deadlocks in seconds. Deadlock detection will affect CPU usage on database nodes. Default is 0, means disabled.
+* Example: ``db_deadlock_check_interval=600``
 
 ``db_long_query_time_alarm=<integer>``
 
@@ -554,7 +566,7 @@ Nodes (MySQL)
 
 ``galera_port=<integer>``
 
-* The galera port to be used. Default is 4567.
+* The Galera communication port to be used. Default is 4567.
 * Example: ``galera_port=5555``
 
 ``replication_failover_whitelist=<string>``
@@ -579,7 +591,7 @@ Nodes (MySQL)
 
 ``replication_failover_wait_to_apply_timeout=<integer>``
 
-* Candidate waits up to this many seconds to apply outstanding relay log (retrieved_gtids) before failing over. Default is -1, which means ClusterControl will wait indefinitely for it to apply all missing transactions from its relay logs. This is safe, but, if for some reason, the most up-to-date slave is lagging badly, failover may takes hours to complete. If set to 0, failover happens immediately, no matter if the master candidate is lagging or not. Default -1 seconds (wait forever). Value higher than 0 means ClusterControl will wait for the specified seconds before failover happens.
+* Candidate waits up to this many seconds to apply outstanding relay log (``retrieved_gtids``) before failing over. Default is -1, which means ClusterControl will wait indefinitely for it to apply all missing transactions from its relay logs. This is safe, but, if for some reason, the most up-to-date slave is lagging badly, failover may takes hours to complete. If set to 0, failover happens immediately, no matter if the master candidate is lagging or not. Default -1 seconds (wait forever). Value higher than 0 means ClusterControl will wait for the specified seconds before failover happens.
 * Example: ``replication_failover_wait_to_apply_timeout=0``
 
 ``replication_stop_on_error=<boolean integer>``
@@ -594,7 +606,7 @@ Nodes (MySQL)
 
 ``replication_onfail_failover_script=<path to the script on ClusterControl node>``
 
-* This script executes as soon as it has been discovered that a failover is needed. If the script returns non-zero it will force the failover to abort. If the script is defined but not found, the failover will be aborted. Four arguments are supplied to the script: arg1='all servers'  arg2='oldmaster' arg3='candidate', arg4='slaves of oldmaster' and passed like this: ``scriptname arg1 arg2 arg3 arg4``.
+* This script executes as soon as it has been discovered that a failover is needed. If the script returns non-zero it will force the failover to abort. If the script is defined but not found, the failover will be aborted. Four arguments are supplied to the script: arg1='all servers'  arg2='old master' arg3='candidate', arg4='slaves of old master' and passed like this: ``scriptname arg1 arg2 arg3 arg4``.
 * The script must be accessible on the controller and executable.
 * Example: ``replication_onfail_failover_script=/usr/local/bin/failover_script.sh``
 
@@ -635,7 +647,7 @@ Nodes (MySQL)
 
 ``replication_check_binlog_filtration_bf_failover=<boolean integer>``
 
-* Before attempting a failover, verify filration (binlog_do/ignore_db) and replication_* are identically configured on the candidate and the slaves. Default is 0 (false) meaning the checks are disabled. 1 means enable.
+* Before attempting a failover, verify filtration (binlog_do/ignore_db) and replication_* are identically configured on the candidate and the slaves. Default is 0 (false) meaning the checks are disabled. 1 means enable.
 * Example: ``replication_check_binlog_filtration_bf_failover=1``
 
 ``schema_change_detection_address=<string>``
@@ -645,7 +657,7 @@ Nodes (MySQL)
 
 ``schema_change_detection_pause_time_ms=<integer>``
 
-* Throttle the detection process by pausing every this value, in miliseconds. For example, if defined as 3000, ClusterControl will pause the operation for every 3 seconds.
+* Throttle the detection process by pausing every this value, in milliseconds. For example, if defined as 3000, ClusterControl will pause the operation for every 3 seconds.
 * Example: ``schema_change_detection_pause_time_ms=3000``
 
 ``schema_change_detection_databases=<string>``
@@ -658,22 +670,22 @@ Nodes (MongoDB)
 
 ``mongodb_server_addresses=<string>``
 
-* Comma separated list of MongoDB/TokuMX shard or replica IP addresses with port.
+* Comma separated list of MongoDB shard or replica IP addresses with port.
 * Example: ``mongodb_server_addresses=192.168.0.11:27017,192.168.0.12:27017,192.168.0.13:27017``
 
 ``mongoarbiter_server_addresses=<string>``
 
-* Comma separated list of MongoDB/TokuMX arbiter IP addresses with port.	
+* Comma separated list of MongoDB arbiter IP addresses with port.	
 * Example: `mongoarbiter_server_addresses=192.168.0.11:27019,192.168.0.12:27019,192.168.0.13:27019`
 
 ``mongocfg_server_addresses=<string>``
 
-* Comma separated list of MongoDB/TokuMX config server IP addresses with port.	
+* Comma separated list of MongoDB config server IP addresses with port.	
 * Example: ``mongocfg_server_addresses=192.168.0.11:27019,192.168.0.12:27019,192.168.0.13:27019``
 
 ``mongos_server_addresses=<string>``
 
-* Comma separated list of MongoDB/TokuMX mongos IP addresses with port.
+* Comma separated list of MongoDB mongos IP addresses with port.
 * Example: ``mongos_server_addresses=192.168.0.11:27017,192.168.0.12:27017,192.168.0.13:27017``
 
 ``mongodb_basedir=<location MongoDB base directory>``
@@ -762,7 +774,7 @@ Encryption and Security
 
 ``cluster_ssl_ca=<file path>``
 
-* Path to SSL CA, for SSL encrption between CMON and managed MySQL Servers.	
+* Path to SSL CA, for SSL encryption between CMON and managed MySQL Servers.	
 * Example: ``cluster_ssl_ca=/etc/ssl/mysql/ca-cert.pem``
 
 ``cluster_certs_store=<directory path>``
@@ -830,11 +842,9 @@ Database Client
 
 For MySQL-based clusters, CMON Controller requires MySQL client to connect to CMON database. This package usually comes by default when installing MySQL server required by CMON database.
 
-For MongoDB/TokuMX cluster, the CMON Controller requires to have both MySQL and MongoDB client packages installed and correctly defined in CMON configuration file on ``mysql_basedir`` and ``mongodb_basedir`` option.
+For MongoDB cluster, the CMON Controller requires to have both MySQL and MongoDB client packages installed and correctly defined in CMON configuration file on ``mysql_basedir`` and ``mongodb_basedir`` option.
 
 For PostgreSQL, the CMON controller doesn't require any PostgreSQL clients installed on the node. All PostgreSQL commands will be executed locally on the managed PostgreSQL node via SSH.
-
-If users deploy using the deployment package generated from the Severalnines Cluster Configurator, this should be configured automatically.
 
 ClusterControl REST API (CMONAPI)
 ---------------------------------
@@ -847,15 +857,15 @@ You can generate the CMONAPI token manually by using following command:
 
 	python -c 'import uuid; print uuid.uuid4()' | sha1sum | cut -f1 -d' '
 
-By default, the CMONAPI is running on Apache and located under ``/var/www/html/cmonapi`` (Redhat/CentOS/Ubuntu >14.04) or ``/var/www/cmonapi`` (Debian/Ubuntu <14.04). The value is relative to ``wwwroot`` value defined in CMON configuration file. The web server must support rule-based rewrite engine and able to follow symlinks.
+By default, the CMONAPI is running on Apache and located under ``/var/www/html/cmonapi`` (RedHat/CentOS/Ubuntu >14.04) or ``/var/www/cmonapi`` (Debian/Ubuntu <14.04). The value is relative to ``wwwroot`` value defined in CMON configuration file. The web server must support rule-based rewrite engine and able to follow symlinks.
 
 The CMONAPI page can be accessed through following URL:
 
 :samp:`https://{ClusterControl IP address or hostname}/cmonapi`
 
-Both ClusterControl CMONAPI and UI must be running on the same version to avoid misinterpretation of request and response data. For instance, ClusterControl UI version 1.2.6 needs to connect to the CMONAPI version 1.2.6.
+Both ClusterControl CMONAPI and UI must be running on the same version to avoid misinterpretation of request and response data. For instance, ClusterControl UI version 1.4.1 needs to connect to the CMONAPI version 1.4.1.
 
-.. Attention:: We are gradually in the process of migrating all functionalities in REST API to RPC interface. Kindly expect the REST API to be obselete in the near future.
+.. Attention:: We are gradually in the process of migrating all functionalities in REST API to RPC interface. Kindly expect the REST API to be obsolete in the near future.
 
 ClusterControl UI
 -----------------
@@ -875,10 +885,10 @@ The ClusterControl UI can connect to multiple CMON Controller servers (if they h
 
 The ClusterControl UI will load the cluster in the database cluster list, similar to the screenshot below:
 
-.. image:: img/docs_cc_ui.png
+.. image:: img/docs_cc_ui_15.png
    :align: center
 
-Similar to the CMONAPI, the ClusterControl UI is running on Apache and located under ``/var/www/html/clustercontrol`` (Redhat/CentOS/Ubuntu >14.04) or ``/var/www/clustercontrol`` (Debian <8/Ubuntu <14.04). The web server must support rule-based rewrite engine and must be able to follow symlinks. 
+Similar to the CMONAPI, the ClusterControl UI is running on Apache and located under ``/var/www/html/clustercontrol`` (RedHat/CentOS/Ubuntu >14.04) or ``/var/www/clustercontrol`` (Debian <8/Ubuntu <14.04). The web server must support rule-based rewrite engine and must be able to follow symlinks. 
 
 ClusterControl UI page can be accessed through following URL: 
 
@@ -946,16 +956,16 @@ This package installs the following new files:
 
 By default, this service will use port 9518 on localhost interface. Cloud credentials are stored under ``/var/lib/cmon/`` with permission set to root only.
 
-.. Note:: ClusterControl Cloud is a reintroduction of a deprecated feature called 'Service Providers', available in ClusterControl 1.4 and older. 
+.. Note:: ClusterControl Cloud is a reintroduction of a feature called 'Service Providers', available in ClusterControl 1.4 and older. 
 
-ClusterControl Cloud Upload Download (CLUD)
--------------------------------------------
+ClusterControl Cloud File Manager (CLUD)
+-----------------------------------------
 
-This optional package is a complementary of `ClusterControl Cloud`_ and is introduced in ClusterControl v1.5. The package name is ``clustercontrol-clud`` (abbreviation of **CL**oud **U**pload **D**ownload) and is the command line interface for ClusterControl to interact with the cloud providers when uploading and downloading backups. You can think of it as a cloud file manager. No extra configuration is required.
+This optional package is a complementary of `ClusterControl Cloud`_ and is introduced in ClusterControl v1.5. The package name is ``clustercontrol-clud`` (abbreviation of CLoud Upload Download) and is the command line interface for ClusterControl to interact with the cloud providers when uploading and downloading backups. You can think of it as a cloud file manager. No extra configuration is required.
 
 This package installs the following file:
 	* ``/usr/sbin/clud`` - The executable binary file.
-	
+
 Usage
 ``````
 
@@ -995,7 +1005,7 @@ Name, shorthand                                 Description
 ClusterControl CLI
 ------------------
 
-Also known as **s9s-tools**, this optional package is introduced in ClusterControl version 1.4.1, which contains a binary called `s9s`. It is a command line tool to interact, control and manage database clusters using the ClusterControl Database Platform. Starting from version 1.4.1, the installer script will automatically install this package on the ClusterControl node. You can also install it on another computer or workstation to manage the database cluster remotely. All communication is encrypted and secure through SSH. The s9s command line project is open source and is located on `GitHub <https://github.com/severalnines/s9s-tools>`_.
+Also known as **s9s-tools**, this optional package is introduced in ClusterControl version 1.4.1, which contains a binary called ``s9s``. It is a command line tool to interact, control and manage database clusters using the ClusterControl Database Platform. Starting from version 1.4.1, the installer script will automatically install this package on the ClusterControl node. You can also install it on another computer or workstation to manage the database cluster remotely. All communication is encrypted and secure through SSH. The s9s command line project is open source and is located on `GitHub <https://github.com/severalnines/s9s-tools>`_.
 
 ClusterControl CLI opens a new door for cluster automation where you can easily integrate it with existing deployment automation tools like Ansible, Puppet, Chef or Salt. You can deploy, manage and monitor your cluster without having to use the ClusterControl UI. The following list shows what features are available at the moment:
 
@@ -1391,7 +1401,7 @@ Name, shorthand                                 Description
 |minus|\ |minus|\ os-user=USERNAME              The name of the user for the SSH commands.
 |minus|\ |minus|\ cluster-type=TYPE             The type of the cluster to install.
 |minus|\ |minus|\ db-admin=USERNAME             The database admin user name.
-|minus|\ |minus|\ db-admin-passwd=PASSWD        The pasword for the database admin.
+|minus|\ |minus|\ db-admin-passwd=PASSWD        The password for the database admin.
 |minus|\ |minus|\ account=NAME[:PASSWD][@HOST]  Account to be created on the cluster.
 |minus|\ |minus|\ with-database                 Create a database for the user too.
 |minus|\ |minus|\ db-name=NAME                  The name of the database.
@@ -1428,7 +1438,7 @@ Add a new database node on Cluster ID 1:
 
 	$ s9s cluster --add-node --nodes=10.10.10.14 --cluster-id=1 --wait
 
-Create an HAproxy load balancer, 192.168.55.198 on cluster ID 1:
+Create an HAProxy load balancer, 192.168.55.198 on cluster ID 1:
 
 .. code-block:: bash
 
@@ -1561,7 +1571,7 @@ Name, shorthand                        Description
 |minus|\ |minus|\ databases=LIST       Comma separated list of databases to archive.
 |minus|\ |minus|\ backup-method=METHOD Defines the backup program to be used.
 |minus|\ |minus|\ backup-directory=DIR The directory where the backup is placed.
-|minus|\ |minus|\ parallellism=N       Number of threads used while creating backup.
+|minus|\ |minus|\ parallelism=N        Number of threads used while creating backup.
 |minus|\ |minus|\ no-compression       Do not compress the archive file.
 |minus|\ |minus|\ use-pigz             Use the pigz program to compress archive.
 |minus|\ |minus|\ on-node              Store the created backup file on the node itself.
@@ -1853,4 +1863,4 @@ If you would encounter issues, have questions, or have any features you would li
 
 .. [#f1]
 
-    We are gradually in the process of migrating all functionalities in REST API to RPC interface. Kindly expect the REST API to be obselete in the near future.
+    We are gradually in the process of migrating all functionalities in REST API to RPC interface. Kindly expect the REST API to be obsolete in the near future.

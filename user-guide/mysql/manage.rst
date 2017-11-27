@@ -22,7 +22,7 @@ The list also contains respective hosts' operating system, host status, ping tim
 
 To remove a host, just select the host and click on the *Remove* button. 
 
-.. Attention:: We strongly recommend user to avoid removing nodes from this page if it still holds a role inside ClusterControl.
+.. Attention:: We strongly recommend users to avoid removing node from this page if it still holds a role inside ClusterControl.
 
 Configurations
 ``````````````
@@ -90,9 +90,9 @@ There are a number of configuration variables configurable dynamically by Cluste
 ============================ ==============
 Variable                     Description
 ============================ ==============
-``@BASEDIR@``                Default is ``/usr``. Value specified during cluster deployment takes precendence.
-``@DATADIR@``                Default is ``/var/lib/mysql``. Value specified during cluster deployment takes precendence.
-``@MYSQL_PORT@``             Default is 3306. Value specified during cluster deployment takes precendence.
+``@BASEDIR@``                Default is ``/usr``. Value specified during cluster deployment takes precedence.
+``@DATADIR@``                Default is ``/var/lib/mysql``. Value specified during cluster deployment takes precedence.
+``@MYSQL_PORT@``             Default is 3306. Value specified during cluster deployment takes precedence.
 ``@BUFFER_POOL_SIZE@``       Automatically configured based on host's RAM.
 ``@LOG_FILE_SIZE@``          Automatically configured based on host's RAM.
 ``@LOG_BUFFER_SIZE@``        Automatically configured based on host's RAM.
@@ -100,22 +100,22 @@ Variable                     Description
 ``@SERVER_ID@``              Automatically generated based on member's ``server-id``.
 ``@SKIP_NAME_RESOLVE@``      Automatically configured based on MySQL variables.
 ``@MAX_CONNECTIONS@``        Automatically configured based on host's RAM.
-``@ENABLE_PERF_SCHEMA@``     Default is disabled. Value specified during cluster deployment takes precendence.
+``@ENABLE_PERF_SCHEMA@``     Default is disabled. Value specified during cluster deployment takes precedence.
 ``@WSREP_PROVIDER@``         Automatically configured based on Galera vendor.
 ``@HOST@``                   Automatically configured based on hostname/IP address.
 ``@GCACHE_SIZE@``            Automatically configured based on disk space.
-``@SEGMENTID@``              Default is 0. Value specified during cluster deployment takes precendence.
+``@SEGMENTID@``              Default is 0. Value specified during cluster deployment takes precedence.
 ``@WSREP_CLUSTER_ADDRESS@``  Automatically configured based on members in the cluster.
 ``@WSREP_SST_METHOD@``       Automatically configured based on Galera vendor.
-``@BACKUP_USER@``            Default is backupuser.
-``@BACKUP_PASSWORD@``        Automatically generated and configured for backupuser.
+``@BACKUP_USER@``            Default is ``backupuser``.
+``@BACKUP_PASSWORD@``        Automatically generated and configured for ``backupuser``.
 ``@GARBD_OPTIONS@``          Automatically configured based on garbd options.
 ``@READ_ONLY@``              Automatically configured based on replication role.
-``@SEMISYNC@``               Default is disabled. Value specified during cluster deployment takes precendence.
+``@SEMISYNC@``               Default is disabled. Value specified during cluster deployment takes precedence.
 ``@NDB_CONNECTION_POOL@``    Automatically configured based on host's CPU.
 ``@NDB_CONNECTSTRING@``      Automatically configured based on members in the MySQL cluster.
 ``@LOCAL_ADDRESS@``          Automatically configured based on host's address.
-``@GROUP_NAME@``             Default is "grouprepl". Value specified during cluster deployment takes precendence.
+``@GROUP_NAME@``             Default is ``grouprepl``. Value specified during cluster deployment takes precedence.
 ``@PEERS@``                  Automatically configured based on members in the Group Replication cluster.
 ============================ ==============
 
@@ -128,6 +128,8 @@ ProxySQL
 .........
 
 Introduced in v1.4.0 and exclusive for MySQL-based clusters. By default, ClusterControl deploys ProxySQL in read/write split mode - your read-only traffic will be sent to slaves while your writes will be sent to a writable master by creating two host groups. ProxySQL will also work together with the new automatic failover mechanism added in ClusterControl 1.4.0 - once failover happens, ProxySQL will detect the new writable master and route writes to it. It all happens automatically, without any user intervention.
+
+.. seealso:: `Database Load Balancing for MySQL and MariaDB with ProxySQL - Tutorial <https://severalnines.com/resources/tutorials/proxysql-tutorial-mysql-mariadb>`_.
 
 Deploy ProxySQL
 ''''''''''''''''
@@ -236,9 +238,9 @@ If you already have ProxySQL installed in your setup, you can easily import it i
 HAProxy
 .......
 
-Installs and configures an :term:`HAProxy` instance. ClusterControl will automatically install and configure HAproxy, install ``mysqlcheck`` script (to report the MySQL healthiness) on each of database nodes as part of xinetd service and start the HAProxy service. Once the installation is complete, MySQL will listen on *Listen Port* (3307 by default) on the configured node.
+Installs and configures an :term:`HAProxy` instance. ClusterControl will automatically install and configure HAProxy, install ``mysqlcheck`` script (to report the MySQL healthiness) on each of database nodes as part of xinetd service and start the HAProxy service. Once the installation is complete, MySQL will listen on *Listen Port* (3307 by default) on the configured node.
 
-This feature is indempotent, you can execute it as many times as you want and it will always reinstall everything as configured.
+This feature is idempotent, you can execute it as many times as you want and it will always reinstall everything as configured.
 
 .. seealso:: `MySQL Load Balancing with HAProxy - Tutorial <http://www.severalnines.com/resources/clustercontrol-mysql-haproxy-load-balancing-tutorial>`_.
 
@@ -255,7 +257,7 @@ Deploy HAProxy
 	- Limit the number of connection that can be made from HAProxy to each MySQL Server. Connections exceeding this value will be queued by HAProxy. A best practice is to set it to less than the ``max_connections`` to prevent connections flooding.
 
 * **Policy**
-	- Choose one of these loadbalancing algorithms:
+	- Choose one of these load balancing algorithms:
 		- leastconn - The server with the lowest number of connections receives the connection.
 		- roundrobin - Each server is used in turns, according to their weights.
 		- source - The same client IP address will always reach the same server as long as no server goes down.
@@ -271,13 +273,13 @@ Deploy HAProxy
 **Advanced Settings**
 	
 * **Stats Socket**
-	- Specify the path to bind a UNIX socket for HAproxy statistics. See `stats socket <http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#stats%20socket>`_.
+	- Specify the path to bind a UNIX socket for HAProxy statistics. See `stats socket <http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#stats%20socket>`_.
 
 * **Admin Port**
-	- Port to listen HAproxy statistic page. 
+	- Port to listen HAProxy statistic page. 
 	
 * **Admin User**
-	- Admin username to access HAproxy statistic page. See `stats auth <http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#4-stats%20auth>`_.
+	- Admin username to access HAProxy statistic page. See `stats auth <http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#4-stats%20auth>`_.
 	
 * **Admin Password**
 	- Password for *Admin User*. See `stats auth <http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#4-stats%20auth>`_.
@@ -292,7 +294,7 @@ Deploy HAProxy
 	- Sets the maximum inactivity time on the client side. See `timeout client <http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#4-timeout%20client>`_.
 	
 * **Max Connections Frontend**
-	- Sets the maximum per-process number of concurrent connections to the HAproxy instance. See `maxconn <http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#maxconn>`_.
+	- Sets the maximum per-process number of concurrent connections to the HAProxy instance. See `maxconn <http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#maxconn>`_.
 
 * **Max Connections Backend/per instance**
 	- Sets the maximum per-process number of concurrent connections per backend instance. See `maxconn <http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#maxconn>`_.
@@ -317,7 +319,7 @@ Import HAProxy
 	- Select on which host to add the load balancer. If the host is not provisioned in ClusterControl (see `Hosts`_), type in the IP address. The required files will be installed on the new host. Note that ClusterControl will access the new host using passwordless SSH.
 
 * **cmdline**
-	- Specify the command line that ClusterControl should use to start the HAproxy service.
+	- Specify the command line that ClusterControl should use to start the HAProxy service.
 
 * **Port**
 	- Port to listen HAProxy admin/statistic page (if enable).
@@ -405,7 +407,7 @@ Import Garbd
 	- Manually specify the new garbd hostname or IP address or select a host from the list. That host cannot be an existing Galera node.
     
 * **Port**
-    - Garbd port. Default is 4567.
+  - Garbd port. Default is 4567.
 
 * **CmdLine**
 	- Garbd command line to start garbd process on the target node.
@@ -522,7 +524,7 @@ Shows all active accounts across clusters, which are currently active or were co
 
 Inactive Accounts
 '''''''''''''''''
-Shows all accounts across clusters that are not been used since the last server restart. Server must have been running for at least 8 hours to check for inactives accounts.
+Shows all accounts across clusters that are not been used since the last server restart. Server must have been running for at least 8 hours to check for inactive accounts.
 
 You can drop particular accounts by clicking at the multiple checkboxes and click 'Drop User' button to initiate the action.
 
@@ -542,27 +544,22 @@ Database           Specify the database or table name. It can be either in '*.*'
 Require SSL        Tick the checkbox if the user must be authenticate using SSL. The checkbox is disabled if you have not configured SSL encryption for MySQL server.
 ================== ============
 
-Upload Dumpfiles
-................
+Import Database Dumpfile
+..........................
 
-Upload the schema and the data files. Currently only mysqldump is supported and must not contain sub-directories. The following formats are supported:
+Upload the schema and the data files to the selected database node. Currently only mysqldump is supported and must not contain sub-directories. The following formats are supported:
 
 * dumpfile.sql
 * dumpfile.sql.gz
-* dumpfile.sql.zip
- 
-In order to use this feature, set ``post_max_size`` and ``upload_max_filesize`` in ``php.ini`` to 256M or more. Make sure you restart Apache to apply the PHP changes. Location of :term:`php.ini` may vary depending on your operating system, infrastructure type and PHP settings.
 
-* **Browse**
-	- Browse the location of dump file to upload.
+* **Import dumpfile on**
+	- Perform import operation on the selected database node.
 
-* **Upload**
-	- Start the uploading process. If uploaded, the dump file should be located under ``[wwwroot]/cmon/upload/schema`` directory.
+* **Import dumpfile to database**
+	- Specify the target database.
 
-* **Reset**
-	- Reset the file name specified.
-
-The bottom of the page shows list of uploaded dump files. You can install the selected dump file into the database or remove the selected file from the ClusterControl repository.
+* **Specify path to dumpfile**
+	- The dumpfile must be located on the controller.
  
 
 Create Database
@@ -575,26 +572,6 @@ Creates a database in the cluster:
 
 * **Create Database**
 	- Creates the database. ClusterControl will ensure the database exists on all nodes in the cluster.
-
-Software Packages
-``````````````````
-
-Allows users to manage packages, upload new versions to ClusterControl’s repository, and select which package to use for deployments. In order to use this feature, set ``post_max_size`` and ``upload_max_filesize`` in php.ini to 256M or more. Make sure you restart Apache to apply the PHP changes. Location of :term:`php.ini` may vary depending on your operating system, infrastructure type and PHP settings.
-
-.. Note:: This feature is intended for packages installed without using package repository. If the MySQL server is installed through package repository and you want to upgrade your MySQL servers, please skip this and see `Upgrades`_ section.
-
-* **Package Name**
-	- Assign a name for the new package.
-
-* **Create**
-	- Create the package.
-
-* **Upload**
-	- Uploads files to an existing package.
-
-* **Available Packages - Database Software**
-	- List of softwares and packages. The package *Selected for Deployment* will be rolled out to new nodes, and used for upgrades.
-	- Check *Delete* and click *Save*, to delete the selected package from ClusterControl server.
 
 Upgrades
 `````````
@@ -667,7 +644,7 @@ Condition
 Notification Settings
 .....................
 
-Select the notification service configured under *ClusterControl > Settings > Notification Settings*. This notification service determines what is the endpoint of this advisors once conditions are met. It could be email and/or Pagerduty alert.
+Select the notification service configured under *ClusterControl > Settings > Integrations -> 3rd Party Notifications*. This notification service determines what is the endpoint of this advisors once conditions are met. It could be email and/or PagerDuty alert.
 
 Description
 ...........
@@ -698,7 +675,7 @@ Provides functionality to create Advisors, auto tuners, or “mini programs” r
 
 Advisors in ClusterControl are powerful constructs; they provide specific advice on how to address issues in areas such as performance, security, log management, configuration, storage space, etc. They can be anything from simple configuration advice, warning on thresholds or more complex rules for predictions, or even cluster-wide automation tasks based on the state of your servers or databases. 
 
-ClusterControl comes with a set of basic advisors that include rules and alerts on security settings, system checks (NUMA, Disk, CPU), queries, innodb, connections, performance schema, Galera configuration, NDB memory usage, and so on. The advisors are open source under an MIT license, and available on `GitHub <https://github.com/severalnines/s9s-advisor-bundle>`_. Through the Developer Studio, it is easy to import new advisors as a JS bundle, or export your own for others to try out.
+ClusterControl comes with a set of basic advisors that include rules and alerts on security settings, system checks (NUMA, Disk, CPU), queries, InnoDB, connections, performance schema, Galera configuration, NDB memory usage, and so on. The advisors are open source under an MIT license, and available on `GitHub <https://github.com/severalnines/s9s-advisor-bundle>`_. Through the Developer Studio, it is easy to import new advisors as a JS bundle, or export your own for others to try out.
 
 * **New**
 	- Name - Specify the file name including folders if you need. E.g. "shared/helpers/cmon.js" will create all appropriate folders if they don't exist yet.

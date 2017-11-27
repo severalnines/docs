@@ -3,19 +3,19 @@
 Introduction
 ============
 
-This documentation covers ClusterControl version 1.4.2 which released on June 21st, 2017. This release contains key new features along with performance improvements and bug fixes. Release changelog is available `at Change Logs <changelog.html>`_.
+This documentation covers ClusterControl version 1.5 which was released on November 13th, 2017. This release contains key new features along with performance improvements and bug fixes. Release change log is available at `Change Logs <changelog.html>`_.
 
-What is ClusterControl?
+What is ClusterControl? 
 -----------------------
 
 ClusterControl is an agentless management and automation software for database clusters. It helps deploy, monitor, manage and scale your database server/cluster directly from ClusterControl user interface.
 
-ClusterControl consists of 6 components:
+ClusterControl consists of a number of components:
 
 +------------------------------------+------------------------------+------------------------------------------------------------------------------------+
 | Component                          | Package naming               | Role                                                                               |
 +====================================+==============================+====================================================================================+
-| ClusterControl controller (cmon)   | clustercontrol-controller    | The brain of ClusterControl. A backend service performing automation, management,  |
+| ClusterControl Controller (cmon)   | clustercontrol-controller    | The brain of ClusterControl. A backend service performing automation, management,  |
 |                                    |                              | monitoring and scheduling tasks. All the collected data will be stored directly    |
 |                                    |                              | inside CMON database.                                                              |
 +------------------------------------+------------------------------+------------------------------------------------------------------------------------+
@@ -24,11 +24,17 @@ ClusterControl consists of 6 components:
 | ClusterControl UI                  | clustercontrol               | A modern web user interface to visualize and manage the cluster. It interacts with | 
 |                                    |                              | CMON controller via remote procedure call (RPC) or REST API interface.             |
 +------------------------------------+------------------------------+------------------------------------------------------------------------------------+
-| ClusterControl SSH                 | clustercontrol-ssh           | Optional package introduced in ClusterControl version 1.4.2 for ClusterControl's   |
+| ClusterControl SSH                 | clustercontrol-ssh           | Optional package introduced in ClusterControl 1.4.2 for ClusterControl's           |
 |                                    |                              | web SSH console. Only works with Apache 2.4+.                                      |
 +------------------------------------+------------------------------+------------------------------------------------------------------------------------+
-| ClusterControl Notifications       | clustercontrol-notifications | Optional package introduced in ClusterControl version 1.4.2 to provide an          |
+| ClusterControl Notifications       | clustercontrol-notifications | Optional package introduced in ClusterControl 1.4.2 providing a service and user   |
 |                                    |                              | interface for notification services and integration with third party tools.        |
++------------------------------------+------------------------------+------------------------------------------------------------------------------------+
+| ClusterControl Cloud               | clustercontrol-cloud         | Optional package introduced in ClusterControl 1.5 providing a service and user     |
+|                                    |                              | interface for integration with cloud providers.                                    |
++------------------------------------+------------------------------+------------------------------------------------------------------------------------+
+| ClusterControl Cloud File Manager  | clustercontrol-clud          | Optional package introduced in ClusterControl 1.5 providing a command-line         |
+|                                    |                              | interface to interact with storage objects on cloud.                               |
 +------------------------------------+------------------------------+------------------------------------------------------------------------------------+
 | ClusterControl CLI                 | s9s-tools                    | Open-source command line tool to manage and monitor clusters provisioned by        |
 |                                    |                              | ClusterControl.                                                                    |
@@ -45,9 +51,9 @@ ClusterControl supports the following database servers/clusters:
 	- Percona XtraDB Cluster (Percona)
 	- MariaDB Galera Cluster (MariaDB)
 - MySQL Cluster (NDB)
-- MySQL Replication (master-master and master-slave)
+- MySQL/MariaDB Replication (master-master and master-slave)
 - MySQL Group Replication (beta)
-- MySQL Standalone
+- MySQL/MariaDB Standalone
 - MongoDB/Percona Server for MongoDB
 	- Replica set
 	- Sharded cluster
@@ -61,7 +67,7 @@ Supported Load Balancer
 
 ClusterControl supports the following routing softwares:
 
-- HAproxy
+- HAProxy
 - MaxScale
 - ProxySQL
 - Keepalived (virtual IP address only)
@@ -102,22 +108,22 @@ ClusterControl is able to handle most of the administration tasks required to ma
 * Database configuration management
 * Database cluster/node recovery
 * Trigger alarm and send notifications
-* Schedule and perform database backup (mysqldump, Xtrabackup, pgdump, mongodump, mongodb-consistent-backup)
+* Schedule and perform database backup (mysqldump, Xtrabackup, pgdump, pg_basebackup, mongodump, mongodb-consistent-backup)
 * Database backup status
 * Restore backups (MySQL/PostgreSQL)
-* Upload backups to AWS S3/Glacier
+* Upload backups to AWS S3/Google Cloud Storage
 * Verify backup restoration on standalone host
 * Stop/Start/Bootstrap database service
 * Deploy a new database server/cluster
-* Add existing MySQL/MariaDB server/cluster, MongoDB/TokuMX replica set and PostgreSQL server
+* Add existing MySQL/MariaDB server/cluster, MongoDB replica set and PostgreSQL server
 * Scale your database cluster (add/remove Galera node, garbd and replication slave)
-* Deploy database load balancers (HAproxy, MaxScale, ProxySQL) and virtual IP address (Keepalived)
-* Monitor HAproxy/MaxScale/ProxySQL statistics
+* Deploy database load balancers (HAProxy, MaxScale, ProxySQL) and virtual IP address (Keepalived)
+* Monitor HAProxy/MaxScale/ProxySQL statistics
 * Manage MySQL user privileges
 * Upgrade MySQL servers
 * Promote MySQL slave to master
 * Set up a delayed slave
-* Stage/Failover replication slave from a master
+* Stage a replication slave from a master or an existing backup
 * Manage private keys and certificates for databases' SSL
 * and many more..
 
@@ -127,4 +133,4 @@ For more details, please refer to `ClusterControl product page <http://severalni
 
 .. [#f1]
 
-    We are gradually in the process of migrating all functionalities in REST API to RPC interface. Kindly expect the REST API to obselete in the near future.
+    We are gradually in the process of migrating all functionalities in REST API to RPC interface. Kindly expect the REST API to obsolete in the near future.

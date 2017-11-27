@@ -1,68 +1,93 @@
 Backup
 -------
 
-Provides interface for database backup and restore management, scheduling and reporting. Each backup will be assigned with a backup ID and ClusterControl creates a directory under *ClusterControl > Backup > Settings > Default Backup Directory* accordingly to store the backups based on this ID. On top of the page, you can see 4 function tabs followed by the created backup list underneath it.
+Provides interface for database backup and restore management, scheduling and reporting. Each backup will be assigned with a backup ID and ClusterControl creates a directory under *Storage Directory* accordingly to store the backups based on this ID. On top of the page, you can see 3 function tabs followed by the created backup list underneath it.
 
 Create Backup
 `````````````
 
-Creates a backup of the database immediately. You can choose to create a full backup using mysqldump or Percona Xtrabackup (fullbackup). Backups can be stored on the database host that is performing the backup, or the files can be streamed to the ClusterControl host. The backup created by this feature will be a full backup.
+Creates or schedules a MySQL backup. 
 
-* **Hostname**
-	- The target database host.
+Create Backup
+.............
+
+You can choose to create a full backup using mysqldump or Percona Xtrabackup (fullbackup). Backups can be stored on the database host that is performing the backup, or the files can be streamed to the ClusterControl host. The backup created by this feature will be a full backup. 
+
+.. Note:: If you pick incremental backup as the backup method, ClusterControl will look for any parent backup and will automatically revert to full backup if it can't find any.
 
 * **Backup Method**
 	- mysqldump - Separated compressed schema and data dump. See `mysqldump`_ section.
 	- xtrabackup (full) - A full compressed backup. See `Percona Xtrabackup`_ section.
 	- NDB backup (for MySQL Cluster) - See `NDB backup (MySQL Cluster)`_ section.
 
-* **Desync node during backup**
-	- Exclusive for Galera. De-syncing a node with the highest local index before performing backup.
+* **Backup Host**
+	- The target database host.
+
+* **Databases**
+	- List of databases retrieved from the monitored MySQL servers. Default is 'All Databases'. Otherwise, specify the databases that you would like to backup for this set.
+
+* **Tables**
+	- Exclusive for mysqldump only. List of tables retrieved from the monitored MySQL servers. Default is 'All Tables'. Otherwise, specify the table that you would like to backup for this set. Use 'Include tables' and 'Exclude tables' for additional condition to the table list.
 	
-* **Backup Locks**
-	- This option is only available if xtrabackup is selected. 
-	- Yes - Uses "LOCK TABLES FOR BACKUP" where it supported when making a backup.
-	- No - Sets ``--no-backup-locks`` which use ``FLUSH NO_WRITE_TO_BINLOG TABLES`` and ``FLUSH TABLES WITH READ LOCK`` when making backup.
+* **Storage Location**
+	- Store on Node - Stores the backup inside corresponding database node.
+	- Store on Controller - Stores the backup inside ClusterControl node. This requires :term:`netcat` on source and destination host. By default, ClusterControl uses port 9999 to stream the backup created on the database node to ClusterControl node.
 
-* **Use Compression**
-	- This option is only available if xtrabackup is selected.
-	- Yes - Tells xtrabackup to compress all output data, including the transaction log file and meta data files.
-	- No - Do not use compression for the backup.
-
-* **Xtrabackup Parallel Copy Threads**
-	- This option is only available if xtrabackup is selected.
-	- This option specifies the number of threads to use to copy multiple data files concurrently when creating a backup. The default value is 1 (i.e., no concurrent transfer).
-
-* **Use PIGZ for parallel gzip**
-	- This option is only available if xtrabackup is selected.
-	- Yes - Use PIGZ instead of standard gzip. This is helpful if you want to backup very large data set.
-	- No - Use the standard gzip.	
-	
-* **Backup Location**
-	- Store on Node - Store the backup inside corresponding database node.
-	- Store on Controller - Store the backup inside ClusterControl node. This requires :term:`netcat` on source and destination host. By default, ClusterControl uses port 9999 to stream the backup created on the database node to ClusterControl node.
-
-* **Backup Directory**
-	- You can opt to use another backup directory as you wish. If you leave this field blank, the system will use the default backup directory specified in the *ClusterControl > Settings > General Settings > Backup*.
+* **Storage Directory**
+	- You can opt to use another backup directory as you wish. If you leave this field blank, ClusterControl will use the default backup directory specified in the *Settings > Default backup directory*.
 	
 * **Netcat Port**
-	- Specify the port number that will be used by ClusterControl to stream backup created on the database node. This port must be opened on both source and destination hosts. Only available if you choose *Store on Controller* in *Backup Location*.
+	- Specify the port number that will be used by ClusterControl to stream backup created on the database node. This port must be opened on both source and destination hosts. Only available if you choose *Store on Controller* in *Storage Location*.
 	
-* **Databases**
-	- List of databases retrieved from the monitored MySQL servers. Default is 'All Databases'.
+* **Use Compression**
+	- Yes - Tells the chosen backup method to compress all output data, including the transaction log file and meta data files.
+	- No - Do not use compression for the backup.
+
+* **Compression Level**
+	- Specify the compression level for the backup. This is according to :term:`gzip` compression level. 1 is the fastest compression (least compression) and 9 indicates the slowest compression (best compression).
+
+* **PITR Compatible**
+	- Exclusive for mysqldump and if binary log is enabled. A mysqldump PITR-compatible backup contains one single dump file, with GTID info, binlog file and position. Thus, only the database node that produces binary log will have the "PITR Compatible" option available.
+
+* **Upload Backup to cloud**
+	- Automatically upload the finished backup to AWS S3 or Google Cloud Storage. This backup can then be downloaded and restored from the cloud. You have to configure `Cloud Credentials <../index.html#cloud-providers>`_ beforehand. 
+
+* **Backup Individual Schema**
+	- Exclusive for mysqldump. Each selected databases is backed up individually, in its own directory in the storage directory.
+	
+* **Desync node during backup**
+	- Exclusive for Galera and xtrabackup. De-syncing a node before performing backup, which disables Flow Control for the node. The node continues to receive write-sets and fall further behind the cluster. The cluster does not wait for desynced nodes to catch up, even if it reaches the ``fc_limit`` value.
+	
+* **Backup Locks**
+	- Exclusive for xtrabackup.
+	- Yes - Uses ``LOCK TABLES FOR BACKUP`` where it supported when making a backup.
+	- No - Sets ``--no-backup-locks`` which use ``FLUSH NO_WRITE_TO_BINLOG TABLES`` and ``FLUSH TABLES WITH READ LOCK`` when making backup.
+
+* **Xtrabackup Parallel Copy Threads**
+	- Exclusive for xtrabackup. This option specifies the number of threads to use to copy multiple data files concurrently when creating a backup. The default value is 1 (i.e., no concurrent transfer).
+
+* **Xtrabackup Throttle Rate (IOPS)**
+	- Exclusive for xtrabackup. Use ``--throttle`` flag to enable disk :term:`IOPS` throttling. 0 means disabled. This might be helpful on systems that do not have much spare I/O capacity.
+	
+* **Network Streaming Throttle Rate (MB/s)**
+	- Exclusive for xtrabackup and only if the storage location is the controller. Throttle the backup streaming process using a tool called :term:`pv`. 0 means disabled.
+
+* **Use PIGZ for parallel gzip**
+	- Exclusive for xtrabackup. 
+	- Yes - Use PIGZ instead of standard gzip. This is helpful if you want to backup very large data set.
+	- No - Use the standard gzip.	
+
 
 Schedule Backup
-```````````````
+................
 
-Creates backup schedules of the database. You can choose to create a full or incremental backup using mysqldump (full backup only) or xtrabackup. 
+Creates backup schedules of the database. You can choose to create a full or incremental backup using xtrabackup or mysqldump (full backup only). 
 
 * **Schedule**
-	- Sets the backup schedule.
+	- Simple - Default scheduling option. This translates to the same output as the Advanced editor.
+	- Advanced - Opens a cron-like editor. Formatting is similar to the standard :term:`cron`.
 
-.. Note:: The time is the local time on ClusterControl node.
-
-* **Backup Directory**
-	- Enter a backup directory or use default path provided by ClusterControl under *ClusterControl > Settings > Backup*.
+.. Note:: The backup time is in UTC time zone of the ClusterControl node.
 
 * **Backup Method**
 	- mysqldump - Separated compressed schema and data dump. See `mysqldump`_ section.
@@ -70,38 +95,53 @@ Creates backup schedules of the database. You can choose to create a full or inc
 	- xtrabackup (incr) - An incremental compressed backup. See `Percona Xtrabackup`_ section.
 	- NDB backup (for MySQL Cluster) - See `NDB backup (MySQL Cluster)`_ section.
 
-* **Backup Locks**
-	- This option is only available if xtrabackup is selected. 
-	- Yes - Uses "LOCK TABLES FOR BACKUP" where it supported when making a backup.
-	- No - Sets ``--no-backup-locks`` which use "FLUSH NO_WRITE_TO_BINLOG TABLES" and "FLUSH TABLES WITH READ LOCK" when making backup.
-
-* **Use Compression**
-	- This option is only available if xtrabackup is selected.
-	- Yes - Tells xtrabackup to compress all output data, including the transaction log file and meta data files.
-	- No - Do not use compression for the backup.
-
-* **Xtrabackup Parallel Copy Threads**
-	- This option is only available if xtrabackup is selected.
-	- This option specifies the number of threads to use to copy multiple data files concurrently when creating a backup. The default value is 1 (i.e., no concurrent transfer).
-
-* **Use PIGZ for parallel gzip**
-	- This option is only available if xtrabackup is selected.
-	- Yes - Use PIGZ instead of standard gzip. This is helpful if you want to backup very large data set.
-	- No - Use the standard gzip.
-	
 * **Backup Host**
-	- Host to run the backup command. Choose "Auto Select" to allow ClusterControl to automatically select which node to take the backup on.
+	- The target database host.
 
-* **Backup Location**
-	- Supported backup locations:
-		- Store on Node - Store the backup inside corresponding database node.
-		- Store on Controller - Store the backup inside ClusterControl node. This requires :term:`netcat` on source and destination host. By default, ClusterControl uses port 9999 to stream the backup created on the database node to ClusterControl node.
+* **Databases**
+	- List of databases retrieved from the monitored MySQL servers. Default is 'All Databases'. Otherwise, specify the databases that you would like to backup for this set.
+
+* **Tables**
+	- Exclusive for mysqldump only. List of tables retrieved from the monitored MySQL servers. Default is 'All Tables'. Otherwise, specify the table that you would like to backup for this set. Use 'Include tables' and 'Exclude tables' for additional condition to the table list.
+
+* **Storage Location**
+	- Store on Node - Stores the backup inside corresponding database node.
+	- Store on Controller - Stores the backup inside ClusterControl node. This requires :term:`netcat` on source and destination host. By default, ClusterControl uses port 9999 to stream the backup created on the database node to ClusterControl node.
+
+* **Storage Directory**
+	- You can opt to use another backup directory as you wish. If you leave this field blank, ClusterControl will use the default backup directory specified in the *Settings > Default backup directory*.
 
 * **Netcat Port**
 	- Specify the port number that will be used by ClusterControl to stream backup created on the database node. This port must be opened on both source and destination hosts. Only available if you choose *Store on Controller* in *Backup Location*.
 
-* **Databases**
-	- List of databases retrieved from the monitored MySQL servers. Default is 'All Databases'.
+* **Use Compression**
+	- Yes - Tells the chosen backup method to compress all output data, including the transaction log file and meta data files.
+	- No - Do not use compression for the backup.
+
+* **Compression Level**
+	- Specify the compression level for the backup. This is according to :term:`gzip` compression level. 1 is the fastest compression (least compression) and 9 indicates the slowest compression (best compression).
+
+* **PITR Compatible**
+	- Exclusive for mysqldump and if binary log is enabled. A mysqldump PITR-compatible backup contains one single dump file, with GTID info, binlog file and position. Thus, only the database node that produces binary log will have the "PITR Compatible" option available.
+
+* **Backup Locks**
+	- Exclusive for xtrabackup.
+	- Yes - Uses ``LOCK TABLES FOR BACKUP`` where it supported when making a backup.
+	- No - Sets ``--no-backup-locks`` which use ``FLUSH NO_WRITE_TO_BINLOG TABLES`` and ``FLUSH TABLES WITH READ LOCK`` when making backup.
+
+* **Xtrabackup Parallel Copy Threads**
+	- Exclusive for xtrabackup. This option specifies the number of threads to use to copy multiple data files concurrently when creating a backup. The default value is 1 (i.e., no concurrent transfer).
+
+* **Xtrabackup Throttle Rate (IOPS)**
+	- Exclusive for xtrabackup. Use ``--throttle`` flag to enable disk :term:`IOPS` throttling. 0 means disabled. This might be helpful on systems that do not have much spare I/O capacity.
+	
+* **Network Streaming Throttle Rate (MB/s)**
+	- Exclusive for xtrabackup and only if the storage location is the controller. Throttle the backup streaming process using a tool called :term:`pv`. 0 means disabled.
+
+* **Use PIGZ for parallel gzip**
+	- Exclusive for xtrabackup. 
+	- Yes - Use PIGZ instead of standard gzip. This is helpful if you want to backup very large data set.
+	- No - Use the standard gzip.
   
 * **Failover backup if node is down**
 	- Yes - Backup will be run on any available node (or selected node based on the *Backup Failover Host*) if the target database node is down. If failover is enabled and the selected node is not online, the backup job elects an online node to create the backup. This ensures that a backup will be created even if the selected node is not available. If the scheduled backup is an incremental backup and a full backup does not exist on the new elected node, then a full backup will be created.
@@ -113,14 +153,14 @@ Creates backup schedules of the database. You can choose to create a full or inc
 Scheduled backups
 `````````````````
 
-List of scheduled backups. You can enable and disable the schedule by toggling it accordingly. The created schedule can only be deleted and cannot be modified.
+List of scheduled backups. You can enable and disable the schedule by toggling it accordingly. The created schedule can be edited and deleted.
 
 Backup Method
 `````````````
 
 This section explains backup method used by ClusterControl.
 
-.. Note:: Backup process performed by ClusterControl is running on a background thread (RUNNING3) which doesn't block any other non-backup jobs in queue. If the backup job takes hours to complete, other non-backup jobs can still run simultaneously via the main thread (RUNNING). You can see the job progress at *ClusterControl > Logs > Jobs*.
+.. Note:: Backup process performed by ClusterControl is running as a background thread (RUNNING3) which doesn't block any other non-backup jobs in queue. If the backup job takes hours to complete, other non-backup jobs can still run simultaneously via the main thread (RUNNING). You can see the job progress at *ClusterControl > Logs > Jobs*.
 
 mysqldump
 .........
@@ -169,7 +209,10 @@ All incremental backups are automatically grouped together under the last full b
 	- Shows the output when ClusterControl executed the backup job.
 
 * **Delete**
-	- Removes the backup set. If you remve the backup set, all incremental backups associated with it will be removed as well.
+	- Removes the backup set. If you remove the backup set, all incremental backups associated with it will be removed as well.
+
+* **Upload**
+	- Manually upload the created backup to cloud storage. This will open "Upload Backup" wizard.
 
 Restore Backup
 ..............
@@ -213,7 +256,7 @@ For Percona Xtrabackup (offline restore):
 * **Make a copy of the datadir before restoring the backup**
 	- Toggle to ON to keep the old MySQL datadir before replacing the datadir with the prepared backup.
 	
-.. Attention:: The datadir must have enough space to accomodate the restored backup.
+.. Attention:: The datadir must have enough space to accommodate the restored backup.
 
 * **Restore "MySQL" Database**
 	- Exclusive to mysqldump. Toggle to ON to restore the ``mysql`` database if the backup was created by ClusterControl. If the ``cmon`` user privileges has changed, it may cause ClusterControl to stop functioning. This is fixable. Default is "No".
@@ -271,7 +314,7 @@ The following steps will be performed:
 * **Make a copy of the datadir before restoring the backup**
 	- Toggle to ON to keep the old MySQL datadir before replacing the datadir with the prepared backup.
 	
-.. Attention:: The datadir must have enough space to accomodate the restored backup.
+.. Attention:: The datadir must have enough space to accommodate the restored backup.
 
 * **Restore to Database**
 	- Exclusive to mysqldump. Restores the backup to a specific database name. Leave blank if you want it to restore as it is.

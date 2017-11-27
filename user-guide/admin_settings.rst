@@ -6,7 +6,7 @@ Settings
 
 Admin page provides interface to manage clusters, organizations, users, roles and authentication options inside ClusterControl.
 
-.. image:: img/admin_index2.png
+.. image:: img/admin_index_15.png
 
 Clusters
 --------
@@ -23,22 +23,22 @@ Manage database clusters inside ClusterControl.
 User Management
 ---------------
   
-Organizations/Users
-````````````````````
+Teams/Users
+````````````
 
-Manage organizations and users under ClusterControl. Take note that only the first user created with ClusterControl will be able to create the organizations. You can have one or more organization and each organization consists of zero or more clusters and users. You can have many roles defined under ClusterControl and a user must be assigned with one role.
+Manage teams (organizations) and users under ClusterControl. Take note that only the first user created with ClusterControl will be able to create the teams. You can have one or more teams and each team consists of zero or more clusters and users. You can have many roles defined under ClusterControl and a user must be assigned with one role.
 
 As a roundup, here is how the different entities relate to each other:
 
 .. image:: img/cc_erd.png
    :align: center
 
-.. Note:: ClusterControl creates 'Admin' organization by default.
+.. Note:: ClusterControl creates 'Admin' team by default.
 
 Users
 '''''
 
-A user belongs to one organization and assigned with a role. Users created here will be able to login and see specific cluster(s), depending on their organization and the cluster they have been assigned to.
+A user belongs to one team and assigned with a role. Users created here will be able to login and see specific cluster(s), depending on their team and the cluster they have been assigned to.
 
 Each role is defined with specific privileges under *Access Control*. ClusterControl default roles are Super Admin, Admin and User:
 
@@ -54,7 +54,7 @@ Role            Description
 Access Control
 ``````````````
 
-ClusterControl uses Role-Based Access Control (RBAC) to restrict access to clusters and their respective deployment, management and monitoring features. This ensures that only authorised user requests are allowed. Access to functionality is fine-grained, allowing access to be defined by organisation or user. ClusterControl uses a permissions framework to define how a user may interact with the management and monitoring functionality, after they have been authorised to do so. 
+ClusterControl uses Role-Based Access Control (RBAC) to restrict access to clusters and their respective deployment, management and monitoring features. This ensures that only authorized user requests are allowed. Access to functionality is fine-grained, allowing access to be defined by organization or user. ClusterControl uses a permissions framework to define how a user may interact with the management and monitoring functionality, after they have been authorized to do so. 
 
 You can create a custom role with its own set of access levels. Assign the role to specific user under *Organizations/Users* tab.
 
@@ -92,18 +92,18 @@ Feature                      Description
 **Create Cluster**           Create Database Cluster button and page - *ClusterControl > Create Database Cluster*
 **Add Load Balancer**        Add Load Balancer page - *ClusterControl > Actions > Add Load Balancer* and *ClusterControl > Manage > Load Balancer*
 **Clone**                    Clone Cluster page (Galera) - *ClusterControl > Actions > Clone Cluster*
-**Access All Clusters**      Access all clusters registered under the same organzation.
-**Service Providers**        Service Providers page - *ClusterControl > Settings (top-menu) > Service Providers*
+**Access All Clusters**      Access all clusters registered under the same organization.
+**Cluster Registrations**    Cluster Registrations page - *ClusterControl > Settings (top-menu) > Cluster Registrations*
+**Cloud Providers**          Cloud Providers page - *ClusterControl > Settings (top-menu) > Integrations -> Cloud Providers*
 **Search**                   Search button and page - *ClusterControl > Search*
 **Create Database Node**     Create Database Node button and page - *ClusterControl > Create Database Node*
 **Developer Studio**         Developer Studio page - *ClusterControl > Manage > Developer Studio*
 **MySQL User Management**    MySQL user management sections - *ClusterControl > Settings (top-menu) > MySQL User Management* and *ClusterControl > Manage > Schema and Users*
 **Operational Reports**      Operational reports page - *ClusterControl > Settings (top-menu) > Operational Reports*
+**Custom Advisor**           Custom Advisors page - *ClusterControl > Manage > Custom Advisors*
+**SSL Key Management**       Key Management page - *ClusterControl > Settings (top-menu) > Key Management*
 **Integrations**             Integrations page - *ClusterControl > Settings (top-menu) > Integrations*
 **Web SSH**                  Web-based SSH on every managed node - *ClusterControl > Nodes > Node Actions > SSH Console*
-**Cluster Registrations**    Cluster Registrations page - *ClusterControl > Settings (top-menu) > Cluster Registrations*
-**Custom Advisors**          Custom Advisors page - *ClusterControl > Manage > Custom Advisors*
-**SSL Key Management**       Key Management page - *ClusterControl > Settings (top-menu) > Key Management*
 ============================ ============
 
 LDAP Access
@@ -153,16 +153,16 @@ Settings
 	- The root LDAP node under which all other nodes exist in the directory structure.
 
 * **Login DN**
-	- The distinguished name used to bind to the LDAP server. This is often the administrator or manager user. It can also be a dedicated login with minimal access that should be able to return the DN of the authenticating users. ClusterControl must do an LDAP search using this DN before any user can log in. This field is case-senstive.
+	- The distinguished name used to bind to the LDAP server. This is often the administrator or manager user. It can also be a dedicated login with minimal access that should be able to return the DN of the authenticating users. ClusterControl must do an LDAP search using this DN before any user can log in. This field is case-sensitive.
 
 * **Password**
 	- The password for the binding user specified in 'Login DN'.
 
 * **User DN**
-	- The user's relative distinguished name (RDN) used to bind to the LDAP server. For example, if the LDAP/AD user DN is CN=userA,OU=People,DC=ldap,DC=domain,DC=com, specify :samp:`OU=People,DC=ldap,DC=domain,DC=com`. This field is case-senstive.
+	- The user's relative distinguished name (RDN) used to bind to the LDAP server. For example, if the LDAP/AD user DN is CN=userA,OU=People,DC=ldap,DC=domain,DC=com, specify :samp:`OU=People,DC=ldap,DC=domain,DC=com`. This field is case-sensitive.
 
 * **Group DN**
-	- The group's relative distinguished name (RDN) used to bind to the LDAP server. For example, if the LDAP/AD group DN is  CN=DBA,OU=Group,DC=ldap,DC=domain,DC=com, specify :samp:`OU=Group,DC=ldap,DC=domain,DC=com`. This field is case-senstive.
+	- The group's relative distinguished name (RDN) used to bind to the LDAP server. For example, if the LDAP/AD group DN is  CN=DBA,OU=Group,DC=ldap,DC=domain,DC=com, specify :samp:`OU=Group,DC=ldap,DC=domain,DC=com`. This field is case-sensitive.
 	
 .. Attention:: ClusterControl does not support binding against a nested directory group. Ensure each LDAP user that authenticates to ClusterControl has a direct membership to the LDAP group.
 
@@ -185,7 +185,7 @@ Once enabled, ensure that each group you want to authenticate from ClusterContro
 
 .. Attention:: For Active Directory, ensure you configure the exact distinguished name (with proper capitalization) since the LDAP interchange format (LDIF) fields are returned in capital letters.
 
-For example on how to setup OpenLDAP autentication with ClusterControl, please refer to `this blog post <http://www.severalnines.com/blog/how-setup-centralized-authentication-clustercontrol-users-ldap>`_.
+For example on how to setup OpenLDAP authentication with ClusterControl, please refer to `this blog post <http://www.severalnines.com/blog/how-setup-centralized-authentication-clustercontrol-users-ldap>`_.
 
 For example on integrating ClusterControl with FreeIPA and Windows Active Directory, please refer to `this blog post <http://severalnines.com/blog/integrating-clustercontrol-freeipa-and-windows-active-directory-authentication>`_.
 
@@ -204,7 +204,7 @@ Shows all active accounts across clusters, which are currently active or were co
 Inactive Accounts
 ``````````````````
 
-Shows all accounts across clusters that are not been used since the last server restart. Server must have been running for at least 8 hours to check for inactives accounts.
+Shows all accounts across clusters that are not been used since the last server restart. Server must have been running for at least 8 hours to check for inactive accounts.
 
 You can drop particular accounts by clicking at the multiple checkboxes and click 'Drop User' button to initiate the action.
 
@@ -245,7 +245,7 @@ Configures global email notifications across clusters.
 	- Save the settings to all clusters.
 
 * **Send digests at**
-	- Send a digested (summary) email at this time every dayf or the selected recipient.
+	- Send a digested (summary) email at this time every day to the selected recipient.
 
 * **Time-zone**
 	- Timezone for the selected recipient.
@@ -264,7 +264,7 @@ Configures global email notifications across clusters.
 	Cluster                Cluster related messages, e.g. cluster failed.
 	ClusterConfiguration   Cluster configuration messages, e.g. software configuration messages.
 	ClusterRecovery        Recovery messages like cluster or node recovery failures.
-	Node                   Message related to nodes, e.g. node disconnected, missing GRANT, failed to start HAproxy, failed to start NDB cluster nodes.
+	Node                   Message related to nodes, e.g. node disconnected, missing GRANT, failed to start HAProxy, failed to start NDB cluster nodes.
 	Host                   Host related messages, e.g. CPU/disk/RAM/swap alarms.
 	DbHealth               Database health related messages, e.g. memory usage of mysql servers, connections.
 	DbPerformance          Alarms for long running transactions and deadlocks
@@ -285,7 +285,15 @@ Configures global email notifications across clusters.
 Integrations
 -------------
 
-Configures third-party integration on events triggered by ClusterControl. 
+Manages ClusterControl integration modules. In version 1.5, there are 2 modules available:
+
+- 3rd Party Notifications via clustercontrol-notifications package.
+- Cloud Provider integration via clustercontrol-cloud and clustercontrol-clud packages.
+
+3rd Party Notifications
+````````````````````````
+
+Configures third-party notifications on events triggered by ClusterControl. 
 
 Supported services are:
 
@@ -323,7 +331,7 @@ Supported services are:
 	Cluster                Cluster related events, e.g. cluster failed, cluster degradation, time drifting.
 	Cluster Configuration  Cluster configuration events, e.g. SST account mismatch.
 	Cluster Recovery       Recovery events, e.g. cluster or node recovery failures.
-	Node                   Node related events, e.g. node disconnected, missing GRANT, failed to start HAproxy, failed to start NDB cluster nodes.
+	Node                   Node related events, e.g. node disconnected, missing GRANT, failed to start HAProxy, failed to start NDB cluster nodes.
 	Host                   Host related messages, e.g. CPU/disk/RAM/swap exceeds thresholds, memory full.
 	Database Health        Database health related events, e.g. memory usage of mysql servers, connections, missing primary key.
 	Database Performance   Alarms for long running transactions, replication lag and deadlocks.
@@ -336,31 +344,146 @@ Supported services are:
 
 * **Delete**
 	- Remove the selected integration.
-	
-Operational Report
-------------------
 
-Generates or creates schedule of operational reports. The current default report shows a cluster's health and performance at the time it was generated compared to 1 day ago.
+Cloud Providers
+``````````````````
+
+Manages resources and credentials for cloud providers.
+
+* **Add Cloud Credentials**
+	- Opens cloud credentials setup wizard. Supported cloud providers are Amazon Web Service and Google Cloud Platform.
+
+Amazon Web Service Credentials
+'''''''''''''''''''''''''''''''
+
+The stored AWS credential will be used by ClusterControl to list your available Amazon instances, spin new instances when deploying a cluster and uploading/downloading backups to AWS S3. 
+
+To create an access key for your AWS account root user:
+
+1. Use your AWS account email address and password to sign in to the AWS Management Console as the AWS account root user.
+2. On the IAM Dashboard page, choose your account name in the navigation bar, and then choose "My Security Credentials".
+3. If you see a warning about accessing the security credentials for your AWS account, choose "Continue to Security Credentials".
+4. Expand the Access keys (access key ID and secret access key) section.
+5. Choose "Create New Access Key". Then choose "Download Key File" to save the access key ID and secret access key to a file on your computer. After you close the dialog box, you can't retrieve this secret access key again.
+
+.. seealso:: `Managing Access Keys for Your AWS Account <http://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html>`_.
+
+================== ============
+Field              Description
+================== ============
+Name               Credential name.
+AWS Key ID         Your AWS Access Key ID as described on this page. You can get this from AWS IAM Management console.
+AWS Key Secret     Your AWS Secret Access Key as described on this page. You can get this from AWS IAM Management console.
+Default Region     Choose the default AWS region for this credentials.
+Comment (Optional) Description of the credential. 
+================== ============
+
+
+AWS Instances
+.............
+
+Lists your AWS instances. You can perform simple AWS instance management directly from ClusterControl, which uses your defined AWS credentials to connect to AWS API.
+
+================= ===========
+Field             Description
+================= ===========
+AWS Credentials   Choose which credential to use to access your AWS resources.
+Stop              Shutdown the instance.
+Reboot            Restart the instance.
+Terminate         Shutdown and terminate the instance.
+================= ===========
+
+AWS VPC
+........
+
+This allows you to conveniently manage your VPC from ClusterControl, which uses your defined AWS credentials to connect to AWS VPC. Most of the functionalities are integrated and have the same look and feel as the AWS VPC console. Thus, you may refer to VPC User Guide for details on how to manage AWS VPC.
+
++-------------------+-----------------------------------------------------------------------------------------------------------------+
+| Field             | Description                                                                                                     |
++===================+=================================================================================================================+
+| Start VPC Wizard  | Open the VPC creation wizard. Please refer to Getting Started Guide for details on how to start creating a VPC. |
++-------------------+-----------------------------------------------------------------------------------------------------------------+
+| AWS Credentials   | Choose which credentials to use to access your AWS resources.                                                   |
++-------------------+-----------------------------------------------------------------------------------------------------------------+
+| Region            | Choose the AWS region for the VPC.                                                                              |
++-------------------+-----------------------------------------------------------------------------------------------------------------+
+| VPC               | List of VPCs created under the selected region.                                                                 |
+|                   |                                                                                                                 |
+|                   | * Create VPC - Create a new VPC.                                                                                |
+|                   | * Delete - Delete selected VPC.                                                                                 |
+|                   | * DHCP Options Set - Specify the DHCP options for your VPC.                                                     |
++-------------------+-----------------------------------------------------------------------------------------------------------------+
+| Subnet            | List of VPC subnet created under the selected region.                                                           |
+|                   |                                                                                                                 |
+|                   | * Create - Create a new VPC subnet.                                                                             |
+|                   | * Delete - Delete selected subnet.                                                                              |
++-------------------+-----------------------------------------------------------------------------------------------------------------+
+| Route Tables      | List of routing tables created under the selected region.                                                       |
++-------------------+-----------------------------------------------------------------------------------------------------------------+
+| Internet Gateway  | List of security groups created under the selected region.                                                      |
++-------------------+-----------------------------------------------------------------------------------------------------------------+
+| Network ACL       | List of network Access Control Lists created under the selected region.                                         |
++-------------------+-----------------------------------------------------------------------------------------------------------------+
+| Security Group    | List of security groups created under the selected region.                                                      |
++-------------------+-----------------------------------------------------------------------------------------------------------------+
+| Running Instances | List of all running instances under the selected region.                                                        |
++-------------------+-----------------------------------------------------------------------------------------------------------------+
+
+Google Cloud Platform Credentials
+''''''''''''''''''''''''''''''''''
+
+To create a service account:
+
+1. Open the "Service Accounts" page in the Cloud Platform Console.
+2. Select your project and click "Continue"".
+3. In the left nav, click "Service accounts".
+4. Look for the service account for which you wish to create a key, click on the vertical ellipses button in that row, and click "Create key".
+5. Select JSON as the "Key type" and click "Create".
+
+================== ============
+Field              Description
+================== ============
+Name               Credential name.
+Read from JSON     The service account definition in JSON format.
+Comment (Optional) Description of the credential.
+================== ============
+	
+Operational Reports
+-------------------
+
+Generates or creates schedule of operational reports. The current default report shows a cluster's health and performance at the time it was generated compared to one day ago.
  
 The report provides information about:
-	- Cluster Information
-		- Cluster
-		- Nodes
-		- Backup Summary
-		- Top Queries Summary
-	- Node Status Overview
-		- CPU Usage
-		- Data Throughput
-		- Load Average
-		- Free Disk Space
-		- RAM Usage
-		- Network Throughput
-		- Server Load
-		- Handler
-	- Package Upgrade Report (generate available software and security packages to upgrade)
-	- Schema Change Report
-		- Detect schema changes (CREATE and ALTER TABLE. Drop table is not supported yet)
-		- Need to set ``schema_change_detection_address=1`` inside ``/etc/cmon.d/cmon_X.cnf``.
+
+- Cluster Information
+	- Cluster
+	- Nodes
+	- Backup summary
+	- Top queries summary
+- Node Status Overview
+	- CPU usage
+	- Data throughput
+	- Load average
+	- Free disk space
+	- RAM usage
+	- Network throughput
+	- Server load
+	- Handler
+- Schema Change Report
+	- Detect schema changes (CREATE and ALTER TABLE. Drop table is not supported yet)
+	- Need to set ``schema_change_detection_address=1`` inside ``/etc/cmon.d/cmon_X.cnf``.
+- Availability (All clusters)
+	- Node availability summary
+	- Cluster availability summary
+	- Total uptime
+	- Total downtime
+	- Last state change
+- Backup (All clusters)
+	- Backup list
+	- Backup details
+	- Backup policy
+- Package Upgrade Report (generate available software and security packages to upgrade)
+- Database Growth Report (beta)
 
 Operational Reports
 ````````````````````
@@ -397,7 +520,7 @@ List of scheduled operational report. Optionally, you can click on 'Add Email' b
 Key Management
 --------------
 
-Key Management allows you to manage a set of SSL certificates and keys that can be provisioned on your clusters. This feature allows you to create Certificate Authority (CA) and/or self-signed certificates and keys. Then, it can be easily enabled and disabled for MySQL and PostreSQL client-server connections using SSL encryption feature. See `Enable SSL Encryption <mysql/overview.html#enable-ssl-encryption>`_ for details.
+Key Management allows you to manage a set of SSL certificates and keys that can be provisioned on your clusters. This feature allows you to create Certificate Authority (CA) and/or self-signed certificates and keys. Then, it can be easily enabled and disabled for MySQL and PostgreSQL client-server connections using SSL encryption feature. See `Enable SSL Encryption <mysql/overview.html#enable-ssl-encryption>`_ for details.
 
 Manage
 ```````
@@ -417,7 +540,7 @@ Manage existing keys and certificates generated by ClusterControl.
 Generate
 ``````````
 
-By default, the generated keys and cetificates will be created under default repository at ``/var/lib/cmon/ca``. 
+By default, the generated keys and certificates will be created under default repository at ``/var/lib/cmon/ca``. 
 
 * **New Folder**
     - Create a new directory under the default repository.
@@ -557,56 +680,6 @@ Import keys and certificates into ClusterControl's certificate repository. The i
 * **Import**
   - Start the import process.
 
-Notification Services
----------------------
-
-Provides interface to manage notification service for Custom Advisor. At the moment, only external mail server and PagerDuty is supported. For list of supported plugin, you can find it at NPM page `here <https://www.npmjs.com/browse/keyword/s9s>`_. 
-
-This feature requires ClusterControl NodeJS package to be installed. If you have not configure this, please run the following command on ClusterControl node:
-
-.. code-block:: bash
-
-	/usr/local/clustercontrol-nodejs/bin/install-cc-nodejs.sh
-
-The above command will install and configure all dependencies including the NPM plugins. Take note that, your repository must have NPM package listed in order for the script to successfully install all the dependencies. For RHEL 7, you might need to have EPEL repository configured by using the following command:
-
-.. code-block:: bash
-
-	rpm -Uhv http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
-
-Please refresh the ClusterControl UI after the installation is completed.
-	
-Create Service Config
-`````````````````````
-
-* **Name**
-	- The configuration name.
-
-* **Organization**
-	- Which organization that the service belongs to.
-	
-* **Plugin Type**
-	- Choose a plugin type. Details on this is explained on the next sub sections.
-	
-* **Enabled**
-	- Check the box if you want it available for Custom Advisors. If unchecked, you will not able to see this service when setting up Custom Advisors.
-	
-Mail Notifition Settings
-''''''''''''''''''''''''
-
-Forwards the alarms raised by Custom Advisors to an email address. You can add multiple email addresses to this setting and once a defined Custom Advisors exceeds the threshold, all recipients will receive it.
-
-PagerDuty Notification Settings
-'''''''''''''''''''''''''''''''
-
-Forwards the alarms raised by Custom Advisors to PagerDuty notification service. ClusterControl connects through PagerDuty API via NodeJS.
-
-* **PagerDuty Token**
-	- Log into your PagerDuty account and create a service for ClusterControl Custom Advisors. Go to *PagerDuty > Services > Add New Service*. Specify a service name and choose "Use our API" directly on "Integration Type". Note the "Service API Key" from the Service summary page and specify it in this field.
-
-* **PagerDuty Domain**
-	- PagerDuty domain name. For example, severalnines.pagerduty.com.
-
 
 Repositories
 ------------
@@ -620,7 +693,7 @@ Manages provider's repository for database servers and clusters. You can have th
 3. Use Mirrored Repositories (Create new repository)
 	- Create and mirror the current database vendor's repository and then deploy using the local mirrored repository.
 	- This allows you to "freeze" the current versions of the software packages used to provision a database cluster for a specific vendor and you can later use that mirrored repository to provision the same set of versions when adding more nodes or deploying other clusters.
-	- ClusterControl sets up the mirrored repository under [Apache Document root]/cmon-repos/, which is accessible via HTTP at :samp:`http://{ClusterControl_host}/cmon-repos/`.
+	- ClusterControl sets up the mirrored repository under ``{Apache Document root}/cmon-repos/``, which is accessible via HTTP at :samp:`http://{ClusterControl_host}/cmon-repos/`.
 
 Only Local Mirrored Repository will be listed and manageable here. 
 
@@ -651,141 +724,6 @@ From a ClusterControl UI instance, this enables the user to register a database 
 .. Note:: The CMONAPI token is critical and hidden under asterisk values. This token provides authentication access for ClusterControl UI to communicate with the CMON backend services directly. Please keep this token in a safe place.
 
 You can retrieve the CMONAPI token manually at ``{wwwroot}/cmonapi/config/bootstrap.php`` on line containing ``CMON_TOKEN`` value, where ``{wwwroot}`` is location of Apache document root.
-
-Service Providers
------------------
-
-Manages resources and credentials for service providers.
-
-AWS Credentials
-```````````````
-
-Manage your AWS credentials under this tab. Fully working AWS credentials requires more than just a keypair. The stored AWS credential will be used by ClusterControl to list your available Amazon instances, spin new instances when deploying a cluster, uploading backups to S3 or Glacier, etc. 
-
-================== ============
-Field              Description
-================== ============
-Keypair Name       Keypair name.
-Access Key ID      Your AWS Access Key ID as described on this page. You can get this from AWS IAM Management console.
-Secret Access Key  Your AWS Secret Access Key as described on this page. You can get this from AWS IAM Management console.
-Private Key File   Upload the private keypair file.
-Comment (Optional) Description of the keypair. 
-================== ============
-
-To edit, double click on an item from the list. To remove the credential, choose an item and click on the ‘-’ icon.
-
-.. Note:: The saved key name must match the AWS keypair name in order to deploy on AWS. For example, if the keypair file is ‘severalnines.pem’, put ‘severalnines’ as keypair name.
-
-Adding your AWS Credentials to ClusterControl
-'''''''''''''''''''''''''''''''''''''''''''''
-
-From AWS IAM Management Console, click *Create User* button. Enter the user name:
-
-.. image:: img/cc_aws_cre1.png
-   :align: center
-
-It will prompt for Security Credentials. Copy *Access Key ID* and *Secret Access Key* because these values are needed by ClusterControl’s AWS Credentials. You can also download the credential by clicking the Download Credentials button.
-
-.. image:: img/cc_aws_cre2.png
-   :align: center
-
-Next, select the create user, and go to *Permissions > Attach User Policy*. 
-
-.. image:: img/cc_aws_cre3.png
-   :align: center
-
-Choose *Power User Access* and click *Apply Policy*.
-
-.. image:: img/cc_aws_cre4.png
-   :align: center
-
-You should see the policy has been assigned correctly under *Permissions* tab:
-
-.. image:: img/cc_aws_cre5.png
-   :align: center
-
-Go back to AWS EC2 Dashboard and create a Key Pair by clicking *Create Key Pair* button:
-
-.. image:: img/cc_aws_cre6.png
-   :align: center
-
-Enter the key pair name and click *Create*. It will force you to download the keypair file automatically:
-
-.. image:: img/cc_aws_cre7.png
-   :align: center
-
-Specify all information above under `AWS Credentials`_ window in ClusterControl. Make sure you specify the same key pair name as created on previous step and upload that key using the Browse button. The *Comment* field is optional.
-
-.. image:: img/cc_aws_cre8.png
-   :align: center
-
-
-AWS Instances
-`````````````
-
-Lists your AWS instances. You can perform simple AWS instance management directly from ClusterControl, which uses your defined AWS credentials to connect to AWS API.
-
-========= ===========
-Field     Description
-========= ===========
-KeyPair   Choose which keypair to use to access your AWS resources.
-Stop      Shutdown the instance.
-Reboot    Restart the instance.
-Terminate Shutdown and terminate the instance.
-========= ===========
-
-AWS VPC
-```````
-
-This allows you to conveniently manage your VPC from ClusterControl, which uses your defined AWS credentials to connect to AWS VPC. Most of the functionalities are integrated and have the same look and feel as the AWS VPC console. Thus, you may refer to VPC User Guide for details on how to manage AWS VPC.
-
-+-------------------+-----------------------------------------------------------------------------------------------------------------+
-| Field             | Description                                                                                                     |
-+===================+=================================================================================================================+
-| Start VPC Wizard  | Open the VPC creation wizard. Please refer to Getting Started Guide for details on how to start creating a VPC. |
-+-------------------+-----------------------------------------------------------------------------------------------------------------+
-| KeyPair           | Choose which keypair to use to access your AWS resources.                                                       |
-+-------------------+-----------------------------------------------------------------------------------------------------------------+
-| Region            | Choose the AWS region for the VPC.                                                                              |
-+-------------------+-----------------------------------------------------------------------------------------------------------------+
-| VPC               | List of VPCs created under the selected region.                                                                 |
-|                   |                                                                                                                 |
-|                   | * Create VPC - Create a new VPC.                                                                                |
-|                   | * Delete - Delete selected VPC.                                                                                 |
-|                   | * DHCP Options Set - Specify the DHCP options for your VPC.                                                     |
-+-------------------+-----------------------------------------------------------------------------------------------------------------+
-| Subnet            | List of VPC subnet created under the selected region.                                                           |
-|                   |                                                                                                                 |
-|                   | * Create - Create a new VPC subnet.                                                                             |
-|                   | * Delete - Delete selected subnet.                                                                              |
-+-------------------+-----------------------------------------------------------------------------------------------------------------+
-| Route Tables      | List of routing tables created under the selected region.                                                       |
-+-------------------+-----------------------------------------------------------------------------------------------------------------+
-| Internet Gateway  | List of security groups created under the selected region.                                                      |
-+-------------------+-----------------------------------------------------------------------------------------------------------------+
-| Network ACL       | List of network Access Control Lists created under the selected region.                                         |
-+-------------------+-----------------------------------------------------------------------------------------------------------------+
-| Security Group    | List of security groups created under the selected region.                                                      |
-+-------------------+-----------------------------------------------------------------------------------------------------------------+
-| Running Instances | List of all running instances under the selected region.                                                        |
-+-------------------+-----------------------------------------------------------------------------------------------------------------+
- 
-
-On-Premise Credentials
-``````````````````````
-
-When deploying on-Premise, ClusterControl uses your credentials to spin up the necessary resources for the database nodes. The following options are available if you click on ‘+’ button:
-
-================== ===========
-Field              Description
-================== ===========
-Keypair Name       Key file name.
-Private key File   Upload the private key pair file.
-Comment (Optional) Description of the key pair.
-Cluster Name       Assign this key to specific cluster.
-================== ===========
-
-.. Note:: Keep cluster unspecified for keys that you will use for new installation.
 
 Subscriptions
 -------------

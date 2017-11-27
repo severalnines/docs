@@ -29,9 +29,9 @@ Start:
 
 The collected queries are hashed, calculated and digested (normalize, average, count, sort) and then stored in ClusterControl.
 
-.. Attention:: By using slow query log, there is a slight chance some queries will not be captured, especially during “stop log, parse log, truncate log” parts. You can enable Performance Schema if this is not an option.
+.. Attention:: By using slow query log, there is a slight chance some queries will not be captured, especially during "stop log, parse log, truncate log" parts. You can enable Performance Schema if this is not an option.
 
-If you are using the Slow Query log, only queries that exceed the “Long Query Time” will be listed here. If the data is not populated correctly and you believe that there should be something in there, it could be:
+If you are using the Slow Query log, only queries that exceed the *Long Query Time* will be listed here. If the data is not populated correctly and you believe that there should be something in there, it could be:
 
 - ClusterControl did not collect enough queries to summarize and populate data. Try to lower the *Long Query Time*.
 - You have configured Slow Query Log configuration options in the ``my.cnf`` of MySQL server, and *Override Local Query* is turned off. If you really want to use the value you defined inside ``my.cnf``, probably you have to lower the ``long_query_time`` value so ClusterControl can calculate a more accurate result.
@@ -49,7 +49,7 @@ Click on the Settings to configure the Query Monitor settings, as explained belo
 		- 0.1 - Only queries taking more than 0.1 seconds will be accounted.
 
 * **Log queries not using indexes?**
-	- Configures ClusterControl behaviour on sampling queries without indexes:
+	- Configures ClusterControl behavior on sampling queries without indexes:
 		- Yes - Logs queries which are using indexes.
 		- No - Ignores queries that are not using indexes (will not be accounted for in *ClusterControl > Query Monitor > Query Histogram*).
 
@@ -131,12 +131,12 @@ This page is auto-refresh every 30 seconds. You can change the refresh rate by c
 * **State**
 	- An action, event, or state that indicates what the thread is doing, as explained in `MySQL Documentation <http://dev.mysql.com/doc/refman/5.6/en/general-thread-states.html>`_ page.
 
-Query Histogram
+Query Outliers
 ````````````````
 
-The Query Histogram is actually showing you queries that are outliers. An outlier is a query taking longer time than the normal query of that type. Use this feature to filter out the outliers for a certain time period. After a number of samples and when ClusterControl has had enough stats, it can determine if latency is higher than normal (2 sigma + average_query_time) then it is an outlier, and will be added into the Query Outlier/Histogram.
+Shows queries that are outliers. An outlier is a query taking longer time than the normal query of that type. Use this feature to filter out the outliers for a certain time period. After a number of samples and when ClusterControl has had enough stats, it can determine if latency is higher than normal (2 sigma + ``average_query_time``) then it is an outlier, and will be added into the *Query Outlier*.
 
-This feature is dependent on the Top Queries feature above. If Query Monitoring is enabled and Top Queries are captured and populated, the Query Histogram will summarize these and provide a filter based on timestamp. You can view the query history as old as one year ago.
+This feature is dependent on the Top Queries feature above. If *Query Monitoring* is enabled and *Top Queries* are captured and populated, the *Query Outliers* will summarize these and provide a filter based on timestamp. You can view the query history as old as one year ago.
 
 
 * **Time**
@@ -152,7 +152,7 @@ This feature is dependent on the Top Queries feature above. If Query Monitoring 
 	- Query's average execution time in microseconds.
 
 * **Stdev**
-	- Query's standard devioation execution time in microseconds.
+	- Query's standard deviation execution time in microseconds.
 
 * **Max Query Time**
 	- Query's maximum execution time in microseconds.

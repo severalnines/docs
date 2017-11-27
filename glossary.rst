@@ -33,6 +33,11 @@ Glossary
 	CMON
 		ClusterControl controller backend service.
 
+	cron
+		A time-based job scheduler in Unix-like computer operating systems.
+		
+		.. seealso:: https://en.wikipedia.org/wiki/Cron
+
 	DN
 		A Distinguished Name (DN) is used to uniquely name a directory object.
 		
@@ -57,6 +62,11 @@ Glossary
 		Galera arbitrator daemon.
 
 		.. seealso:: http://galeracluster.com/documentation-webpages/arbitrator.html
+
+	gzip
+		A file format and a software application used for file compression and decompression.
+		
+		.. seealso:: http://www.gzip.org/
 		
 	HAproxy
 		HAProxy is a free, very fast and reliable solution offering high availability, load balancing, and proxying for TCP and HTTP-based applications.
@@ -72,6 +82,11 @@ Glossary
 		The size in bytes of the memory buffer InnoDB uses to cache data and indexes of its tables. The default value is 8MB.
 	
 		.. seealso:: http://dev.mysql.com/doc/refman/5.6/en/innodb-parameters.html#sysvar_innodb_buffer_pool_size
+
+	IOPS
+		Input/output operations per second.
+		
+		.. seealso:: https://en.wikipedia.org/wiki/IOPS
 
 	keepalived
 		A routing software written in C to provide simple and robust facilities for loadbalancing and high-availability to Linux system and Linux based infrastructures. Widely used for IP failover between two load balancer servers.
@@ -150,6 +165,11 @@ Glossary
 		Puppet is an open source configuration management utility.
 	
 		.. seealso:: https://puppetlabs.com/
+
+	pv
+		pv allows a user to see the progress of data through a pipeline, by giving information such as time elapsed, percentage completed (with progress bar), current throughput rate, total data transferred, and ETA.
+		
+		.. seealso:: https://linux.die.net/man/1/pv
 		
 	s9s-admin tools
 		ClusterControl helper scripts provided by Severalnines. The source code can be accessible at Severalnines Github repository.

@@ -11,37 +11,34 @@ Provides shortcuts to main cluster functionality. Each database cluster has its 
 Galera Cluster
 ''''''''''''''
 
-* **Add Node**
-	- See `Add Node`_ section.
-
 * **Add Load Balancer**
 	- See `Add Load Balancer <manage.html#load-balancer>`_ section.
 
-* **Change RPC API Token**
-	- Serves as the auntentication string by ClusterControl UI to connect to CMON RPC interface. Each cluster has its own unique token.
-	
-.. Note:: You can retrieve the RPC API Token value directly from respective cmon_X.cnf, [wwwroot]/cmonapi/config/bootstrap.php under CMON_TOKEN variable or from 'dcps.apis' table.
+* **Add Node**
+	- See `Add Node`_ section.
 
 * **Add Replication Slave**
 	- Deploys a replication slave attached to this cluster. Choose one of the Galera node to be a master. See `Add Replication Slave`_.
 
+* **Change RPC API Token**
+	- Serves as the authentication string by ClusterControl UI to connect to CMON RPC interface. Each cluster has its own unique token.
+	
+.. Note:: You can retrieve the RPC API Token value directly from respective ``cmon_X.cnf``, ``{wwwroot}/cmonapi/config/bootstrap.php`` under ``CMON_TOKEN`` variable or from 'dcps.apis' table.
+
 * **Clone Cluster** 
 	- See `Clone Cluster`_ section.
+    
+* **Create SSL Encryption**
+    - See `Enable SSL Encryption`_ section.
+
+* **Create SSL Galera Encryption**
+    - See `Enable SSL Galera Encryption`_ section.
 
 * **Find Most Advanced Node**
 	- Finds which is the most advanced node in the cluster. This is very useful to determine which node to be bootstrapped if the cluster doesn't have any primary component or when cluster automatic recovery is disabled.
-    
-* **Enable SSL Encryption**
-    - See `Enable SSL Encryption`_ section.
-
-* **Enable SSL Galera Encryption**
-    - See `Enable SSL Galera Encryption`_ section.
 
 * **Bootstrap Cluster**
 	- Launches the bootstrap cluster window. Similar to *ClusterControl > Actions > Bootstrap Cluster*. ClusterControl will stop all running nodes before bootstrapping the cluster from the selected Galera node.
-
-* **Stop Cluster**
-	- Stop all nodes in the cluster.
 
 * **Delete Cluster**
 	- This action will remove the corresponding cluster from ClusterControl supervision and will NOT uninstall the actual database cluster.
@@ -54,6 +51,9 @@ Galera Cluster
 * **Remove Node**
 	- Remove a managed node from the cluster.
 
+* **Stop Cluster**
+	- Stop all nodes in the cluster.
+
 MySQL Replication
 ''''''''''''''''''
 
@@ -64,7 +64,7 @@ MySQL Replication
 	- See `Add Load Balancer <manage.html#load-balancer>`_ section.
 
 * **Change RPC API Token**
-	- Serves as the auntentication string by ClusterControl UI to connect to CMON RPC interface. Each cluster has its own unique token.
+	- Serves as the authentication string by ClusterControl UI to connect to CMON RPC interface. Each cluster has its own unique token.
 
 * **Find Most Advanced Node**
     - Finds which is the most advanced node in the replication setup. This is very useful to determine which slaves has the most updated data before being promoted to a new master.
@@ -93,7 +93,7 @@ MySQL Standalone
 	- See `Add Load Balancer <manage.html#load-balancer>`_ section.
 
 * **Change RPC API Token**
-	- Serves as the auntentication string by ClusterControl UI to connect to CMON RPC interface. Each cluster has its own unique token.
+	- Serves as the authentication string by ClusterControl UI to connect to CMON RPC interface. Each cluster has its own unique token.
 
 * **Enable SSL Encryption**
     - See `Enable SSL Encryption`_ section.
@@ -113,7 +113,7 @@ MySQL Group Replication
 	- Deploys a replication slave attached to this cluster. Choose one of the Group Replication node to be a master. See `Add Replication Slave`_.
 
 * **Change RPC API Token**
-	- Serves as the auntentication string by ClusterControl UI to connect to CMON RPC interface. Each cluster has its own unique token.
+	- Serves as the authentication string by ClusterControl UI to connect to CMON RPC interface. Each cluster has its own unique token.
 
 * **Bootstrap Cluster**
 	- Launches the bootstrap cluster window. Similar to *ClusterControl > Actions > Bootstrap Cluster*. ClusterControl will stop all running nodes before bootstrapping the cluster from the selected Galera node.
@@ -142,7 +142,7 @@ MySQL Cluster
 	- See `Add Load Balancer <manage.html#load-balancer>`_ section.
 	
 * **Change RPC API Token**
-	- Serves as the auntentication string by ClusterControl UI to connect to CMON RPC interface. Each cluster has its own unique token.
+	- Serves as the authentication string by ClusterControl UI to connect to CMON RPC interface. Each cluster has its own unique token.
 
 * **Delete Cluster**
 	- This action will remove the corresponding cluster from ClusterControl supervision and will NOT uninstall the actual database cluster.
@@ -178,7 +178,7 @@ This is only available for Galera Cluster, MySQL Replication (adding slave) and 
 	- No - ClusterControl will not disabling any enabled firewall rules.
 
 * **Disable AppArmor/SELinux**
-	- Check the box to let ClusterControl disable AppArmor (Ubuntu) or SELinux (Redhat/CentOS) if enabled.
+	- Check the box to let ClusterControl disable AppArmor (Ubuntu) or SELinux (RedHat/CentOS) if enabled.
 
 * **Include in Loadbalancer set (if exist)**
 	- The node will be added into the load balancing set if you have HAProxy or MaxScale deployed with ClusterControl.
@@ -230,7 +230,7 @@ Or, you can also achieve the same thing manually by appending the following line
 For the slave, you would need a separate host or VM, with or without MySQL installed. If you do not have a MySQL installed, and choose ClusterControl to install the MySQL on the slave, ClusterControl will perform the necessary actions to prepare the slave, for example, configure root password (based on ``monitored_mysql_root_password``), create slave user, configure MySQL, start the server and also start the replication. The MySQL package used will be based on the Galera vendor used, for example, if you are running Percona XtraDB Cluster, ClusterControl will prepare the slave using Percona Server. Prior to the deployment, you must perform following actions:
 
 * The slave node must be accessible using passwordless SSH from the ClusterControl server
-* MySQL port (default 3306) and netcat port 9999 on the slave are open for connections.
+* MySQL port (default 3306) and :term:`netcat` port 9999 on the slave are open for connections.
 * You must configure the following options in the ClusterControl configuration file for the respective cluster ID under ``/etc/cmon.cnf`` or ``/etc/cmon.d/cmon_<cluster ID>.cnf``:
 
 .. code-block:: bash
@@ -249,7 +249,7 @@ The slave will be setup from a streamed XtraBackup from the master to the slave.
 	- Select a master server. Only Galera nodes that generate binary log are listed here.
 
 * **Slave Server**
-	- Specify the IP address or FQDN of the slave node. This node must be accesible from ClusterControl node via passwordless SSH beforehand.
+	- Specify the IP address or FQDN of the slave node. This node must be accessible from ClusterControl node via passwordless SSH beforehand.
 
 * **Netcat port**
 	- Choose a port to stream Xtrabackup. Default port is 9999. This port must be reachable by the selected Master Server.
@@ -268,7 +268,7 @@ The slave will be setup from a streamed XtraBackup from the master to the slave.
 	- Check the box to disable firewall (recommended).
 
 * **Disable SELinux/AppArmor**
-	- Check the box to let ClusterControl disable AppArmor (Ubuntu) or SELinux (Redhat/CentOS) if enabled (recommended).
+	- Check the box to let ClusterControl disable AppArmor (Ubuntu) or SELinux (RedHat/CentOS) if enabled (recommended).
 
 .. Note:: Existing MySQL server packages will be uninstalled.
 
@@ -308,7 +308,7 @@ A clone will be created of this cluster. The following procedure applies:
 	- Check the box to disable firewall on cloned nodes (recommended).
 
 * **Disable SELinux/AppArmor on Cloned Nodes?**
-	- Check the box to let ClusterControl disable AppArmor (Ubuntu) or SELinux (Redhat/CentOS) on cloned nodes.
+	- Check the box to let ClusterControl disable AppArmor (Ubuntu) or SELinux (RedHat/CentOS) on cloned nodes.
 
 * **DB Node (1-9)**
 	- The database node IP address or hostname. The enable fields is depending on the Cloned Cluster Size.
@@ -471,14 +471,15 @@ Galera Nodes Grid
 		- Non-Primary
 		- Disconnected
 
-* **WSREP Cluster Size**
+* **WSREP Cluster Size/Ready**
 	- Current number of nodes in the cluster. See `wsrep_cluster_size <http://galeracluster.com/documentation-webpages/galerastatusvariables.html#wsrep-cluster-size>`_.
+	- This Ready variable shows whether the node is ready to accept queries. If status is OFF almost all the queries will fail with ``ERROR 1047 (08S01) Unknown Command`` error (unless wsrep_on variable is set to 0). See `wsrep_ready <http://galeracluster.com/documentation-webpages/galerastatusvariables.html#wsrep-ready>`_.
 
-* **WSREP Ready**
-	- This variable shows whether the node is ready to accept queries. If status is OFF almost all the queries will fail with ``ERROR 1047 (08S01) Unknown Command`` error (unless wsrep_on variable is set to 0). See `wsrep_ready <http://galeracluster.com/documentation-webpages/galerastatusvariables.html#wsrep-ready>`_.
+* **Local Send Queue (now/avg)**
+	- Current and average length of the local send queue since the last status query. When the cluster experiences network throughput issues or replication throttling this value will be greater than 0. See `wsrep_local_send_queue_avg <http://galeracluster.com/documentation-webpages/galerastatusvariables.html#wsrep-local-send-queue-avg>`_ and `wsrep_local_recv_queue_avg <http://galeracluster.com/documentation-webpages/galerastatusvariables.html#wsrep-local-recv-queue-avg>`_.
 
-* **Local Queue (Send/Receive)**
-	- Average length of the send/receive queue since the last status query. When the cluster experiences network throughput issues or replication throttling this value will be greater than 0. See `wsrep_local_send_queue_avg <http://galeracluster.com/documentation-webpages/galerastatusvariables.html#wsrep-local-send-queue-avg>`_ and `wsrep_local_recv_queue_avg <http://galeracluster.com/documentation-webpages/galerastatusvariables.html#wsrep-local-recv-queue-avg>`_.
+* **Local Receive Queue (now/avg)**
+	- Current and average length of the local receive queue since the last status query. When the cluster experiences network throughput issues or replication throttling this value will be greater than 0. See `wsrep_local_send_queue_avg <http://galeracluster.com/documentation-webpages/galerastatusvariables.html#wsrep-local-send-queue-avg>`_ and `wsrep_local_recv_queue_avg <http://galeracluster.com/documentation-webpages/galerastatusvariables.html#wsrep-local-recv-queue-avg>`_.
 
 * **Flow Control Paused/Sent**
 	- Time since the last status query that replication was paused due to flow control. See `wsrep_flow_control_paused <http://galeracluster.com/documentation-webpages/galerastatusvariables.html#wsrep-flow-control-paused>`_.
@@ -613,7 +614,7 @@ This grid appears if you configured MySQL node to produce binary log with a uniq
 * **Refresh**
 	- Fetch the latest update.
 
-MySQL single instance or replication
+MySQL Replication or Single Instance
 ''''''''''''''''''''''''''''''''''''
 
 Standalone Nodes Grid
@@ -653,7 +654,7 @@ This grid appears if you configured MySQL node to produce binary log with a uniq
 	
 * **Status**
 	- The state of the SQL thread.
-	
+
 * **Executed Gtid Set**
 	- Shows the set of GTIDs for transactions that have been executed on the master.
 	
@@ -662,15 +663,15 @@ This grid appears if you configured MySQL node to produce binary log with a uniq
 
 * **Position**
 	- Current binary log position.
+	
+* **Executed Gtid Set**
+	- Shows the set of GTIDs for transactions that have been executed on the master.
 
-* **Binlog do db**
+* **Binlog_Do_Db**
 	- Value of ``binlog_do_db`` option.
 
-* **Binlog ignore db**
+* **Binlog_Ignore_Db**
 	- Value of ``binlog_ignore_db`` option.
-	
-* **Refresh**
-	- Fetch the latest update.
 
 Slave Nodes Grid
 ..................
@@ -681,13 +682,10 @@ This grid appears if you have slaves replicating from a master.
 	- The MySQL slave hostname or IP address.
 
 * **Read Only**
-	- Read-only status. Click on the button to change the state. It may take 10 seconds before the change is visible in the UI.
+	- Read-only status.
 
 * **Server ID**
 	- MySQL server ID.
-
-* **Role**
-	- Replication role. For slaves, it can be 'slave' or 'multi', where the slave also produces binary log.
 	
 * **Status**
 	- The state of the SQL thread. The value is identical to the State value of the SQL thread as displayed by ``SHOW SLAVE STATUS``.
@@ -712,9 +710,6 @@ This grid appears if you have slaves replicating from a master.
 
 * **Executed Gtid Set**
 	- Shows the set of GTIDs for transactions that have been executed on the master.
-
-* **Refresh**
-	- Fetch the latest update.
 
 MySQL Cluster
 ''''''''''''''

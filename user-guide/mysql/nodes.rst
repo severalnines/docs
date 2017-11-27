@@ -9,7 +9,7 @@ Provides detailed information for each node in the cluster. On the left hand col
 Nodes Monitoring
 ````````````````
 
-The node on the list will appear in red colour to indicate it is unhealthy. The tabs show performance and resource usage for a specific node. There are also database specific tabs depending on the type of database running on the host.
+The node on the list will appear in red color to indicate it is unhealthy. The tabs show performance and resource usage for a specific node. There are also database specific tabs depending on the type of database running on the host.
 
 Database node status indicator:
 
@@ -26,7 +26,7 @@ Controller Node
 '''''''''''''''
 
 * **Overview**
-	- Provides a summary of host information and statisic histogram including CPU, disk, network and memory usage.
+	- Provides a summary of host information and statistic histogram including CPU, disk, network and memory usage.
 
 * **Top**
 	- Provides a snapshot view of processes running on the host, similar to :term:`top` command in Linux.
@@ -35,7 +35,7 @@ Database Nodes
 '''''''''''''''
 
 * **Overview**
-	- Provides a summary of host information and statisic histogram including CPU, disk, network and memory usage.
+	- Provides a summary of host information and statistic histogram including CPU, disk, network and memory usage.
 
 * **Top**
 	- Provides a snapshot view of processes running on the host, similar to :term:`top` command in Linux.
@@ -52,13 +52,13 @@ Database Nodes
 * **DB Variables**
 	- MySQL global variables for this node, similar to ``SHOW GLOBAL VARIABLES`` command.
 	
-HAproxy Nodes
+HAProxy Nodes
 ''''''''''''''
 
-Provides detailed view of HAProxy stats, similar to HAProxy stats page. If HAproxy is deployed using ClusterControl, ClusterControl will automatically create HAProxy stats page on port 9600. You can access the page directly using the value of *Admin User* and *Admin Password* specified during the deployment at *ClusterControl > Manage > Load Balancer > Install HAProxy > Show Advanced Settings*.
+Provides detailed view of HAProxy stats, similar to HAProxy stats page. If HAProxy is deployed using ClusterControl, ClusterControl will automatically create HAProxy stats page on port 9600. You can access the page directly using the value of *Admin User* and *Admin Password* specified during the deployment at *ClusterControl > Manage > Load Balancer > Install HAProxy > Show Advanced Settings*.
 
 * **Stats URL**
-	- If you are using HAproxy 1.6 and newer, use another URL: :samp:`http://{HAproxy_host}:{HAproxy_admin_port}/haproxy?stats;csv/`
+	- If you are using HAProxy 1.6 and newer, use another URL: :samp:`http://{HAproxy_host}:{HAproxy_admin_port}/haproxy?stats;csv/`
 
 * **Update**
 	- Updates the HAProxy stats URL.
@@ -162,7 +162,7 @@ Initiates a system reboot of the selected host. Once initiated, ClusterControl w
 Restart Node
 '''''''''''''
 
-Restart the active monitored process of the selected host. For example, if the node's role is HAProxy, ClusterControl will restart HAproxy process.
+Restart the active monitored process of the selected host. For example, if the node's role is HAProxy, ClusterControl will restart HAProxy process.
 
 Remove Node
 ''''''''''''
@@ -230,7 +230,7 @@ MySQL Group Replication
 	- Initiates a system reboot on this host.
 
 * **Rebuild Node**
-	- Rebuilds the node by streaming backup from a master node using Percona Xtrabackup. ClusterControl will automatically start the Group Replication once the rebuild job succeded.
+	- Rebuilds the node by streaming backup from a master node using Percona Xtrabackup. ClusterControl will automatically start the Group Replication once the rebuild job succeed.
 	
 .. caution:: 'Rebuild Node' will wipe out the node's MySQL datadir.
 	
@@ -278,23 +278,21 @@ These are specific functions available for MySQL replication nodes:
   - Enable read-only by setting up ``SET GLOBAL read_only = ON``. This option is only available if read-only is off.
 
 * **Change Replication Master**
-	- Only application for slave nodes. This option will tell ClusterControl to change the replication master to the other available master. All slaves will then be configured to replicate from the new master.
+	- Exclusive for slave nodes. This option will tell ClusterControl to change the replication master to the other available master. All slaves will then be configured to replicate from the new master.
 
 * **Rebuild Replication Slave**
-	- Rebuilds replication slave on this node from another master. It uses Percona Xtrabackup to stage the replication data. This option is only available if ClusterControl detects the node as slave.
+	- Exclusive for slave nodes. Rebuilds replication slave on this node from another master. It can use an existing backup (PITR compatible) or use Percona Xtrabackup to stage the replication data from a master.
 	
 .. caution:: 'Rebuilding Replication Slave' will wipe out the selected node's MySQL datadir.
 
 * **Start Slave**
-	- This option is only available if the slave is stopped. It starts the slave thread.
+	- Exclusive for slave node and only if the slave is stopped. It starts the slave thread.
 
 * **Stop Slave**
-	- Stops the slave IO and SQL threads.
+	- Exclusive for slave node and only if the slave is started. Stops the slave IO and SQL threads.
     
 * **Promote Slave**
-	- Promotes the selected slave to become the new master.
-		- If the master is currently functioning correctly, then stop application queries prior to promoting another slave to safe guard from data loss. Connections on the current running master will be killed after a 10 second grace period.
-		- This option is only available if ClusterControl detects the node as slave.
+	- Exclusive for slave node. Promotes the selected slave to become the new master. If the master is currently functioning correctly, then stop application queries prior to promoting another slave to safe guard from data loss. Connections on the current running master will be killed after a 10 second grace period.
 
 MySQL Standalone
 '''''''''''''''''

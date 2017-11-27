@@ -33,13 +33,13 @@ Operating system
 
 ClusterControl has been tested on the following operating systems:
 
-* Redhat/CentOS 6.x/7.x
+* RedHat/CentOS 6.x/7.x
 * Ubuntu 12.04/14.04/16.04 LTS
 * Debian 7.x/8.x
 
 The following do not work:
 
-* Centos 5.4 and earlier
+* CentOS 5.4 and earlier
 * Fedora Core 16 and earlier
 
 Software Dependencies
@@ -71,7 +71,7 @@ We highly recommend user to use the following web browsers when accessing Cluste
 	- Google Chrome
 	- Mozilla Firefox
 	
-Ensure to keep up-to-date of these browsers as we are very likely taking advatange of the new features available in the latest version.
+Ensure to keep up-to-date of these browsers as we are very likely taking advantage of the new features available in the latest version.
 
 .. Note:: ClusterControl is built and tested only on the mentioned web browsers. Some major web browsers like Safari, Opera and Internet Explorer could also work.
 
@@ -120,7 +120,7 @@ ClusterControl requires ports used by the following services to be opened/enable
 * CMON RPC TLS (default is 9501)
 * CMON Events (default is 9510)
 * CMON SSH (default is 9511)
-* Streaming port for mysqldump through netcat (default is 9999)
+* Streaming port for backups through netcat (default is 9999)
 
 ClusterControl supports various database and application vendors and each has its own set of standard ports that need to be reachable. Following ports and services need to be reachable by ClusterControl on the managed database nodes:
 
@@ -137,7 +137,7 @@ ClusterControl supports various database and application vendors and each has it
 |                                                 | * 4444 (SST)                           |
 |                                                 | * 4567 TCP/UDP (Galera)                |
 |                                                 | * 4568 (Galera IST)                    |
-|                                                 | * 9200 (HAproxy health check)          |
+|                                                 | * 9200 (HAProxy health check)          |
 +-------------------------------------------------+----------------------------------------+
 | MySQL Cluster (NDB)                             | * 22 (SSH)                             |
 |                                                 | * ICMP (echo reply/request)            |
@@ -159,9 +159,9 @@ ClusterControl supports various database and application vendors and each has it
 |                                                 | * ICMP (echo reply/request)            |
 |                                                 | * 5432 (postgres)                      |
 +-------------------------------------------------+----------------------------------------+
-| HAproxy                                         | * 22 (SSH)                             |
+| HAProxy                                         | * 22 (SSH)                             |
 |                                                 | * ICMP (echo reply/request)            |
-|                                                 | * 9600 (HAproxy stats)                 |
+|                                                 | * 9600 (HAProxy stats)                 |
 |                                                 | * 3307 (MySQL load-balanced)           |
 |                                                 | * 3308 (MySQL load-balanced read-only) |
 +-------------------------------------------------+----------------------------------------+
@@ -256,9 +256,9 @@ Setting up passwordless SSH
 
 To setup a passwordless SSH, make sure you generate a SSH key and copy it from the ClusterControl host as the designated user to the target host. Take note that ClusterControl also requires passwordless SSH to itself, so do not forget to set this up as described in the example below. 
 
-Most of the sampling tasks for controller are done locally but there are some tasks that require a working self-passwordless SSH e.g: starting netcat when performing backup (to stream created backup to the other node). There are also various places where ClusterControl performs the execution "uniformly" regardless of the node's role or type. So, setting this up is required and failing to do so will result ClusterControl to raise an alarm.
+Most of the sampling tasks for controller are done locally but there are some tasks that require a working self-passwordless SSH e.g: starting :term:`netcat` when performing backup (to stream created backup to the other node). There are also various places where ClusterControl performs the execution "uniformly" regardless of the node's role or type. So, setting this up is required and failing to do so will result ClusterControl to raise an alarm.
 
-.. Note:: It is *NOT* neccessary to setup two-way passwordless SSH, e.g: from the managed database node to the ClusterControl.
+.. Note:: It is *NOT* necessary to setup two-way passwordless SSH, e.g: from the managed database node to the ClusterControl.
 
 Examples below show how a root user on the ClusterControl host generates and copies a SSH key to a database host, 192.168.0.10:
 
@@ -365,4 +365,4 @@ License
 
 ClusterControl comes in 4 versions - Community, Standalone, Advanced and Enterprise editions, within the same binary. Please review the `ClusterControl product page <http://www.severalnines.com/pricing>`_ for features comparison between these editions. To upgrade from Community to Standalone, Advanced or Enterprise, you would need a valid software license. When the license expires, ClusterControl defaults back to the Community Edition.
 
-All installation methods automatically configures ClusterControl with a 30-days fully functional trial license. For commercial information, please `contact us <http://www.severalnines.com/contact>`_.
+All installation methods automatically configures ClusterControl with a 30-day fully functional trial license. For commercial information, please `contact us <http://www.severalnines.com/contact>`_.

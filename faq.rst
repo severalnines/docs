@@ -9,7 +9,9 @@ General
 Is ClusterControl free?
 +++++++++++++++++++++++
 
-ClusterControl has a Community Edition that is free forever, available features include deployment and monitoring of clusters/servers. Please see the `ClusterControl product page <http://www.severalnines.com/pricing>`_ for details on features.
+ClusterControl has a Community Edition that is free forever, available features include deployment and monitoring of clusters/servers. Please see the `ClusterControl product page <http://www.severalnines.com/pricing>`_ for details on features. 
+
+After installation, you will get a 30-day free trial license (no credit card or signing required) with all enterprise features enabled. After the trial license expires, it will default back to community edition.
 
 Is there a live demo site where I can try out ClusterControl?
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -23,7 +25,7 @@ Can I purchase the license for the first year only?
 
 Subscriptions are annual, and include software license, all updates and technical support. At the end of the subscription period, you can choose to renew the subscription or continue with the Community Edition. When the license expires, ClusterControl defaults to the Community Edition. 
 
-My 30-days demo license has expired but I haven't had enough time to test ClusterControl. Can I request for extension?
+My 30-day demo license has expired but I haven't had enough time to test ClusterControl. Can I request for extension?
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 Of course. Please use our contact us page or email directly to sales[at]severalnines.com 
@@ -96,7 +98,7 @@ Since they all leverage the same Galera library, replication performance should 
 I found a bug. Where should I report it?
 ++++++++++++++++++++++++++++++++++++++++
 
-Please report the bug by `submiting a support request <http://support.severalnines.com/hc/en-us/requests/new>`_. For Enterprise customers, bugfixes are provided soonest possible.
+Please report the bug by `submiting a support request <http://support.severalnines.com/hc/en-us/requests/new>`_. For Enterprise customers, bug fixes are provided soonest possible.
 
 My cluster is down. What should I do?
 +++++++++++++++++++++++++++++++++++++
