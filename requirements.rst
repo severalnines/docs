@@ -217,6 +217,7 @@ You are recommended to install ClusterControl as 'root', and running as root is 
 * The OS user must not be 'mysql'
 * 'sudo' program must be installed on all hosts
 * The OS user must be allowed to do 'sudo', i.e, it must be in sudoers
+* The OS user must be configured with proper PATH environment variable. The following PATH are expected for user ``myuser``: ``PATH=/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/myuser/.local/bin:/home/myuser/bin``
 
 For sudoers, using passwordless sudo is recommended. To setup a passwordless sudo user, add following line into ``/etc/sudoers``:
 
