@@ -8,6 +8,31 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.5.0
 -----------------
 
+Maintenance Release: Dec 4th, 2017
+````````````````````````````````````
+
+* Build:
+	- clustercontrol-controller-1.5.0-2249
+
+* Controller:
+	- Monitoring: Revert to show more samples in Overview Graph
+	- Make cmon stop faster when it couldn't connect to CmonDb
+	- Error reporting: minor enhancements
+	- NDB: Fix some issues around executable name handling
+	- PostgreSQL ``pg_basebackup`` issue bugfixed
+	- A bug fix fixing empty log file name handling (avoids annoying messages in the cmon log) 
+	- Able to handle special chars in database names (mysql dir name decoding)
+	- Backup/mysqldump: skip dynamic tables from mysql DB: ``innodb_index_stats``,``innodb_table_stats``
+	- Fix to always send out operational reports by email.
+
+Maintenance Release: Nov 17th, 2017
+````````````````````````````````````
+* Build:
+	- clustercontrol-controller-1.5.0-2230
+
+* Deployment:
+	- A fix to upgrade openssl if deemed necessary.
+
 Initial Release: Nov 13th, 2017
 ````````````````````````````````
 
