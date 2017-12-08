@@ -1060,35 +1060,37 @@ You will then be redirected to the ClusterControl landing page and the installat
 Offline Installation
 --------------------
 
-The installer script (install-cc) also supports offline installations by specifying ``NO_INET=1`` as an environment variable. Note that the following ClusterControl features will not work without Internet connection:
+ClusterControl provides a helper script to install and configure ClusterControl packages in an Internetless environment, available at ``/var/www/clustercontrol/app/tools/setup-cc.sh``.
 
-* `Backup > Online Storage` - requires connection to AWS.
-* `Service Providers > AWS Instances` - requires connection to AWS.
-* `Service Providers > AWS VPC` - requires connection to AWS.
-* `Manage > Load Balancer` - requires connection to EPEL & MariaDB repository/HAProxy download site.
+Take note that the following ClusterControl features will not work without Internet connection:
+
+* `Backup > Create/Schedule Backup > Upload to Cloud` - requires connection to cloud providers.
+* `Integrations > Cloud Providers` - requires connection to cloud providers.
+* `Manage > Load Balancer` - requires connection to EPEL, ProxySQL, HAProxy, MariaDB repository.
 * `Manage > Upgrades` - requires connection to provider's repository.
+* `Deploy Database Cluster` - requires connection to database provider's repository.
 
 Prior to the offline install, make sure you meet the following requirements for the ClusterControl node:
 
-* Ensure the offline repository is ready. We assume that you already configured an offline repository for this guide. Details on how to setup offline repository is explained on the next section.
-* Firewall, SElinux or AppArmor must be turned off. You can turn on the firewall once the installation has completed. Make sure to allow ports as defined on this page.
-* MySQL server must be installed on the ClusterControl host.
-* ClusterControl packages for the selected version must exist under ``s9s_tmp`` directory from the script’s execution path.
+* Ensure the offline repository is ready. We assume that you already configured an offline repository. Details on how to setup offline repository is explained in the `Setting up Offline Repository`_ section.
+* Firewall, SELinux or AppArmor must be turned off. You can turn on the firewall once the installation has completed. Make sure to allow ports as defined on `this page <requirements.html#firewall-and-security-groups>`_.
+* MySQL server must be installed and running on the ClusterControl host.
 
 Setting up Offline Repository
 `````````````````````````````
 
-The installer script requires an offline repository so it can automate the dependencies installation process. In this documentation, we provide steps to configure offline repository on RedHat/CentOS 6 and Debian 7. 
+The installer script requires an offline repository to satisfy the dependencies. In this documentation, we provide steps to configure offline repository on CentOS 7, Debian 7 and Ubuntu 16.04 LTS. 
 
-RedHat/CentOS 6
-'''''''''''''''
+CentOS 7
+'''''''''
 
-1. Insert the DVD installation disc into the DVD drive.
+1. Insert the CentOS 7 installation disc into the DVD drive.
 
 2. Mount the DVD installation disc into the default media location at ``/media/CentOS``:
 
 .. code-block:: bash
 
+	$ mkdir /media/CentOS
 	$ mount /dev/cdrom /media/CentOS
 
 3. Disable the default repository by adding ``enabled=0`` to "base", "updates" and "extras" directives. You should have something like this inside ``/etc/yum.repos.d/CentOS-Base.repo``:
@@ -1163,7 +1165,7 @@ Debian 7
 	$ mount debian-7.6.0-amd64-DVD-2.iso /mnt/debian-dvd2
 	$ mount debian-7.6.0-amd64-DVD-3.iso /mnt/debian-dvd3
 
-3. Add the following lines into /etc/apt/sources.list and comment other lines:
+3. Add the following lines into /etc/apt/sources.list and comment the other lines:
 
 .. code-block:: bash
 
@@ -1179,19 +1181,45 @@ Debian 7
 
 Make sure the last step does not produce any error.
 
-Pre-installation
-````````````````
+Ubuntu 16.04
+'''''''''''''
+
+1. Insert Ubuntu 16.04 installation disc into the DVD drive.
+
+2. Mount the disk as ``/media/cdrom``:
+
+.. code-block:: bash
+
+	$ sudo mkdir /media/cdrom
+	$ sudo mount /dev/cdrom /media/cdrom/
+
+3. Uncomment the following line (the first line) inside ``/etc/apt/sources.list`` and comment the other lines: 
+
+.. code-block:: bash
+
+	deb cdrom:[Ubuntu-Server 16.04.2 LTS _Xenial Xerus_ - Release amd64 (20170215.8)]/ xenial main restricted
+
+4. Retrieve the new list of packages:
+
+.. code-block:: bash
+
+	$ sudo apt-get update
+
+Make sure the last step does not produce any error.
+
+Offline Installation
+``````````````````````
 
 RedHat/CentOS
 '''''''''''''
 
-1. The offline installation script will need a running MySQL server on the host. Install MySQL server and client, enable it starts on boot and start the service:
+1. The offline installation script will need a running MySQL server on the host. Install MySQL server and client, enable it to start on boot and start the service:
 
 .. code-block:: bash
 
-	$ yum install -y mysql mysql-server
-	$ chkconfig mysqld on
-	$ service mysqld start
+	$ yum install -y mariadb mariadb-server
+	$ systemctl enable mariadb
+	$ systemctl start mariadb
 
 2. Configure MySQL root password for the newly installed MySQL server:
 
@@ -1199,7 +1227,7 @@ RedHat/CentOS
 
 	$ mysqladmin -uroot password yourR00tP4ssw0rd
 
-3. Create the staging directory called ``s9s_tmp`` and download/upload the latest version of clustercontrol RPM packages from the `Severalnines download page <http://www.severalnines.com/downloads/cmon/>`_:
+3. Create the staging directory called ``s9s_tmp`` and download/upload the latest version of ClusterControl RPM packages from the `Severalnines download page <http://www.severalnines.com/downloads/cmon/>`_:
 
 .. code-block:: bash
 
@@ -1207,40 +1235,51 @@ RedHat/CentOS
 	$ cd ~/s9s_tmp
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-1.5.0-4088-x86_64.rpm
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.5.0-290-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.5.0-2230-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.5.0-2249-x86_64.rpm
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications-1.5.0-67-x86_64.rpm
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh-1.5.0-37-x86_64.rpm
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud-1.5.0-31-x86_64.rpm
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud-1.5.0-31-x86_64.rpm
 
-.. Attention:: In this example, we downloaded the package directly to simplify the package preparation step. If the ClusterControl server does not have internet connections, you should upload the packages manually to the mentioned staging path.
+.. Attention:: In this example, we downloaded the package directly to simplify the package preparation step. If the ClusterControl server does not have Internet connections, you should upload the packages manually to the mentioned staging path.
 
-4. Download and prepare the installation script with correct permission:
+4. Perform the package installation manually:
 
 .. code-block:: bash
 
-	$ cd ~
-	$ wget http://www.severalnines.com/downloads/cmon/install-cc.sh
-	$ chmod 755 install-cc.sh
+	$ yum localinstall clustercontrol-*
+
+
+5. Execute the post-installation script to configure ClusterControl components and follow the installation wizard accordingly:
+
+.. code-block:: bash
+
+	$ /var/www/html/clustercontrol/app/tools/setup-cc.sh
+
+6. Open the browser and navigate to :samp:`https://{ClusterControl_host}/clustercontrol`. Setup the super admin account by specifying a valid email address and password on the welcome page.
+
+.. Note:: You would see this error: "Sorry we are not able to retrieve your license information. Please register your license under Settings - Subscription". This is expected because the demo license is automatically retrieved from our license server automatically via Internet. Please contact our Sales or Support team for a free 30-day demo license.
+
 
 Debian/Ubuntu
 '''''''''''''
 
-1. Install MySQL on the host:
+1. Install MySQL on the host and enable it on boot:
 
 .. code-block:: bash
 
 	$ sudo apt-get install -y --force-yes mysql-client mysql-server
+	$ sudo systemctl enable mysql
 
-2. Create the staging directory called ``s9s_tmp`` and download the latest version of clustercontrol DEB packages from `Severalnines download page <http://www.severalnines.com/downloads/cmon/>`_:
+2. Create the staging directory called ``s9s_tmp`` and download the latest version of ClusterControl DEB packages from `Severalnines download page <http://www.severalnines.com/downloads/cmon/>`_:
 
 .. code-block:: bash
 
 	$ mkdir ~/s9s_tmp
 	$ cd ~/s9s_tmp
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol_1.5.0-4088_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol_1.5.0-4171_x86_64.deb
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.5.0-290_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.5.0-2230-x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.5.0-2249-x86_64.deb
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications_1.5.0-67_x86_64.deb
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh_1.5.0-37_x86_64.deb
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud_1.5.0-31_x86_64.deb
@@ -1248,42 +1287,27 @@ Debian/Ubuntu
 
 .. Attention:: In this example, we downloaded the package directly to simplify the package preparation step. If the ClusterControl server does not have internet connections, you should upload the packages manually to the mentioned staging path.
 
-3. Download and prepare the installation script with correct permission:
+3. Perform the package installation and ClusterControl dependencies manually:
 
 .. code-block:: bash
 
-	$ cd ~
-	$ wget http://www.severalnines.com/downloads/cmon/install-cc.sh
-	$ sudo chmod 755 install-cc.sh
+	$ sudo apt-get -f install ntp gnuplot
+	$ sudo dpkg -i clustercontrol-*.deb
 
-Installing ClusterControl
-`````````````````````````
-
-1. Define ``NO_INET`` variable to 1 to tell the installation script to perform an offline installation and execute the installation script:
+4. Execute the post-installation script to configure ClusterControl components and follow the installation wizard accordingly:
 
 .. code-block:: bash
-	
-	=> Detected NO_INET is set, i.e., NO INTERNET enabled install.
-	=> Have mirrored repos or make sure you have an existing MySQL and Apache Server installed and running on this host!
-	=> Download these ClusterControl packages before continuing:
-	
-	=> cd s9s_tmp
-	=> wget http://severalnines.com/downloads/cmon/clustercontrol-1.2.10-418_x86_64.rpm
-	=> wget http://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.2.10-61_x86_64.rpm
-	=> wget http://severalnines.com/downloads/cmon/clustercontrol-controller-1.2.10-755-x86_64.rpm
-	=> yum -y localinstall clustercontrol-1.2.10-418_x86_64.rpm clustercontrol-cmonapi-1.2.10-61_x86_64.rpm clustercontrol-controller-1.2.10-755-x86_64.rpm
-	
-	=> Run the post install script after installing the packages
-	=> /var/www/html/clustercontrol/app/tools/setup-cc.sh
 
-Follow the installation wizard.
+	$ sudo /var/www/clustercontrol/app/tools/setup-cc.sh
 
-2. Open the browser and navigate to :samp:`https://{ClusterControl_host}/clustercontrol`. Setup the super admin account by specifying a valid email address and password on the welcome page.
+5. Open the browser and navigate to :samp:`https://{ClusterControl_host}/clustercontrol`. Setup the super admin account by specifying a valid email address and password on the welcome page.
+
+.. Note:: You would see this error: "Sorry we are not able to retrieve your license information. Please register your license under Settings - Subscription". This is expected because ClusterControl was trying to pull and configure a demo license from the license server via Internet. Please contact our Sales or Support team for a free 30-day demo license.
 
 Post-installation
 `````````````````
 
-Once ClusterControl is up and running, you can point it to your existing clusters or new database hosts and start managing them from one place. Make sure passwordless SSH is configured from ClusterControl node to your database nodes.
+Once ClusterControl is up and running, you can import your existing cluster or deploy a new database cluster and start managing them from one place. Make sure passwordless SSH is configured from ClusterControl node to your database nodes.
 
 1. Generate a SSH key on ClusterControl node:
 

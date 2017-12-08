@@ -120,6 +120,7 @@ ClusterControl requires ports used by the following services to be opened/enable
 * CMON RPC TLS (default is 9501)
 * CMON Events (default is 9510)
 * CMON SSH (default is 9511)
+* CMON Cloud (default is 9518)
 * Streaming port for backups through netcat (default is 9999)
 
 ClusterControl supports various database and application vendors and each has its own set of standard ports that need to be reachable. Following ports and services need to be reachable by ClusterControl on the managed database nodes:
