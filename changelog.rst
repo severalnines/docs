@@ -8,6 +8,24 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.5.0
 -----------------
 
+Maintenance Release: Dec 12th, 2017
+````````````````````````````````````
+
+* Build:
+	- clustercontrol-controller-1.5.0-2273
+
+* Controller:
+	- Backups: E-mails from hourly scheduled backups were not set sent.
+	- Restore External Backups: Fixed a bug where the command was wrongly quoted.
+	- MySQL Replication: Improved logging during apply relay log phase and improved logic.
+	- MySQL Replication: A network outage on the master, could lead to the master wrongly join back again when the network became operational again.
+	- Postgres: API changes to support version 10.x.
+	- Postgres: Fixed a deployment problem of version 10.x on CentOS/RedHat.
+	- Postgres: ``pg_basebackup`` fix for version 10.x.
+	- NDB/MySQL Cluster: Respect job datadir parameters when deploying NDB cluster (for ndbd and ndb_mgmd nodes).
+	- MongoDb: Ops Monitor, Running Operations showed blank page due to a bug in a JS script.
+	- Developer Studio: Better error messages for the ``host::system(..)`` call.
+
 Maintenance Release: Dec 11th, 2017
 ````````````````````````````````````
 
