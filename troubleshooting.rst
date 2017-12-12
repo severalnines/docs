@@ -196,23 +196,24 @@ If you would like to run cmon as foreground process, you can do that by invoking
 	$ service cmon stop
 	$ CMON_DEBUG=1 cmon -d
 
-CMON will enable LOG_DEBUG messages and print detailed information on the screen (stdout) as well as ``/var/log/cmon.log`` or ``/var/log/cmon_[cluster ID].log``. Press ``Ctrl + C`` to terminate the process. In certain cases, the CMON  output might be needed to get insight on the problem.
+CMON will enable LOG_DEBUG messages and print detailed information on the screen (stdout) as well as ``/var/log/cmon.log`` or ``/var/log/cmon_{cluster ID}.log``. Press ``Ctrl + C`` to terminate the process. In certain cases, the CMON  output might be needed to get insight on the problem.
 
 Debugging ClusterControl UI
 '''''''''''''''''''''''''''
 
-To enable ClusterControl UI debug, SSH into the ClusterControl node and adjust following values inside ``[wwwroot]l/clustercontrol/app/Config/core.php``:
+To enable ClusterControl UI debug, SSH into the ClusterControl node and adjust following values inside ``{wwwroot}l/clustercontrol/app/Config/core.php``:
 
 .. code-block:: php
 
 	Configure::write('debug', 0);
 
 Where,
-- 0: Production mode. All errors and warnings are suppressed.
-- 1: Errors and warnings shown, model caches refreshed, flash messages halted.
-- 2: As in 1, but also with full debug messages and SQL output.
 
-Make sure ``[wwwroot]/clustercontrol/app/tmp`` has write permission and is owned by Apache user for the debug and error log to be generated.
+* 0: Production mode. All errors and warnings are suppressed.
+* 1: Errors and warnings shown, model caches refreshed, flash messages halted.
+* 2: As in 1, but also with full debug messages and SQL output.
+
+Make sure ``{wwwroot}/clustercontrol/app/tmp`` has write permission and is owned by Apache user for the debug and error log to be generated.
 
 Common Issues
 -------------
