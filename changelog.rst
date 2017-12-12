@@ -8,6 +8,20 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.5.0
 -----------------
 
+Maintenance Release: Dec 11th, 2017
+````````````````````````````````````
+
+* Build:
+	- clustercontrol-1.5.0-4183
+
+* UI:
+	- Fix license check does not work correctly with WebSSH.
+	- Fix Can't rebuild PostgreSQL slave - no masters to pick from.
+	- Clarify how external backup works and remove unsupported options.
+	- Add ';' as acceptable character for root password when importing existing cluster.
+	- Fix issues with an empty *Performance > DB Variables* page for certain setups. 
+
+
 Maintenance Release: Dec 4th, 2017
 ````````````````````````````````````
 
