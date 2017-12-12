@@ -240,10 +240,12 @@ Deploys a new MySQL Galera Cluster. The database cluster will be automatically a
 	- Starts the Galera Cluster deployment.
 
 
-MySQL/NDB Cluster
-``````````````````
+MySQL Cluster (NDB)
+````````````````````
 
-Deploys a new MySQL Cluster (NDB) by Oracle. The cluster should consist of management nodes, MySQL API nodes and data nodes. The database cluster will be automatically added into ClusterControl once deployed. Minimum of 4 nodes (2 API/mgmd + 2 data nodes) is recommended.
+Deploys a new MySQL Cluster (NDB) by Oracle. The cluster should consist of management nodes, MySQL API nodes and data nodes. The database cluster will be automatically added into ClusterControl once deployed. Minimum of 4 nodes (2 SQL/mgmd + 2 data nodes) is recommended. 
+
+.. Attention:: Every data node must have at least 1.5 GB of RAM for the deployment to succeed.
 
 1) General & SSH Settings
 '''''''''''''''''''''''''
@@ -299,7 +301,7 @@ Deploys a new MySQL Cluster (NDB) by Oracle. The cluster should consist of manag
 	- MySQL Cluster data directory for NDB. Default is ``/var/lib/mysql-cluster``.
 
 * **Add Nodes**
-	- Specify the IP address or hostname of the MySQL Cluster data node. It's recommended to have data nodes in pair. You can add up to 14 data nodes to your cluster.
+	- Specify the IP address or hostname of the MySQL Cluster data node. It's recommended to have data nodes in pair. You can add up to 14 data nodes to your cluster. Every data node must have at least 1.5GB of RAM.
 
 4) Define MySQL Servers
 '''''''''''''''''''''''
@@ -394,7 +396,7 @@ MongoDB ReplicaSet
 
 Deploys a new MongoDB Replica Set. The database cluster will be automatically added into ClusterControl once deployed. Minimum of three nodes (including mongo arbiter) is recommended.
 
-.. Warning:: It is possible to deploy only 2 MongoDB nodes (without arbiter) although it is highly not recommended. The caveat of this approach is no automatic failover. If the primary node goes down then manual failover is required to make the other server as primary. Automatic failover works fine with 3 nodes and more.
+.. Attention:: It is possible to deploy only 2 MongoDB nodes (without arbiter) although it is highly not recommended. The caveat of this approach is no automatic failover. If the primary node goes down then manual failover is required to make the other server as primary. Automatic failover works fine with 3 nodes and more.
 
 1) General & SSH Settings
 ''''''''''''''''''''''''''
