@@ -275,11 +275,11 @@ RedHat/CentOS
 
 .. code-block:: bash
 
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-1.5.0-4088-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-1.5.0-4183-x86_64.rpm
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.5.0-290-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.5.0-2230-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.5.0-2279-x86_64.rpm
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications-1.5.0-67-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh-1.5.0-37-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh-1.5.0-39-x86_64.rpm
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud-1.5.0-31-x86_64.rpm
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud-1.5.0-31-x86_64.rpm
 
@@ -405,11 +405,11 @@ Debian/Ubuntu
 
 .. code-block:: bash
 
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol_1.5.0-4088_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol_1.5.0-4183_x86_64.deb
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.5.0-290_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.5.0-2230-x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.5.0-2279-x86_64.deb
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications_1.5.0-67_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh_1.5.0-37_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh_1.5.0-39_x86_64.deb
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud_1.5.0-31_x86_64.deb
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud_1.5.0-31_x86_64.deb
 
@@ -470,7 +470,7 @@ Now, we can safely perform the package upgrade as described in the next steps.
 
 .. code-block:: bash
 
-	$ dpkg -i clustercontrol_1.5.0-4088_x86_64.deb clustercontrol-cmonapi_1.5.0-290_x86_64.deb clustercontrol-controller-1.5.0-2230-x86_64.deb clustercontrol-notifications_1.5.0-67_x86_64.deb clustercontrol-ssh_1.5.0-37_x86_64.deb clustercontrol-cloud_1.5.0-31_x86_64.deb clustercontrol-clud_1.5.0-31_x86_64.deb
+	$ dpkg -i clustercontrol_1.5.0-4183_x86_64.deb clustercontrol-cmonapi_1.5.0-290_x86_64.deb clustercontrol-controller-1.5.0-2279-x86_64.deb clustercontrol-notifications_1.5.0-67_x86_64.deb clustercontrol-ssh_1.5.0-39_x86_64.deb clustercontrol-cloud_1.5.0-31_x86_64.deb clustercontrol-clud_1.5.0-31_x86_64.deb
 
 4) Upgrade the CMON database for ClusterControl controller. When performing an upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.8 to version 1.5, apply all SQL modification files between those versions in sequential order:
 
