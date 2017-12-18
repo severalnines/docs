@@ -1152,14 +1152,7 @@ SSH into the controller and then let us create a user called 'dba' that is allow
 
 .. code-block:: bash
 
-	$ s9s user --create --generate-key --controller="https://localhost:9501" --cmon-user=dba
-	Grant user 'dba' succeeded.
-
-If you built from source, the command would be:
-
-.. code-block:: bash
-
-	$ s9s user --create --generate-key --controller="https://localhost:9501" dba
+	$ s9s user --create --generate-key --controller="https://localhost:9501" --group=admins dba
 	Grant user 'dba' succeeded.
 
 If this is the first time you use the s9s client, then a new directory has been created in ``$HOME/.s9s/`` storing the private/public key and a configuration file.
@@ -1306,7 +1299,7 @@ Copy the SSH public key to the ClusterControl Controller host, for example 10.0.
 
 .. code-block:: bash
 
-	$ s9s user --generate-key --create --cmon-user=remote_dba --controller="https://10.0.1.12:9501"
+	$ s9s user --generate-key --create --group=admins --controller="https://10.0.1.12:9501" remote_dba
 	Warning: Permanently added '10.0.1.12' (ECDSA) to the list of known hosts.
 	Connection to 10.0.1.12 closed.
 	Grant user 'remote_dba' succeeded.
