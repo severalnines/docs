@@ -5,6 +5,51 @@ Change Logs
 
 This change logs list details about updates in each version of ClusterControl.
 
+Changes in v1.5.1
+-----------------
+
+Initial Release: Dec 22nd, 2017
+````````````````````````````````
+
+* Build:
+	- clustercontrol-1.5.1-4265
+	- clustercontrol-controller-1.5.1-2299
+	- clustercontrol-cmonapi-1.5.0-290
+	- clustercontrol-notifications-1.5.0-70
+	- clustercontrol-ssh-1.5.0-39
+	- clustercontrol-cloud-1.5.0-31
+	- clustercontrol-clud-1.5.0-31
+
+In this release we have added support to optionally use our built-in AES-256 encryption for your backups. Secure your backups for offsite or cloud storage with a flip of a checkbox.
+
+We have also added an option to use a custom retention period per backup schedule.
+
+There is a new Topology view (BETA) initially with MySQL based clusters to show a replication topology (incl. any load balancers) for your cluster. Use drag and drop to perform node actions, for example drag a replication slave on top of a master node which will prompt you to either rebuild the slave or change the replication master.
+
+A new left side navigation bar provides faster page access to some of our features and the node actions are now also accessible directly from the node list.
+
+**Feature Details**
+
+* AES-256 Backup Encryption (and Restore):
+	- Supported backup methods:
+		- mysqldump, xtrabackup (MySQL).
+		- pg_dump, pg_basebackup (PostgreSQL).
+		- mongodump (MongoDB).
+
+* Topology View (BETA):
+	- MySQL Replication Topology.
+	- MySQL Galera Topology.
+
+* MongoDB
+	- Support for MongoDB v3.4.
+	- Fix to add back restore from backup.
+	- Multiple NICs support. Management/public IPs for monitoring connections and data/private IPs for replication traffic.
+
+* Misc:
+	- Left side navigation.
+	- Global settings breakout.
+	- Quick node actions.
+
 Changes in v1.5.0
 -----------------
 
