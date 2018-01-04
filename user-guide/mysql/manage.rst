@@ -55,7 +55,7 @@ All services configured by ClusterControl use a base configuration template avai
 Filename                 Description
 ======================== ===========
 config.ini.mc            MySQL Cluster configuration file (config.ini)
-garbd.cnf                Galera arbitrater daemon (garbd) configuration file.
+garbd.cnf                Galera arbitrator daemon (garbd) configuration file.
 haproxy.cfg              HAProxy configuration template for Galera Cluster.
 haproxy_rw_split.cfg     HAProxy configuration template for read-write splitting.
 keepalived-1.2.7.conf    Legacy keepalived configuration file (pre 1.2.7). This is deprecated.
@@ -319,13 +319,15 @@ Import HAProxy
 	- Select on which host to add the load balancer. If the host is not provisioned in ClusterControl (see `Hosts`_), type in the IP address. The required files will be installed on the new host. Note that ClusterControl will access the new host using passwordless SSH.
 
 * **cmdline**
-	- Specify the command line that ClusterControl should use to start the HAProxy service.
+	- Specify the command line that ClusterControl should use to start the HAProxy service. You can verify this by using ``ps -ef | grep haproxy`` and retrieve the full command how the HAProxy process started. Copy the full command line and paste it in the textfield.
 
 * **Port**
 	- Port to listen HAProxy admin/statistic page (if enable).
 	
 * **Admin User**
 	- Admin username to access HAProxy statistic page. See `stats auth <http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#4-stats%20auth>`_.
+
+.. Note:: You need to have an admin user/password set in HAProxy configuration otherwise you will not see any HAProxy stats.
 	
 * **Admin Password**
 	- Password for *Admin User*. See `stats auth <http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#4-stats%20auth>`_.
@@ -334,10 +336,15 @@ Import HAProxy
 	- Name for the backend. No whitespace or tab allowed.
 	
 * **HAProxy Config**
-	- Location of HAProxy configuration file on the target node.
+	- Location of HAProxy configuration file (haproxy.cfg) on the target node.
 
 * **Stats Socket**
-	- Specify the path to bind a UNIX socket for HAProxy statistics. See `stats socket <http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#stats%20socket>`_.
+	- Specify the path to bind a UNIX socket for HAProxy statistics. See `stats socket <http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#stats%20socket>`_. 
+	- Usually, HAProxy writes the socket file to  ``/var/run/haproxy.socket`` . This is needed by ClusterControl to monitor HAProxy. This is usually defined in the ``haproxy.cfg`` file, and the line looks like:
+
+.. code-block:: bash
+
+	stats socket /var/run/haproxy.socket user haproxy group haproxy mode 600 level
 
 Keepalived
 ..........
