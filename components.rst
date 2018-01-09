@@ -331,7 +331,7 @@ Operating system
 
 ``vendor=<string>``
 
-* Database vendor name. ClusterControl needs to know this in order to distinguish the vendor's relevant naming convention especially for package name, daemon name, deployment steps, recovery procedures and lots more. Supported value at the moment is percona, codership, mariadb, mongodb, oracle.
+* Database vendor name. ClusterControl needs to know this in order to distinguish the vendor's relevant naming convention especially for package name, daemon name, deployment steps, recovery procedures and lots more. Supported value at the moment is percona, codership, mariadb, 10gen, oracle.
 * Example: ``vendor=codership``
 
 
@@ -1012,7 +1012,7 @@ ClusterControl CLI opens a new door for cluster automation where you can easily 
 * Deploy and manage database clusters:
 	- MySQL
 	- PostgreSQL
-	- MongoDB to be added soon.
+	- MongoDB (Replica Set)
 * Basic monitoring features:
 	- Status of nodes and clusters.
 	- Cluster properties can be extracted.
@@ -1376,9 +1376,12 @@ Name, shorthand                        Description
 |minus|\ |minus|\ drop                 Drop cluster from the controller.
 |minus|\ |minus|\ stop                 Stop the cluster.
 |minus|\ |minus|\ start                Start the cluster.
+|minus|\ |minus|\ check-hosts          Check the hosts before installing a cluster.
 |minus|\ |minus|\ create-account       Create a user account on the cluster.
 |minus|\ |minus|\ delete-account       Delete a user account on the cluster.
 |minus|\ |minus|\ create-database      Create a database on the cluster.
+|minus|\ |minus|\ list-databases       List the databases found on the cluster.
+|minus|\ |minus|\ create-report        Starts a job that will create a report.
 ====================================== ===========
 
 **Options**
@@ -1388,11 +1391,13 @@ Name, shorthand                                 Description
 =============================================== ===========
 |minus|\ |minus|\ cluster-id=ID                 The ID of the cluster to manipulate.
 |minus|\ |minus|\ cluster-name=NAME             Name of the cluster to manipulate or create.
+|minus|\ |minus|\ cluster-format=FORMAT         The format string used to print clusters.
+|minus|\ |minus|\ cluster-type=TYPE             The type of the cluster to install. Currently the following types are supported: galera, mysqlreplication, groupreplication (or group_replication), ndb (or ndbcluster), mongodb (MongoDB ReplicaSet only) and postgresql.
 |minus|\ |minus|\ nodes=NODE_LIST               List of nodes to work with.
 |minus|\ |minus|\ vendor=VENDOR                 The name of the software vendor.
 |minus|\ |minus|\ provider-version=VER          The version of the software.
 |minus|\ |minus|\ os-user=USERNAME              The name of the user for the SSH commands.
-|minus|\ |minus|\ cluster-type=TYPE             The type of the cluster to install.
+|minus|\ |minus|\ donor=ADDRESS                 The address of the donor node when starting.
 |minus|\ |minus|\ db-admin=USERNAME             The database admin user name.
 |minus|\ |minus|\ db-admin-passwd=PASSWD        The password for the database admin.
 |minus|\ |minus|\ account=NAME[:PASSWD][@HOST]  Account to be created on the cluster.
@@ -1401,6 +1406,7 @@ Name, shorthand                                 Description
 |minus|\ |minus|\ opt-group=NAME                The option group for configuration.
 |minus|\ |minus|\ opt-name=NAME                 The name of the configuration item.
 |minus|\ |minus|\ opt-value=VALUE               The value for the configuration item.
+|minus|\ |minus|\ output-dir=DIR                The directory where the files are created.
 |minus|\ |minus|\ wait                          Wait until the job ends.
 |minus|\ |minus|\ long, -l                      Print the detailed list.
 =============================================== ===========
@@ -1411,7 +1417,13 @@ Create a three-node Percona XtraDB Cluster 5.7 cluster, with OS user vagrant:
 
 .. code-block:: bash
 
-	$ s9s cluster --create --cluster-type=galera --nodes="10.10.10.10;10.10.10.11;10.10.10.12"  --vendor=percona --provider-version=5.7 --db-admin-passwd='pa$$word' --os-user=vagrant --cluster-name='galeracluster01'
+	$ s9s cluster --create --cluster-type=galera --nodes="10.10.10.10;10.10.10.11;10.10.10.12"  --vendor=percona --provider-version=5.7 --db-admin-passwd='pa$$word' --os-user=vagrant --cluster-name='Percona XtraDB Cluster 5.7'
+
+Create a three-node MongoDB Replica Set 3.2 by MongoDB Inc (formerly 10gen), and let the deployment job running in foreground:
+
+.. code-block:: bash
+
+	$ s9s cluster --create --cluster-type=mongodb --nodes="10.0.0.148;10.0.0.189;10.0.0.219" --vendor=10gen --provider-version='3.2' --os-user=root --db-admin='admin' --db-admin-passwd='MyS3cr3tPass' --cluster-name='MongoDB ReplicaSet 3.2' --wait
 
 List all clusters with more details:
 
@@ -1443,6 +1455,12 @@ Remove a database node from cluster ID 1 as a background job:
 
 	$ s9s cluster --remove-node --nodes=10.10.10.13 --cluster-id=1
 
+Check if the hosts are part of other cluster and accessible from ClusterControl:
+
+.. code-block:: bash
+
+	$ s9s cluster --check-hosts --nodes="10.0.0.148;10.0.0.189;10.0.0.219"
+
 s9s node
 '''''''''''
 
@@ -1466,6 +1484,7 @@ Name, shorthand                        Description
 |minus|\ |minus|\ change-config        Change the configuration for a node.
 |minus|\ |minus|\ pull-config          Copy configuration files from a node.
 |minus|\ |minus|\ push-config          Copy configuration files to a node.
+|minus|\ |minus|\ unregister           Drop the node without touching it.
 ====================================== ===================
 
 **Options**
@@ -1476,11 +1495,15 @@ Name, shorthand                            Description
 |minus|\ |minus|\ cluster-id=ID            The ID of the cluster in which the node is.
 |minus|\ |minus|\ cluster-name=NAME        Name of the cluster to list.
 |minus|\ |minus|\ nodes=NODE_LIST          The nodes to list or manipulate.
+|minus|\ |minus|\ node-format=FORMAT       The format string used to print nodes.
 |minus|\ |minus|\ properties=ASSIGNMENTS   Names and values of the properties to change.
 |minus|\ |minus|\ opt-group=GROUP          The configuration option group.
 |minus|\ |minus|\ opt-name=NAME            The name of the configuration option.
 |minus|\ |minus|\ opt-value=VALUE          The value of the configuration option.
 |minus|\ |minus|\ output-dir=DIR           The directory where the files are created.
+|minus|\ |minus|\ graph=NAME               The name of the graph to show.
+|minus|\ |minus|\ begin=TIMESTAMP          The start of the graph interval.
+|minus|\ |minus|\ end=TIMESTAMP            The end of the graph interval.
 |minus|\ |minus|\ force                    Force to execute dangerous operations.
 ========================================== ===========
 
@@ -1526,9 +1549,11 @@ View and create database backups. Three backup methods are supported:
 	* mysqldump
 	* xtrabackup (full)
 	* xtrabackup (incremental)
+	* mongodump
+	* pg_dump
 
 The s9s client also needs to know:
-	* The cluster id of the cluster to backup.
+	* The cluster ID (or cluster name) of the cluster to backup.
 	* The node to backup.
 	* The databases that should be included.
 	
@@ -1560,6 +1585,7 @@ Name, shorthand                        Description
 ====================================== ===========
 |minus|\ |minus|\ cluster-id=ID        The ID of the cluster.
 |minus|\ |minus|\ backup-id=ID         The ID of the backup.
+|minus|\ |minus|\ backup-format        The format string used while printing backups.
 |minus|\ |minus|\ nodes=NODELIST       The list of nodes involved in the backup.
 |minus|\ |minus|\ databases=LIST       Comma separated list of databases to archive.
 |minus|\ |minus|\ backup-method=METHOD Defines the backup program to be used.
@@ -1568,6 +1594,7 @@ Name, shorthand                        Description
 |minus|\ |minus|\ no-compression       Do not compress the archive file.
 |minus|\ |minus|\ use-pigz             Use the pigz program to compress archive.
 |minus|\ |minus|\ on-node              Store the created backup file on the node itself.
+|minus|\ |minus|\ on-controller        Stream the backup to the controller host.
 |minus|\ |minus|\ full-path            Print the full path of the files.
 ====================================== ===========
 
@@ -1578,6 +1605,12 @@ Assume we have a data node on 10.10.10.20 (port 3306) on cluster id 2, that we w
 .. code-block:: bash
 
 	$ s9s backup --create --backup-method=mysqldump --cluster-id=2 --nodes=10.10.10.20:3306 --backup-directory=/storage/backups
+
+Create a mongodump backup on 10.0.0.148 for cluster named 'MongoDB ReplicaSet 3.2':
+
+.. code-block:: bash
+
+	$ s9s backup --create --backup-method=mongodump --cluster-name='MongoDB ReplicaSet 3.2' --nodes=10.0.0.148 --backup-directory=/storage/backups
 
 List all backups for cluster ID 2:
 
@@ -1612,6 +1645,9 @@ Name, shorthand                        Description
 |minus|\ |minus|\ list                 List the jobs.
 |minus|\ |minus|\ log                  Inspect the job messages.
 |minus|\ |minus|\ wait                 Attach to a job and see the progress and status.
+|minus|\ |minus|\ success              Create a job that does nothing and succeeds.
+|minus|\ |minus|\ fail                 Create a job that does nothing and fails.
+|minus|\ |minus|\ delete               Delete the job referenced by the job ID.
 ====================================== ===================
 
 **Options**
@@ -1620,10 +1656,14 @@ Name, shorthand                        Description
 Name, shorthand                            Description
 ========================================== ===========
 |minus|\ |minus|\ job-id=ID                The ID of the job.
+|minus|\ |minus|\ cluster-id=ID            The ID of the cluster.
+|minus|\ |minus|\ cluster-name=NAME        Name of the cluster.
 |minus|\ |minus|\ date-format=FORMAT       The format of the dates printed.
 |minus|\ |minus|\ from=DATE&TIME           The start of the interval to be printed.
 |minus|\ |minus|\ until=DATE&TIME          The end of the interval to be printed.
 |minus|\ |minus|\ schedule=DATE&TIME       Run the job at the specified time.
+|minus|\ |minus|\ offset=NUMBER            Controls the index of the first item printed.
+|minus|\ |minus|\ limit=NUMBER             Controls how many jobs are printed max.
 ========================================== ===========
 
 **Examples**
