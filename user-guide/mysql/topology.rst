@@ -14,4 +14,4 @@ This page also provides shortcuts to related functionalities with drag and drop 
 
 The box which represents the host under this cluster can be expanded for more detailed information related to the node's role. 
 
-.. Attention:: This feature is still in beta. Please use the 'Give us feedback' button to send use feedback, comments, suggestions and issues related to this functionality.
+.. Attention:: This feature is still in beta. Please use the 'Give us feedback' button to send us feedbacks, comments, suggestions and issues related to this functionality.
