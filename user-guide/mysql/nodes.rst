@@ -139,7 +139,7 @@ Variables
 
 List all ProxySQL variables for this instance. You can filter the variables using the lookup field.
 
-Nodes Actions
+Node Actions
 ``````````````
 
 SSH Console
@@ -173,8 +173,8 @@ The remove icon will only appear when you rollover the mouse pointer on the node
 2. Data files and configuration files will be left intact on the server.
 3. The monitored service will be disabled to prevent accidental restarts.
 
-Cluster-Specific Nodes Actions
-``````````````````````````````````
+Cluster-Specific Node Actions
+``````````````````````````````
 
 Some of the node management jobs are cluster-specific, as described in the next sections.
 

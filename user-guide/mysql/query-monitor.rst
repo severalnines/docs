@@ -51,7 +51,7 @@ Click on the Settings to configure the Query Monitor settings, as explained belo
 * **Log queries not using indexes?**
 	- Configures ClusterControl behavior on sampling queries without indexes:
 		- Yes - Logs queries which are using indexes.
-		- No - Ignores queries that are not using indexes (will not be accounted for in *ClusterControl > Query Monitor > Query Histogram*).
+		- No - Ignores queries that are not using indexes (will not be accounted for in *ClusterControl > Query Monitor > Query Outliers*).
 
 * **MySQL Local Query Override**
 	- Choose whether you want ClusterControl to override the local MySQL query sampling:

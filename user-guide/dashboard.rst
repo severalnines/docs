@@ -3,10 +3,10 @@ Dashboard
 
 This page is the landing page once you are logged in. It provides a summary of database clusters monitored by ClusterControl.
 
-.. image:: img/cc_cluster_list_142.png
+.. image:: img/cc_cluster_list_151.png
    :align: center
 
-*Top Menu*
+**Top Menu**
 
 ClusterControl's top menu.
 
@@ -37,13 +37,12 @@ ClusterControl's top menu.
 * **Settings**
 	- ClusterControl global settings. See `Settings <admin_settings.html>`_ section.
 
-* **Help**
-	- Documentation - Opens ClusterControl `online documentation page <http://www.severalnines.com/docs>`_.
-	- Support Forum - Opens Severalnines `community support forums <http://support.severalnines.com/forums>`_. Community users are encouraged to use this support channel. For licensed user, please raise a `support ticket <http://support.severalnines.com/tickets/new>`_.
-	- What's new? - Opens the *What's new* popup. This popup also appears the first time a user logs in after new installation or upgrade.
-
 * **Logout**
 	- Logs out from ClusterControl and return to login page.
+	
+**Side Menu**
+
+Left-side navigation provides quick actions and settings to ClusterControl administration menu. See `Side Menu <side_menu.html>`_ section.
 	
 *Cluster List*
 
@@ -79,7 +78,7 @@ There are prerequisites that need to be fulfilled prior to the deployment:
 * Verify that sudo is working properly if you are using a non-root user.
 * Passwordless SSH is configured from ClusterControl node to all database nodes.
 
-For more details, refer to the `Requirement <../requirements.html>`_ section. Each time you create a database cluster, ClusterControl will trigger a job under *ClusterControl > Activity > Jobs*. You can see the progress and status under this page.
+For more details, refer to the `Requirements <../requirements.html>`_ section. Each time you create a database cluster, ClusterControl will trigger a job under *ClusterControl > Activity > Jobs*. You can see the progress and status under this page.
 
 MySQL Replication
 `````````````````
@@ -765,7 +764,7 @@ Import Existing MySQL Galera
 	- MySQL port on the target cluster. Default to 3306. ClusterControl assumes MySQL is running on the same port on all nodes.
 
 * **Admin/Root User**
-	- MySQL user on the target cluster. This user must able to perform GRANT statement. Recommended to use MySQL 'root' user.
+	- MySQL user on the target cluster. This user must be able to perform GRANT statement. Recommended to use MySQL 'root' user.
 	
 * **Admin/Root Password** 
 	- Password for *MySQL User*. The password must be the same on all nodes that you want to add into ClusterControl.

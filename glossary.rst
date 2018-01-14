@@ -141,6 +141,11 @@ Glossary
 		
 		.. seealso:: http://en.wikipedia.org/wiki/Netcat
 
+	pg_basebackup
+		A utility to take base backups of a running PostgreSQL database cluster. These are taken without affecting other clients to the database, and can be used both for point-in-time recovery and as the starting point for a log shipping or streaming replication standby servers.
+		
+		.. seealso:: https://www.postgresql.org/docs/9.5/static/app-pgbasebackup.html
+
 	pg_dumpall
 		A utility for writing out all PostgreSQL databases of a cluster into one script file. The script file contains SQL commands that can be used as input to psql to restore the databases. It does this by calling pg_dump for each database in a cluster
 		
@@ -170,7 +175,12 @@ Glossary
 		pv allows a user to see the progress of data through a pipeline, by giving information such as time elapsed, percentage completed (with progress bar), current throughput rate, total data transferred, and ETA.
 		
 		.. seealso:: https://linux.die.net/man/1/pv
+
+	socat
+		Socat is a command line based utility that establishes two bidirectional byte streams and transfers data between them.
 		
+		.. seealso:: http://www.dest-unreach.org/socat/doc/socat.html
+
 	s9s-admin tools
 		ClusterControl helper scripts provided by Severalnines. The source code can be accessible at Severalnines Github repository.
 		

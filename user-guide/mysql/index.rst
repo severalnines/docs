@@ -22,6 +22,7 @@ Contents:
    
    mysql/overview
    mysql/nodes
+   mysql/topology
    mysql/query-monitor
    mysql/performance
    mysql/backup

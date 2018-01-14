@@ -176,7 +176,7 @@ In such cases, generating a core dump is the only way to backtrace the issue. Ma
     echo "/tmp/core.%e.%p.%h.%t" > /proc/sys/kernel/core_pattern
     cmon
 
-When cmon crashes there will now be a core file in /tmp. Compress the core dump (gzip is recommended) and attach it to a support ticket so we can take a look and perform necessary fix. Alternatively, you can send only the backtrace in a support ticket by using following command:
+When cmon crashes there will now be a core file in ``/tmp``. Compress the core dump (gzip is recommended) and attach it to a support ticket so we can take a look and perform necessary fix. Alternatively, you can send only the backtrace in a support ticket by using following command:
 
 .. code-block:: bash
 
@@ -189,7 +189,7 @@ Attach the full output and potentially replace sensitive information with "XXXXX
 CMON on Foreground
 ````````````````````
 
-If you would like to run cmon as foreground process, you can do that by invoking -d option:
+If you would like to run cmon as foreground process, you can do that by invoking ``-d`` option:
 
 .. code-block:: bash
 
@@ -201,7 +201,7 @@ CMON will enable LOG_DEBUG messages and print detailed information on the screen
 Debugging ClusterControl UI
 '''''''''''''''''''''''''''
 
-To enable ClusterControl UI debug, SSH into the ClusterControl node and adjust following values inside ``{wwwroot}l/clustercontrol/app/Config/core.php``:
+To enable ClusterControl UI debug, SSH into the ClusterControl node and adjust following values inside ``{wwwroot}/clustercontrol/app/Config/core.php``:
 
 .. code-block:: php
 
@@ -252,15 +252,15 @@ CMON unable to restart MySQL using service command
 2. Look at the PATH output.
 
 * **Solution:**
-	- Ensure the /sbin path is there. This way, ClusterControl can automatically locate and run the "service" command.
-	- If the /sbin path is not listed in the PATH, add it by using the following command:
+	- Ensure the ``/sbin`` path is there. This way, ClusterControl can automatically locate and run the "service" command.
+	- If the ``/sbin`` path is not listed in the PATH, add it by using the following command:
 	
 .. code-block:: bash
 
 	PATH=$PATH:/sbin 
 	export PATH
 
-- However, the above won't persist if the user logs out from the terminal. To make it persistent, add those lines into ``/home/[ssh user]/.bash_profile`` or ``/home/[ssh user]/.bashrc``
+- However, the above won't persist if the user logs out from the terminal. To make it persistent, add those lines into ``/home/{SSH user}/.bash_profile`` or ``/home/{SSH user}/.bashrc``
 
 
 CMON always tries to recover failed database nodes during my maintenance window.

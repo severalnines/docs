@@ -1102,7 +1102,7 @@ CentOS 7
   mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=os
   #baseurl=http://mirror.centos.org/centos/$releasever/os/$basearch/
   gpgcheck=1
-  gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+  gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
   enabled=0
   
   #released updates
@@ -1111,7 +1111,7 @@ CentOS 7
   mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=updates
   #baseurl=http://mirror.centos.org/centos/$releasever/updates/$basearch/
   gpgcheck=1
-  gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+  gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
   enabled=0
   
   #additional packages that may be useful
@@ -1120,7 +1120,7 @@ CentOS 7
   mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=extras
   #baseurl=http://mirror.centos.org/centos/$releasever/extras/$basearch/
   gpgcheck=1
-  gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+  gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
   enabled=0
 
 4. Update the "enabled" value under the ``c6-media`` directive in ``/etc/yum.repos.d/CentOS-Media.repo``, as shown below:
@@ -1134,7 +1134,7 @@ CentOS 7
           file:///media/cdrecorder/
   gpgcheck=1
   enabled=1
-  gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+  gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
 
 5. Get the list of available packages:
 
@@ -1233,10 +1233,10 @@ RedHat/CentOS
 
 	$ mkdir ~/s9s_tmp
 	$ cd ~/s9s_tmp
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-1.5.0-4183-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-1.5.1-4265-x86_64.rpm
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.5.0-290-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.5.0-2279-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications-1.5.0-67-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.5.1-2299-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications-1.5.0-70-x86_64.rpm
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh-1.5.0-39-x86_64.rpm
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud-1.5.0-31-x86_64.rpm
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud-1.5.0-31-x86_64.rpm
@@ -1277,11 +1277,11 @@ Debian/Ubuntu
 
 	$ mkdir ~/s9s_tmp
 	$ cd ~/s9s_tmp
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol_1.5.0-4171_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol_1.5.1-4265_x86_64.deb
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.5.0-290_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.5.0-2249-x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications_1.5.0-67_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh_1.5.0-37_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.5.1-2299-x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications_1.5.0-70_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh_1.5.0-39_x86_64.deb
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud_1.5.0-31_x86_64.deb
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud_1.5.0-31_x86_64.deb
 
