@@ -8,6 +8,38 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.5.1
 -----------------
 
+Maintenance Release: Jan 23rd, 2018
+````````````````````````````````````
+
+* Build:
+	- clustercontrol-1.5.1-4335
+	- clustercontrol-controller-1.5.1-2335
+
+* Controller:
+ - Load balancers: Fix to make it possible to remove haproxy/maxscale even if the host is not reachable.
+ - Error reporting: Fix to always include cluster id 0 jobs in the error report.
+ - Galera: Fix to disallow garbd deployment to a host having a running mysqld.
+ - Replication: Improve handling of read_only when importing existing replication cluster.
+ - Replication: Alert if a mysql server is not connect to any master, i.e hanging loose.
+ - Postgres: Fix to recover a failed postgres server in case there is only one single postgres node in the system.
+ - Postgres: Fix to prevent postgres to be restarted in case sending SIGHUP (to reload config) failed.
+ - Advisors: Fix to present a clear error message for the performance schema advisors in case performance schema tables are not available for a particular MySQL version
+ - Verify Backup: Fix to correctly stage the standalone node with mysql user info (cmon user, etc)
+
+* UI:
+	- Fix properly enabling read/write split with HAProxy and MySQL Galera
+	- Fix incorrect list of nodes showing up as bootstrapping candidate (Galera)
+	- Fix leaving user records behind when deleting the whole team.
+	- Add an option to limit network streaming bandwidth (Mb/s) when doing a backup
+	- Fix missing "read only" port when adding HAProxy for PostgreSQL
+	- Fix showing the correct "read/write" port when adding HAProxy for PostgreSQL
+	- Fix Query Monitor for PostgreSQL to show the complete query and not truncate it
+	- Fix misleading tooltips when deploying or importing a PostgreSQL cluster
+	- Remove requirement to have the binlog enabled when adding a "SQL Node" with MySQL NDB Cluster
+	- Remove incorrect software package option when adding a "SQL Node" with MySQL NDB Cluster
+	- Fix MaxScale console port issue with using Safari
+	- Fix schedule backups to work even when the verify backup option is enabled
+
 Initial Release: Dec 22nd, 2017
 ````````````````````````````````
 
