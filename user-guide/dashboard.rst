@@ -599,7 +599,7 @@ Deploys a new PostgreSQL standalone or streaming replication cluster from Cluste
 	- Specify a name for the database.
 
 * **Install Software**
-  - Check the box if you use clean and minimal VMs. Existing MySQL dependencies will be removed. New packages will be installed and existing packages will be uninstalled when provisioning the node with required software.
+  - Check the box if you use clean and minimal VMs. Existing PostgreSQL dependencies will be removed. New packages will be installed and existing packages will be uninstalled when provisioning the node with required software.
   - If unchecked, existing packages will not be uninstalled, and nothing will be installed. This requires that the instances have already provisioned the necessary software.
 
 * **Disable Firewall**
@@ -629,7 +629,7 @@ Deploys a new PostgreSQL standalone or streaming replication cluster from Cluste
 ''''''''''''''''''
 
 * **Master A - IP/Hostname**
-	- Specify the IP address of the MySQL master node. Press 'Enter' once specified so ClusterControl can verify the reachability via passwordless SSH.
+	- Specify the IP address of the PostgreSQL master node. Press 'Enter' once specified so ClusterControl can verify the reachability via passwordless SSH.
 	
 * **Add slaves to master A**
 	- Add a slave node connected to master A. Press 'Enter' to add more slave.
