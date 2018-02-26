@@ -8,6 +8,66 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.5.1
 -----------------
 
+Maintenance Release: Feb 24th, 2018
+````````````````````````````````````
+
+* Build:
+	- clustercontrol-controller-1.5.1-2390
+	- clustercontrol-1.5.1-4395
+
+* Controller:
+	- PostgreSQL: Fixed a bug in the PostgreSQL config parsing causing a syntax error using ``include``.
+	- Advisors: Bug fixes and corrections
+	- MySQL Cluster: Fixed a number of issues around hostnames and port settings, which caused node types (data node, management node) to be improperly identified.
+	- Backup (Verify Backup): Fixed a number of issues handling the Backup Verification Server.
+	- Backup(Verify Backup): A backup verification email is now sent when the backup has been verified.
+	- Operational Reports: Availability report issues. The ``cluster_events``/``node_events`` tables were inadvertently dropped during ClusterControl upgrades causing the stats to be reset.
+	- PostgreSQL: ``pg_basebackup`` executed on a slave failed on imported clusters due to a missing grant.
+	- Remove Node: Fixes to make it possible to only unregister a node (remove the node from ClusterControl management).
+	- Schema: DB schema fixes to the ``server_node`` properties column by extending the size.
+	- Galera/GroupRepl: properly write/update the cmon_X.cnf ``mysql_server_addresses`` field to mark non galera|group_repl nodes there correctly.
+
+* Frontend/UI:
+	- Remove Node: Improved consistency in ‘Remove Node’’ dialogs.
+	- MySQL/Galera: New default value for binary logging path which is now outside of the datadir.
+	- Backup (MySQL based clusters): Fixed an issue where Backup Method and Backup Host drop-downs were empty.
+	- Deploy/Import/Add Node: Improved Host Discovery showing the actual SSH error.
+	- Deploy/Import: SSH Key Path validation was missing.
+	- Charts: It was possible to select a negative range (smaller end date than start date).
+	- MongoDB: Add Shards dialog got stuck when entering a hostname (SSH check never terminated).
+
+Maintenance Release: Feb 6th, 2018
+````````````````````````````````````
+
+* Build:
+	- clustercontrol-controller-1.5.1-2362
+	- clustercontrol-1.5.1-4356
+
+* Controller:
+	- Stats: RAM stats updated to also account for *SReclaimable*.
+	- PostgreSQL: enable ``pg_stats_statements`` extension only on non read-only nodes. 
+	- Error Reporter: include more info about PostgreSQL clusters (``pg_stat_replication`` table + recovery config file)
+	- MySQL: Fixed an issue handling ``!include`` directives containing quotes. The import config job (automatically executed upon a controller restart) will auto-correct broken MySQL ``!include`` directives containing quotes.
+
+* Frontend/UI:
+	- Deployment/Import dialogs: Added validation for SSH Key Path.
+	- ProxySQL: Filter users with unrelated hosts when deploying ProxySQL.
+	- MongoDB: Fixed a problem specifying hostnames when performing "Add Shard".
+
+Maintenance Release: Jan 29th, 2018
+````````````````````````````````````
+
+* Build:
+	- clustercontrol-controller-1.5.1-2346
+
+* Controller
+	- Galera: A path to a ``node_recovery_lock_file`` can now be specified in ``/etc/cmon.d/cmon_N.cnf``. If set and the lock file is found on the node then the node recovery will fail until an admin/script removes this file. The cmon controller process must be restarted when this parameter has been specified. This feature maybe useful for encrypted filesystems.
+	- MySQL Cluster (NDB): Fix to allow deployments on other ports than 3306.
+	- MySQL: Error code 2013 (lost connection during query) is not a reason to set a node into disconnected state.
+	- MySQL: Fixed up handling of ``ignore-db-dir`` in config templates on MySQL 5.5 based servers 
+	- ProxySQL: Improve ProxySQL support such that ``admin-admin_credentials`` may contain multiple credentials
+
+
 Maintenance Release: Jan 23rd, 2018
 ````````````````````````````````````
 
@@ -16,13 +76,13 @@ Maintenance Release: Jan 23rd, 2018
 	- clustercontrol-controller-1.5.1-2335
 
 * Controller:
-	- Load balancers: Fix to make it possible to remove haproxy/maxscale even if the host is not reachable.
+	- Load balancers: Fix to make it possible to remove HAProxy/MaxScale even if the host is not reachable.
  	- Error reporting: Fix to always include cluster id 0 jobs in the error report.
 	- Galera: Fix to disallow garbd deployment to a host having a running mysqld.
-	- Replication: Improve handling of read_only when importing existing replication cluster.
+	- Replication: Improve handling of ``read_only`` when importing existing replication cluster.
 	- Replication: Alert if a mysql server is not connect to any master, i.e hanging loose.
-	- Postgres: Fix to recover a failed postgres server in case there is only one single postgres node in the system.
-	- Postgres: Fix to prevent postgres to be restarted in case sending SIGHUP (to reload config) failed.
+	- Postgres: Fix to recover a failed PostgreSQL server in case there is only one single postgres node in the system.
+	- Postgres: Fix to prevent PostgreSQL to be restarted in case sending SIGHUP (to reload config) failed.
 	- Advisors: Fix to present a clear error message for the performance schema advisors in case performance schema tables are not available for a particular MySQL version.
 	- Verify Backup: Fix to correctly stage the standalone node with mysql user info (cmon user, etc)
 
