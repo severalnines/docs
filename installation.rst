@@ -779,7 +779,7 @@ For systemd:
 
 .. Note:: Replace ``{cmonpassword}`` and ``{Generated ClusterControl API token}`` with appropriate values.
 
-14. Use the generated value from step #8 and specify it in ``/var/www/html/cmonapi/bootstrap.php`` under the ``CMON_TOKEN`` constant. It is expected for the ``CMON_TOKEN``, ``RPC_TOKEN`` (step #13) and ``rpc_key`` (in cmon.cnf) are holding the same value. Also, update the ``CC_URL`` value to be equivalent to ClusterControl URL in your environment:
+14. Use the generated value from step #8 and specify it in ``/var/www/html/cmonapi/config/bootstrap.php`` under the ``CMON_TOKEN`` constant. It is expected for the ``CMON_TOKEN``, ``RPC_TOKEN`` (step #13) and ``rpc_key`` (in cmon.cnf) are holding the same value. Also, update the ``CC_URL`` value to be equivalent to ClusterControl URL in your environment:
 
 .. code-block:: php
 
@@ -788,7 +788,7 @@ For systemd:
 
 .. Note:: Replace ``{Generated ClusterControl API token}`` and ``{ClusterControl_host}`` with appropriate values.
 
-15. Configure MySQL credential for ClusterControl CMONAPI at ``/var/www/html/cmonapi/database.php``. In most cases, you just need to update the ``DB_PASS`` constant with the cmon user password:
+15. Configure MySQL credential for ClusterControl CMONAPI at ``/var/www/html/cmonapi/config/database.php``. In most cases, you just need to update the ``DB_PASS`` constant with the cmon user password:
 
 .. code-block:: bash
 
@@ -1011,7 +1011,7 @@ For Ubuntu 12.04/Debian 7 and earlier:
 
 .. Note:: Replace ``{cmonpassword}`` and ``{Generated ClusterControl API token}`` with appropriate values.
 
-15. Use the generated value from step #8 and specify it in ``/var/www/cmonapi/bootstrap.php`` under the ``CMON_TOKEN`` constant. It is expected for the ``CMON_TOKEN``, ``RPC_TOKEN`` (step #14) and ``rpc_key`` (in cmon.cnf) are holding the same value. Also, update the ``CC_URL`` value to be equivalent to ClusterControl URL in your environment:
+15. Use the generated value from step #8 and specify it in ``/var/www/cmonapi/config/bootstrap.php`` under the ``CMON_TOKEN`` constant. It is expected for the ``CMON_TOKEN``, ``RPC_TOKEN`` (step #14) and ``rpc_key`` (in cmon.cnf) are holding the same value. Also, update the ``CC_URL`` value to be equivalent to ClusterControl URL in your environment:
 
 .. code-block:: php
 
