@@ -8,6 +8,38 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.5.1
 -----------------
 
+Maintenance Release: March 7th, 2018
+````````````````````````````````````
+
+* Build:
+	- clustercontrol-controller-1.5.1-2411
+	- clustercontrol-1.5.1-4434
+
+* Frontend/UI:  
+	- CRITICAL: Fixed another issue where the wrong node was selected due to an indexing problem, which could lead to an action being executed on the wrong node.
+
+* Controller:
+	- Fixed an issue when importing keepalived.
+
+Maintenance Release: March 6th, 2018
+````````````````````````````````````
+
+* Build: 
+	- clustercontrol-controller-1.5.1-2409
+	- clustercontrol-1.5.1-4425
+
+* Controller:
+	- PostgreSQL: Explicitly grant nodes by IP (in addition to hostnames) in ``pg_hba.conf``.
+	- PostgreSQL: config write with includes caused invalid syntax error issues.
+	- MySQL Cluster: Bug fixes to Database Growth.
+	- Operational Reports: Improved handling ofdifferent gnuplot versions.
+	- General: Configurable ICMP pinging. Set ``enable_icmp_ping=false`` to disable ICMP pinging (Azure requires this). By default it is true (recommended).
+
+* Frontend/UI:
+	- Installer: Permissions fixed so there are no writable files after install.
+	- Fixed an issue where the wrong node was selected due to an indexing problem, which could lead to an action being executed on the wrong node.
+	- Improved handling of saving email notification settings.
+
 Maintenance Release: Feb 24th, 2018
 ````````````````````````````````````
 
@@ -20,12 +52,12 @@ Maintenance Release: Feb 24th, 2018
 	- Advisors: Bug fixes and corrections
 	- MySQL Cluster: Fixed a number of issues around hostnames and port settings, which caused node types (data node, management node) to be improperly identified.
 	- Backup (Verify Backup): Fixed a number of issues handling the Backup Verification Server.
-	- Backup(Verify Backup): A backup verification email is now sent when the backup has been verified.
+	- Backup (Verify Backup): A backup verification email is now sent when the backup has been verified.
 	- Operational Reports: Availability report issues. The ``cluster_events``/``node_events`` tables were inadvertently dropped during ClusterControl upgrades causing the stats to be reset.
 	- PostgreSQL: ``pg_basebackup`` executed on a slave failed on imported clusters due to a missing grant.
 	- Remove Node: Fixes to make it possible to only unregister a node (remove the node from ClusterControl management).
 	- Schema: DB schema fixes to the ``server_node`` properties column by extending the size.
-	- Galera/GroupRepl: properly write/update the cmon_X.cnf ``mysql_server_addresses`` field to mark non galera|group_repl nodes there correctly.
+	- Galera/Group Replication: properly write/update the cmon_X.cnf ``mysql_server_addresses`` field to mark non galera|group_repl nodes there correctly.
 
 * Frontend/UI:
 	- Remove Node: Improved consistency in ‘Remove Node’’ dialogs.
