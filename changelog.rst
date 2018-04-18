@@ -5,8 +5,80 @@ Change Logs
 
 This change logs list details about updates in each version of ClusterControl.
 
+Changes in v1.6.0
+-----------------
+
+Initial Release: April 17th, 2018
+````````````````````````````````````
+
+* Build:
+	- clustercontrol-controller-1.6.0-2493
+	- clustercontrol-1.6.0-4566
+	- clustercontrol-cmonapi-1.6.0-303
+	- clustercontrol-cloud-1.6.0-104
+	- clustercontrol-ssh-1.6.0-44
+
+Welcome to our new 1.6.0 release! Restoring your database using only a backup for disaster recovery is at times not enough. You often want to restore to a specific point in time or transaction after the backup happened. You can now do Point In Time Recovery - PITR for MySQL based databases by passing in a stop time or an event position in the binary logs as a recovery target.
+
+We are also continuing to add cloud functionality:
+	- Launch cloud instances and deploy a database cluster on AWS, Google Cloud and Azure from your on-premise installation.
+	- Upload/download backups to Azure cloud storage.
+	- Our cluster topology view now supports PostgreSQL replication clusters and MongoDB ReplicSets and Shards. Easily see how your database nodes are related with each other and perform actions with intuitive drag and drop motion.
+
+As in every release we continously work on improving our UX/UI experience for our users. This time around we have re-designed the DB User Management page for MySQL based clusters. It should be easier to understand and manage your database users with this new user interface.
+
+**Feature Details**
+
+* Point In Time Recovery - PITR (MySQL)
+	- Position and timebased recovery for MySQL based clusters.
+	- Recover until the date and time given by Restore Time (Event time - stop date&time).
+	- Recover until the stop position is found in the specified binary log file. If you enter binlog.001827 it will scan existing binary logs files until binlog.001827 (inclusive) and not go any further.
+
+* Deploy and manage clusters on public Clouds (BETA)
+	- Supported cloud providers
+		- Amazon Web Services (VPC)
+		- Google Cloud
+		- Microsoft Azure.
+	- Supported databases:
+		- MySQL Galera
+		- PostgreSQL
+		- MongoDB ReplicaSet
+	- Current limitations:
+		- There is currently no 'accounting' in place for the cloud instances. You will need to manually remove created cloud instances.
+		- You cannot add or remove a node automatically with cloud instances.
+		- You cannot deploy a load balancer automatically with a cloud instance.
+
+* Topology View
+	- Support added for:
+		- PostgreSQL Replication clusters.
+		- MongoDB ReplicaSets and Sharded clusters.
+
+* Misc
+	- Improved cluster deployment speed by utilizing parallel jobs. Deploy more than one cluster in parallel.
+	- Re-designed DB User Management for MySQL based clusters.
+	- Support to deploy and manage MongoDB cluster on v3.6
+
 Changes in v1.5.1
 -----------------
+
+Maintenance Release: April 9th, 2018
+````````````````````````````````````
+
+* Build:
+	- clustercontrol-controller-1.5.1-2467 
+
+* Controller:
+	- Monitoring: SSH Optimizations to reduce the number of SSH connections on remote nodes.
+	- Monitoring: CPU temperature monitoring is now configurable (and disabled by default, ``monitor_cpu_temperature`` cmon configuration option)
+	- Galera: Disable P_S queries in Query Monitor during upgrade.
+	- Galera: Add node - check if MariaDB version is of 10.1.31 and above. In this case mariabackup will be used.
+	- ProxySQL: Fixed an issue when modifying the variable values from the UI.
+	- MaxScale: Template issue with a configuration parameter not compatible with MySQL Monitor module.
+	- Maxscale: Debian 9 support
+	- HAProxy: If xinetd failed to install it could lead to the controller crashing.
+	- Fixing a license barrier when deploying Galera cluster causing an error: "Refusing to recover node (no license)"
+	- Mariadb 10.1 now requires ``wsrep_sst_method=mariabackup`` (new deploys of mariadb will always use mariabackup for SST).
+
 
 Maintenance Release: March 7th, 2018
 ````````````````````````````````````
