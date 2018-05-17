@@ -1,5 +1,3 @@
-.. _cc-mongodb:
-
 User Guide for MongoDB
 =======================
 
@@ -19,6 +17,7 @@ Contents:
    
    mongodb/overview
    mongodb/nodes
+   mongodb/topology
    mongodb/ops-monitor
    mongodb/performance
    mongodb/backup

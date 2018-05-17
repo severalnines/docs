@@ -48,7 +48,7 @@ CMON controller package is available at `Severalnines download site <http://www.
 A configuration file ``/etc/cmon.cnf`` is required to initially setup the CMON Controller. It is possible to have several configuration files each for multiple clusters as described in the `Configuration File`_ section.
 
 Command Line Arguments
-``````````````````````
++++++++++++++++++++++++
 
 By default if you just run ``cmon`` (without any arguments), cmon defaults to run in the background. ClusterControl Controller (cmon) supports several command line options as shown below:
 
@@ -121,7 +121,7 @@ The path of the log file to be used.
 
 
 Configuration File
-``````````````````
++++++++++++++++++++
 
 A single CMON Controller process is able to monitor one or more clusters. Each of the cluster requires one exclusive configuration file residing in the ``/etc/cmon.d/`` directory. For instance, the default CMON configuration file is located at ``/etc/cmon.cnf``, and commonly used to store the default (minimal) configuration for CMON process to run. 
 
@@ -197,7 +197,7 @@ An example of CMON configuration file hierarchy is as follows:
 The CMON Controller will import the configuration options defined in each configuration file into the CMON database during process starts up. Once loaded, CMON then use all the loaded information to manage clusters based on the ``cluster_id`` value.
 
 Configuration Options
-`````````````````````
++++++++++++++++++++++++
 
 All of the options and values as described below must not contain any whitespace between them. Any changes to the CMON configuration file requires a CMON service restart before they are applied.
 
@@ -220,7 +220,7 @@ Following is the list of common configuration options inside CMON configuration 
 
 
 General
-'''''''
+````````
 
 ``cluster_id=<integer>``
 
@@ -251,7 +251,7 @@ General
 * Example: ``created_by_job=13``
 
 CMON
-'''''
+``````
 
 ``mode=<string>``
 
@@ -290,7 +290,7 @@ CMON
 
 
 Operating system
-''''''''''''''''
+``````````````````
 
 ``os=<string>``
 
@@ -336,7 +336,7 @@ Operating system
 
 
 SSH
-'''
+````
 
 ``ssh_identify=<path to SSH key or key pair>``
 
@@ -386,7 +386,7 @@ SSH
 * Example: ``libssh_loglevel=2``
 
 Monitoring
-'''''''''''
+````````````
 
 ``monitored_mountpoints=<list of paths to be monitored>``
 
@@ -474,7 +474,7 @@ Monitoring
 * Example: ``swap_inout_critical=102400``
 
 Management
-'''''''''''
+````````````
 
 ``enable_cluster_autorecovery=<boolean integer>``
 
@@ -497,7 +497,7 @@ Management
 * Example: ``netcat_port=9999``
 
 Nodes (MySQL)
-''''''''''''''
+``````````````
 
 ``mysql_server_addresses=<string>``
 
@@ -666,7 +666,7 @@ Nodes (MySQL)
 * Example: ``schema_change_detection_databases=mydb%,shops_db,mymonitoring``
 
 Nodes (MongoDB)
-'''''''''''''''
+````````````````
 
 ``mongodb_server_addresses=<string>``
 
@@ -714,7 +714,7 @@ Nodes (MongoDB)
 * Example: ``mongodb_cluster_key=/etc/repl.key``
 
 Nodes (PostgreSQL)
-''''''''''''''''''
+``````````````````
 
 ``postgresql_server_addresses=<string>``
 
@@ -745,7 +745,7 @@ Nodes (PostgreSQL)
 
 
 Encryption and Security
-''''''''''''''''''''''''
+````````````````````````
 
 ``cmondb_ssl_key=<file path>``
 
@@ -789,14 +789,14 @@ Encryption and Security
 * Example: ``rpc_key=VJZKhr5CvEGI32dP``
 
 Agentless
-`````````
+++++++++++
 
-Starting from version 1.2.5, ClusterControl introduces an agentless mode of operation. There is no need to install agents on the managed nodes. Users only need to install the CMON controller package on the ClusterControl host, and make sure that passwordless SSH and the CMON database user GRANTs are properly set up on each of the managed hosts.
+Starting from version 1.2.5, ClusterControl introduced an agentless mode of operation. There is no need to install agents on the managed nodes. Users only need to install the CMON controller package on the ClusterControl host, and make sure that passwordless SSH and the CMON database user GRANTs are properly set up on each of the managed hosts.
 
 The agentless mode is the default and recommended type of setup. Starting from version 1.2.9, an agentful setup is no longer supported.
 
-CMON database
-`````````````
+CMON Database
+++++++++++++++
 
 The CMON Controller requires a MySQL database running on ``mysql_hostname`` as defined in CMON configuration file. The database name and user is ‘cmon’ and is immutable.
 
@@ -838,7 +838,7 @@ For each managed database server, on the managed database server, grant all priv
 Don't forget to run ``FLUSH PRIVILEGES`` on each of the above statement so the grant will be kept after restart. If users deploy using the deployment package generated from the Severalnines Cluster Configurator and installer script, this should be configured correctly.
 
 Database Client
-```````````````
++++++++++++++++
 
 For MySQL-based clusters, CMON Controller requires MySQL client to connect to CMON database. This package usually comes by default when installing MySQL server required by CMON database.
 
@@ -967,7 +967,7 @@ This package installs the following file:
 	* ``/usr/sbin/clud`` - The executable binary file.
 
 Usage
-``````
++++++
 
 The general synopsis to execute commands using ``clud`` is:
 
@@ -1031,7 +1031,7 @@ ClusterControl CLI opens a new door for cluster automation where you can easily 
 The command line tool is invoked by executing a binary called ``s9s``. The commands are basically JSON messages being sent over to the ClusterControl Controller (CMON) RPC interface. Communication between the s9s (the command line tool) and the cmon process (ClusterControl Controller) is encrypted using TLS and requires the port 9501 to be opened on controller and the client host.
 
 Installation
-`````````````
++++++++++++++
 
 We have built an installer script for s9s-tools available at `http://repo.severalnines.com/s9s-tools/install-s9s-tools.sh <http://repo.severalnines.com/s9s-tools/install-s9s-tools.sh>`_. 
 
@@ -1046,14 +1046,14 @@ On ClusterControl host (or any client host):
 If you would like to install it manually, please refer to the next section, `Package Manager (yum/apt)`_.
 
 Package Manager (yum/apt)
-'''''''''''''''''''''''''
+``````````````````````````
 
 The package list is available at `s9s-tools repository page <http://repo.severalnines.com/s9s-tools/>`_. 
 
 RHEL/CentOS
-...........
+'''''''''''
 
-The repository files for each distribution can be downloaded directly from here:
+The repository file for each distribution can be downloaded directly from:
 
 * CentOS 6: http://repo.severalnines.com/s9s-tools/CentOS_6/s9s-tools.repo
 * CentOS 7: http://repo.severalnines.com/s9s-tools/CentOS_7/s9s-tools.repo
@@ -1070,10 +1070,10 @@ Installation steps are straight-forward:
 	$ yum install s9s-tools
 	$ s9s --help
 
-Debian (and Ubuntu) DEB Repositories
-.....................................
+Debian/Ubuntu DEB Repositories
+'''''''''''''''''''''''''''''''
 
-The repository files for each distribution can be downloaded directly from here:
+The repository file for each distribution can be downloaded directly from:
 
 * Debian 7 (Wheezy): http://repo.severalnines.com/s9s-tools/wheezy/
 * Debian 8 (Jessie): http://repo.severalnines.com/s9s-tools/jessie/
@@ -1096,10 +1096,10 @@ To install, one would do:
 	$ s9s --help
 
 
-Build From Source
-''''''''''''''''''
+Compile From Source
+````````````````````
 
-To build from source may require additional packages and tools to be installed:
+To build from source, you may require additional packages and tools to be installed:
 
 1. Get the source code from Github:
 
@@ -1113,7 +1113,7 @@ To build from source may require additional packages and tools to be installed:
 
 	$ cd s9s-tools
 
-3. You may need to install packages such as C/C++ compiler, autotools, openssl-devel etc:
+3. You may need to install development packages such as C/C++ compiler, autotools, openssl-devel etc:
 
 .. code-block:: bash
 
@@ -1137,14 +1137,14 @@ To build from source may require additional packages and tools to be installed:
 It is possible to build the s9s command line client on Linux and Mac OS/X.
 
 Configuration
-``````````````
+++++++++++++++
 
 The first thing that must be done is to create a user that is allowed to connect to and use the controller. Communication between the s9s command line client and the controller (the cmon process) is encrypted using TLS on port 9501. A public and private RSA key pair associated with a username is used to encrypt the communication. The s9s command line client is responsible to setup the user and the required private and public key.
 
 The command line client can be located on the same server as the controller (localhost communication) or on a remote server. The configuration differs depending on the location - localhost or remote access, and both cases are covered below.
 
 Localhost Access
-'''''''''''''''''
+``````````````````
 
 SSH into the controller and then let us create a user called 'dba' that is allowed to access the controller. This will create the first user. 
 
@@ -1232,7 +1232,7 @@ To view the users, and list which is the currently used user (marked with an "A"
 The 'nobody' user is a legacy user. No one should ever see a job issued by the user 'nobody'. The 'system' user is the ClusterControl server itself creating internal jobs (e.g internal cron jobs).
 
 Remote Access
-''''''''''''''
+``````````````
 
 The steps to setup the s9s command line client for remote access is similar as for localhost, except:
 
@@ -1322,7 +1322,7 @@ Copy the SSH public key to the ClusterControl Controller host, for example 10.0.
 	cluster_1 cluster_2 cluster_3
 
 Usage 
-``````
+++++++
 
 The command line client installs manual pages and can be viewed by entering the command:
 
@@ -1342,7 +1342,8 @@ For example:
 	$ man s9s-node
 	$ man s9s-maintenance
 	$ man s9s-process
-	$ man s9s-conf
+	$ man s9s-script
+	$ man s9s-account
 
 The general synopsis to execute commands using ``s9s`` is:
 
@@ -1351,7 +1352,7 @@ The general synopsis to execute commands using ``s9s`` is:
 	s9s {command group} {options}
 
 s9s cluster
-'''''''''''
+````````````
 
 Create, list and manipulate clusters.
 
@@ -1462,7 +1463,7 @@ Check if the hosts are part of other cluster and accessible from ClusterControl:
 	$ s9s cluster --check-hosts --nodes="10.0.0.148;10.0.0.189;10.0.0.219"
 
 s9s node
-'''''''''''
+``````````
 
 View and handle nodes.
 
@@ -1543,7 +1544,7 @@ Push a configuration option inside my.cnf (max_connections=500) on node 10.0.0.3
 	$ s9s node --change-config --nodes=10.0.0.3 --opt-group=mysqld --opt-name=max_connections --opt-value=500
 
 s9s backup
-'''''''''''
+````````````
 
 View and create database backups. Three backup methods are supported:
 	* mysqldump
@@ -1590,6 +1591,7 @@ Name, shorthand                        Description
 |minus|\ |minus|\ databases=LIST       Comma separated list of databases to archive.
 |minus|\ |minus|\ backup-method=METHOD Defines the backup program to be used.
 |minus|\ |minus|\ backup-directory=DIR The directory where the backup is placed.
+|minus|\ |minus|\ recurrence=STRING    Schedule time and frequency in cron format.
 |minus|\ |minus|\ parallelism=N        Number of threads used while creating backup.
 |minus|\ |minus|\ no-compression       Do not compress the archive file.
 |minus|\ |minus|\ use-pigz             Use the pigz program to compress archive.
@@ -1612,6 +1614,18 @@ Create a mongodump backup on 10.0.0.148 for cluster named 'MongoDB ReplicaSet 3.
 
 	$ s9s backup --create --backup-method=mongodump --cluster-name='MongoDB ReplicaSet 3.2' --nodes=10.0.0.148 --backup-directory=/storage/backups
 
+Schedule a full backup using MariaDB backup everyday at 12:00 AM:
+
+.. code-block:: bash
+
+	$ s9s backup --create --backup-method=mariabackupfull --nodes=10.10.10.19:3306 --cluster-name=MDB101 --backup-dir=/home/vagrant/backups  --recurrence='* 0 * * *'
+
+Schedule an incremental backup using MariaDB backup everyday at 12:30 AM:
+
+.. code-block:: bash
+
+	$ s9s backup --create --backup-method=mariabackupincr --nodes=10.10.10.19:3306 --cluster-name=MDB101 --backup-dir=/home/vagrant/backups  --recurrence='30 0 * * *'
+
 List all backups for cluster ID 2:
 
 .. code-block:: bash
@@ -1627,7 +1641,7 @@ Restore backup ID 3 on cluster ID 2:
 	$ s9s backup --restore --cluster-id=2 --backup-id=3 --wait
 
 s9s job
-'''''''''''
+````````
 
 View jobs.
 
@@ -1693,7 +1707,7 @@ View job log messages of job ID 10235:
 	$ s9s job --log  --job-id=10235
 
 s9s maint
-'''''''''''
+``````````
 
 View and manipulate maintenance periods.
 
@@ -1746,7 +1760,7 @@ Delete a maintenance period for UUID 70346c3:
 	$ s9s maint --delete --uuid=70346c3
 
 s9s process
-'''''''''''
+````````````
 
 View processes running on nodes.
 
@@ -1789,7 +1803,7 @@ List aggregated view of processes (similar to ``ps`` output) of all nodes for cl
 	$ s9s process --list --cluster-id=1
 
 s9s user
-'''''''''''
+``````````
 
 Manage users.
 
@@ -1844,7 +1858,7 @@ List out all users:
 	-  4 remote_dba users  -     -
 
 s9s script
-'''''''''''
+````````````
 
 Manage and execute Advisor scripts available in the `Developer Studio <user-guide/mysql/manage.html#developer-studio>`_.
 
@@ -1879,18 +1893,86 @@ Print the scripts available for cluster ID 1:
 
 	$ s9s script --tree --cluster-id=1
 
+s9s account
+````````````
+
+Manage database users and accounts.
+
+**Usage**
+
+.. code-block:: bash
+
+	s9s account {command} {options}
+
+**Command**
+
+========================================== ===========
+Name, shorthand                            Description
+========================================== ===========
+|minus|\ |minus|\ create                   Create a new account on the cluster.
+|minus|\ |minus|\ delete                   Remove the account from the cluster.
+|minus|\ |minus|\ grant                    Grant privileges for the account.
+|minus|\ |minus|\ list                     List the accounts on the cluster.
+|minus|\ |minus|\ privileges=PRIVILEGES    The privileges for the account, in ``DATABASE.[TABLE]:[PRIVILEGES]`` format.
+|minus|\ |minus|\ account=ACCOUNT          The account itself, in ``USERNAME[:PASSWORD][@HOSTNAME]`` format.
+========================================== ===========
+
+**Options**
+
+====================================== ===========
+Name, shorthand                        Description
+====================================== ===========
+|minus|\ |minus|\ cluster-id=ID        The cluster for cluster maintenance.
+|minus|\ |minus|\ batch                No colors on output, no human readable, pure data.
+====================================== ===========
+
+**Examples**
+
+Print all database users for cluster ID 1:
+
+.. code-block:: bash
+
+	$ s9s account --list --cluster-id=1
+
+
+Create a new account with a password and a same database name on the cluster for cluster ID 1:
+
+.. code-block:: bash
+
+	$ s9s account --create --cluster-id=1 --account="myapp:password@localhost" --with-database
+	Account 'myapp' created.
+	Database 'myapp' created.
+	Access for 'myapp' to 'myapp' granted.
+	
+Create a new account and granting certain access rights on the specified database that can be found on the cluster.
+
+.. code-block:: bash
+
+	$ s9s account \
+		--create \
+		--cluster-id=1 \
+		--account="myapp:password" \
+		--privileges="mydatabase.*:INSERT,UPDATE" \
+		--batch
+
+Delete an account named joe from the cluster:
+
+.. code-block:: bash
+
+	$ s9s account --delete --cluster-id=1 --account="joe"
+
 
 Limitations
-````````````
++++++++++++
 
 Currently the s9s command line tool has a user management module that is not yet fully integrated with ClusterControl UI and ClusterControl Controller. For example, there is no RBAC (Role-Based Access Control) for a user (see Setup and Configuration how to create a user). This means that any user created to be used with the s9s command line tool has a full access to all clusters managed by the ClusterControl server.
 
 Users created by the command line client will be shown in Job Messages, but it is not possible to use this user to authenticate and login from the UI. Thus, the users created from the command line client are all super admins.
 
 Reporting Issues
-````````````````
+++++++++++++++++++
 
-If you would encounter issues, have questions, or have any features you would like to see included, please create an issue on https://github.com/severalnines/s9s-tools/issues .
+If you encounter issues, have questions, or have any features you would like to see included, please create an issue on https://github.com/severalnines/s9s-tools/issues .
 
 .. rubric:: Footnotes
 

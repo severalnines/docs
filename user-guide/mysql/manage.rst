@@ -2,7 +2,7 @@ Manage
 -------
 
 Hosts
-``````
++++++
 
 Lists of hosts being managed by ClusterControl for the specific cluster. This includes:
 
@@ -25,9 +25,9 @@ To remove a host, just select the host and click on the *Remove* button.
 .. Attention:: We strongly recommend users to avoid removing node from this page if it still holds a role inside ClusterControl.
 
 Configurations
-``````````````
++++++++++++++++
 
-Manage the configuration files of your database, HAProxy and Garbd nodes. For MySQL database, changes can be persisted to database variables across one node or a group of nodes at once, dynamic variables are changed directly without a restart.
+Manages the configuration files of your database, HAProxy and Garbd nodes. For MySQL database, changes can be persisted to database variables across one node or a group of nodes at once, dynamic variables are changed directly without a restart.
 
 .. Note:: ClusterControl does not store configuration changes history so there is no versioning at the moment. Only one version is exist at one time. It imports the latest configuration files every 30 minutes and overwrites it in CMON database. This limitation will be improved in the upcoming release where ClusterControl shall support configuration versioning with dynamic import interval.
 
@@ -47,7 +47,7 @@ Manage the configuration files of your database, HAProxy and Garbd nodes. For My
 .. Attention:: If you change a global system variable, the value is remembered and used ONLY for new connections.
 
 Base Template Files
-...................
+````````````````````
 
 All services configured by ClusterControl use a base configuration template available under ``/usr/share/cmon/templates`` on the ClusterControl node. The following are template files provided by ClusterControl:
 
@@ -83,9 +83,9 @@ proxysql_template.cnf    ProxySQL configuration template.
 ======================== ===========
 
 Dynamic Variables
-.................
+``````````````````
 
-There are a number of configuration variables configurable dynamically by ClusterControl. These variables are represented with a capital letter enclosed by at sign ‘@’, for example ``@DATADIR@``. The following shows the list of variables supported by ClusterControl for MySQL-based clusters:
+There are a number of configuration variables which are configurable dynamically by ClusterControl. These variables are represented with a capital letter enclosed by at sign ‘@’, for example ``@DATADIR@``. The following shows the list of variables supported by ClusterControl for MySQL-based clusters:
 
 ============================ ==============
 Variable                     Description
@@ -120,12 +120,12 @@ Variable                     Description
 ============================ ==============
 
 Load Balancer
-``````````````
+++++++++++++++
 
-Manage deployment of load balancers (HAProxy, ProxySQL and MaxScale), virtual IP address (Keepalived) and Garbd. For Galera Cluster, it is also possible to add Galera arbitrator daemon (Garbd) through this interface. You can monitor the status of the job under *ClusterControl > Activity > Jobs*.
+Manages deployment of load balancers (HAProxy, ProxySQL and MaxScale), virtual IP address (Keepalived) and Garbd. For Galera Cluster, it is also possible to add Galera arbitrator daemon (Garbd) through this interface.
 
 ProxySQL
-.........
+````````
 
 Introduced in v1.4.0 and exclusive for MySQL-based clusters. By default, ClusterControl deploys ProxySQL in read/write split mode - your read-only traffic will be sent to slaves while your writes will be sent to a writable master by creating two host groups. ProxySQL will also work together with the new automatic failover mechanism added in ClusterControl 1.4.0 - once failover happens, ProxySQL will detect the new writable master and route writes to it. It all happens automatically, without any user intervention.
 
@@ -236,7 +236,7 @@ If you already have ProxySQL installed in your setup, you can easily import it i
 	- Password for *Administration User*.
 
 HAProxy
-.......
+````````
 
 Installs and configures an :term:`HAProxy` instance. ClusterControl will automatically install and configure HAProxy, install ``mysqlcheck`` script (to report the MySQL healthiness) on each of database nodes as part of xinetd service and start the HAProxy service. Once the installation is complete, MySQL will listen on *Listen Port* (3307 by default) on the configured node.
 
@@ -327,7 +327,7 @@ Import HAProxy
 * **Admin User**
 	- Admin username to access HAProxy statistic page. See `stats auth <http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#4-stats%20auth>`_.
 
-.. Note:: You need to have an admin user/password set in HAProxy configuration otherwise you will not see any HAProxy stats.
+.. Note:: You will need an admin user/password set in HAProxy configuration otherwise you will not see any HAProxy stats.
 	
 * **Admin Password**
 	- Password for *Admin User*. See `stats auth <http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#4-stats%20auth>`_.
@@ -347,7 +347,7 @@ Import HAProxy
 	stats socket /var/run/haproxy.socket user haproxy group haproxy mode 600 level
 
 Keepalived
-..........
+``````````
 
 :term:`Keepalived` requires two HAProxy nodes or two or more ProxySQL instances in order to provide virtual IP address failover. By default, this IP address will be assigned to instance 'Keepalived 1'. If the node goes down, the IP address will be automatically failover to 'Keepalived 2' accordingly.
 
@@ -391,7 +391,7 @@ Import Keepalived
 	- Starts the import of Keepalived job.
 
 Garbd
-.....
+``````
 
 Exclusive for Galera Cluster. Galera arbitrator daemon (:term:`garbd`) can be installed to avoid network partitioning or split-brain scenarios.
 
@@ -423,7 +423,7 @@ Import Garbd
 	- Starts the garbd import job.
 
 MaxScale
-........
+````````
 
 MaxScale is an intelligent proxy that allows forwarding of database statements to one or more database servers using complex rules, a semantic understanding of the database statements and the roles of the various servers within the backend cluster of databases.
 
@@ -432,7 +432,7 @@ You can deploy or import existing MaxScale node as a load balancer and query rou
 * RW - Implements a read-write split access.
 * RR - Implements round-robin access.
 
-To remove MaxScale, go to *ClusterControl > Nodes > MaxScale node* and click on the '-' icon next to it. We have published a blog post with deployment example in `this blog post <http://severalnines.com/blog/how-deploy-and-manage-maxscale-using-clustercontrol>`_.
+To remove MaxScale, go to *ClusterControl > Nodes > MaxScale node* and click on the '-' icon next to it. We have published a blog post with deployment example in this blog post, `How to Deploy and Manage MaxScale using ClusterControl <http://severalnines.com/blog/how-deploy-and-manage-maxscale-using-clustercontrol>`_.
 
 Deploy MaxScale 
 ''''''''''''''''
@@ -475,9 +475,7 @@ Use this wizard to install MaxScale as MySQL load balancer.
 Import MaxScale
 '''''''''''''''
 
-If you already have MaxScale installed in your setup, you can easily import it into ClusterControl to benefit from health monitoring and access to MaxAdmin - MaxScale’s CLI from the same interface you use to manage the database nodes.
-
-The only requirement is to have passwordless SSH configured between ClusterControl node and host where MaxScale is running.
+If you already have MaxScale installed in your setup, you can easily import it into ClusterControl to benefit from health monitoring and access to MaxAdmin - MaxScale’s CLI from the same interface you use to manage the database nodes. The only requirement is to have passwordless SSH configured between ClusterControl node and host where MaxScale is running.
 
 * **MaxScale Address**
 	- IP address of the existing MaxScale server.
@@ -487,9 +485,9 @@ The only requirement is to have passwordless SSH configured between ClusterContr
 	
 
 Processes
-`````````
+++++++++++
 
-Configures ClusterControl to monitor external processes that are not part of the cluster, e.g. a web server or an application server. ClusterControl will actively monitor these processes and make sure that they are always up and running by executing the check expression command.
+Manages external processes that are not part of the cluster, e.g. a web server or an application server. ClusterControl will actively monitor these processes and make sure that they are always up and running by executing the check expression command.
 
 To add a new process to be monitored by ClusterControl, click on *Add Custom Managed Process*.
 
@@ -497,62 +495,75 @@ To add a new process to be monitored by ClusterControl, click on *Add Custom Man
 	- Select the managed host.
 
 * **Process Name**
-	- Enter the process name.
+	- Enter the process name. E.g: "Apache 2".
 
 * **Start Command**
-	- OS command to start the process.
+	- OS command to start the process. E.g: "/usr/sbin/apache2 -DFOREGROUND".
 
 * **Pidfile**
-	- Full path to the process identifier file.
+	- Full path to the process identifier file. E.g: "/var/run/apache2/apache2.pid".
 
 * **GREP Expression**
-	- OS command to check the existence of the process.
+	- OS command to check the existence of the process. The command must return 0 for true, and everything else for false. E.g: "pidof apache2".
 
 * **Remove**
-	- Remove the managed process from the list of processes managed by ClusterControl.
+	- Removes the managed process from the list of processes managed by ClusterControl.
 
 * **Deactivate**
-	- Disable the managed process.
+	- Disables the selected process.
 
 Schemas and Users
-``````````````````
++++++++++++++++++
 
-ClusterControl provides a simple interface to manage database schemas and privileges. All of the changes are automatically synced to all database nodes in the cluster.
+Manages database schemas and users' privileges. 
 
 Users
-.....
-Provides MySQL user management interface for this cluster. Users and privileges can be set directly and retrieved from the cluster so ClusterControl is always in sync with the managed MySQL databases. Users can be created across more than one cluster at once.
+``````
 
-You can choose individual node by clicking on the respective node or all nodes in the cluster by clicking on the respective cluster in the side menu.
+Shows a summary of MySQL user and privileges for the cluster. All of the changes are automatically synced to all database nodes in the cluster. For master-slave setup, ClusterControl will create the schema and user on the active master.
 
-Active Accounts
-'''''''''''''''
-Shows all active accounts across clusters, which are currently active or were connected since the last server restart.
+Click on *Edit* to update the existing user or *Drop User* to remove the existing user. Click on *Create New User* to open the user creation wizard:
 
-Inactive Accounts
-'''''''''''''''''
+* **Username**
+	- MySQL username.
+
+* **Password**
+	- Password for *Username*. Minimum requirement is 4 characters.
+
+* **Hostname**
+	- Hostname or IP address of the user or client. Wildcard (%) is permitted.
+
+* **Max Queries Per Hour**
+	- Available if you click *Show Advanced Options*. Maximum queries this user can perform in an hour. Default is 0 (unlimited).
+
+* **Max Updated Per Hour**
+	- Available if you click *Show Advanced Options*. Maximum update operations this user can perform in an hour. Default is 0 (unlimited).
+
+* **Max Connections Per Hour**
+	- Available if you click *Show Advanced Options*. Maximum connections allowed for this user in an hour. Default is 0 (unlimited).
+
+* **Max User Connections**
+	- Available if you click *Show Advanced Options*. Maximum connections allowed for this user. Default is 0 (unlimited).
+
+* **Requires SSL**
+	- Available if you click *Show Advanced Options*. Toggle on the option if this user must be authenticated using SSL. Default is false.
+
+* **Privileges**
+	- Specify the privilege for this user. If the "privileges" text box is active, it will list out all possible privileges on the server.
+	- Specify the database or table name. It can be in '*.*', 'db_name', 'db_name.*' or 'db_name.tbl_name' format.
+
+* **Add Statement**
+	- Add another *Privileges* statement builder entry for this user.
+
+Inactive Users
+````````````````
+
 Shows all accounts across clusters that are not been used since the last server restart. Server must have been running for at least 8 hours to check for inactive accounts.
 
-You can drop particular accounts by clicking at the multiple checkboxes and click 'Drop User' button to initiate the action.
-
-Create Account
-'''''''''''''''
-Creates a new MySQL user for the chosen MySQL node or cluster. 
-
-================== ============
-Field              Description
-================== ============
-Server             Hostname of the user. Wildcard (%) is permitted.
-Username           Specify the username.
-Password           Specify the password *Username*.
-Verify Password    Re-enter the same password for *Username*.
-All Privileges     Allow all privileges, similar to 'ALL PRIVILEGES' option.
-Database           Specify the database or table name. It can be either in '*.*', 'db_name', 'db_name.*' or 'db_name.tbl_name' format.
-Require SSL        Tick the checkbox if the user must be authenticate using SSL. The checkbox is disabled if you have not configured SSL encryption for MySQL server.
-================== ============
+You can drop particular accounts by clicking the 'Drop User' button to initiate the action.
 
 Import Database Dumpfile
-..........................
+``````````````````````````
 
 Upload the schema and the data files to the selected database node. Currently only mysqldump is supported and must not contain sub-directories. The following formats are supported:
 
@@ -570,7 +581,7 @@ Upload the schema and the data files to the selected database node. Currently on
  
 
 Create Database
-...............
+````````````````
 
 Creates a database in the cluster:
 
@@ -581,17 +592,9 @@ Creates a database in the cluster:
 	- Creates the database. ClusterControl will ensure the database exists on all nodes in the cluster.
 
 Upgrades
-`````````
+++++++++
 
-Performs software upgrade using the software uploaded at *ClusterControl > Manage > Software Packages*. ClusterControl will use the package you specified to perform the upgrade on all active database nodes.
-
-* **Package Name**
-	- Select package to perform the upgrade.
-
-* **Install**
-	- Installs the selected package on the active nodes.
-
-.. Note:: The above two features are not applicable for the vendors that are installed using OS package repository, e.g, Percona XtraDB Cluster and MariaDB Galera Cluster
+Performs minor software upgrade, for example from MySQL 5.7.x to MySQL 5.7.y in rolling upgrade fashion. The job will perform the software upgrade based on what is available on the package repository for the particular vendor.
 
 * **Upgrade**
 	- Upgrades are online and are performed on one node at a time. The node will be stopped, then software will be updated, and then the node will be started again. If a node fails to upgrade, the upgrade process is aborted.
@@ -604,12 +607,12 @@ Performs software upgrade using the software uploaded at *ClusterControl > Manag
 * **Stop/Start**
 	- If an online upgrade using rolling restart is not supported, e.g., if it is a major version upgrade with incompatible changes, you will need to perform an offline stop/start. This will let ClusterControl stop the cluster, perform the upgrade and then restart the cluster with the new version.
 
-For a step-by-step walkthrough of how to perform database software upgrades, please review `this blog post <http://www.severalnines.com/blog/patch-updates-and-new-version-upgrades-your-database-clusters>`_.
+For a step-by-step walkthrough of how to perform database software upgrades, please look at this blog post, `Patch Updates and New Version Upgrades of your Database Clusters <http://www.severalnines.com/blog/patch-updates-and-new-version-upgrades-your-database-clusters>`_.
 
 Custom Advisors
-```````````````
++++++++++++++++
 
-Create threshold based advisors with host or MySQL statistics without needing to write your own JS script (like all the default scripts under "Developer Studio"). The threshold advisor allows you to set threshold to be alerted on if a metric falls below or raises above the threshold and stays there for a specified timeframe.
+Manages threshold-based advisors with host or PostgreSQL statistics without needing to write your own JavaScript script (like all the default scripts under `Developer Studio`_). The threshold advisor allows you to set threshold to be alerted on if a metric falls below or raises above the threshold and stays there for a specified timeframe.
 
 Clicking on 'Create Custom Advisor' and 'Edit Custom Advisor' will open a new dialog, which described as follows:
 
@@ -628,7 +631,7 @@ Clicking on 'Create Custom Advisor' and 'Edit Custom Advisor' will open a new di
 	- Target host(s) in the chosen cluster. You can select individual host or all hosts monitored under this cluster.
 
 Condition
-.........
+``````````
 
 * **If metric**
 	- List of metrics monitored by ClusterControl. Choose one metric to create a threshold condition.
@@ -648,57 +651,50 @@ Condition
 * **Max Values seen for selected period**
 	- ClusterControl provides preview of already recorded data in a graph to help you determine accurate values for timeframe, warning and critical.
 
-Notification Settings
-.....................
+Advisor Description
+````````````````````
 
-Select the notification service configured under *ClusterControl > Settings > Integrations -> 3rd Party Notifications*. This notification service determines what is the endpoint of this advisors once conditions are met. It could be email and/or PagerDuty alert.
-
-Description
-...........
-
-Describe the Advisor and provide instructions on what actions that may be needed if the threshold is triggered.
-
-Available variables:
+Describe the Advisor and provide instructions on what actions that may be needed if the threshold is triggered. Available variables substitutions:
 
 ================= ============
 Variable          Description
 ================= ============
 %CLUSTER%         Selected cluster
 %CONDITION%       Condition
-%CRITICAL_VALUE%  Critical Value
 %DURATION%        Duration
 %HOSTNAME%        Selected host or node
 %METRIC%          Metric
 %METRIC_GROUP%    Group for the selected metric
 %RESOURCE%        Selected resource
 %TYPE%            Type of the custom advisor
+%CRITICAL_VALUE%  Critical Value
 %WARNING_VALUE%   Warning Value
 ================= ============
 
 Developer Studio
-````````````````
+++++++++++++++++
 
-Provides functionality to create Advisors, auto tuners, or “mini programs” right within your web browser based on `ClusterControl DSL (Domain Specific Language) <../../dsl.html>`_. The DSL syntax is based on JavaScript, with extensions to provide access to ClusterControl’s internal data structures and functions. The DSL allows you to execute SQL statements, run shell commands/programs across all your cluster hosts, and retrieve results to be processed for advisors/alerts or any other actions. Developer Studio is a development environment to quickly create, edit, compile, run, test, debug and schedule your JavaScript programs.
+Provides functionality to create Advisors, Auto Tuners, or Mini Programs right within your web browser based on `ClusterControl DSL (Domain Specific Language) <../../dsl.html>`_. The DSL syntax is based on JavaScript, with extensions to provide access to ClusterControl's internal data structures and functions. The DSL allows you to execute SQL statements, run shell commands/programs across all your cluster hosts, and retrieve results to be processed for advisors/alerts or any other actions. Developer Studio is a development environment to quickly create, edit, compile, run, test, debug and schedule your JavaScript programs.
 
 Advisors in ClusterControl are powerful constructs; they provide specific advice on how to address issues in areas such as performance, security, log management, configuration, storage space, etc. They can be anything from simple configuration advice, warning on thresholds or more complex rules for predictions, or even cluster-wide automation tasks based on the state of your servers or databases. 
 
-ClusterControl comes with a set of basic advisors that include rules and alerts on security settings, system checks (NUMA, Disk, CPU), queries, InnoDB, connections, performance schema, Galera configuration, NDB memory usage, and so on. The advisors are open source under an MIT license, and available on `GitHub <https://github.com/severalnines/s9s-advisor-bundle>`_. Through the Developer Studio, it is easy to import new advisors as a JS bundle, or export your own for others to try out.
+ClusterControl comes with a set of basic advisors that include rules and alerts on security settings, system checks (NUMA, Disk, CPU), queries, InnoDB, connections, PERFORMANCE_SCHEMA, configuration, NDB memory usage, and so on. The advisors are open source under MIT license, and publicly available at `GitHub <https://github.com/severalnines/s9s-advisor-bundle>`_. Through the Developer Studio, it is easy to import new advisors as a JS bundle, or export your own for others to try out.
 
 * **New**
-	- Name - Specify the file name including folders if you need. E.g. "shared/helpers/cmon.js" will create all appropriate folders if they don't exist yet.
+	- Name - Specify the file name including folders if you need. E.g. ``shared/helpers/cmon.js`` will create all appropriate folders if they don't exist yet.
 	- File content:
-		- Empty file - Creates a new empty file.
-		- Galera Template - Creates a new file containing skeleton code for Galera monitoring.
-		- Generic MySQL Template - Creates a new file containing skeleton code for generic MySQL monitoring.
+		- Empty file - Create a new empty file.
+		- Template - Create a new file containing skeleton code for monitoring.
+		- Generic MySQL Template - Create a new file containing skeleton code for generic MySQL monitoring.
 
 * **Import**
 	- Imports advisor bundle. Supported format is ``.tar.gz``. See `s9s-advisor-bundle <https://github.com/severalnines/s9s-advisor-bundle>`_.
 
 * **Export**
-	- Exports the advisor's directory to a ``.tar.gz`` file. The exported file can be imported to Developer Studio through *ClusterControl > Manage > Developer Studio > Import* function.
+	- Exports the advisor's directory to a ``.tar.gz`` format. The exported file can be imported to Developer Studio through *ClusterControl > Manage > Developer Studio > Import* function.
 
 * **Advisors**
-	- Opens the Advisor list page. See `Advisors <performance.html#advisors>`_ section.
+	- Opens the Advisor list page. See `Advisors <performance.html#advisors>`_.
 
 * **Save**
 	- Saves the file.
@@ -713,10 +709,12 @@ ClusterControl comes with a set of basic advisors that include rules and alerts 
 	- Compiles the script.
 
 * **Compile and run**
-	- Compiles and runs the script. The output appears under *Message*, *Graph* or *Raw response* tab down below.
-	- The arrow next to the “Compile and Run” button allows us to change settings for a script and, for example, pass some arguments to the ``main()`` function.
+	- Compile and run the script. The output appears under *Message*, *Graph* or *Raw response* tab underneath the editor.
+	- The arrow next to the "Compile and Run" button allows us to change settings for a script and for example, pass some arguments to the ``main()`` function.
 
 * **Schedule Advisor**
 	- Schedules the script as an advisor.
 
-We have covered this in details `in this blog post <https://severalnines.com/blog/clustercontrol-developer-studio-write-your-first-database-advisor>`_. For full documentation on ClusterControl Domain Specific Language, see `ClusterControl DSL <../../dsl.html>`_ section.
+.. seealso:: `Introducing ClusterControl Developer Studio and Creating your own Advisors in JavaScript <https://severalnines.com/blog/introducing-clustercontrol-developer-studio-and-creating-your-own-advisors-javascript>`_.
+
+For full documentation on ClusterControl Domain Specific Language, see `ClusterControl DSL <../../dsl.html>`_.

@@ -6,16 +6,16 @@ Query Monitoring
 Provides summary of query processing across all nodes in the cluster.
 
 Top Queries
-````````````
++++++++++++
 
 This is an aggregated list of all your top queries running on all the nodes of your database cluster. The list can be ordered by Occurrence or Execution Time, to show the most common or slowest queries respectively. It is also possible to filter and review queries from one particular node. 
 
 You can see the explain output of your queries by selecting a query in the list. Review the *Settings > Query Monitor* to configure what queries to log (e.g. only log queries that take more than 1 seconds to execute).
 	
 Settings
-''''''''
+````````
 
-Click on the Settings to configure the Query Monitor settings, as explained below:
+Configures the Query Monitor settings, as explained below:
 
 * **Long Query Time**
 	- Collects queries taking longer than Long Query Time seconds, for example:
@@ -27,7 +27,7 @@ Click on the Settings to configure the Query Monitor settings, as explained belo
 		- No - Ignores queries that are not using indexes (will not be accounted for in *ClusterControl > Query Monitor > Query Outliers*).
 
 Top Queries Table
-''''''''''''''''''
+``````````````````
 
 This page is auto-refresh every 30 seconds. You can change the refresh rate by clicking on *Refresh rate* dropdown at top right. The following describes the Top Queries table columns:
 
@@ -60,7 +60,7 @@ This page is auto-refresh every 30 seconds. You can change the refresh rate by c
 		- Relative - Percentage of the query execution time over total time.
 
 Running Queries
-````````````````
+++++++++++++++++
 
 View current running queries on your database nodes similar to ``select * from pg_stat_activity`` command in PostgreSQL. You can stop a running query by selecting to kill the connection that started the query. The process list can be filtered out by host.
 
@@ -91,7 +91,7 @@ This page is auto-refresh every 30 seconds. You can change the refresh rate by c
 		- disabled: This state is reported if track_activities is disabled in this backend.
 
 Query Outliers
-````````````````
++++++++++++++++
 
 Shows queries that are outliers. An outlier is a query taking longer time than the normal query of that type. Use this feature to filter out the outliers for a certain time period. After a number of samples and when ClusterControl has had enough stats, it can determine if latency is higher than normal (2 sigma + ``average_query_time``) then it is an outlier, and will be added into the *Query Outlier*.
 

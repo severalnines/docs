@@ -1,31 +1,28 @@
 Settings
 --------
 
-Provides global settings for ClusterControl.
+Settings for the cluster including general settings, mail notifications and thresholds.
+
+CMON Settings
+++++++++++++++
 
 General Settings
-````````````````
-
-Cluster Settings
-'''''''''''''''''
+``````````````````
 
 * **Cluster Name**
 	- Cluster name. This name will appear in the database cluster list and database cluster summary.
 
 * **Staging Area**
-	- The staging area is a directory (created automatically) to store intermediate data, such as mysqldumps, binaries, RPMs used in e.g installations/upgrades and automatic scaling.
+	- The staging area is a directory (created automatically) to store intermediate data, such as dump files, binaries, packages used in installations, upgrades or scaling. The staging area is automatically cleaned, but should be big enough to hold dump files of your entire database.
 
 * **Sudo**
-	- Sudo password if running as sudoers.
+	- Sudo command password (if *SSH User** is not root) if running as sudoers. Change in CMON configuration file under ``sudo``.
 
 * **SSH User**
-	- Read-only. The user that can SSH from the ClusterControl Server to the other nodes without password. Change in CMON configuration file under ``os_user`` or osuser.
+	- Read-only. The user that can SSH from the ClusterControl Server to the other nodes without password. Change in CMON configuration file under ``os_user`` or ``osuser``.
 
 * **SSH Identity**
 	- Read-only. Change in CMON configuration file under ``ssh_identity``.
-
-* **SSH Options**
-	- Read-only. SSH options for the SSH connections. Change in CMON configuration file under ``ssh_opts``.
 
 * **History**
 	- Number of days you would like to keep historic data. Ensure you have enough disk space on the ClusterControl server if you want to store historic data.
@@ -34,22 +31,21 @@ Cluster Settings
 	- How many minutes between automatic MongoDB error log collection retrieval.
 
 Configure Mailserver
-''''''''''''''''''''
+````````````````````
 
-Configure how email notifications are to be sent. ClusterControl supports two options for sending email notifications, either using local mail commands via local MTA (Sendmail/Postfix/Exim) or using an external SMTP server. Make sure the local MTA is installed and verified with *Test Email* button.
-
+Configures how email notifications should be sent out. ClusterControl supports two options for sending email notifications, either using local mail commands via local MTA (Sendmail/Postfix/Exim) or using an external SMTP server. Make sure the local MTA is installed and verified using *Test Email* button.
 
 Option 1: Sendmail
-..................
+''''''''''''''''''
 
-* **Use 'sendmail'**
-	- Use this option to enable sendmail to send notifications. Instructions on how to set it up can be found `here <http://support.severalnines.com/entries/22897447-setting-up-mail-notifications>`_.
+* **Use sendmail**
+	- Use this option to enable sendmail to send notifications. Instructions on how to set up Sendmail can be found in this guide, `Setting up mail notifications <http://support.severalnines.com/entries/22897447-setting-up-mail-notifications>`_. If you want to use Postfix, see `Using Postfix`_.
 
 * **Reply-to/From**
-	- Specify the sender of the email. This will appear in the ‘From’ field of mail header.
+	- Specify the sender of the email. This will appear in the 'From' field of mail header.
 
 Option 2: SMTP Server (Recommended)
-...................................
+''''''''''''''''''''''''''''''''''''
 
 * **SMTP Server**
 	- SMTP mail server address that you are going to use to send email.
@@ -67,13 +63,13 @@ Option 2: SMTP Server (Recommended)
 	- SMTP password. Leave empty if no authentication required.
 
 * **Reply-to/From**
-	- Specify the sender of the email. This will appear in the ‘From’ field of mail header.
+	- Specify the sender of the email. This will appear in the 'From' field of mail header.
 
 * **Test Email**
-	- Test the mail settings. If successful, an email will be sent to all users in the *ClusterControl > Settings > General Settings > Cluster Settings > Email Notification*. Do not forget to add a recipient before pressing this button.
+	- Test the mail settings. If successful, an email will be sent to all users in the `Email Notification Settings`_. Do not forget to add a recipient before pressing this button.
 
 Using Postfix
-.............
+''''''''''''''''''
 
 Many of Linux distributions come with Sendmail as default MTA. To replace Sendmail and use other MTA, e.g Postfix, you just need to uninstall Sendmail, install Postfix and start the service. Following example shows commands that need to be executed on ClusterControl node as root user for RHEL:
 
@@ -85,10 +81,10 @@ Many of Linux distributions come with Sendmail as default MTA. To replace Sendma
 	$ chkconfig postfix on 
 	$ service postfix start
 
-Email Notification
-''''''''''''''''''
+Email Notification Settings
+````````````````````````````
 
-Configures email notifications for alarms generated for your database cluster.
+Configures email notification settings for alarms generated for the database cluster.
 
 * **Send email to**
 	- Recipient email address.
@@ -112,7 +108,7 @@ Configures email notifications for alarms generated for your database cluster.
 	Cluster                Cluster related messages, e.g cluster failed.
 	ClusterConfiguration   Cluster configuration messages, e.g software configuration messages.
 	ClusterRecovery        Recovery messages like cluster or node recovery failures.
-	Node                   Message related to nodes, e.g node disconnected, missing GRANT, failed to start HAproxy, failed to start MongoDB cluster nodes.
+	Node                   Message related to nodes, e.g node disconnected, failed to start MongoDB cluster nodes.
 	Host                   Host related messages, e.g CPU/disk/RAM/swap alarms.
 	DbHealth               Database health related messages, e.g memory usage of MongoDB servers, connections.
 	DbPerformance          Alarms for long running transactions and deadlocks
@@ -131,31 +127,14 @@ Configures email notifications for alarms generated for your database cluster.
 	======= ===========
 
 Version
-''''''''
+````````
 
-View the database server, vendor, operating system distribution and ClusterControl version installed. Check the Check for updates button to get notified when a new ClusterControl version is released. New versions are made available from `our download site <http://www.severalnines.com/downloads/cmon>`_ and `Severalnines repository <../../installation.html#severalnines-repository>`_.
-
-To upgrade to the latest version, see `Upgrading ClusterControl section <../../administration.html#upgrading-clustercontrol>`_.
-
-Subscription
-````````````
-
-For users with a valid subscription (Standard, Pro, Enterprise), enter your license information here to enable additional features based on the subscription. 
-
-This functionality is also globally accessible at *ClusterControl > Settings > Subscription*. Following screenshot shows example on filing up the license information:
-
-.. image:: img/subscription.png
-
-.. Attention:: Make sure you copy the subscription information as they are, with no leading/trailing spaces.
-
-The license key is validated during runtime. Reload your web browser after registering the license.
-
-.. Note:: When the license expires, ClusterControl defaults back to the Community Edition. For features comparison, please refer to `ClusterControl product page <http://www.severalnines.com/pricing>`_.
+Lists out the version of ClusterControl components installed on the node.
 
 Thresholds
-``````````
+++++++++++
 
-Provides thresholds for warnings and criticals event. Thresholds specify the threshold level at which an alarm will be triggered and notification will be sent via email to the list of recipients configured in the `Email Notification`_. Set your alarm thresholds for:
+Provides thresholds for warnings and criticals event. Thresholds specify the threshold level at which an alarm will be triggered and notification will be sent via email to the list of recipients configured in the `Email Notification Settings`_. Set your alarm thresholds for:
 
 * CPU utilization
 * RAM utilization
@@ -168,11 +147,10 @@ Warning   Sets your warning threshold in percentage for specific event.
 Critical  Sets your critical threshold in percentage for specific event.
 ========= ===========
 	
-		
 Replication Lag
-````````````````
+++++++++++++++++
 
-Manages the replication lag and statistic collection interval.
+Manages the replication lag in replica set and statistic collection interval.
 
 * **Max Replication Lag**
 	- Maximum replication lag in seconds before ClusterControl raises an alarm.

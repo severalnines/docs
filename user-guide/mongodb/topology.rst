@@ -5,7 +5,7 @@ Topology
 
 Shows all the different nodes that form part of your database cluster (whether database nodes, load balancers or arbitrators), as well as the connections between them. All nodes are grouped together under two major categories - Load Balancers and DB Nodes. Within the DB Nodes area, the arrow represents the replication flow from one node to another.
 
-.. image:: img/cc_topology_151.png
+.. image:: img/cc_topology_mongodb.png
    :align: center
 
 The nodes, connections, and their statuses are discovered by ClusterControl. Since ClusterControl is continuously monitoring the nodes and keeps state information, any changes in the topology are reflected in the web interface. If a node has failed, it will be shown as offline.

@@ -1,5 +1,3 @@
-.. _cc-mysql:
-
 User Guide for MySQL
 ====================
 
@@ -10,8 +8,9 @@ This user guide covers ClusterControl with MySQL-based clusters, namely:
 	* Percona XtraDB Cluster
 	* MariaDB Galera Cluster
 * MySQL Cluster
-* MySQL replication
-* MySQL single instance
+* MySQL/MariaDB Replication
+* MySQL/MariaDB single instance
+* MySQL Group Replication
 
 Contents:
 

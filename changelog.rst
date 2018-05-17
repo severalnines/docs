@@ -8,8 +8,56 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.6.0
 -----------------
 
+Maintenance Release: May 7th, 2018
++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-notifications-1.6.0-88
+	- clustercontrol-cloud-1.6.0-115
+
+* Cloud:
+	- Fix an issue with the security group on AWS preventing cloud deployment to work if ClusterControl was installed in the same VPC.
+	- Bump version of clustercontrol-notifications to 1.6.0.
+
+Maintenance Release: May 4th, 2018
+++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.6.0-4699
+
+* UI:
+	- Security Vulnerability: Fixed an issue where it was possible to perform a XSS attack.
+	- Cloud Deployments: Fixed a missing validation of the SSH Key.
+	- LDAP: Add support to get the user group from a 'memberof' attribute
+
+Maintenance Release: May 2nd, 2018
+++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.6.0-2514
+	- clustercontrol-1.6.0-4682
+	- clustercontrol-cmonapi-1.6.0-310
+
+* UI:
+	- LDAP: Fix an issue preventing users to login with anything else than an email address.
+	- Changed default basedir to ``/usr`` for MySQL Cluster (NDB) import.
+	- Fix for an issue where a failed ProxySQL node was added and then not removable.
+	- Fix for and issue with a blank page with DB User Management when default anonymous users (test users) are detected.
+	- Add validation when trying to use reserved words with PostgreSQL deployments.
+	- Tune the custom advisor dialog for lower resolution screens.
+	- Fix a regression preventing error reports from being created from the frontend.
+
+* Controller:
+	- NDB Cluster: SELinux settings were not checked correctly.
+	- NDB Cluster: The Install Software option was not respected.
+	- NDB Cluster: Fixed an issue detecting disk space and calculating the size of the REDO log.
+	- Postgres: Add Replication Slave will fail if there is an existing Postgres server running on the node, and also check if the psql client is available.
+	- PostgreSQL: Forbid using reserved SQL keywords as PostgreSQL username (as it is an identifier there which can not be a reserved keyword).
+	- Backup (xtrabackup): Fixed an issue where an Incremental backup could be created without having a Full backup. Now the following will happen: If there is no Full backup, the Incremental backup will be executed as a Full backup.
+	- MaxScale: Version 2.2.x support.
+
 Initial Release: April 17th, 2018
-````````````````````````````````````
+++++++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-controller-1.6.0-2493
@@ -62,7 +110,7 @@ Changes in v1.5.1
 -----------------
 
 Maintenance Release: April 9th, 2018
-````````````````````````````````````
+++++++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-controller-1.5.1-2467 
@@ -81,7 +129,7 @@ Maintenance Release: April 9th, 2018
 
 
 Maintenance Release: March 7th, 2018
-````````````````````````````````````
+++++++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-controller-1.5.1-2411
@@ -94,7 +142,7 @@ Maintenance Release: March 7th, 2018
 	- Fixed an issue when importing keepalived.
 
 Maintenance Release: March 6th, 2018
-````````````````````````````````````
+++++++++++++++++++++++++++++++++++++
 
 * Build: 
 	- clustercontrol-controller-1.5.1-2409
@@ -113,7 +161,7 @@ Maintenance Release: March 6th, 2018
 	- Improved handling of saving email notification settings.
 
 Maintenance Release: Feb 24th, 2018
-````````````````````````````````````
+++++++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-controller-1.5.1-2390
@@ -141,7 +189,7 @@ Maintenance Release: Feb 24th, 2018
 	- MongoDB: Add Shards dialog got stuck when entering a hostname (SSH check never terminated).
 
 Maintenance Release: Feb 6th, 2018
-````````````````````````````````````
+++++++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-controller-1.5.1-2362
@@ -159,7 +207,7 @@ Maintenance Release: Feb 6th, 2018
 	- MongoDB: Fixed a problem specifying hostnames when performing "Add Shard".
 
 Maintenance Release: Jan 29th, 2018
-````````````````````````````````````
+++++++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-controller-1.5.1-2346
@@ -173,7 +221,7 @@ Maintenance Release: Jan 29th, 2018
 
 
 Maintenance Release: Jan 23rd, 2018
-````````````````````````````````````
+++++++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-1.5.1-4335
@@ -205,7 +253,7 @@ Maintenance Release: Jan 23rd, 2018
 	- Fix schedule backups to work even when the verify backup option is enabled.
 
 Initial Release: Dec 22nd, 2017
-````````````````````````````````
+++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-1.5.1-4265
@@ -250,7 +298,7 @@ Changes in v1.5.0
 -----------------
 
 Maintenance Release: Dec 12th, 2017
-````````````````````````````````````
+++++++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-controller-1.5.0-2273
@@ -268,7 +316,7 @@ Maintenance Release: Dec 12th, 2017
 	- Developer Studio: Better error messages for the ``host::system(..)`` call.
 
 Maintenance Release: Dec 11th, 2017
-````````````````````````````````````
+++++++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-1.5.0-4183
@@ -282,7 +330,7 @@ Maintenance Release: Dec 11th, 2017
 
 
 Maintenance Release: Dec 4th, 2017
-````````````````````````````````````
+++++++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-controller-1.5.0-2249
@@ -299,7 +347,7 @@ Maintenance Release: Dec 4th, 2017
 	- Fix to always send out operational reports by email.
 
 Maintenance Release: Nov 17th, 2017
-````````````````````````````````````
+++++++++++++++++++++++++++++++++++++
 * Build:
 	- clustercontrol-controller-1.5.0-2230
 
@@ -307,7 +355,7 @@ Maintenance Release: Nov 17th, 2017
 	- A fix to upgrade openssl if deemed necessary.
 
 Initial Release: Nov 13th, 2017
-````````````````````````````````
+++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-1.5.0-4088
@@ -367,7 +415,7 @@ Changes in v1.4.2
 -----------------
 
 Patch Release: Oct 30th, 2017
-``````````````````````````````
+++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-controller-1.4.2-2189
@@ -378,7 +426,7 @@ Patch Release: Oct 30th, 2017
 	- Debian Jessie (Debian 9) support.
 
 Patch Release: Oct 25th, 2017
-``````````````````````````````
+++++++++++++++++++++++++++++++
 
 * Build: 
 	- clustercontrol-1.4.2-3958
@@ -407,7 +455,7 @@ Patch Release: Oct 25th, 2017
 	- Query Monitor: Renamed Query Histogram to Query Outliers to match what it actually is.
 
 Patch Release: Oct 3rd, 2017
-`````````````````````````````
+++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-controller-1.4.2-2161
@@ -422,7 +470,7 @@ Patch Release: Oct 3rd, 2017
 	- Galera: Fix advisor to handle ``wsrep_cluster_address`` arguments
 
 Patch Release: Oct 3rd, 2017
-`````````````````````````````
+++++++++++++++++++++++++++++
 
 * Build: 
 	- clustercontrol-notifications-1.4.2-62
@@ -433,7 +481,7 @@ Patch Release: Oct 3rd, 2017
 	- System V Init - Prevent/disable the 'cmon-ssh' process to start (by cron or manually) when ``<webroot>/clustercontrol/bootstrap.php`` has set ``define('SSH_ENABLED', false);``.
 
 Patch Release: Sept 11th, 2017
-````````````````````````````````
+++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-1.4.2-3699
@@ -453,7 +501,7 @@ Patch Release: Sept 11th, 2017
 	- Minor fix to backup scheduling when using advanced cron format.
 
 Patch Release: August 25th, 2017
-````````````````````````````````
+++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-controller-1.4.2-2063
@@ -463,7 +511,7 @@ Patch Release: August 25th, 2017
 	- Alarms: Possibility to disable the SwapV2 alarms (set ``swap_inout_period=0`` in cmon_X.cnf)
 
 Patch Release: August 24th, 2017
-````````````````````````````````
+++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-1.4.2-3629
@@ -472,7 +520,7 @@ Patch Release: August 24th, 2017
 	- Configuration Management: Correctly exclude non DB nodes from drop downs.
 
 Patch Release: August 22nd, 2017
-````````````````````````````````
+++++++++++++++++++++++++++++++++
 
 * Build: 
 	- clustercontrol-1.4.2-3607
@@ -489,7 +537,7 @@ Patch Release: August 22nd, 2017
 	- Replication: Cluster state was not set if node/cluster recovery was disabled.
 
 Patch Release: August 14th, 2017
-````````````````````````````````
+++++++++++++++++++++++++++++++++
 * Build: 
 	- clustercontrol-1.4.2-3574
 	- clustercontrol-controller-1.4.2-2045
@@ -514,7 +562,7 @@ Patch Release: August 14th, 2017
 	- Replication: do not recover a user shutdown node
 
 Patch Release: August 1st, 2017
-```````````````````````````````
+++++++++++++++++++++++++++++++++
 
 * Build: 
 	- clustercontrol-1.4.2-3538
@@ -524,7 +572,7 @@ Patch Release: August 1st, 2017
 	- Fix LDAP regression with Active Directory and "samba account".
 
 Patch Release: July 31st, 2017
-````````````````````````````````
+++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-1.4.2-3531
@@ -535,7 +583,7 @@ Patch Release: July 31st, 2017
 	- Fix to show all databases for Group Replication backups.
 
 Patch Release: July 27th, 2017
-``````````````````````````````````
+++++++++++++++++++++++++++++++++
 * Build:
 	- clustercontrol-ssh-1.4.2-26
 
@@ -543,7 +591,7 @@ Patch Release: July 27th, 2017
 	- Fix not fatal duplicated symlink error creation at post-installation.
 
 Patch Release: July 24th, 2017
-``````````````````````````````````
+++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-1.4.2-3505
@@ -565,7 +613,7 @@ Patch Release: July 24th, 2017
 	- Remove execution flag for systemd service files for cmon-events and cmon-ssh.
 
 Patch Release: July 11th, 2017
-``````````````````````````````````
+++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-3465
@@ -581,7 +629,7 @@ Patch Release: July 11th, 2017
 	- Fix missing sudo password if it was set when verifying/checking a host with deployment/add nodes.
 
 Patch Release: July 4th, 2017
-``````````````````````````````````
+++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-controller-1981
@@ -609,7 +657,7 @@ Patch Release: July 4th, 2017
 		- Rolling-restart could fail due to an old value of the node's cluster size. Collect the wsrep variables before checking the cluster size and this is now done in a time controlled loop.
 
 Initial Release: June 21st, 2017
-``````````````````````````````````
+++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-1.4.2-3421
@@ -658,7 +706,7 @@ Changes in v1.4.1
 ------------------
 
 Patch Release: June 20th, 2017
-``````````````````````````````````
+++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-1.4.1-3393
@@ -667,7 +715,7 @@ Patch Release: June 20th, 2017
 	- Fix for a build issue on Ubuntu/Debian. 
 
 Patch Release: June 19th, 2017
-``````````````````````````````````
+++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-1.4.1-3384
@@ -679,7 +727,7 @@ Patch Release: June 19th, 2017
 	- 'Add Node' and 'Add Existing Node' now has a data directory input field to change the data directory used for the new node.
 
 Patch Release: May 24th, 2017
-``````````````````````````````````
+++++++++++++++++++++++++++++++++++
 
 * Build: 
 	- clustercontrol-1.4.1-3181
@@ -694,7 +742,7 @@ Patch Release: May 24th, 2017
 	- *Performance -> Status Time Machine* is now deprecated/removed.
 
 Patch Release: May 20th, 2017
-``````````````````````````````````
+++++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-controller-1902
@@ -708,7 +756,7 @@ Patch Release: May 20th, 2017
 	- A fix of ``show_db_users`` and ``show_db_unusued_accounts`` java scripts.
 
 Patch Release: May 12th, 2017
-``````````````````````````````````
+++++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-1.4.1-3121
@@ -735,7 +783,7 @@ Patch Release: May 12th, 2017
 	- Fixed an issue causing not all recipients to be listed under Settings (top menu) -> Email Notifications
 
 Patch Release: April 24th, 2017
-``````````````````````````````````
+++++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-1.4.1-3048
@@ -761,7 +809,7 @@ Patch Release: April 24th, 2017
 	- Fix with MaxScale to show correct list of masters and slaves in the console.
 
 Patch Release: April 12th, 2017
-``````````````````````````````````
+++++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-1.4.1-3002
@@ -791,7 +839,7 @@ Patch Release: April 12th, 2017
 
 
 Initial Release: April 4th, 2017
-``````````````````````````````````
+++++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-1.4.1-2967
@@ -818,7 +866,7 @@ Changes in v1.4.0
 -----------------
 
 Patch Release: March 29th, 2017
-````````````````````````````````
+++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-1.4.0-2912
@@ -832,7 +880,7 @@ Patch Release: March 29th, 2017
 	- Replication: Roles were not updated correctly when autorecovery was disabled.
 
 Patch Release: March 13th, 2017
-````````````````````````````````
+++++++++++++++++++++++++++++++++
 
 * Build: 
 	- clustercontrol-1.4.0-2812
@@ -850,7 +898,7 @@ Patch Release: March 13th, 2017
 	- Syslog logging fix (command line param ``--syslog``) by adding ``ENABLE_SYSLOG=1`` into ``/etc/default/cmon`` file
 
 Patch Release: Feb 28th, 2017
-````````````````````````````````
+++++++++++++++++++++++++++++++++
 
 * Build: 
 	- clustercontrol-1.4.0-2743
@@ -869,7 +917,7 @@ Patch Release: Feb 28th, 2017
 
 
 Patch Release: Feb 15th, 2017
-````````````````````````````````
+++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-1.4.0-2709
@@ -889,7 +937,7 @@ Patch Release: Feb 15th, 2017
 	- Deployment: removed ``--purge`` from ``apt-get remove``, to handle ``/var/lib/mysql`` as a mountpoint.
 
 Patch Release: Feb 8th, 2017
-````````````````````````````````
+++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-1.4.0-2659
@@ -902,7 +950,7 @@ Patch Release: Feb 8th, 2017
 	- New <webdir>/clustercontrol/bootstrap.php variable to control refresh intervals: ``define('STATUS_REFRESH_RATE', 10000);``. Default is now 10s from before 30s.
 
 Patch Release: Feb 5th, 2017
-````````````````````````````````
+++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-controller-1.4.0-1703 
@@ -918,7 +966,7 @@ Patch Release: Feb 5th, 2017
 	- Aborted jobs now have the correct status. 
 
 Patch Release: Jan 24th, 2017
-````````````````````````````````
+++++++++++++++++++++++++++++++++
 * Build:
 	- clustercontrol-1.4.0-2617
 
@@ -929,7 +977,7 @@ Patch Release: Jan 24th, 2017
 	- You can more easily create a SuperAdmin/Root user to manage all your organizations/teams.
 
 Patch Release: Jan 20th, 2017
-````````````````````````````````
+++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-1.4.0-2601
@@ -945,7 +993,7 @@ Patch Release: Jan 20th, 2017
 	- Adding a MySQL Node and having HAProxy caused a problem creating the s9smysqlchk user.
 
 Patch Release: Jan 13th, 2017
-````````````````````````````````
+++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-1.4.0-2585
@@ -954,7 +1002,7 @@ Patch Release: Jan 13th, 2017
 	- Fix for an issue with having clusters from multiple controllers in one UI.
 
 Patch Release: Jan 11th, 2017
-````````````````````````````````
+++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-controller-1.4.0-1651
@@ -965,7 +1013,7 @@ Patch Release: Jan 11th, 2017
 	- Backup: an overlapping backup schedule will fail to execute and the user is prompted to correct the backup schedule.
 
 Patch Release: Jan 3rd, 2017
-````````````````````````````````
+++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-1.4.0-2542
@@ -984,7 +1032,7 @@ Patch Release: Jan 3rd, 2017
 	- Small fix in query monitoring dialog.
 
 Patch Release: Dec 22th, 2016
-````````````````````````````````
+++++++++++++++++++++++++++++++++
 
 * Build: 
 	- clustercontrol-1.4.0-2527
@@ -1006,7 +1054,7 @@ Patch Release: Dec 22th, 2016
 	- Fix for inconsistent password styles.
 
 Initial Release: Dec 12th, 2016
-````````````````````````````````
+++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-1.4.0-2491
@@ -1050,14 +1098,13 @@ Initial Release: Dec 12th, 2016
 	- New header with navigation breadcrumbs.
 	- Activity Viewer showing Cluster Logs/Events. See more fine grained levels of logs and events generated and captured by ClusterControl.
 	- Support for maintenance mode. Put individual nodes into maintenance mode which prevents ClusterControl to raise alarms and notifications during the maintenance period.
-
-.. Attention:: Upload/Download backups to AWS S3 has been temporarily removed.
+	- Upload/Download backups to AWS S3 has been temporarily removed.
 
 Changes in v1.3.2
 -----------------
 
 Path release: Oct 14th, 2016
-````````````````````````````
+++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-1.3.2-2167
@@ -1071,7 +1118,7 @@ Path release: Oct 14th, 2016
 	- Fixes to database growth tables. Enable sorting on database or table columns 
 
 Patch release: Sep 19th, 2016
-``````````````````````````````
+++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-1.3.2-2066
@@ -1090,7 +1137,7 @@ Patch release: Sep 19th, 2016
  
 
 Patch release: Sep 5th, 2016
-``````````````````````````````
+++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-1.3.2-2023
@@ -1106,7 +1153,7 @@ Patch release: Sep 5th, 2016
 	- Fix of a bug that in some situations could cause a node to not be fully removed.
 
 Initial Release: Aug 8th, 2016
-````````````````````````````````
+++++++++++++++++++++++++++++++++
 * Build:
 	- clustercontrol-1.3.2-1910
 	- clustercontrol-cmonapi-1.3.2-226
@@ -1131,7 +1178,7 @@ Changes in v1.3.1
 -----------------
 
 Patch release: Jul 28th, 2016
-``````````````````````````````
+++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-controller-1.3.1-1372
@@ -1143,7 +1190,7 @@ Patch release: Jul 28th, 2016
 	- Recovery job marked as succeed when it is actually failed
 
 Patch release: Jul 5th, 2016
-``````````````````````````````
+++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-1.3.1-1820
@@ -1162,7 +1209,7 @@ Patch release: Jul 5th, 2016
 
 
 Patch Release: Jun 20th, 2016
-````````````````````````````````
+++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-1.3.1-1655
@@ -1178,7 +1225,7 @@ Patch Release: Jun 20th, 2016
 	- Jobs: Fixed a number of issues such as being able to Restart failed jobs
 
 Patch Release: Jun 16th, 2016
-````````````````````````````````
+++++++++++++++++++++++++++++++++
 
 * Build:
 	- clustercontrol-controller-1.3.1-1304
@@ -1191,7 +1238,7 @@ Patch Release: Jun 16th, 2016
 	- Performance -> Database Growth: Fixed a JavaScript error.
 
 Initial Release: May 31st, 2016
-````````````````````````````````
+++++++++++++++++++++++++++++++++
 * Build:
 	- clustercontrol-1.3.1-1562
 	- clustercontrol-controller-1.3.1-1296
@@ -1227,7 +1274,7 @@ Changes in v1.3.0
 -----------------
 
 Patch release: May 9th, 2016
-``````````````````````````````
+++++++++++++++++++++++++++++++
 
 * Build:
     - clustercontrol-controller 1.3.0-1262
@@ -1237,7 +1284,7 @@ Patch release: May 9th, 2016
     - Missing SUPER privilege in Create Cluster causing the Incremental Xtrabackup to fail.
 
 Patch release: May 3rd, 2016
-``````````````````````````````
+++++++++++++++++++++++++++++++
 
 * Build: 
     - clustercontrol-1.3.0-1438
@@ -1251,7 +1298,7 @@ Patch release: May 3rd, 2016
     - Fixed a compatibility issue with xtrabackup 2.2.x
 
 Patch release: May 2nd, 2016
-``````````````````````````````
+++++++++++++++++++++++++++++++
 
 * Build number:
     - clustercontrol-1.3.0-1420
@@ -1272,7 +1319,7 @@ Patch release: May 2nd, 2016
     - Fixed a compatibility issue with xtrabackup 2.1.x.
 
 Patch release: May 25th, 2016
-``````````````````````````````
+++++++++++++++++++++++++++++++
 
 * Build number:
     - clustercontrol-controller 1.3.0-1242
@@ -1281,7 +1328,7 @@ Patch release: May 25th, 2016
     - mysqldump fails for MariaDb 10.x with an erroneous parameter being used.  
 
 Patch release: Apr 24th, 2016
-``````````````````````````````
+++++++++++++++++++++++++++++++
 
 * Build number:
     - clustercontrol-1.3.0-1393
@@ -1299,7 +1346,7 @@ Patch release: Apr 24th, 2016
     - Support for "Install Software" option for Galera Clusters with "Create Database Cluster" and "Create Database Node"
 
 Patch release: Apr 21st, 2016
-``````````````````````````````
+++++++++++++++++++++++++++++++
 
 * Build number: 
     - clustercontrol-1.3.0-1375
@@ -1308,7 +1355,7 @@ Patch release: Apr 21st, 2016
     - Fix broken Add Existing Server/Cluster dialog. 
 
 Patch release: Apr 19th, 2016
-``````````````````````````````
+++++++++++++++++++++++++++++++
 
 * Build number:
     - clustercontrol-controller 1.3.0-1234
@@ -1326,7 +1373,7 @@ Patch release: Apr 19th, 2016
     - Manage-Hosts: Fix Unknown status for HAProxy and Keepalived. 
 
 Initial Release: Apr 18th, 2016
-``````````````````````````````````
+++++++++++++++++++++++++++++++++
 
 * Build number:
     - clustercontrol 1.3.0-1347
@@ -1368,7 +1415,7 @@ Changes in v1.2.12
 ------------------
 
 Patch release: Apr 3rd, 2016
-``````````````````````````````
+++++++++++++++++++++++++++++++
 
 * Build number: 
     - clustercontrol-controller-1.2.12-1201
@@ -1400,7 +1447,7 @@ Patch release: March 20th, 2016
     - MySQL Transaction Log: Pagination issue 
 
 Patch release: March 4th, 2016
-````````````````````````````````
+++++++++++++++++++++++++++++++++
 
 * Build number: 
     - clustercontrol-controller-1.2.12-1158
@@ -1425,7 +1472,7 @@ Patch release: March 4th, 2016
 
 
 Initial Release: Feb 25th, 2016
-````````````````````````````````
+++++++++++++++++++++++++++++++++
 
 * Build number:
 	- clustercontrol-1.2.12-1007
@@ -1655,7 +1702,7 @@ Changes in v1.2.11
 	- You can now add existing running HAProxy and Keepalived instances that have been installed outside of ClusterControl
 	
 Patch release: Oct 23rd, 2015
-``````````````````````````````
+++++++++++++++++++++++++++++++
 
 * Build number:
 	- clustercontrol-1.2.11-826
@@ -1679,7 +1726,7 @@ Patch release: Oct 23rd, 2015
 		- Corrected sampling of wsrep_flow_cntr_sent/recv
 
 Patch release: Nov 2nd, 2015
-``````````````````````````````
+++++++++++++++++++++++++++++++
 
 * Build number:
 	- clustercontrol-1.2.11-842
@@ -1710,7 +1757,7 @@ Patch release: Nov 2nd, 2015
 		- Character set on connection + cmon.tx_deadlock_log, change to use utf8mb4 to properly encode characters in *Performance > Transaction Log* preventing data from being shown. Do ``mysql -ucmon -p -h127.0.0.1 cmon < /usr/share/cmon/cmon_db.sql`` to recreate this table.
 
 Patch release: Nov 6th, 2015
-`````````````````````````````
+++++++++++++++++++++++++++++`
 
 * Build number:
 	- clustercontrol-1.2.11-854

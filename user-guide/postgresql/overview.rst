@@ -1,62 +1,80 @@
 Overview
 --------
 
-Provides summary of all database nodes in the cluster.
+Provides summary of all PostgreSQL nodes in the cluster.
 
 Actions
-```````
++++++++
 
-Provides shortcuts to main cluster functionality. Each of database clusters has its own set of functionality as described below:
+Provides shortcuts to the main cluster functionality. For PostgreSQL Streaming Replication, the action menu consists of:
 
-PostgreSQL (Standalone or Replication)
-''''''''''''''''''''''''''''''''''''''
-
-* **Add Node**
-	- See `Add Node`_ section.
+* **Add Load Balancer**
+	- See `Add Load Balancer <manage.html#load-balancer>`_.
 
 * **Add Replication Slave**
-	- Deploys a replication slave attached to this cluster. Choose one of the Galera node to be a master. See `Add Replication Slave`_.
+	- Deploys a replication slave attached to this cluster. Choose one of the PostgreSQL node to be a master. See `Add Replication Slave`_.
+
+* **Change RPC API Token**
+	- Serves as the authentication string by ClusterControl UI to connect to CMON RPC interface. Each cluster has its own unique token.
+	
+.. Note:: You can retrieve the RPC API Token value directly from respective ``/etc/cmon.d/cmon_{clusterID}.cnf``.
+
+* **Create SSL Encryption**
+	- See `Create SSL Encryption`_.
 
 * **Delete Cluster**
 	- This action will remove the corresponding cluster from ClusterControl supervision and will NOT uninstall the actual database cluster.
-	- If you want to re-add the cluster, you have to use `Add Existing Server/Cluster <../../user-guide/index.html#add-existing-server-cluster>`_.	
+	- If you want to re-add the cluster, you have to use `Import Existing Server/Cluster <../../user-guide/index.html#import-existing-server-cluster>`_.	
 
 * **Deregister Cluster from UI**
-	- Unregister a database cluster from the ClusterControl UI. 
+	- Unregister a database cluster from the ClusterControl UI.
 	- You can still re-register your cluster to ClusterControl at a later stage by using `Cluster Registrations <../../user-guide/index.html#cluster-registrations>`_.
 
-Add Node
-''''''''
+* **Disable SSL Encryption**
+	- Disables SSL encryption for the cluster. This option is only available if you have enabled SSL encryption using *Create SSL Encryption*.
 
-Deploys a new or add existing PostgreSQL standalone database node. To add a new slave, see `Add Replication Slave`_.
+Add Replication Slave
+``````````````````````
 
-Create and add a new DB node
-............................
+PostgreSQL replication slave requires at least a master node. The following must be true for the master:
 
-If you specify a new hostname or IP address, make sure that the node is accessible from ClusterControl node and following conditions are true:
+* At least one master under the same cluster ID
+* Only PostgreSQL 9.x or 10.x is supported
+* Master's PostgreSQL port is accessible by ClusterControl and slaves
 
-* ClusterControl host is able to connect to the target host via passwordless SSH.
-* The target host must use the same operating system distribution with the ClusterControl host.
+For the slave, you would need a separate host or VM, with or without PostgreSQL installed. If you do not have a PostgreSQL installed, and choose ClusterControl to install the PostgreSQL on the slave, ClusterControl will perform the necessary actions to prepare the slave, for example, create a slave user, configure PostgreSQL, start the server and also start the replication. Prior to the deployment, you must perform the following actions:
 
-* **Hostname**
-	- IP address or :term:`FQDN` of the target node. If you already have the host added under *ClusterControl > Manage > Hosts*, you can just choose the host from the dropdown menu.
+* The slave node must be accessible using passwordless SSH from the ClusterControl server
+* PostgreSQL port (default 5432) on the slave is open for connections for at least ClusterControl server and the other members in the cluster.
 
-* **Configuration**
-	- Choose a PostgreSQL configuration template for the new node. The configuration file should be created at *ClusterControl > Manage > Configurations > Template Configuration Files*.
-	
-* **Install Software**
-	- If you already have the database server installed on the target host but not yet configured, you can tell ClusterControl to skip the database installation part by choosing 'No'.
+To prepare the PostgreSQL configuration file for the slave, go to *ClusterControl > Manage > Configurations > Template Configuration files*. Later, specify this template file when adding a slave.
 
-* **Disable Firewall**
-	- Check the box to disable firewall(recommended).
+Add New Replication Slave
+''''''''''''''''''''''''''
 
-* **Disable AppArmor/SELinux**
-	- Check the box to let ClusterControl disable AppArmor (Ubuntu) or SELinux (Redhat/CentOS) if enabled.
+The slave will be setup from a streamed backup using ``pg_basebackup`` from the master to the slave. 
 
-Add an existing DB node
-.......................
+* **Master Server**
+	- Select a master server.
 
-Use this function if you have created a DB node manually and want it to be detected/managed by ClusterControl. ClusterControl will then detect the new DB node as being part of the database group and starts to manage and monitor it as with the rest of the database nodes. Useful if a node has been created outside of ClusterControl e.g, through Puppet, Chef or Ansible.
+* **Slave Server**
+	- Specify the IP address or :term:`FQDN` of the slave node. This node must be accessible from ClusterControl node via passwordless SSH.
+
+* **Do you want to install the Slave server**
+	- Yes - Install PostgreSQL Server packages. It will based on the repository and vendor used by the master. For example, if you are running on PostgreSQL 10.x, ClusterControl will use the same repository to setup the slave.
+
+* **Disable firewall**
+	- Check the box to disable firewall (recommended).
+
+* **Disable SELinux/AppArmor**
+	- Check the box to let ClusterControl disable AppArmor (Ubuntu) or SELinux (RedHat/CentOS) if enabled (recommended).
+
+.. Note:: Existing PostgreSQL server packages will be uninstalled.
+
+Add Existing Replication Slave
+''''''''''''''''''''''''''''''
+
+Add an existing replication slave into ClusterControl. Use this feature if you have added a replication slave manually to your cluster and want it to be detected and managed by ClusterControl. ClusterControl will then detect the new database node as being part of the cluster and starts to manage and monitor it as with the rest of the cluster nodes. Useful if a node has been configured outside of ClusterControl e.g, through Puppet, Chef or Ansible.
 
 * **Hostname**
 	- IP address or :term:`FQDN` of the target node. If you already have the host added under *ClusterControl > Manage > Hosts*, you can just choose the host from the dropdown menu.
@@ -64,28 +82,27 @@ Use this function if you have created a DB node manually and want it to be detec
 * **Port**
 	- PostgreSQL port. Default is 5432.
 
+Create SSL Encryption
+``````````````````````
 
-Add Replication Slave
-'''''''''''''''''''''
+Enable encrypted SSL client-server connections for the database node(s). The same certificate will be used on all nodes. To enable SSL encryption the nodes must be restarted. Select 'Restart Nodes' to perform a rolling restart of the nodes.
 
-PostgreSQL replication slave requires at least a master node.
+* **Create Certificate**
+    - Create a self-signed certificate immediately and use it to setup SSL encryption.
 
-The following must be true for the masters:
+* **Certificate Expiration (days)**
+    - Number of days before the certificate become expired and invalid. Default is 10 years (3650 days).
 
-* At least one master among under the same cluster ID
-* Only PostgreSQL 9.x is supported
-* Master’s PostgreSQL port is accessible by ClusterControl and slaves
+* **Use Certificate**
+    - Choose the certificate and key that generated by `Key Management <../../user-guide/index.html#key-management>`_.
 
-For the slave, you would need a separate host or VM, with or without PostgreSQL installed. If you do not have a PostgreSQL installed, and choose ClusterControl to install the PostgreSQL on the slave, ClusterControl will perform the necessary actions to prepare the slave, for example, create slave user, configure PostgreSQL, start the server and also start the replication. Prior to the deployment, you must perform following actions:
-
-* The slave node must be accessible using passwordless SSH from the ClusterControl server
-* PostgreSQL port (default 5432) on the slave is open for connections.
-
-To prepare the PostgreSQL configuration file for the slave, go to *ClusterControl > Manage > Configurations > Template Configuration files*. Later, specify this template file when adding a slave.
+* **Restart Cluster**
+    - Restart Nodes - Automatically perform rolling restart of the nodes after setting up certificate and key.
+    - Do Not Restart Nodes - Do nothing after setting up certificate and key. User has to perform the server restart manually.
 
 
 Server Load
-````````````
+++++++++++++
 
 The Server Load graph provides overview of aggregated load on your database server.
 
@@ -117,15 +134,15 @@ The Server Load graph provides overview of aggregated load on your database serv
 	- The number of ROLLBACKS statements on the database node.
 
 Custom Dashboard
-````````````````
+++++++++++++++++
 
-Customize your dashboard in the `Overview`_ page by selecting which metrics and graphs to display. For Galera nodes, 2 graphs are configured by default:
+Customize your dashboard in the `Overview`_ page by selecting which metrics and graphs to display. For PostgreSQL nodes, 2 graphs are configured by default:
 
 ====================== ===========
 Dashboard Name         Description
 ====================== ===========
 Server Load            Shows aggregated load on your database node.
-Cache hit ration       Shows aggregated data on overall hit ratios.
+Cache hit ratio        Shows aggregated data on overall hit ratios.
 ====================== ===========
 
 The created custom dashboards will appear as tabs beside *Dash Settings*.
@@ -145,15 +162,12 @@ The created custom dashboards will appear as tabs beside *Dash Settings*.
 .. Note:: You can rearrange dashboard order by drag and drop above.
 
 Hosts/Nodes Statistics
-``````````````````````
+++++++++++++++++++++++
 
-This provides a summary of host and replication-related stats for all nodes. Each database cluster has it’s own set of statistics as explained below:
-
-PostgreSQL single instance or replication
-''''''''''''''''''''''''''''''''''''''''''
+Displays a summary of host and database-related stats for all database nodes.
 
 Standalone Nodes Grid
-.....................
+``````````````````````
 
 * **Hostname**
 	- The PostgreSQL master hostname or IP address.
@@ -165,9 +179,9 @@ Standalone Nodes Grid
 	- Fetch the latest update.
 
 Master Nodes Grid
-..................
+``````````````````
 
-This grid appears if ClusterControl detects the PostgreSQL node (using ``select pg_is_in_recovery()``) returns false.
+This grid appears if ClusterControl detects master PostgreSQL node, where ``select pg_is_in_recovery()`` returns false.
 
 * **Hostname**
 	- The PostgreSQL master hostname or IP address.
@@ -183,9 +197,9 @@ This grid appears if ClusterControl detects the PostgreSQL node (using ``select 
 	- Fetch the latest update.
 
 Slave Nodes Grid
-................
+``````````````````
 
-This grid appears if ClusterControl detects the PostgreSQL node (using ``select pg_is_in_recovery()``) returns true.
+This grid appears if ClusterControl detects any standby PostgreSQL node, where ``select pg_is_in_recovery()`` returns true.
 
 * **Hostname**
 	- The PostgreSQL slave hostname or IP address.
@@ -216,7 +230,7 @@ This grid appears if ClusterControl detects the PostgreSQL node (using ``select 
 	- Fetch the latest update.
 
 Hosts
-`````
+++++++
 
 Shows collected system statistics in a table as below:
 

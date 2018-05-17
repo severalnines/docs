@@ -1,18 +1,15 @@
-.. _installation:
-
 Installation
 ============
 
-This section provides detailed information on how to get ClusterControl installed on your environment. If you are looking for a simpler way to install ClusterControl, please have a look at `Getting Started <getting-started.html>`_ section.
-
+This section provides detailed information on how to get ClusterControl installed on your environment. If you are looking for a simpler way to install ClusterControl, please have a look at `Getting Started <getting-started.html>`_.
 
 Severalnines Repository
 -----------------------
 
-Severalnines provides YUM/APT repositories accessible at http://repo.severalnines.com . Automatic installation procedure (as described in the `Automatic Installation`_ section) automatically configures the ClusterControl node with respective package repository.
+Severalnines provides YUM/APT repositories accessible at http://repo.severalnines.com . Automatic installation procedure (as described in `Automatic Installation`_) automatically configures the ClusterControl node with respective package repository.
 
 YUM repository
-``````````````
+++++++++++++++
 
 1. Manually import the Severalnines repository public key into your RPM keyring:
 
@@ -65,7 +62,7 @@ For nightly build (development release):
 	$ yum search clustercontrol
 
 APT repository
-``````````````
+++++++++++++++
 
 1. Manually add Severalnines repository public key into your APT keyring:
 
@@ -123,11 +120,11 @@ We have a bunch of scripts and tools to automate and simplify the installation p
 
 
 Installer Script (install-cc)
-`````````````````````````````
+++++++++++++++++++++++++++++++
 
-Installer script is the recommended way to install ClusterControl. The script must be downloaded and executed on ClusterControl node, which performs all necessary steps to install and configure ClusterControl's packages and dependencies on that particular host. It also supports offline installation with ``NO_INET=1`` variable exported, however you need to have mirrored repository enabled or MySQL and Apache installed and running on that host beforehand. The script assumes that the host can install all dependencies via operating system repository.
+Installer script is the recommended way to install ClusterControl. The script must be downloaded and executed on ClusterControl node, which performs all necessary steps to install and configure ClusterControl's packages and dependencies on that particular host. It also supports offline installation with ``NO_INET=1`` variable exported, however you need to have mirrored repository enabled or MySQL and Apache installed and running on that host beforehand. See `Offline Installation`_ for details. The script assumes that the host can install all dependencies via operating system repository.
 
-On ClusterControl server, run following commands:
+On ClusterControl server, run the following commands:
 
 .. code-block:: bash
 
@@ -162,7 +159,7 @@ Basically, the installation script will attempt to automate the following tasks:
 After the installation completes, open your web browser to :samp:`http://{ClusterControl_host}/clustercontrol` and create the default admin user by specifying a valid email address and password in the welcome page.
 
 Puppet Module
-`````````````
+++++++++++++++
 
 If you are automating your infrastructure using :term:`Puppet`, we have created a module for this purpose and it is available at `Puppet Forge <https://forge.puppetlabs.com/severalnines/clustercontrol>`_. Installing the module is as easy as:
 
@@ -171,20 +168,20 @@ If you are automating your infrastructure using :term:`Puppet`, we have created 
 	$ puppet module install severalnines-clustercontrol
 
 Requirements
-''''''''''''
+````````````
 
-If you haven’t change the default ``$modulepath``, this module will be installed under ``/etc/puppet/modules/clustercontrol`` on your Puppet master host. This module requires the following criteria to be met:
+If you haven’t changed the default ``$modulepath``, this module will be installed under ``/etc/puppet/modules/clustercontrol`` on your Puppet master host. This module requires the following criteria to be met:
 
 * The node for ClusterControl must be a clean/dedicated host.
-* ClusterControl node must have an internet connection during the deployment. After the deployment, ClusterControl does not need internet access.
+* ClusterControl node must have an internet connection during the deployment. After the deployment completes, ClusterControl does not need internet access to work.
 
 
 Pre-installation
-''''''''''''''''
+``````````````````
 
 ClusterControl requires proper SSH key configuration and a ClusterControl API token. Use the helper script located at ``$modulepath/clustercontrol/files/s9s_helper.sh`` to generate them.
 
-Generate SSH key to be used by ClusterControl to manage your database nodes. Run following command in Puppet master:
+Generate SSH key to be used by ClusterControl to manage your database nodes. Run the following command in Puppet master:
 
 .. code-block:: bash
 
@@ -200,8 +197,9 @@ Then, generate an API token:
 .. Attention:: These two steps are mandatory and just need to run once (unless if you want to intentionally regenerate them). The first command will generate a RSA key (if not exists) to be used by the module and the key must exist in the Puppet master module's directory before the deployment begins.
 
 Installation
-''''''''''''
-Specify the generated token in the node definition similar to example below.
+````````````
+
+Specify the generated token in the node definition similar to the example below.
 
 Example hosts:
 
@@ -225,7 +223,7 @@ Example node definition:
     }
   }
 
-Once deployment is completed, open the ClusterControl web UI at :samp:`https://{ClusterControl_host}/clustercontrol` and create a default admin login. You can now start to add existing database node/cluster, or deploy a new one. Ensure that passwordless SSH is configured properly from ClusterControl node to all DB nodes beforehand.
+After the deployment completes, open ClusterControl UI at :samp:`https://{ClusterControl_host}/clustercontrol` and create a default admin login. You can now start to add existing database node/cluster, or deploy a new one. Ensure that passwordless SSH is configured properly from ClusterControl node to all database nodes beforehand.
 
 To setup passwordless SSH on target database nodes, you can use following definition:
 
@@ -250,10 +248,10 @@ You can either instruct the agent to pull the configuration from the Puppet mast
 
 Or, wait for the Puppet agent service to apply the catalog automatically (depending on the ``runinterval`` value, default is 30 minutes). Once completed, open the ClusterControl UI page at :samp:`http://{ClusterControl_host}/clustercontrol` and create the default admin user and password.
 
-For more example on deployments using Puppet, please refer to `this blog post <http://www.severalnines.com/blog/clustercontrol-module-puppet>`_. For more details on configuration options, please refer to `ClusterControl Puppet Module <https://forge.puppetlabs.com/severalnines/clustercontrol>`_ page.
+For more example on deployments using Puppet, please refer to `Puppet Module for ClusterControl - Adding Management and Monitoring to your Existing Database Clusters <https://severalnines.com/blog/puppet-module-clustercontrol-adding-management-and-monitoring-your-existing-database-clusters>`_. For more info on configuration options, please refer to `ClusterControl Puppet Module <https://forge.puppetlabs.com/severalnines/clustercontrol>`_ page.
 
 Chef Cookbooks
-``````````````
+++++++++++++++
 
 If you are automating your infrastructure using :term:`Chef`, we have created a cookbook for this purpose and it is available at `Chef Supermarket <https://supermarket.chef.io/cookbooks/clustercontrol>`_. Getting the cookbook is as easy as:
 
@@ -262,9 +260,9 @@ If you are automating your infrastructure using :term:`Chef`, we have created a 
 	$ knife cookbook site download clustercontrol
 
 Requirements
-''''''''''''
+``````````````
 
-This cookbook requires the following criteria to be met:
+This cookbook requires the following criterias to be met:
 
 * The node for ClusterControl must be a clean/dedicated host.
 * ClusterControl node must be running on 64bit OS platform and together with the same OS distribution with the monitored DB hosts. Mixing Debian with Ubuntu and CentOS with Red Hat is acceptable.
@@ -273,7 +271,7 @@ This cookbook requires the following criteria to be met:
 
 Data items are used by the ClusterControl controller recipe to configure SSH public key on database hosts, grants cmon database user and setting up CMON configuration file. We provide a helper script located under ``clustercontrol/files/default/s9s_helper.sh``. Please run this script prior to the deployment.
 
-Answer all the questions and at the end of the wizard, it will generate a data bag file called ``config.json`` and a set of command that you can use to create and upload the data bag. If you run the script for the first time, it will ask to re-upload the cookbook since it contains a newly generated SSH key: 
+Answer all the questions and at the end of the wizard, it will generate a data bag file called ``config.json`` and a set of commands that you can use to create and upload the data bag. If you run the script for the first time, it will ask to re-upload the cookbook since it contains a newly generated SSH key: 
 
 .. code-block:: bash
 
@@ -281,7 +279,7 @@ Answer all the questions and at the end of the wizard, it will generate a data b
 	
 
 Chef Workstation
-''''''''''''''''
+````````````````
 
 This section shows example ClusterControl installation with Chef and requires you to use :term:`knife`. Please ensure it has been configured correctly and is able to communicate with the Chef Server before you proceed with the following steps. The steps in this section should be performed on the Chef Workstation node.
 
@@ -416,7 +414,7 @@ The DB host role:
 
 
 Chef Client
-'''''''''''
+````````````
 
 Let :term:`chef-client` run on each Chef client node and apply the cookbook:
 
@@ -426,10 +424,10 @@ Let :term:`chef-client` run on each Chef client node and apply the cookbook:
 
 Once completed, open the ClusterControl UI at :samp:`http://{ClusterControl_host}/clustercontrol` and create the default admin user and password. 
 
-For more example on deployments using Chef, please refer to `this blog post <http://www.severalnines.com/blog/chef-cookbooks-clustercontrol-management-and-monitoring-your-database-clusters>`_. For more details on configuration options, please refer to `ClusterControl Chef Cookbooks <https://supermarket.chef.io/cookbooks/clustercontrol>`_ page.
+For more example on deployments using Chef, please refer to `Chef Cookbooks for ClusterControl - Management and Monitoring for your Database Clusters <http://www.severalnines.com/blog/chef-cookbooks-clustercontrol-management-and-monitoring-your-database-clusters>`_. For more info on the configuration options, please refer to `ClusterControl Chef Cookbooks <https://supermarket.chef.io/cookbooks/clustercontrol>`_ page.
 
 Ansible Role
-````````````
+++++++++++++++
 
 If you are automating your infrastructure using :term:`Ansible`, we have created a role for this purpose and it is available at `Ansible Galaxy <https://galaxy.ansible.com/severalnines/clustercontrol>`_. Getting the role is as easy as:
 
@@ -438,7 +436,7 @@ If you are automating your infrastructure using :term:`Ansible`, we have created
 	$ ansible-galaxy install severalnines.clustercontrol
 
 Usage
-'''''
+``````
 
 1. Get the ClusterControl Ansible role from Ansible Galaxy or Github.
 
@@ -478,7 +476,7 @@ Or through Github:
 6) Start to deploy a new database cluster or add an existing one.
 
 Example Playbook
-''''''''''''''''
+``````````````````
 
 The simplest playbook would be:
 
@@ -528,8 +526,8 @@ Then, execute the command with ``--ask-become-pass`` flag, for example:
 
     $ ansible-playbook cc.playbook --ask-become-pass
 
-Docker image
-``````````````
+Docker Image
+++++++++++++++
 
 The :term:`Docker` image comes with ClusterControl installed and configured with all of its components, so you can immediately use it to manage and monitor your existing databases. 
 
@@ -538,7 +536,7 @@ Having a Docker image for ClusterControl at the moment is convenient in terms of
 It is a start and our plan is to add better integration with the Docker API in future releases in order to transparently manage Docker containers/images within ClusterControl, e.g., to launch/manage and deploy database clusters using Docker images.
 
 Build the image
-'''''''''''''''
+````````````````
 
 The Dockerfiles are available from `our Github repository <https://github.com/severalnines/docker>`_. You can build it manually by cloning the repository:
 
@@ -549,7 +547,7 @@ The Dockerfiles are available from `our Github repository <https://github.com/se
 	$ docker build -t severalnines/clustercontrol .
 
 Running container
-'''''''''''''''''
+``````````````````
 
 Please refer to the `Docker Hub page <https://registry.hub.docker.com/u/severalnines/clustercontrol/>`_ for the latest instructions. Use the ``docker pull`` command to download the image:
 
@@ -581,7 +579,7 @@ Verify the container is running by using the ps command:
 
 	$ docker ps
 
-For more example on deployments with Docker images, please refer to `this blog post <http://www.severalnines.com/blog/clustercontrol-docker>`_. For more details on configuration options, please refer to `ClusterControl's Docker Hub <https://registry.hub.docker.com/u/severalnines/clustercontrol/>`_ page.
+For more example on deployments with Docker images, please refer to `ClusterControl on Docker <http://www.severalnines.com/blog/clustercontrol-docker>`_. For more info on the configuration options, please refer to `ClusterControl's Docker Hub <https://registry.hub.docker.com/u/severalnines/clustercontrol/>`_ page.
 
 Manual Installation
 -------------------
@@ -600,7 +598,6 @@ The main installation steps are:
 
 ClusterControl requires three mandatory packages to be installed and configured, with optional packages for specific functionality:
 
-
 Mandatory packages:
 
 * clustercontrol - ClusterControl web user interface.
@@ -617,7 +614,7 @@ Optional packages:
 Steps described in the following sections should be perform on ClusterControl node unless specified otherwise.
 
 Requirements
-````````````
+++++++++++++
 
 Make sure the following is ready prior to this installation:
 
@@ -628,7 +625,7 @@ Make sure the following is ready prior to this installation:
 * You must have internet connection on ClusterControl node during the installation process.
 
 Redhat/CentOS
-``````````````
++++++++++++++
 
 1. Setup `Severalnines YUM Repository <installation.html#yum-repository>`_.
 
@@ -828,7 +825,7 @@ For systemd:
 You will then be redirected to the ClusterControl landing page and the installation is now complete. You can now start to manage your database cluster. Please review the `User Guide <user-guide/>`_ for details.
 
 Debian/Ubuntu
-``````````````
++++++++++++++
 
 The following steps should be performed on the ClusterControl node, unless specified otherwise. Ensure you have Severalnines repository and ClusterControl UI installed. Please refer to Severalnines Repository section for details. Omit sudo if you are installing as root user. Take note that for Ubuntu 14.04/Debian 8 and later, replace all occurrences of ``/var/www`` with ``/var/www/html`` in the following instructions.
 
@@ -1073,16 +1070,16 @@ Take note that the following ClusterControl features will not work without Inter
 Prior to the offline install, make sure you meet the following requirements for the ClusterControl node:
 
 * Ensure the offline repository is ready. We assume that you already configured an offline repository. Details on how to setup offline repository is explained in the `Setting up Offline Repository`_ section.
-* Firewall, SELinux or AppArmor must be turned off. You can turn on the firewall once the installation has completed. Make sure to allow ports as defined on `this page <requirements.html#firewall-and-security-groups>`_.
+* Firewall, SELinux or AppArmor must be turned off. You can turn on the firewall once the installation has completed. Make sure to allow ports as defined in `Firewall and Security Groups <requirements.html#firewall-and-security-groups>`_.
 * MySQL server must be installed and running on the ClusterControl host.
 
 Setting up Offline Repository
-`````````````````````````````
+++++++++++++++++++++++++++++++
 
 The installer script requires an offline repository to satisfy the dependencies. In this documentation, we provide steps to configure offline repository on CentOS 7, Debian 7 and Ubuntu 16.04 LTS. 
 
 CentOS 7
-'''''''''
+`````````
 
 1. Insert the CentOS 7 installation disc into the DVD drive.
 
@@ -1145,7 +1142,7 @@ CentOS 7
 Make sure the last step does not produce any error.
 
 Debian 7
-''''''''
+`````````
 
 1. Download the ISO images from the respective vendor site and upload them onto the ClusterControl host. You should have something like this on Debian 7.6:
 
@@ -1182,7 +1179,7 @@ Debian 7
 Make sure the last step does not produce any error.
 
 Ubuntu 16.04
-'''''''''''''
+`````````````
 
 1. Insert Ubuntu 16.04 installation disc into the DVD drive.
 
@@ -1207,11 +1204,11 @@ Ubuntu 16.04
 
 Make sure the last step does not produce any error.
 
-Offline Installation
-``````````````````````
+Performing Offline Installation
+++++++++++++++++++++++++++++++++
 
 RedHat/CentOS
-'''''''''''''
+``````````````
 
 1. The offline installation script will need a running MySQL server on the host. Install MySQL server and client, enable it to start on boot and start the service:
 
@@ -1233,15 +1230,15 @@ RedHat/CentOS
 
 	$ mkdir ~/s9s_tmp
 	$ cd ~/s9s_tmp
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-1.5.1-4265-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.5.0-290-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.5.1-2299-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications-1.5.0-70-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh-1.5.0-39-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud-1.5.0-31-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud-1.5.0-31-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-1.6.0-4699-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.6.0-310-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.6.0-2537-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications-1.6.0-88-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh-1.6.0-44-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud-1.6.0-118-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud-1.6.0-118-x86_64.rpm
 
-.. Attention:: In this example, we downloaded the package directly to simplify the package preparation step. If the ClusterControl server does not have Internet connections, you should upload the packages manually to the mentioned staging path.
+.. Attention:: In this example, we downloaded the package directly to simplify the package preparation step. If the ClusterControl server does not have Internet connections, you have to upload the packages manually to the mentioned staging path.
 
 4. Perform the package installation manually:
 
@@ -1262,7 +1259,7 @@ RedHat/CentOS
 
 
 Debian/Ubuntu
-'''''''''''''
+``````````````
 
 1. Install MySQL on the host and enable it on boot:
 
@@ -1277,15 +1274,15 @@ Debian/Ubuntu
 
 	$ mkdir ~/s9s_tmp
 	$ cd ~/s9s_tmp
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol_1.5.1-4265_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.5.0-290_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.5.1-2299-x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications_1.5.0-70_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh_1.5.0-39_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud_1.5.0-31_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud_1.5.0-31_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol_1.6.0-4699_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.6.0-310_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.6.0-2537-x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications_1.6.0-88_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh_1.6.0-44_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud_1.6.0-118_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud_1.6.0-118_x86_64.deb
 
-.. Attention:: In this example, we downloaded the package directly to simplify the package preparation step. If the ClusterControl server does not have internet connections, you should upload the packages manually to the mentioned staging path.
+.. Attention:: In this example, we downloaded the package directly to simplify the package preparation step. If the ClusterControl server does not have internet connections, you have to upload the packages manually to the mentioned staging path.
 
 3. Perform the package installation and ClusterControl dependencies manually:
 
@@ -1305,7 +1302,7 @@ Debian/Ubuntu
 .. Note:: You would see this error: "Sorry we are not able to retrieve your license information. Please register your license under Settings - Subscription". This is expected because ClusterControl was trying to pull and configure a demo license from the license server via Internet. Please contact our Sales or Support team for a free 30-day demo license.
 
 Post-installation
-`````````````````
++++++++++++++++++
 
 Once ClusterControl is up and running, you can import your existing cluster or deploy a new database cluster and start managing them from one place. Make sure passwordless SSH is configured from ClusterControl node to your database nodes.
 

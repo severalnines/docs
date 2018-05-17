@@ -1,12 +1,10 @@
-.. _cc-postgresql:
-
 User Guide for PostgreSQL
 =========================
 
-This user guide covers ClusterControl with PostgreSQL-based (>9.x) server, namely:
+This user guide covers ClusterControl with PostgreSQL-based (>9.x) cluster, namely:
 
 * PostgreSQL single instance
-* PostgreSQL replication
+* PostgreSQL streaming replication
 
 Contents:
 
@@ -17,6 +15,7 @@ Contents:
    
    postgresql/overview
    postgresql/nodes
+   postgresql/topology
    postgresql/query-monitor
    postgresql/performance
    postgresql/backup

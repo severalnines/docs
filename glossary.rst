@@ -189,6 +189,11 @@ Glossary
 	top
 		Displays processor activity of your Linux box and also displays tasks managed by kernel in real-time.
 
+	xinetd
+		An open-source super-server daemon, runs on many Unix-like systems and manages Internet-based connectivity.
+		
+		.. seealso:: https://en.wikipedia.org/wiki/Xinetd
+
 	xtrabackup
 		Percona XtraBackup is an open-source hot backup utility for MySQL - based servers that doesn’t lock your database during the backup.
 		

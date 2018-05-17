@@ -1,12 +1,10 @@
-.. _mysql-query-monitor:
-
 Query Monitor
 -------------
 
 Provides summary of query processing across all nodes in the cluster.
 
 Top Queries
-````````````
+++++++++++++
 
 This is an aggregated list of all your top queries running on all the nodes of your database cluster. The list can be ordered by Occurrence or Execution Time, to show the most common or slowest queries respectively. It is also possible to filter and review queries from one particular node.
 
@@ -15,7 +13,7 @@ ClusterControl gets the information in two different ways:
 - Queries are retrieved from PERFORMANCE_SCHEMA
 - If PERFORMANCE_SCHEMA is disabled or unavailable, ClusterControl will parse the content of the Slow Query Log
 
-For more details (including how to enable the PERFORMANCE_SCHEMA), please take a look at `this blog post <http://severalnines.com/blog/how-use-clustercontrol-query-monitor-mysql-mariadb-and-percona-server>`_.
+For more details (including how to enable the PERFORMANCE_SCHEMA), see this blog post, `How to use the ClusterControl Query Monitor for MySQL, MariaDB and Percona Server <http://severalnines.com/blog/how-use-clustercontrol-query-monitor-mysql-mariadb-and-percona-server>`_.
 
 Toggle Query Monitor to ON to enable query monitoring. If Performance Schema is enabled, ClusterControl will use it to look for the slow queries. Otherwise, ClusterControl will parse the content of MySQL slow query log based on the following flow:
 
@@ -40,7 +38,7 @@ If you are using the Slow Query log, only queries that exceed the *Long Query Ti
 The *Long Query Time* value can be specified to a resolution of microseconds, for example 0.000001 (1 x 10 :superscript:`-6`).
 
 Settings
-''''''''
+``````````
 
 Click on the Settings to configure the Query Monitor settings, as explained below:
 
@@ -61,7 +59,7 @@ Click on the Settings to configure the Query Monitor settings, as explained belo
 Take note that you can also review the same settings under the legacy page at *ClusterControl > Settings > Query Monitor*.
 
 Top Queries Table
-''''''''''''''''''
+``````````````````
 
 This page is auto-refresh every 30 seconds. You can change the refresh rate by clicking on *Refresh rate* dropdown at top right. The following describes the Top Queries table columns:
 
@@ -95,7 +93,7 @@ This page is auto-refresh every 30 seconds. You can change the refresh rate by c
 
 
 Running Queries
-````````````````
++++++++++++++++
 
 View current running queries on your database cluster similar to ``SHOW FULL PROCESSLIST`` command in MySQL. You can stop a running query by selecting to kill the connection that started the query. The processlist can be filtered out by host.
 
@@ -132,7 +130,7 @@ This page is auto-refresh every 30 seconds. You can change the refresh rate by c
 	- An action, event, or state that indicates what the thread is doing, as explained in `MySQL Documentation <http://dev.mysql.com/doc/refman/5.6/en/general-thread-states.html>`_ page.
 
 Query Outliers
-````````````````
++++++++++++++++
 
 Shows queries that are outliers. An outlier is a query taking longer time than the normal query of that type. Use this feature to filter out the outliers for a certain time period. After a number of samples and when ClusterControl has had enough stats, it can determine if latency is higher than normal (2 sigma + ``average_query_time``) then it is an outlier, and will be added into the *Query Outlier*.
 

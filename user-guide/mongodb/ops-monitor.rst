@@ -1,12 +1,10 @@
-.. _mongodb-ops-monitor:
-
 Ops Monitoring
 ----------------
 
 Provides summary of database operations across all nodes in the cluster.
 
 Running Operations
-``````````````````
++++++++++++++++++++
 
 Provides view of current running operations similar to ``db.currentOp()`` command. Click on an entry to see details on the bottom window.
 

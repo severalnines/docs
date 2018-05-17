@@ -1,19 +1,19 @@
 Settings
 --------
 
-Provides global settings for the cluster.
+Settings for the cluster including general settings, mail notifications and thresholds.
+
+CMON Settings
+++++++++++++++
 
 General Settings
-````````````````
-
-Cluster Settings
-''''''''''''''''
+``````````````````
 
 * **Cluster Name**
 	- Cluster name. This name will appear in the database cluster list and database cluster summary.
 
 * **Staging Area**
-	- The staging area is a directory (created automatically) to store intermediate data, such as dump files, binaries, RPMs used in e.g installations/upgrades and automatic scaling. The staging area is automatically cleaned, but should be big to hold dump files of your entire database.
+	- The staging area is a directory (created automatically) to store intermediate data, such as dump files, binaries, packages used in installations, upgrades or scaling. The staging area is automatically cleaned, but should be big enough to hold dump files of your entire database.
 
 * **Sudo**
 	- Sudo command password (if *SSH User** is not root) if running as sudoers. Change in CMON configuration file under ``sudo``.
@@ -24,9 +24,6 @@ Cluster Settings
 * **SSH Identity**
 	- Read-only. Change in CMON configuration file under ``ssh_identity``.
 
-* **SSH Options**
-	- Read-only. SSH options for the SSH connections. Change in CMON configuration file under ``ssh_opts``.
-
 * **History**
 	- Number of days you would like to keep historic data. Ensure you have enough disk space on the ClusterControl server if you want to store historic data.
 
@@ -34,21 +31,21 @@ Cluster Settings
 	- How many minutes between automatic MySQL error log retrieval.
 
 Configure Mail Server
-''''''''''''''''''''''
+``````````````````````
 
-Configure how email notifications are to be sent. ClusterControl supports two options for sending email notifications, either using local mail commands via local MTA (Sendmail/Postfix/Exim) or using an external SMTP server. Make sure the local MTA is installed and verified with *Test Email* button.
+Configures how email notifications should be sent out. ClusterControl supports two options for sending email notifications, either using local mail commands via local MTA (Sendmail/Postfix/Exim) or using an external SMTP server. Make sure the local MTA is installed and verified using *Test Email* button.
 
 Option 1: Sendmail
-..................
+'''''''''''''''''''
 
-* **Use 'sendmail'**
-	- Use this option to enable sendmail to send notifications. Instructions on how to set it up can be found `here <http://support.severalnines.com/entries/22897447-setting-up-mail-notifications>`_.
+* **Use sendmail**
+	- Use this option to enable sendmail to send notifications. Instructions on how to set up Sendmail can be found in this guide, `Setting up mail notifications <http://support.severalnines.com/entries/22897447-setting-up-mail-notifications>`_. If you want to use Postfix, see `Using Postfix`_.
 
 * **Reply-to/From**
-	- Specify the sender of the email. This will appear in the ‘From’ field of mail header.
+	- Specify the sender of the email. This will appear in the 'From' field of mail header.
 
 Option 2: SMTP Server (Recommended)
-...................................
+''''''''''''''''''''''''''''''''''''
 
 * **SMTP Server**
 	- SMTP mail server address that you are going to use to send email.
@@ -66,13 +63,13 @@ Option 2: SMTP Server (Recommended)
 	- SMTP password. Leave empty if no authentication required.
 
 * **Reply-to/From**
-	- Specify the sender of the email. This will appear in the ‘From’ field of mail header.
+	- Specify the sender of the email. This will appear in the 'From' field of mail header.
 
 * **Test Email**
-	- Test the mail settings. If successful, an email will be sent to all users in the *ClusterControl > Settings > General Settings > Cluster Settings > Email Notification*. Do not forget to add a recipient before pressing this button.
+	- Test the mail settings. If successful, an email will be sent to all users in the `Email Notification Settings`_. Do not forget to add a recipient before pressing this button.
 
 Using Postfix
-.............
+''''''''''''''
 
 Many of Linux distributions come with Sendmail as default MTA. To replace Sendmail and use other MTA, e.g Postfix, you just need to uninstall Sendmail, install Postfix and start the service. Following example shows commands that need to be executed on ClusterControl node as root user for RHEL:
 
@@ -84,8 +81,8 @@ Many of Linux distributions come with Sendmail as default MTA. To replace Sendma
 	$ chkconfig postfix on 
 	$ service postfix start
 
-Email Notification
-'''''''''''''''''''
+Email Notification Settings
+````````````````````````````
 
 Configures email notifications for alarms generated for your database cluster.
 
@@ -130,14 +127,14 @@ Configures email notifications for alarms generated for your database cluster.
 	======= ===========
 
 Version
-''''''''
+````````
 
-Lists out the version of ClusterControl components loaded on the node.
+Lists out the version of ClusterControl components installed on the node.
 
 Thresholds
-``````````
+++++++++++
 
-Provides thresholds for warnings and critical event. Thresholds specify the threshold level at which an alarm will be triggered and notification will be sent via email to the list of recipients configured in the `Email Notification`_. Set your alarm thresholds for:
+Provides thresholds for warnings and critical event. Thresholds specify the threshold level at which an alarm will be triggered and notification will be sent via email to the list of recipients configured in the `Email Notification Settings`_. Set your alarm thresholds for:
 
 * CPU, RAM, disk space and swap utilization
 * MySQL server memory utilization
@@ -151,7 +148,7 @@ Critical  Sets your critical threshold in percentage for specific event.
 ========= ===========
 
 Graphs
-``````
++++++++
 
 Manages graph settings and data capturing. On each database node, ClusterControl records up to 82 MySQL counters every ``db_stats_collection_interval`` defined in CMON configuration file. The default is 30 seconds. 
 
@@ -169,11 +166,8 @@ You can choose to view up to 20 counters in 2 or 3 columns layout on this page. 
 * **Graph 1-N**
 	- Choose the enabled counter to be graphed.
 	
-* **Save Graph**
-	- Applies your selection.
-	
 Query Monitor
-``````````````
+++++++++++++++
 
 Manages how ClusterControl should perform query monitoring. It determines the output of:
 
@@ -192,8 +186,3 @@ Changes happened in this page does not require the CMON service to restart.
 	- Collects queries taking longer than *Long Query Time* seconds:
 		- 0 - All queries.
 		- 0.1 - Only queries taking more than 0.1 seconds will be accounted.
-
-* **Log queries not using indexes?**
-	- Configures ClusterControl behavior on sampling queries without indexes:
-		- Yes - Logs queries which are not using indexes.
-		- No - Ignores queries that are not using indexes (will not be accounted for in *ClusterControl > Query Monitor > Query Outliers*).

@@ -3,7 +3,7 @@
 Introduction
 ============
 
-This documentation covers ClusterControl version 1.5 which was released on November 13th, 2017. This release contains key new features along with performance improvements and bug fixes. Release change log is available at `Change Logs <changelog.html>`_.
+This documentation covers ClusterControl version 1.6.0 which was released on April 17th, 2018. This release contains key new features along with performance improvements and bug fixes. Release change log is available at `Change Logs <changelog.html>`_.
 
 What is ClusterControl? 
 -----------------------
@@ -30,16 +30,17 @@ ClusterControl consists of a number of components:
 | ClusterControl Notifications       | clustercontrol-notifications | Optional package introduced in ClusterControl 1.4.2 providing a service and user   |
 |                                    |                              | interface for notification services and integration with third party tools.        |
 +------------------------------------+------------------------------+------------------------------------------------------------------------------------+
-| ClusterControl Cloud               | clustercontrol-cloud         | Optional package introduced in ClusterControl 1.5 providing a service and user     |
+| ClusterControl Cloud               | clustercontrol-cloud         | Optional package introduced in ClusterControl 1.5.0 providing a service and user   |
 |                                    |                              | interface for integration with cloud providers.                                    |
 +------------------------------------+------------------------------+------------------------------------------------------------------------------------+
-| ClusterControl Cloud File Manager  | clustercontrol-clud          | Optional package introduced in ClusterControl 1.5 providing a command-line         |
+| ClusterControl Cloud File Manager  | clustercontrol-clud          | Optional package introduced in ClusterControl 1.5.0 providing a command-line       |
 |                                    |                              | interface to interact with storage objects on cloud.                               |
 +------------------------------------+------------------------------+------------------------------------------------------------------------------------+
 | ClusterControl CLI                 | s9s-tools                    | Open-source command line tool to manage and monitor clusters provisioned by        |
 |                                    |                              | ClusterControl.                                                                    |
 +------------------------------------+------------------------------+------------------------------------------------------------------------------------+
 
+.. seealso:: `ClusterControl Components <components.html>`_.
 
 Supported Database Server/Cluster
 ---------------------------------

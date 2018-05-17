@@ -2,7 +2,7 @@ Manage
 -------
 
 Hosts
-``````
+++++++
 
 Lists of hosts being managed by ClusterControl for the specific cluster. This includes:
 
@@ -14,10 +14,10 @@ Lists of hosts being managed by ClusterControl for the specific cluster. This in
 
 To remove a host, just select the host and click on the *Remove* button. 
 
-.. Attention:: We strongly recommend user to avoid removing nodes from this page if it still hold a role inside ClusterControl.
+.. Attention:: We strongly recommend user to avoid removing node from this page if it still hold a role inside ClusterControl.
 
 Configurations
-``````````````
++++++++++++++++
 
 Manage the configuration files of your MongoDB nodes. For MongoDB server, changes can be persisted to database variables across one node or a group of nodes at once, dynamic variables are changed directly without a restart.
 
@@ -35,9 +35,8 @@ Manage the configuration files of your MongoDB nodes. For MongoDB server, change
 * **Change Parameter**
 	- The selected parameter will be changed or created in the specified group option. ClusterControl will attempt to dynamically set the configuration value if the parameter is valid. Then, the change can be persisted in the configuration file.
 	
-	
 Base Template Files
-...................
+````````````````````
 
 All services configured by ClusterControl use a base configuration template available under ``/usr/share/cmon/templates`` on the ClusterControl node. The following are template files provided by ClusterControl:
 
@@ -73,9 +72,9 @@ proxysql_template.cnf    ProxySQL configuration template.
 ======================== ===========
 
 Dynamic Variables
-.................
+``````````````````
 
-There are a number of configuration variables configurable dynamically by ClusterControl. These variables are represented with a capital letter enclosed by at sign ‘@’, for example ``@DATADIR@``. The following shows the list of variables supported by ClusterControl for MongoDB-based clusters:
+There are a number of configuration variables which are configurable dynamically by ClusterControl. These variables are represented with a capital letter enclosed by at sign ‘@’, for example ``@DATADIR@``. The following shows the list of variables supported by ClusterControl for MongoDB-based clusters:
 
 ============================ ==============
 Variable                     Description
@@ -90,9 +89,9 @@ Variable                     Description
 ============================ ==============
 
 Processes
-`````````
+++++++++++
 
-Configures ClusterControl to monitor external processes that are not part of the cluster, e.g. a web server or an application server. ClusterControl will actively monitor these processes and make sure that they are always up and running by executing the check expression command.
+Manages external processes that are not part of the cluster, e.g. a web server or an application server. ClusterControl will actively monitor these processes and make sure that they are always up and running by executing the check expression command.
 
 To add a new process to be monitored by ClusterControl, click on *Add Custom Managed Process*.
 
@@ -100,48 +99,47 @@ To add a new process to be monitored by ClusterControl, click on *Add Custom Man
 	- Select the managed host.
 
 * **Process Name**
-	- Enter the process name.
+	- Enter the process name. E.g: "Apache 2".
 
 * **Start Command**
-	- OS command to start the process.
+	- OS command to start the process. E.g: "/usr/sbin/apache2 -DFOREGROUND".
 
 * **Pidfile**
-	- Full path to the process identifier file.
+	- Full path to the process identifier file. E.g: "/var/run/apache2/apache2.pid".
 
 * **GREP Expression**
-	- OS command to check the existence of the process.
+	- OS command to check the existence of the process. The command must return 0 for true, and everything else for false. E.g: "pidof apache2".
 
 * **Remove**
-	- Remove the managed process from the list of processes managed by ClusterControl.
+	- Removes the managed process from the list of processes managed by ClusterControl.
 
 * **Deactivate**
-	- Disable the managed process.
-
+	- Disables the selected process.
 
 Developer Studio
-````````````````
+++++++++++++++++
 
-Provides functionality to create Advisors, Auto Tuners, or “mini Programs” right within your web browser based on `ClusterControl DSL (Domain Specific Language) <../../dsl.html>`_. The DSL syntax is based on JavaScript, with extensions to provide access to ClusterControl’s internal data structures and functions. The DSL allows you to execute SQL statements, run shell commands/programs across all your cluster hosts, and retrieve results to be processed for advisors/alerts or any other actions. Developer Studio is a development environment to quickly create, edit, compile, run, test, debug and schedule your JavaScript programs.
+Provides functionality to create Advisors, Auto Tuners, or Mini Programs right within your web browser based on `ClusterControl DSL (Domain Specific Language) <../../dsl.html>`_. The DSL syntax is based on JavaScript, with extensions to provide access to ClusterControl's internal data structures and functions. The DSL allows you to execute SQL statements, run shell commands/programs across all your cluster hosts, and retrieve results to be processed for advisors/alerts or any other actions. Developer Studio is a development environment to quickly create, edit, compile, run, test, debug and schedule your JavaScript programs.
 
 Advisors in ClusterControl are powerful constructs; they provide specific advice on how to address issues in areas such as performance, security, log management, configuration, storage space, etc. They can be anything from simple configuration advice, warning on thresholds or more complex rules for predictions, or even cluster-wide automation tasks based on the state of your servers or databases. 
 
-ClusterControl comes with a set of basic advisors that include rules and alerts on security settings, system checks (NUMA, Disk, CPU), queries, innodb, connections, performance schema, Galera configuration, NDB memory usage, and so on. The advisors are open source under an MIT license, and available on `GitHub <https://github.com/severalnines/s9s-advisor-bundle>`_. Through the Developer Studio, it is easy to import new advisors as a JS bundle, or export your own for others to try out.
+ClusterControl comes with a set of basic advisors that include rules and alerts on security settings, system checks (NUMA, Disk, CPU), queries, InnoDB, connections, PERFORMANCE_SCHEMA, configuration, NDB memory usage, and so on. The advisors are open source under MIT license, and publicly available at `GitHub <https://github.com/severalnines/s9s-advisor-bundle>`_. Through the Developer Studio, it is easy to import new advisors as a JS bundle, or export your own for others to try out.
 
 * **New**
-	- Name - Specify the file name including folders if you need. E.g. "shared/helpers/cmon.js" will create all appropriate folders if they don't exist yet.
+	- Name - Specify the file name including folders if you need. E.g. ``shared/helpers/cmon.js`` will create all appropriate folders if they don't exist yet.
 	- File content:
 		- Empty file - Create a new empty file.
-		- Galera Template - Create a new file containing skeleton code for Galera monitoring.
+		- Template - Create a new file containing skeleton code for monitoring.
 		- Generic MySQL Template - Create a new file containing skeleton code for generic MySQL monitoring.
 
 * **Import**
 	- Imports advisor bundle. Supported format is ``.tar.gz``. See `s9s-advisor-bundle <https://github.com/severalnines/s9s-advisor-bundle>`_.
 
 * **Export**
-	- Exports the advisor's directory to a ``.tar.gz`` file. The exported file can be imported to Developer Studio through *ClusterControl > Manage > Developer Studio > Import* function.
+	- Exports the advisor's directory to a ``.tar.gz`` format. The exported file can be imported to Developer Studio through *ClusterControl > Manage > Developer Studio > Import* function.
 
 * **Advisors**
-	- Opens the Advisor list page. See `Advisors <performance.html#advisors>`_ section.
+	- Opens the Advisor list page. See `Advisors <performance.html#advisors>`_.
 
 * **Save**
 	- Saves the file.
@@ -150,16 +148,18 @@ ClusterControl comes with a set of basic advisors that include rules and alerts 
 	- Moves the file around between different subdirectories.
 
 * **Remove**
-	- Remove the script.
+	- Removes the script.
 
 * **Compile**
 	- Compiles the script.
 
 * **Compile and run**
-	- Compile and run the script. The output appears under *Message*, *Graph* or *Raw response* tab down below.
-	- The arrow next to the “Compile and Run” button allows us to change settings for a script and, for example, pass some arguments to the ``main()`` function.
+	- Compile and run the script. The output appears under *Message*, *Graph* or *Raw response* tab underneath the editor.
+	- The arrow next to the "Compile and Run" button allows us to change settings for a script and for example, pass some arguments to the ``main()`` function.
 
 * **Schedule Advisor**
 	- Schedules the script as an advisor.
 
-We have covered this in details `in this blog post <https://severalnines.com/blog/clustercontrol-developer-studio-write-your-first-database-advisor>`_. For full documentation on ClusterControl Domain Specific Language, see `ClusterControl DSL <../../dsl.html>`_ section.
+.. seealso:: `Introducing ClusterControl Developer Studio and Creating your own Advisors in JavaScript <https://severalnines.com/blog/introducing-clustercontrol-developer-studio-and-creating-your-own-advisors-javascript>`_.
+
+For full documentation on ClusterControl Domain Specific Language, see `ClusterControl DSL <../../dsl.html>`_.

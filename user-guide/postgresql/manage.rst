@@ -2,7 +2,7 @@ Manage
 -------
 
 Hosts
-``````
+++++++
 
 Lists of hosts being managed by ClusterControl for the specific cluster. This includes:
 
@@ -13,10 +13,10 @@ Lists of hosts being managed by ClusterControl for the specific cluster. This in
 
 To remove a host, just select the host and click on the *Remove* button. 
 
-.. Attention:: We strongly recommend user to avoid removing nodes from this page if it still hold a role inside ClusterControl.
+.. Attention:: We strongly recommend user to avoid removing nodes from this page if they still hold a role inside ClusterControl.
 
 Configurations
-``````````````
+++++++++++++++
 
 Manage the configuration files of your database nodes. From here you can edit and/or detect whether your database configuration files are in sync and do not diverge. Any changes will not take effect until the database server/process is restarted.
 
@@ -35,15 +35,14 @@ Manage the configuration files of your database nodes. From here you can edit an
 	- Create a new PostgreSQL configuration template file. This template can be used when adding a new node.
 
 Load Balancer
-``````````````
+++++++++++++++
 
-Manages deployment of load balancers (HAProxy) and virtual IP address (Keepalived). You can monitor the status of the job under *ClusterControl > Activity > Jobs*.
-
+Deploys supported load balancers and virtual IP address for this cluster.
 
 HAProxy
-.......
+````````
 
-Installs and configures an :term:`HAProxy` instance. ClusterControl will automatically install and configure HAProxy, install ``postgreschk_rw_split`` script (to report the PostgreSQL healthiness) on each of database nodes as part of xinetd service and start the HAProxy service. Once the installation is complete, PostgreSQL will listen on *Listen Port* (3307 for read-write and 3308 for read-only) on the configured node.
+Installs and configures an :term:`HAProxy` instance. ClusterControl will automatically install and configure HAProxy, install ``postgreschk_rw_split`` script (to report the PostgreSQL healthiness) on each of database nodes as part of :term:`xinetd` service and start the HAProxy service. Once the installation completes, PostgreSQL will listen on *Listen Port* (5433 for read-write and 5434 for read-only connections) on the configured node.
 
 This feature is idempotent, you can execute it as many times as you want and it will always reinstall everything as configured.
 
@@ -118,7 +117,7 @@ Import HAProxy
 ''''''''''''''
 
 * **HAProxy Address**
-	- Select on which host to add the load balancer. If the host is not provisioned in ClusterControl (see `Hosts`_), type in the IP address. The required files will be installed on the new host. Note that ClusterControl will access the new host using passwordless SSH.
+	- Select on which host to add the load balancer. If the host has not been provisioned by ClusterControl (see `Hosts`_), type in the IP address or hostname. The required files will be installed on the new host. Note that ClusterControl will access the new host using passwordless SSH.
 
 * **cmdline**
 	- Specify the command line that ClusterControl should use to start the HAProxy service. You can verify this by using ``ps -ef | grep haproxy`` and retrieve the full command how the HAProxy process started. Copy the full command line and paste it in the textfield.
@@ -149,7 +148,7 @@ Import HAProxy
 	stats socket /var/run/haproxy.socket user haproxy group haproxy mode 600 level
 
 Keepalived
-..........
+```````````
 
 :term:`Keepalived` requires two HAProxy instances in order to provide virtual IP address failover. By default, this IP address will be assigned to instance 'Keepalived 1'. If the node goes down, the IP address will be automatically failover to 'Keepalived 2' accordingly.
 
@@ -193,9 +192,9 @@ Import Keepalived
 	- Starts the import of Keepalived job.
 
 Custom Advisors
-```````````````
++++++++++++++++
 
-Creates threshold based advisors with host or PostgreSQL statistics without needing to write your own JavaScript script (like all the default scripts under `Developer Studio`_). The threshold advisor allows you to set threshold to be alerted on if a metric falls below or raises above the threshold and stays there for a specified timeframe.
+Manages threshold-based advisors with host or PostgreSQL statistics without needing to write your own JavaScript script (like all the default scripts under `Developer Studio`_). The threshold advisor allows you to set threshold to be alerted on if a metric falls below or raises above the threshold and stays there for a specified timeframe.
 
 Clicking on 'Create Custom Advisor' and 'Edit Custom Advisor' will open a new dialog, which described as follows:
 
@@ -214,7 +213,7 @@ Clicking on 'Create Custom Advisor' and 'Edit Custom Advisor' will open a new di
 	- Target host(s) in the chosen cluster. You can select individual host or all hosts monitored under this cluster.
 
 Condition
-.........
+``````````
 
 * **If metric**
 	- List of metrics monitored by ClusterControl. Choose one metric to create a threshold condition.
@@ -234,57 +233,50 @@ Condition
 * **Max Values seen for selected period**
 	- ClusterControl provides preview of already recorded data in a graph to help you determine accurate values for timeframe, warning and critical.
 
-Notification Settings
-.....................
+Advisor Description
+````````````````````
 
-Select the notification service configured under *ClusterControl > Settings > Integrations > 3rd Party Notifications*. This notification service determines what is the endpoint of this advisors once conditions are met. It could be email and/or PagerDuty alert.
-
-Description
-...........
-
-Describe the Advisor and provide instructions on what actions that may be needed if the threshold is triggered.
-
-Available variables:
+Describe the Advisor and provide instructions on what actions that may be needed if the threshold is triggered. Available variables substitutions:
 
 ================= ============
 Variable          Description
 ================= ============
 %CLUSTER%         Selected cluster
 %CONDITION%       Condition
-%CRITICAL_VALUE%  Critical Value
 %DURATION%        Duration
 %HOSTNAME%        Selected host or node
 %METRIC%          Metric
 %METRIC_GROUP%    Group for the selected metric
 %RESOURCE%        Selected resource
 %TYPE%            Type of the custom advisor
+%CRITICAL_VALUE%  Critical Value
 %WARNING_VALUE%   Warning Value
 ================= ============
 
 Developer Studio
-````````````````
+++++++++++++++++
 
-Provides functionality to create Advisors, Auto Tuners, or "mini Programs" right within your web browser based on `ClusterControl DSL (Domain Specific Language) <../../dsl.html>`_. The DSL syntax is based on JavaScript, with extensions to provide access to ClusterControl’s internal data structures and functions. The DSL allows you to execute SQL statements, run shell commands/programs across all your cluster hosts, and retrieve results to be processed for advisors/alerts or any other actions. Developer Studio is a development environment to quickly create, edit, compile, run, test, debug and schedule your JavaScript programs.
+Provides functionality to create Advisors, Auto Tuners, or Mini Programs right within your web browser based on `ClusterControl DSL (Domain Specific Language) <../../dsl.html>`_. The DSL syntax is based on JavaScript, with extensions to provide access to ClusterControl's internal data structures and functions. The DSL allows you to execute SQL statements, run shell commands/programs across all your cluster hosts, and retrieve results to be processed for advisors/alerts or any other actions. Developer Studio is a development environment to quickly create, edit, compile, run, test, debug and schedule your JavaScript programs.
 
 Advisors in ClusterControl are powerful constructs; they provide specific advice on how to address issues in areas such as performance, security, log management, configuration, storage space, etc. They can be anything from simple configuration advice, warning on thresholds or more complex rules for predictions, or even cluster-wide automation tasks based on the state of your servers or databases. 
 
-ClusterControl comes with a set of basic advisors that include rules and alerts on security settings, system checks (NUMA, Disk, CPU), queries, innodb, connections, performance schema, Galera configuration, NDB memory usage, and so on. The advisors are open source under an MIT license, and available on `GitHub <https://github.com/severalnines/s9s-advisor-bundle>`_. Through the Developer Studio, it is easy to import new advisors as a JS bundle, or export your own for others to try out.
+ClusterControl comes with a set of basic advisors that include rules and alerts on security settings, system checks (NUMA, Disk, CPU), queries, InnoDB, connections, PERFORMANCE_SCHEMA, configuration, NDB memory usage, and so on. The advisors are open source under MIT license, and publicly available at `GitHub <https://github.com/severalnines/s9s-advisor-bundle>`_. Through the Developer Studio, it is easy to import new advisors as a JS bundle, or export your own for others to try out.
 
 * **New**
-	- Name - Specify the file name including folders if you need. E.g. "shared/helpers/cmon.js" will create all appropriate folders if they don't exist yet.
+	- Name - Specify the file name including folders if you need. E.g. ``shared/helpers/cmon.js`` will create all appropriate folders if they don't exist yet.
 	- File content:
 		- Empty file - Create a new empty file.
-		- Galera Template - Create a new file containing skeleton code for Galera monitoring.
+		- Template - Create a new file containing skeleton code for monitoring.
 		- Generic MySQL Template - Create a new file containing skeleton code for generic MySQL monitoring.
 
 * **Import**
 	- Imports advisor bundle. Supported format is ``.tar.gz``. See `s9s-advisor-bundle <https://github.com/severalnines/s9s-advisor-bundle>`_.
 
 * **Export**
-	- Exports the advisor's directory to a ``.tar.gz`` file. The exported file can be imported to Developer Studio through *ClusterControl > Manage > Developer Studio > Import* function.
+	- Exports the advisor's directory to a ``.tar.gz`` format. The exported file can be imported to Developer Studio through *ClusterControl > Manage > Developer Studio > Import* function.
 
 * **Advisors**
-	- Opens the Advisor list page. See `Advisors <performance.html#advisors>`_ section.
+	- Opens the Advisor list page. See `Advisors <performance.html#advisors>`_.
 
 * **Save**
 	- Saves the file.
@@ -293,16 +285,18 @@ ClusterControl comes with a set of basic advisors that include rules and alerts 
 	- Moves the file around between different subdirectories.
 
 * **Remove**
-	- Remove the script.
+	- Removes the script.
 
 * **Compile**
 	- Compiles the script.
 
 * **Compile and run**
-	- Compile and run the script. The output appears under *Message*, *Graph* or *Raw response* tab down below.
-	- The arrow next to the “Compile and Run” button allows us to change settings for a script and, for example, pass some arguments to the ``main()`` function.
+	- Compile and run the script. The output appears under *Message*, *Graph* or *Raw response* tab underneath the editor.
+	- The arrow next to the "Compile and Run" button allows us to change settings for a script and for example, pass some arguments to the ``main()`` function.
 
 * **Schedule Advisor**
 	- Schedules the script as an advisor.
 
-We have covered this in details `in this blog post <http://www.severalnines.com/blog/introducing-clustercontrol-developer-studio-creating-your-own-advisors>`_. For full documentation on ClusterControl Domain Specific Language, see `ClusterControl DSL <../../dsl.html>`_ section.
+.. seealso:: `Introducing ClusterControl Developer Studio and Creating your own Advisors in JavaScript <https://severalnines.com/blog/introducing-clustercontrol-developer-studio-and-creating-your-own-advisors-javascript>`_.
+
+For full documentation on ClusterControl Domain Specific Language, see `ClusterControl DSL <../../dsl.html>`_.
