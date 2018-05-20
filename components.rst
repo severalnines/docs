@@ -1706,8 +1706,8 @@ View job log messages of job ID 10235:
 
 	$ s9s job --log  --job-id=10235
 
-s9s maint
-``````````
+s9s maintenance
+````````````````
 
 View and manipulate maintenance periods.
 
@@ -1715,6 +1715,7 @@ View and manipulate maintenance periods.
 
 .. code-block:: bash
 
+	s9s maintenance {command} {options}
 	s9s maint {command} {options}
 
 **Command**
@@ -1744,20 +1745,32 @@ Name, shorthand                        Description
 
 **Examples**
 
-List out all node under maintenance period:
+Create a maintenance period for PostgreSQL node 10.35.112.21, starting on 05:44:55 AM for one day:
 
 .. code-block:: bash
 
-	$ s9s maint --list --long
-	ST UUID    OWNER           GROUP START    END      HOST/CLUSTER REASON
-	-h 70346c3 admin@email.com       07:42:18 08:42:18 10.0.0.209   Upgrading RAM
+	$ s9s maintenance \
+	    --create \
+	    --nodes=10.35.112.21:5432 \
+	    --start=2018-05-19T05:44:55.000Z \
+	    --end=2018-05-20T05:44:55.000Z \
+	    --reason='Upgrading RAM' \
+	    --batch
+
+List out all nodes that are under maintenance period:
+
+.. code-block:: bash
+
+	$ s9s maintenance --list --long
+	ST UUID    OWNER GROUP START    END      HOST/CLUSTER REASON
+	-h 70346c3 dba   admin 07:42:18 08:42:18 10.0.0.209   Upgrading RAM
 	Total: 1
 
 Delete a maintenance period for UUID 70346c3:
 
 .. code-block:: bash
 
-	$ s9s maint --delete --uuid=70346c3
+	$ s9s maintenance --delete --uuid=70346c3
 
 s9s process
 ````````````
@@ -1896,7 +1909,7 @@ Print the scripts available for cluster ID 1:
 s9s account
 ````````````
 
-Manage database users and accounts.
+Manage database users and accounts for MySQL and PostgreSQL databases.
 
 **Usage**
 

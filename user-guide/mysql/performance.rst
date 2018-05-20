@@ -4,7 +4,7 @@ Performance
 Database performance monitoring and advisors.
 
 Overview
-````````
+++++++++
 
 You can view graphs of different database counters on this page. You can record up to 82 different MySQL counters.
 
@@ -21,7 +21,7 @@ For detailed explanation on status variables of your cluster, you can refer to t
 	- MySQL Cluster: https://dev.mysql.com/doc/refman/5.6/en/mysql-cluster.html
 
 Advisors
-````````
+++++++++
 
 Lists of scheduled advisors' results created in *ClusterControl > Manage > Developer Studio* using `ClusterControl DSL <../../dsl.html>`_. You can think of it like a 'scheduled mini-program' which executes a script created in Developer Studio and produces a result containing status, advice and justification. Each advisor can be expanded and collapsed by clicking on the dropdown icon at the top right corner. 
 
@@ -47,7 +47,7 @@ Lists of scheduled advisors' results created in *ClusterControl > Manage > Devel
 	- The advisor's decision based on the justification.
 
 Health Report (Deprecated)
-``````````````````````````
+++++++++++++++++++++++++++
 
 .. Attention:: This feature is deprecated in favor of `Advisors`_.
 
@@ -72,12 +72,12 @@ This tab provides a quick overview of the overall health of your database nodes.
 	- Temporary tables usage - Temporary Disk Table Ratio
 
 Database Performance Advisor
-''''''''''''''''''''''''''''
+````````````````````````````
 
 ClusterControl advisor rules are a set of MySQL best practices that allow DBAs and sysadmins to manage the dynamic nature of their MySQL servers over time. The Health Report module monitors all database nodes for adherence to MySQL recommended configuration and server settings. Below is a description of each advisor, as well as some instructions on how to resolve any exceptions raised.
 
 Memory Usage
-............
+''''''''''''
 
 Overview of memory usage by MySQL. 
 
@@ -134,12 +134,12 @@ where,
  
 
 Query
-.....
+'''''
 
 Query related statistics since the last MySQL restart.
 
 FULL TABLE SCANS
-++++++++++++++++
+................
 
 - The ratio of full table scans, an operation that requires reading the entire contents of a table, rather than just selected portions using an index. Impacts performance, not stability.
 
@@ -160,7 +160,7 @@ FULL TABLE SCANS
  
 
 SELECT FULL JOIN
-++++++++++++++++
+................
 
 - The number of joins that perform table scans because they do not use indexes. Impacts performance, not stability.
 
@@ -179,7 +179,7 @@ SELECT FULL JOIN
  
 
 SELECT RANGE CHECK
-++++++++++++++++++
+..................
 
 - The number of joins without keys that check key usage after each row. Impacts performance, not stability.
 
@@ -198,7 +198,7 @@ Calculation:
  
 
 SORT PASSES
-+++++++++++
+...........
 
 - The ratio of merge passes that the sort algorithm has had to do. Impacts performance, not stability.
 
@@ -218,12 +218,12 @@ SORT PASSES
  
 
 InnoDB
-......
+''''''
 
 InnoDB related statistics since the last MySQL startup restart. 
 
 INNODB BUFFER POOL HIT RATIO
-++++++++++++++++++++++++++++
+............................
 
 - Ratio of how often your pages are retrieved from memory instead of disk. Impacts performance, not stability.
 
@@ -244,7 +244,7 @@ INNODB BUFFER POOL HIT RATIO
  
 
 INNODB DIRTY PAGES
-++++++++++++++++++
+..................
 
 - Ratio of how often InnoDB needs to be flushed. Impacts performance, not stability.
 
@@ -264,7 +264,7 @@ Recommendation:
  
 
 INNODB WAIT FOR CHECKPOINT
-++++++++++++++++++++++++++
+..........................
 
 - Ratio of how often InnoDB needs to read or create a page where no clean pages are available. Impacts performance, not stability.
 
@@ -285,7 +285,7 @@ INNODB WAIT FOR CHECKPOINT
  
 
 INNODB WAIT FOR REDOLOG
-+++++++++++++++++++++++
+.......................
 
 - Ratio of redo log contention. Impacts performance, not stability.
 
@@ -306,12 +306,12 @@ INNODB WAIT FOR REDOLOG
  
 
 Connections
-...........
+'''''''''''
 
 MySQL connection statistics since last MySQL restart.
 
 MAX CONNECTIONS CURRENT
-+++++++++++++++++++++++
+........................
 
 - The ratio of currently open connections (connection thread). Impacts stability.
 
@@ -330,7 +330,7 @@ MAX CONNECTIONS CURRENT
 	- If the ratio is high, it indicates there are many concurrent connections to the MySQL server and could lead to 'too many connections' error. Try increasing the ``max_connections`` value or inspect the connections using ``SHOW FULL PROCESSLIST``.
 
 MAX CONNECTIONS EVER SEEN
-+++++++++++++++++++++++++
+.........................
 
 - The ratio of maximum connections to MySQL server that was ever seen. Impacts stability.
 
@@ -350,12 +350,12 @@ MAX CONNECTIONS EVER SEEN
  
 
 Memory
-......
+``````
 
 Percentage of system RAM used by MySQL server.
 
 MYSQL MEMORY USAGE CURR
-+++++++++++++++++++++++
+.......................
 
 - Percentage of system RAM used by MySQL server.
 
@@ -381,7 +381,7 @@ MYSQL MEMORY USAGE CURR
  
 
 MYSQL MEMORY USAGE EVER
-+++++++++++++++++++++++
+........................
 
 - Maximum percentage of system RAM that has ever been used by MySQL Server. 
 
@@ -405,12 +405,12 @@ MYSQL MEMORY USAGE EVER
 	- If the host is swapping, increase RAM or lower ``innodb_buffer_pool_size`` or ``max_connections``.
 
 Files
-.....
+``````
 
 Files-related performance since the last MySQL restart.
 
 OPEN FILES RATIO
-+++++++++++++++++
+.................
 
 - The ratio of files that are open. Impacts performance, not stability.
 
@@ -430,12 +430,12 @@ OPEN FILES RATIO
  
 
 Cache
-.....
+``````
 
 Table cache performance since the last MySQL restart.
 
 TABLE CACHE USAGE
-+++++++++++++++++
+..................
 
 - The ratio of table cache usage for all threads. Impacts performance, not stability.
 
@@ -455,7 +455,7 @@ TABLE CACHE USAGE
  
 
 TABLE CACHE HIT RATIO
-+++++++++++++++++++++
+.....................
 
 - The ratio of table cache hit usage. Impacts performance, not stability.
 
@@ -475,10 +475,10 @@ TABLE CACHE HIT RATIO
  
 
 Locking
-.......
+````````
 
 TABLE LOCK CONTENTION
-+++++++++++++++++++++
+.....................
 
 - Table lock contention ratio. Impacts performance, not stability (may impact stability on Galera clusters).
 
@@ -495,66 +495,35 @@ TABLE LOCK CONTENTION
 
 - Recommendation:
 	- You have queries or operations that are locking tables, thus preventing concurrency (look for ``LOCK TABLE`` etc). If you are using MyISAM, change the storage engine to InnoDB if possible.
-
-Status Time Machine
-````````````````````
-
-.. Attention:: By default, this feature is disabled unless you set ``enable_mysql_timemachine=1`` in respective CMON configuration file and restart CMON service to load it up.
-
-The status time machine allows you to select status variable for a time range and compare the values at the start and end of that range. The table shows the selected status variables for the given range. Use the slider at the end of the table change the time range.
-
-* **Filter Stats**
-	- Open the Filter Stats window.
-
-* **Apply Filter**
-	- Apply the search based on available selected filters.
-
-* **Clear Filter**
-	- Clear the selected filters.
-
-* **Search**
-	- Filter the result based on defined search text.
-
-* **Show only changed values**
-	- Show results with changed values only.
-
-* **Start Value**
-	- The status/variables value on the start time. (left scroller)
-
-* **End Value**
-	- The status/variables value on the end time. (right scroller)
-
-* **Diff/Second**
-	- The difference between values on start time and end time divide by the amount of time in seconds between those ranges.
 	
 DB Status
-``````````
+++++++++++
 
 DB Status provides a quick overview of MySQL status across all your database nodes, similar to ``SHOW STATUS`` statement. You can use the *Search* text field to filter the result.
 
 .. Note:: You can check *Hide all zero values* to filter out any status that returned 0.
 
 DB Variables
-````````````
+++++++++++++
 
 DB Variables provide a quick overview of MySQL variables that are set across all your database nodes, similar to ``SHOW GLOBAL VARIABLES`` statement. You can use the *Search* text field to filter the result.
 
 .. Note:: Red text means that the variable setting is different. In some cases that is acceptable (e.g., IP address of the node).
 
 DB Growth
-``````````
+++++++++++
 
 Provides a summary of your database and table growth on daily basis for the last 30 days. On the first line of the *Top 25 Largest Databases* grid, you should notice the actual size of MySQL data directory (with a folder icon). This is useful to determine whether any other files exist in the data directory may consume huge spaces e.g binary log, error log or MySQL general log.
 
 Click on a database listed for further details on growth summary per table.
 
 InnoDB Status
-``````````````
++++++++++++++
 
 Fetches the current InnoDB monitor output for selected host, similar to ``SHOW ENGINE INNODB STATUS`` command.
 
 Schema Analyzer
-````````````````
++++++++++++++++
 
 Analyzes your database schemas for missing primary keys, redundant indexes and tables using the :term:`MyISAM` storage engine. Galera Cluster needs an explicitly defined primary keys on each table (unique key does not count). MyISAM tables are not recommended in Galera. ClusterControl will periodically check the schemas for these (default every 8 hours or every CMON restart), and raise an alert if necessary.
 
@@ -572,7 +541,7 @@ Analyzes your database schemas for missing primary keys, redundant indexes and t
 		- Data needs more disk space so the backups will be bigger and slower.
 
 Transaction Log
-````````````````
++++++++++++++++
 
 Lists of long-running transactions and deadlocks across database cluster where you can easily view what transactions are causing the deadlocks. The timeout is 10 seconds by default. This is configurable in CMON configuration file under ``db_long_query_time_alarm`` configuration option. 
 

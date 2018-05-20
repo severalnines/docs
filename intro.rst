@@ -69,11 +69,11 @@ Supported Load Balancer
 ClusterControl supports the following routing softwares:
 
 - HAProxy
-- MaxScale
+- MariaDB MaxScale
 - ProxySQL
 - Keepalived (virtual IP address only)
 
-How does it work?
+How Does it Work?
 -----------------
 
 ClusterControl components must reside on an independent node apart from your database cluster. For example, if you have a three-node Galera cluster, ClusterControl should be installed on the fourth node. Following is an example deployment of having a Galera cluster with ClusterControl:
@@ -82,9 +82,9 @@ ClusterControl components must reside on an independent node apart from your dat
    :alt: Example deployment
    :align: center
 
-Once the cmon service is started, it will load up all configuration options inside :file:`/etc/cmon.cnf` and :file:`/etc/cmon.d/cmon_*.cnf` (if exists) into CMON database. Each CMON configuration file represents a cluster with distinct cluster ID. It starts by registering hosts, collecting information and periodically perform check-ups and scheduled jobs on all managed nodes through SSH. Setting up a passwordless SSH is vital in ClusterControl. ClusterControl connects to all managed nodes as ``os_user`` using SSH key defined in ``ssh_identity`` inside CMON configuration file. Details on this is explained under `Passwordless SSH <requirements.html#passwordless-ssh>`_ section.
+Once the cmon service is started, it would load up all configuration options inside :file:`/etc/cmon.cnf` and :file:`/etc/cmon.d/cmon_*.cnf` (if exists) into CMON database. Each CMON configuration file represents a cluster with distinct cluster ID. It starts by registering hosts, collecting information and periodically perform check-ups and scheduled jobs on all managed nodes through SSH. Setting up a passwordless SSH is vital in ClusterControl. ClusterControl connects to all managed nodes as ``os_user`` using SSH key defined in ``ssh_identity`` inside CMON configuration file. Details on this is explained under `Passwordless SSH <requirements.html#passwordless-ssh>`_ section.
 
-What user really needs to do is to access ClusterControl UI located at :samp:`http://{ClusterControl_host}/clustercontrol` and start managing your database infrastructure from there. You can begin by importing existing database clusters, or create a new database server/cluster or register another cluster monitored by another ClusterControl server. ClusterControl supports monitoring multiple clusters and cluster types under single ClusterControl server as shown in the following figure:
+What user really needs to do is to access ClusterControl UI located at :samp:`http://{ClusterControl_host}/clustercontrol` and start managing your database infrastructure from there. You can begin by importing an existing database cluster, or create a new database server or cluster. ClusterControl supports monitoring multiple clusters and cluster types under single ClusterControl server as shown in the following figure:
 
 .. image:: img/cc_deploy_multiple.png
    :alt: Example multiple cluster deployment
@@ -96,10 +96,10 @@ ClusterControl exposes all functionality through remote procedure calls (RPC) on
    :alt: ClusterControl architecture
    :align: center
 
-ClusterControl has minimal performance impact due to its monitoring responsibility and will not cause any downtime to your database server/cluster. In fact, it will perform automatic recovery (if enabled) when it finds a failed database node or cluster.
+ClusterControl has minimal performance impact due to its monitoring responsibility and will not cause any downtime to your database server or cluster. In fact, it will perform automatic recovery (if enabled) when it finds a failed database node or cluster.
 
-What it can do?
----------------
+Features
+--------
 
 ClusterControl is able to handle most of the administration tasks required to maintain database servers or clusters. Here are some of the tasks that ClusterControl can perform on your database infrastructure:
 
@@ -111,21 +111,23 @@ ClusterControl is able to handle most of the administration tasks required to ma
 * Trigger alarm and send notifications
 * Schedule and perform database backup (mysqldump, Xtrabackup, pgdump, pg_basebackup, mongodump, mongodb-consistent-backup)
 * Database backup status
-* Restore backups (MySQL/PostgreSQL)
-* Upload backups to AWS S3/Google Cloud Storage
-* Verify backup restoration on standalone host
+* Restore backups
+* Verify backup restoration on a standalone host
+* MySQL point-in-time recovery
+* Upload backups to AWS S3/Google Cloud Storage/Azure Storage
 * Stop/Start/Bootstrap database service
-* Deploy a new database server/cluster
+* Deploy a new database server/cluster on-premises or on cloud
 * Add existing MySQL/MariaDB server/cluster, MongoDB replica set and PostgreSQL server
 * Scale your database cluster (add/remove Galera node, garbd and replication slave)
 * Deploy database load balancers (HAProxy, MaxScale, ProxySQL) and virtual IP address (Keepalived)
 * Monitor HAProxy/MaxScale/ProxySQL statistics
 * Manage MySQL user privileges
 * Upgrade MySQL servers
-* Promote MySQL slave to master
+* Promote MySQL/PostgreSQL slave to master
 * Set up a delayed slave
 * Stage a replication slave from a master or an existing backup
 * Manage private keys and certificates for databases' SSL
+* Client-server encryption, replication encryption, backup encryption (at-rest or in-transit)
 * and many more..
 
 For more details, please refer to `ClusterControl product page <http://severalnines.com/product/clustercontrol>`_. You might also want to look at the `ClusterControl changelog <changelog.html>`_ for the latest development update.

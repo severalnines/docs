@@ -1,5 +1,3 @@
-.. _mysql-nodes:
-
 Nodes
 -----
 
@@ -7,7 +5,7 @@ Provides detailed information for each node in the cluster. On the left hand col
 
 
 Nodes Monitoring
-````````````````
+++++++++++++++++
 
 The node on the list will appear in red color to indicate it is unhealthy. The tabs show performance and resource usage for a specific node. There are also database specific tabs depending on the type of database running on the host.
 
@@ -23,7 +21,7 @@ PROBLEMATIC Indicates the node is down or unreachable.
 =========== ===========
 
 Controller Node
-'''''''''''''''
+````````````````
 
 * **Overview**
 	- Provides a summary of host information and statistic histogram including CPU, disk, network and memory usage.
@@ -32,7 +30,7 @@ Controller Node
 	- Provides a snapshot view of processes running on the host, similar to :term:`top` command in Linux.
 
 Database Nodes
-'''''''''''''''
+``````````````
 
 * **Overview**
 	- Provides a summary of host information and statistic histogram including CPU, disk, network and memory usage.
@@ -53,7 +51,7 @@ Database Nodes
 	- MySQL global variables for this node, similar to ``SHOW GLOBAL VARIABLES`` command.
 	
 HAProxy Nodes
-''''''''''''''
+``````````````
 
 Provides detailed view of HAProxy stats, similar to HAProxy stats page. If HAProxy is deployed using ClusterControl, ClusterControl will automatically create HAProxy stats page on port 9600. You can access the page directly using the value of *Admin User* and *Admin Password* specified during the deployment at *ClusterControl > Manage > Load Balancer > Install HAProxy > Show Advanced Settings*.
 
@@ -67,12 +65,12 @@ Provides detailed view of HAProxy stats, similar to HAProxy stats page. If HAPro
 	- Tick on the checkbox to enable or disable the backend server from the load balancing set. This is useful during backend servers maintenance.
 
 ProxySQL Nodes
-''''''''''''''
+``````````````
 
 Provides detailed view of ProxySQL stats. ClusterControl connects to the ProxySQL admin interface to retrieve the stats and visualize them here.
 
 Monitor
-.......
+'''''''
 
 * **ProxySQL Host Groups**
 	- List of hostgroups created under this service.
@@ -82,12 +80,12 @@ Monitor
 	- Graphs related to ProxySQL metrics - active transactions, data sent and received, memory utilization, number of connections and many more. This gives you insight in how ProxySQL operates and helps to catch any potential issues with the proxy layer.
 
 Top Queries
-............
+'''''''''''
 
 List of queries digested by the ProxySQL instance.
 
 Rules
-.....
+'''''
 
 List out all query rules created under this ProxySQL instance.
 
@@ -101,7 +99,7 @@ List out all query rules created under this ProxySQL instance.
 	- Delete an existing query rule.
 
 Servers
-.......
+'''''''
 
 List out all backend servers created under this ProxySQL instance.
 
@@ -121,7 +119,7 @@ List out all backend servers created under this ProxySQL instance.
 	- Click on 'Remove' to delete the selected server.
 
 Users
-......
+'''''
 
 List out all users created under this ProxySQL.
 
@@ -135,112 +133,101 @@ List out all users created under this ProxySQL.
 	- Drop the selected user.
 
 Variables
-..........
+'''''''''
 
 List all ProxySQL variables for this instance. You can filter the variables using the lookup field.
 
 Node Actions
-``````````````
+++++++++++++
 
 SSH Console
-'''''''''''
+````````````
 
 Opens a web-based SSH terminal in a new browser window that allows to execute shell commands on the server directly from a browser as the configured ``os_user``. This feature only supported with Apache 2.4+ with ClusterControl SSH component is installed and service ``cmon-ssh`` is started. Details at `ClusterControl SSH <../../components.html#clustercontrol-ssh>`_.
 
 Schedule Maintenance Mode
-''''''''''''''''''''''''''
+``````````````````````````
 
 Puts individual nodes into maintenance mode which prevents ClusterControl to raise alarms and notifications during the maintenance period. When toggling ON, you can set the maintenance period for a pre-defined time or schedule it accordingly. Specify the reason for auditing purpose. ClusterControl will not degrade the node, hence the node's state remains as what it is unless you perform any maintenance onto it. 
 
 Alarms and notifications for this node will be activated back once the maintenance period is exceeded, or you explicitly toggling it OFF.
 
 Reboot Host
-'''''''''''
+````````````
 
-Initiates a system reboot of the selected host. Once initiated, ClusterControl will monitor the reboot progress every 5 seconds for 10 minutes (600 seconds).
+Initiates a system reboot of the selected host. Once initiated, ClusterControl will monitor the reboot progress every 5 seconds for 10 minutes (600 seconds) before declaring the reboot operation is failed.
 
 Restart Node
-'''''''''''''
+````````````
 
-Restart the active monitored process of the selected host. For example, if the node's role is HAProxy, ClusterControl will restart HAProxy process.
+Restarts the active monitored process of the selected host. For example, if the node's role is HAProxy, ClusterControl will restart HAProxy process. This is not a system reboot. Only available if the service is started. 
 
-Remove Node
-''''''''''''
+You can configure the graceful shutdown timeout (default is 1800 seconds) in the "Confirm Shutdown" dialog. ClusterControl will give up waiting for a node to gracefully terminate. If the node is still running after the timeout you may send the SIGKILL signal to force the node down by toggling on 'Force stop (SIGKILL) node after the graceful shutdown timeout has been reached' option.
 
-The remove icon will only appear when you rollover the mouse pointer on the node icon in the left-hand column. This removes the database node from the cluster. When removing a database node, ClusterControl will perform the following action:
+The node will be shutdown and enter maintenance mode.
 
-1. The monitored service will be stopped.
-2. Data files and configuration files will be left intact on the server.
-3. The monitored service will be disabled to prevent accidental restarts.
+Stop Node
+``````````
+
+Stops the monitored process of the selected host. For example, if the node's role is HAProxy, ClusterControl will restart HAProxy process. This is not a system shut down. Only available if the service is started. 
+
+You can configure the graceful shutdown timeout (default is 1800 seconds) in the "Confirm Shutdown" dialog. ClusterControl will give up waiting for a node to gracefully terminate. If the node is still running after the timeout you may send the SIGKILL signal to force the node down by toggling on 'Force stop (SIGKILL) node after the graceful shutdown timeout has been reached' option.
+
+The node will be shutdown and enter maintenance mode.
+
+Unregister Node
+````````````````
+
+Removes the database node from the database cluster and/or ClusterControl monitoring. You can choose one of the these three options:
+
+* *Keep the service running* - Node will be unregistered from ClusterControl but the service will be kept running. This node will remain part of the database cluster.
+* *Stop service and keep files untouched* - Node will be unregistered from ClusterControl and the service will be stopped. Data files and configuration files will be left intact on the server. The node will be down, but would be part of the database cluster if started.
+* *Stop and uninstall service (all configuration files will be deleted)* - Node will be unregistered from ClusterControl and the service will be stopped. Data files and configuration files will be deleted on the server. The monitored service will be disabled to prevent accidental restarts.
 
 Cluster-Specific Node Actions
-``````````````````````````````
++++++++++++++++++++++++++++++
 
 Some of the node management jobs are cluster-specific, as described in the next sections.
 
-.. Note:: You can monitor job's progress at *ClusterControl > Logs > Jobs*.
+.. Note:: You can monitor the job's progress at *ClusterControl > Logs > Jobs*.
 
 Galera Cluster
-''''''''''''''
+``````````````
 
-These are specific functions available for Galera nodes:
-
-* **Shutdown Node**
-	- Stops the database instance on this node. This is not a system shut down.
-
-* **Restart Node**
-	- Stops and starts the database instance on this node. This is not a system reboot.
-
-* **Reboot Host**
-	- Initiates a system reboot on this host.
+These are specific options available for Galera nodes:
 
 * **Resync Node**
 	- Removes all files in the datadir and forces a full resync (SST) of the node. This is necessary sometimes if the galera node is trying Node Recovery multiple times and there is e.g., a filesystem issue. Wait for its completion before starting another node with Initial Start.
 
 * **Bootstrap Cluster**
-	- Launches the bootstrap cluster window. Similar to *ClusterControl > Cluster Actions > Bootstrap Cluster*. ClusterControl will stop all running nodes before bootstrapping the cluster from the selected Galera node.
+	- Launches the bootstrap cluster window. ClusterControl will stop all running nodes before bootstrapping the cluster from the selected Galera node.
 
 * **Rebuild Replication Slave**
 	- Rebuilds replication slave on this node from another master. This is only relevant if you have setup a replication slave for the cluster and you want to resync the data. It uses Percona Xtrabackup to stage the replication data.
 
-.. caution:: 'Rebuilding Replication Slave' will wipe out the selected node's MySQL datadir.
+.. caution:: *Rebuilding Replication Slave* will wipe out the selected node's MySQL datadir.
 
 * **Start Node**
 	- This option is only available if the node is down. It starts the database instance on this node. If you tick 'Perform an initial start?', it will remove all files in the MySQL datadir and force a full resync (SST), which is necessary sometimes if the Galera node fails to reach a synced state after multiple node recovery attempts and there is a filesystem issue.
 	
 * **Make Primary**
-	- This option is only available if the node is down. It makes sense to use it if the Galera node is down and reported as non-Primary component from the *Overview* page. ClusterControl will attempt to promote the node from non-Primary state to :term:`Primary component`.
+	- This option is only available if the node is down. It makes sense to use this if the Galera node is reported as non-Primary component from the *Overview* page. ClusterControl will attempt to promote the node from non-Primary state to :term:`Primary component`.
 	
 * **Enable Binary Logging**
-	- Opens the 'Enable Binary Logging' configuration dialog. This job will update the related configurations on this host to enable binary logging. A replication slave can then be added to the node, or it may be possible to use the binary log for point-in-time recovery (PITR). A server restart is needed to finalize the configuration update.
-
-* **Stop Node**
-	- Stop the MySQL processes on this host.
+	- Updates the related configurations on this host to enable binary logging. A replication slave can then be added to the node, or it may be possible to use the binary log for point-in-time recovery (PITR). See `Point-in-Time Recovery <backup.html#point-in-time-recovery>`_ for details. A server restart is needed to finalize the configuration update.
 	
 MySQL Group Replication
-''''''''''''''''''''''''
-
-* **Shutdown Node**
-	- Stops the database instance on this node. This is not a system shut down.
-
-* **Restart Node**
-	- Stops and starts the database instance on this node. This is not a system reboot.
-	
-* **Reboot Host**
-	- Initiates a system reboot on this host.
+````````````````````````
 
 * **Rebuild Node**
-	- Rebuilds the node by streaming backup from a master node using Percona Xtrabackup. ClusterControl will automatically start the Group Replication once the rebuild job succeed.
+	- Rebuilds the node by streaming backup from a master node using Percona Xtrabackup. ClusterControl will automatically start the Group Replication once the rebuild job succeeds.
 	
-.. caution:: 'Rebuild Node' will wipe out the node's MySQL datadir.
-	
-* **Start Node**
-	- This option is only available if the node is down. It starts the database instance on this node.
+.. caution:: *Rebuild Node* will wipe out the node's MySQL datadir.
 
 MySQL Cluster
-'''''''''''''
+``````````````
 
-These are specific functions available for MySQL cluster nodes:
+These are specific options available for MySQL cluster nodes:
 
 * **Shutdown Node**
 	- Stops the database instance on this node. This is not a system shut down.
@@ -255,21 +242,9 @@ These are specific functions available for MySQL cluster nodes:
 	- This option is only available if the node is down. It starts the database instance on this node.
 
 MySQL Replication
-'''''''''''''''''
+``````````````````
 
-These are specific functions available for MySQL replication nodes:
-
-* **Shutdown Node**
-	- Stops the database instance on this node. This is not a system shut down.
-
-* **Restart Node**
-	- Stops and starts the database instance on this node. This is not a system reboot.
-
-* **Reboot Host**
-	- Initiates a system reboot on this host.
-	
-* **Start Node**
-	- This option is only available if the node is down. It starts the database instance on this node.
+These are specific options available for MySQL replication nodes:
 
 * **Disable Read Only**
   - Disable read-only by setting up ``SET GLOBAL read_only = OFF``. This option is only available if read-only is on.
@@ -283,7 +258,7 @@ These are specific functions available for MySQL replication nodes:
 * **Rebuild Replication Slave**
 	- Exclusive for slave nodes. Rebuilds replication slave on this node from another master. It can use an existing backup (PITR compatible) or use Percona Xtrabackup to stage the replication data from a master.
 	
-.. caution:: 'Rebuilding Replication Slave' will wipe out the selected node's MySQL datadir.
+.. caution:: *Rebuilding Replication Slave* will wipe out the selected node's MySQL datadir.
 
 * **Start Slave**
 	- Exclusive for slave node and only if the slave is stopped. It starts the slave thread.
@@ -295,27 +270,15 @@ These are specific functions available for MySQL replication nodes:
 	- Exclusive for slave node. Promotes the selected slave to become the new master. If the master is currently functioning correctly, then stop application queries prior to promoting another slave to safe guard from data loss. Connections on the current running master will be killed after a 10 second grace period.
 
 MySQL Standalone
-'''''''''''''''''
+``````````````````
 
-These are specific functions available for MySQL standalone nodes:
-
-* **Shutdown Node**
-	- Stops the database instance on this node. This is not a system shut down.
-
-* **Restart Node**
-	- Stops and starts the database instance on this node. This is not a system reboot.
-
-* **Reboot Host**
-	- Initiates a system reboot on this host.
-	
-* **Start Node**
-	- This option is only available if the node is down. It starts the database instance on this node.
+These are specific options available for MySQL standalone nodes:
 
 * **Enable Binary Logging**
-    - This job will update the configuration of selected node to enable binary logging. A replication slave can then be added to the node, or it may be possible to use the binary log for point-in-time recovery. A server restart is needed to finalize the configuration update.
+  - Updates the related configurations on the node to enable binary logging. A replication slave can then be added to the node, or it may be possible to use the binary log for point-in-time recovery (PITR). See `Point-in-Time Recovery <backup.html#point-in-time-recovery>`_ for details. A server restart is needed to finalize the configuration update.
 
 * **Disable Read Only**
-    - Disable read-only by setting up ``SET GLOBAL read_only = OFF``. This option is only available if read-only is on.
+  - Disables read-only by setting up ``SET GLOBAL read_only = OFF``. This option is only available if read-only is on.
 
 * **Enable Read Only**
-    - Enable read-only by setting up ``SET GLOBAL read_only = ON``. This option is only available if read-only is off.
+  - Enables read-only by setting up ``SET GLOBAL read_only = ON``. This option is only available if read-only is off.

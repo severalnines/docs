@@ -1,20 +1,18 @@
-.. _mongodb-overview:
-
 Overview
 --------
 
-Provides summary of all database nodes in the cluster. This page is accessible only if there is a cluster deployed by ClusterControl via `Deploy Database Cluster <../../user-guide/index.html#deploy-database-cluster>`_ or imported into ClusterControl via `Import Existing Server/Database Cluster <../../user-guide/index.html#import-existing-server-database-cluster>`_.
+Provides summary of all database nodes in the cluster. This page is accessible only if there is a cluster deployed by ClusterControl via `Deploy Database Cluster <../../user-guide/index.html#deploy-database-cluster>`_ or imported into ClusterControl via `Import Existing Server/Database Cluster <../../user-guide/index.html#import-existing-server-cluster>`_.
 
 Actions
-````````
+++++++++
 
-Provides shortcuts to main cluster functionality.
-
-* **Convert to Shard**
-	- Exclusive for MongoDB Replica Set. See `Convert to Shard`_.
+Provides shortcuts to the main cluster functionality.
 
 * **Add Node**
 	- See `Add Node`_.
+	
+* **Convert to Shard**
+	- Exclusive for MongoDB Replica Set. See `Convert to Shard`_.
 	
 * **Add Shard**
 	- Exclusive for MongoDB Sharded Cluster. See `Add Shard`_.
@@ -25,7 +23,7 @@ Provides shortcuts to main cluster functionality.
 * **Change RPC API Token**
 	- Serves as the auntentication string by ClusterControl UI to connect to CMON RPC interface. Each cluster has its own unique token.
 	
-.. Note:: You can retrieve the RPC API Token value directly from respective cmon_X.cnf, [wwwroot]/cmonapi/config/bootstrap.php under CMON_TOKEN variable or from 'dcps.apis' table.
+.. Note:: You can retrieve the RPC API Token value directly from respective ``/etc/cmon.d/cmon_{clusterID}.cnf``.
 
 * **Delete Cluster**
 	- Unregister a database cluster from the ClusterControl UI. This action will remove the selected CMONAPI URL and token for corresponding cluster and will NOT uninstall the actual database cluster.
@@ -36,12 +34,12 @@ Provides shortcuts to main cluster functionality.
 	- You can still re-register your cluster to ClusterControl at a later stage by using `Cluster Registrations <../../user-guide/index.html#cluster-registrations>`_.
 
 Convert to Shard
-'''''''''''''''''
+````````````````
 
 Converts an existing MongoDB replica set to a sharded cluster by adding mongos and config servers into the setup. 
 
 1) Configuration Servers and Routers
-....................................
+''''''''''''''''''''''''''''''''''''
     
 *Configuration Server*
 
@@ -60,7 +58,7 @@ Converts an existing MongoDB replica set to a sharded cluster by adding mongos a
 	- Specify the IP address or hostname of the MongoDB mongos.
 	
 2) Database Settings
-.....................
+''''''''''''''''''''
 
 * **Server Data Directory**
 	- Location of MongoDB data directory. Default is ``/var/lib/mongodb``.
@@ -85,12 +83,12 @@ Converts an existing MongoDB replica set to a sharded cluster by adding mongos a
 	- Starts the MongoDB Sharded Cluster deployment.
 
 Add Shard
-'''''''''
+``````````
 
 Adds a new shard. Once the new shard has been added to the cluster, the MongoDB shard router will start to assign new chunks to it, and the balancer will automatically balance all chunks over all the shards.
 
 1) Define Shards
-................
+'''''''''''''''''
 
 * **Replica Set Name**
 	- Specify a name for this replica set shard.
@@ -107,7 +105,7 @@ Adds a new shard. Once the new shard has been added to the cluster, the MongoDB 
 		- Act as an arbiter - Toggle to 'Yes' if the node is arbiter node. Otherwise, choose 'No'.
 	
 2) Database Settings
-.....................
+''''''''''''''''''''
 
 * **Server Data Directory**
 	- Location of MongoDB data directory. Default is ``/var/lib/mongodb``.
@@ -133,12 +131,12 @@ Adds a new shard. Once the new shard has been added to the cluster, the MongoDB 
 
 
 Add Node
-''''''''
+````````
 
 Scales the current MongoDB Replica Set or Sharded Cluster deployment by adding single shard, mongos or config server.
 
 Add Node to Replica Set
-........................
+''''''''''''''''''''''''
 
 Adds a replica member or arbiter node. 
 
@@ -171,7 +169,7 @@ Adds a replica member or arbiter node.
 	- Check the box to let ClusterControl disable AppArmor (Ubuntu) or SELinux (Redhat/CentOS) if enabled.
 	
 Add Routers/Mongos
-...................
+'''''''''''''''''''
 
 * **Hostname**
 	- IP address or hostname of the mongo host.
@@ -193,7 +191,7 @@ Add Routers/Mongos
 	- Check the box to let ClusterControl disable AppArmor (Ubuntu) or SELinux (Redhat/CentOS) if enabled.
 
 Remove Shard
-'''''''''''''
+``````````````
 
 Removes or moves a replica set in a sharded cluster setup. Removing shards is a bit harder than to add a shard, as this involves moving the data to the other shards before removing the shard itself. For all data that has been sharded over all shards, this will be a job performed by the MongoDB balancer. 
 
@@ -207,7 +205,7 @@ Removes or moves a replica set in a sharded cluster setup. Removing shards is a 
 	- Click the button to proceed.
 
 Shard Servers, Config Servers & Mongos Servers
-``````````````````````````````````````````````
++++++++++++++++++++++++++++++++++++++++++++++++
 
 The opscounter graph provides overview of aggregated operation on the MongoDB shard servers. For sharded cluster, there will be another two sections for Config and Mongos Servers.
 
@@ -233,7 +231,7 @@ The opscounter graph provides overview of aggregated operation on the MongoDB sh
 	- The total of all commands running across all nodes.
 
 Custom Dashboard
-````````````````
++++++++++++++++++
 
 Customize your dashboard in the `Overview`_ page by selecting which metrics and graphs to display. The created custom dashboards will appear as tabs beside *Dash Settings*.
 
@@ -253,7 +251,7 @@ Customize your dashboard in the `Overview`_ page by selecting which metrics and 
 
 
 Nodes Statistics
-`````````````````
+++++++++++++++++
 
 This provides a summary of host and replication-related stats for all nodes. Each database cluster has its own set of statistics as explained below:
 
@@ -284,7 +282,7 @@ This provides a summary of host and replication-related stats for all nodes. Eac
 	- The value of current corresponds to the number of connections to the database server from clients over unused available incoming connections the database can provide. See `serverStatus.connections.current <http://docs.mongodb.org/manual/reference/command/serverStatus/#serverStatus.connections.current>`_ and `serverStatus.connections.available <http://docs.mongodb.org/manual/reference/command/serverStatus/#serverStatus.connections.available>`_.
 
 Hosts
-`````
++++++
 
 Shows collected system statistics in a grid as below:
 

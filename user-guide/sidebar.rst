@@ -213,7 +213,7 @@ The credentials that have been set up here can be used to:
 - Deploy databases in the cloud
 - Upload backup to cloud storage
 
-To create a cloud profile, click on *Add Cloud Credentials** and follow the wizard accordingly. Supported cloud providers are:
+To create a cloud profile, click on *Add Cloud Credentials* and follow the wizard accordingly. Supported cloud providers are:
 
 - Amazon Web Service
 - Google Cloud Platform

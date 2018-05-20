@@ -1,10 +1,10 @@
 Performance
 -----------
 
-Database performance monitoring.
+Database performance monitoring and advisors.
 
 Mongo Stats
-````````````
++++++++++++
 
 Quick overview of the status of running mongod instances grouped by shard (or replica set) similar to mongostat command collected every ``db_stats_collection_interval`` (configured inside CMON configuration file).
 
@@ -62,7 +62,7 @@ Quick overview of the status of running mongod instances grouped by shard (or re
 	- The last time ClusterControl fetch for node's status.
 
 Overview
-`````````
++++++++++
 
 Provides an overview of database operations by type and makes it possible to analyze the load on the database in more granular manner.
 
@@ -88,7 +88,7 @@ Provides an overview of database operations by type and makes it possible to ana
 	- Provides a graph of the total number of commands issued to the database since the mongod instance last started.
 	
 Advisors
-````````
++++++++++
 
 Lists of scheduled advisors' results created in *ClusterControl > Manage > Developer Studio* using `ClusterControl DSL <../../dsl.html>`_. You can think of it like a 'scheduled mini-program' which executes a script created in Developer Studio and produces a result containing status, advice and justification. Each advisor can be expanded and collapsed by clicking on the dropdown icon at the top right corner. 
 
