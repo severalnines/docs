@@ -330,7 +330,7 @@ MAX CONNECTIONS CURRENT
 	- If the ratio is high, it indicates there are many concurrent connections to the MySQL server and could lead to 'too many connections' error. Try increasing the ``max_connections`` value or inspect the connections using ``SHOW FULL PROCESSLIST``.
 
 MAX CONNECTIONS EVER SEEN
-.........................
+..........................
 
 - The ratio of maximum connections to MySQL server that was ever seen. Impacts stability.
 
@@ -350,12 +350,12 @@ MAX CONNECTIONS EVER SEEN
  
 
 Memory
-``````
+''''''
 
 Percentage of system RAM used by MySQL server.
 
 MYSQL MEMORY USAGE CURR
-.......................
+........................
 
 - Percentage of system RAM used by MySQL server.
 
@@ -405,7 +405,7 @@ MYSQL MEMORY USAGE EVER
 	- If the host is swapping, increase RAM or lower ``innodb_buffer_pool_size`` or ``max_connections``.
 
 Files
-``````
+'''''
 
 Files-related performance since the last MySQL restart.
 
@@ -430,7 +430,7 @@ OPEN FILES RATIO
  
 
 Cache
-``````
+'''''
 
 Table cache performance since the last MySQL restart.
 
@@ -475,7 +475,7 @@ TABLE CACHE HIT RATIO
  
 
 Locking
-````````
+'''''''
 
 TABLE LOCK CONTENTION
 .....................
