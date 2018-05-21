@@ -429,7 +429,11 @@ For more example on deployments using Chef, please refer to `Chef Cookbooks for 
 Ansible Role
 ++++++++++++++
 
-If you are automating your infrastructure using :term:`Ansible`, we have created a role for this purpose and it is available at `Ansible Galaxy <https://galaxy.ansible.com/severalnines/clustercontrol>`_. Getting the role is as easy as:
+If you are automating your infrastructure using :term:`Ansible`, we have created a role for this purpose and it is available at `Ansible Galaxy <https://galaxy.ansible.com/severalnines/clustercontrol>`_. This role also supports deploy a new cluster and import existing cluster into ClusterControl automatically, as shown under `Example Playbook`_.
+
+.. seealso:: `ClusterControl Ansible Github <https://github.com/severalnines/ansible-clustercontrol>`_ page.
+
+Getting the role is as easy as:
 
 .. code-block:: bash
 
@@ -484,9 +488,7 @@ The simplest playbook would be:
 
     - hosts: clustercontrol-server
       roles:
-        - { role: severalnines.clustercontrol, tags: controller }
-			vars:
-			  - controller: true
+        - { role: severalnines.clustercontrol }
 
 If you would like to specify custom configuration values as explained above, create a file called ``vars/main.yml`` and include it inside the playbook:
 
@@ -517,14 +519,115 @@ If you are running as another user, ensure the user has ability to escalate as s
       become_user: root
       roles:
         - { role: severalnines.clustercontrol, tags: controller }
-			vars:
-			  - controller: true
 
 Then, execute the command with ``--ask-become-pass`` flag, for example:
 
 .. code-block:: bash
 
     $ ansible-playbook cc.playbook --ask-become-pass
+
+Install ClusterControl with automatic deployment
+
+The role also supports automatic database deployment by leveraging the CMON RPC interface. This will minimize the deployment time to get your database cluster up and running. Example playbook for automatic deployment in AWS EC2 can be found here.
+
+Consider the following inside /etc/ansible/hosts:
+
+.. code-block:: bash
+
+	[clustercontrol]
+	192.168.55.100
+	
+	[galera]
+	192.168.55.171
+	192.168.55.172
+	192.168.55.173
+	
+	[mysql-replication]
+	192.168.55.204
+	192.168.55.205
+
+The following playbook will install ClusterControl on 192.168.55.100, setup passwordless SSH on Galera and MySQL replication nodes, then post create/add job into ClusterControl for the deployment:
+
+.. code-block:: yaml
+
+  - hosts: clustercontrol
+    roles:
+      - { role: severalnines.clustercontrol, tags: controller }
+	
+  - hosts:
+      - mysql-replication
+      - galera
+    roles:
+      - { role: severalnines.clustercontrol, tags: dbnodes }
+    vars:
+      clustercontrol_ip_address: 192.168.55.100
+      ssh_user: root
+	
+  - hosts: clustercontrol
+    roles:
+      - { role: severalnines.clustercontrol, tags: deploy-database }
+    vars:
+      cc_cluster:
+        # create new mysql replication. first node is the master
+        - deployment: true
+          operation: "create"
+          cluster_type: "replication"
+          mysql_hostnames:
+            - '192.168.55.204'
+            - '192.168.55.205'
+          mysql_cnf_template: "my.cnf.repl57"
+          mysql_datadir: "/var/lib/mysql"
+          mysql_password: "password"
+          mysql_port: 3306
+          mysql_version: "5.7"
+          ssh_keyfile: "/root/.ssh/id_rsa"
+          ssh_port: "22"
+          ssh_user: "root"
+          sudo_password: ""
+          type: "mysql"
+          vendor: "oracle"
+      # add existing galera.
+        - deployment: true
+          operation: "add"
+          cluster_type: "galera"
+          mysql_password: "password"
+          mysql_hostnames:
+            - '192.168.55.171'
+            - '192.168.55.172'
+            - '192.168.55.173'
+          ssh_keyfile: "/root/.ssh/id_rsa"
+          ssh_port: 22
+          ssh_user: root
+          vendor: percona
+          sudo_password: ""
+          galera_version: "3.x"
+          enable_node_autorecovery: true
+          enable_cluster_autorecovery: true
+      # minimal create new galera
+        - deployment: true
+          operation: "create"
+          cluster_type: "galera"
+          mysql_cnf_template: "my.cnf.galera"
+          mysql_datadir: "/var/lib/mysql"
+          mysql_hostnames:
+            - '192.168.55.191'
+            - '192.168.55.192'
+            - '192.168.55.193'
+          mysql_password: "password"
+          mysql_port: 3306
+          mysql_version: "5.6"
+          ssh_keyfile: "/root/.ssh/id_rsa"
+          ssh_user: "root"
+          sudo_password: ""
+          vendor: "percona"
+
+Take note the following tags in the role lines:
+
+* no tag (default) - Install ClusterControl
+* dbnodes - For all managed nodes to setup passwordless SSH
+* deploy-database - To deploy database after ClusterControl is installed
+
+Variables are mostly similar to keys in JSON job command created in ClusterControl's Cluster Job. If a key:value is not specified, the default value is used. For more details, check out `ClusterControl Ansible Github <https://github.com/severalnines/ansible-clustercontrol>`_ page.
 
 Docker Image
 ++++++++++++++
