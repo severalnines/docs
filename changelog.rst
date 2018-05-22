@@ -8,7 +8,7 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.6.0
 -----------------
 
-Maintenance Release: May 18h, 2018
+Maintenance Release: May 18th, 2018
 +++++++++++++++++++++++++++++++++++
 
 * Build:
@@ -17,14 +17,14 @@ Maintenance Release: May 18h, 2018
 * Controller:
 	- PostgreSQL: Support for init scripts for RHSCL PosrgreSQL packages. Please note that further tuning of the environment may be needed.
 	- PostgreSQL: Improved logic to locate the Postgres log files.
-	- PostgreSQL: Verifying the configuration and listen_addresses before registering the node.
+	- PostgreSQL: Verifying the configuration and ``listen_addresses`` before registering the node.
 	- PostgreSQL: Better error reporting in case of connection timeouts.
 	- PostgreSQL: Improvements and better messaging of slave recovery in case of the host being down.
-	- MySQL/Galera: Properly handle quoted 'wsrep_sst_auth' entries.
+	- MySQL/Galera: Properly handle quoted ``wsrep_sst_auth`` entries.
 	- Backup: Running a backup prevented other jobs from being executed.
 	- Backup: A fix to prevent a backup to be uploaded to the cloud when the user did not ask for it. 
 	- Error reporting: A fix for 'Access denied' when S9s CLI created a user.
-	- General: Removed the printout 'RPC: No variables available for...'.
+	- General: Removed the printout ``RPC: No variables available for...``.
  
 
 Maintenance Release: May 17th, 2018
