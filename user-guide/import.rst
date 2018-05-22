@@ -34,10 +34,6 @@ When importing an existing MySQL Replication, ClusterControl will do the followi
 * Pull the configuration files.
 * Generate the authentication key and register the node into ClusterControl.
 
-ClusterControl will not change any existing configuration except:
-
-* Generate a backup user.
-
 1) General & SSH Settings
 ``````````````````````````
 
