@@ -17,7 +17,7 @@ There are some prerequisites that need to be fulfilled prior to adding the exist
 
 * Verify that sudo is working properly if you are using a non-root user. See 
 * Passwordless SSH from ClusterControl node to database nodes has been configured correctly. See
-* The target server/cluster must not in degraded state. For example, if you have a three-node Galera cluster, all nodes must alive and in synced.
+* The target cluster must not be in degraded state. For example, if you have a three-node Galera cluster, all nodes must be alive, accessible and in synced.
 
 For more details, refer to the `Requirement <../requirements.html>`_ section. Each time you add an existing cluster or server, ClusterControl will trigger a job under *ClusterControl > Settings > Cluster Jobs*. You can see the progress and status under this page. A window will also appear with messages showing the progress.
 
@@ -25,6 +25,18 @@ Import Existing MySQL Replication
 +++++++++++++++++++++++++++++++++
 
 ClusterControl is able to manage/monitor an existing set of MySQL servers (standalone or replication). Individual hosts specified in the same list will be added to the same server group in the UI. ClusterControl assumes that you are using the same MySQL root password for all instances specified in the group and it will attempt to determine the server role as well (master, slave, multi or standalone).
+
+When importing an existing MySQL Replication, ClusterControl will do the following:
+
+* Verify SSH connectivity to all nodes.
+* Detect the host environment and operating system.
+* Discover the database role of each node (master, slave, multi, standalone).
+* Pull the configuration files.
+* Generate the authentication key and register the node into ClusterControl.
+
+ClusterControl will not change any existing configuration except:
+
+* Generate a backup user.
 
 1) General & SSH Settings
 ``````````````````````````

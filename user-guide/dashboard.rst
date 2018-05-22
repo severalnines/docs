@@ -3,7 +3,7 @@ Dashboard
 
 This page is the landing page once you are logged in. It provides a summary of database clusters monitored by ClusterControl.
 
-.. image:: img/cc_cluster_list_151.png
+.. image:: img/cc_cluster_list_160.png
    :align: center
 
 **Top Menu**
