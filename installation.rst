@@ -745,7 +745,8 @@ Redhat/CentOS
 
 .. code-block:: bash
 
-	$ yum -y install curl mailx cronie nc bind-utils mysql mysql-server
+	$ yum -y install curl mailx cronie nc bind-utils mysql mariadb-server httpd mod_ssl php php-pdo php-mysql # RHEL/CentOS 7
+	$ yum -y install curl mailx cronie nc bind-utils mysql mysql-server httpd mod_ssl php php-pdo php-mysql # RHEL/CentOS 6
 
 4. Install ClusterControl packages:
 
