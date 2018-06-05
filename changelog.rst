@@ -5,6 +5,58 @@ Change Logs
 
 This change logs list details about updates in each version of ClusterControl.
 
+Changes in v1.6.1
+-----------------
+
+Initial Release: May 25th, 2018
++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.6.1-4801
+	- clustercontrol-controller-1.6.1-2572
+	- clustercontrol-cmonapi-1.6.1-324
+	- clustercontrol-notifications-1.6.1-94
+	- clustercontrol-cloud-1.6.1-121
+	- clustercontrol-ssh-1.6.1-53
+
+**Feature Details**
+
+* Backup:
+	- Support for MariaDB Backup for MariaDB based clusters. MariaDB Server 10.1 introduced MariaDB Compression and Data-at-Rest Encryption which is supported by MariaDB Backup (a fork of Percona XtraBackup).
+	- Support for Schema(``--no-data``) or Data(``--no-create-info``) only backups and skipping extended insert(``--skip-extended-insert``) with mysqldump.
+	- Support for ``--use-memory`` with xtrabackup.
+	- Support for custom backup subdirectory names:
+	- Set the name of the backup subdirectory. This string may hold standard ``%X`` field separators, the ``%06I`` for example will be replaced by the numerical ID of the backup in 6 field wide format that uses '0' as leading fill characters. Default value: ``BACKUP-%I``.
+
+	========= ===================
+	Variable  Description
+	========= ===================
+	B         The date and time when the backup creation was beginning.
+	H         The name of the backup host, the host that created the backup.
+	i         The numerical ID of the cluster.
+	I         The numerical ID of the backup.
+	J         The numerical ID of the job that created the backup.
+	M         The backup method (e.g. "mysqldump").
+	O         The name of the user who initiated the backup job.
+	S         The name of the storage host, the host that stores the backup files.
+	%         The percent sign itself. Use two percent signs, ``%%`` the same way the standard ``printf()`` function interprets it as one percent sign.
+	========= ===================
+
+* PostgreSQL:
+	- Synchronous Replication Slaves.
+	- Multiple NICs support:
+		- Deploy DB nodes using management/public IPs for monitoring connections and data/private IPs for replication traffic. 
+		- Deploy HAProxy using management/public IPs and private IPs for configurations.
+
+* Misc:
+	- ServiceNow has been added as a new notifications integration.
+	- Support for MaxScale 2.2.
+	- Database User Management (MySQL) can now search/filter accounts on username, hostname, schema or table.
+	- Node page graphs are now showing accurate time ranges and datapoint gaps.
+	- Query Monitoring is using the CMON RPC API.
+	- Database Growth is using the CMON RPC API.
+	- Support for PHP 7.2 with an upgraded CakePHP version 2.10.9
+
 Changes in v1.6.0
 -----------------
 
