@@ -1371,6 +1371,7 @@ Name, shorthand                        Description
 |minus|\ |minus|\ stat                 Print the details of a cluster.
 |minus|\ |minus|\ create               Create and install a new cluster.
 |minus|\ |minus|\ ping                 Check the connection to the controller.
+|minus|\ |minus|\ register             Registers an existing cluster in the controller. This option is very similar to the --create option, but it of course will not install a new cluster, it just registers one.
 |minus|\ |minus|\ rolling-restart      Restart the nodes without stopping the cluster.
 |minus|\ |minus|\ add-node             Add a new node to the cluster.
 |minus|\ |minus|\ remove-node          Remove a node from the cluster.
@@ -1602,7 +1603,7 @@ Name, shorthand                        Description
 
 **Examples**
 
-Assume we have a data node on 10.10.10.20 (port 3306) on cluster id 2, that we want to backup all databases:
+Assume we have a data node on 10.10.10.20 (port 3306) on cluster id 2, and we want to backup all databases:
 
 .. code-block:: bash
 
@@ -1632,7 +1633,7 @@ List all backups for cluster ID 2:
 
 	$ s9s backup --list --cluster-id=2 --long --human-readable
 
-.. Note:: Omit the ``--cluster-id=2`` and to see the backup records for all your cluster.
+.. Note:: Omit the ``--cluster-id=2`` to see the backup records for all clusters.
 
 Restore backup ID 3 on cluster ID 2:
 
@@ -1709,14 +1710,26 @@ View job log messages of job ID 10235:
 s9s maintenance
 ````````````````
 
-View and manipulate maintenance periods.
+View and manipulate maintenance periods. The maintenance list output contains the following fields:
+
+============= =============
+Field         Description
+============= =============
+ST            The  short status information, where at the first character position ``A`` stands for 'active' and ``-`` stands for 'inactive'. At the second character position ``h`` stands for 'host related maintenance' and ``c`` stands for 'cluster related maintenence'.
+UUID          The unique string that identifies the maintenance period. Normally only the first few characters of the UUID is shown, but if the ``--full-uuid`` command line option is provided the full length string will be printed.
+OWNER         The name of the owner of the given maintenance period.
+GROUP         The name of the group owner of the maintenance period.
+START         The date and time when the maintenance period starts.
+END           The date and time when the maintenance period expires.
+HOST/CLUSTER  The name of the cluster or host under maintenance.
+REASON        A short human readable description showing why the maintenance is required.	
+============= =============
 
 **Usage**
 
 .. code-block:: bash
 
 	s9s maintenance {command} {options}
-	s9s maint {command} {options}
 
 **Command**
 

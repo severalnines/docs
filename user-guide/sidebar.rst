@@ -138,7 +138,7 @@ Configures global email notifications across clusters.
 Integrations
 -------------
 
-Manages ClusterControl integration modules. In version 1.5, there are 2 modules available:
+Manages ClusterControl integration modules. Starting from version 1.5.0, there are two modules available:
 
 - 3rd Party Notifications via *clustercontrol-notifications* package.
 - Cloud Provider integration via *clustercontrol-cloud* and *clustercontrol-clud* packages.
@@ -160,6 +160,8 @@ Supported services are:
 | VictorOps                     | Telegram        |          |
 +-------------------------------+                 |          |
 | OpsGenie                      |                 |          |
++-------------------------------+                 |          |
+| ServiceNow                    |                 |          |
 +-------------------------------+-----------------+----------+
 	
 * **Add new integration**
@@ -178,8 +180,8 @@ Supported services are:
 	Event                  Description
 	====================== ===========
 	All Events             All ClusterControl events including warning and critical events.
-	All Warning Events     All ClusterControl warning events, e.g. cluster degradation, network glitch.
-	All Critical Events    All ClusterControl critical events, e.g. cluster failed, host failed.
+	All Warning Events     All ClusterControl warning events, e.g. cluster degradation, network glitch. See `Warning Events`_.
+	All Critical Events    All ClusterControl critical events, e.g. cluster failed, host failed. See `Critical Events`_.
 	Network                Network related events, e.g. host unreachable, SSH issues.
 	CMON Database          Internal CMON database related events, e.g. unable to connect to CMON database, datadir mounted as read-only.
 	Mail                   Mail system related events, e.g. unable to send mail, mail server unreachable.
@@ -199,6 +201,112 @@ Supported services are:
 
 * **Delete**
 	- Remove the selected integration.
+	
+Warning Events
+``````````````
+
++---------------+-------------------------+------------+---------------------------------------------------------------------------------+
+| Area          | Alarms                  | Severity   | Description                                                                     |
++===============+=========================+============+=================================================================================+
+| Node          | MySqlReplicationLag     | Warning    | MySQL replication slave lag, default 10 seconds.                                |
++               +-------------------------+------------+---------------------------------------------------------------------------------+
+|               | MySqlReplicationBroken  | Warning    | The SQL thread has stopped.                                                     |
++               +-------------------------+------------+---------------------------------------------------------------------------------+
+|               | CertificateExpiration   | Warning    | SSL certificate expiration time (<=31 days, >7 days).                           |
++               +-------------------------+------------+---------------------------------------------------------------------------------+
+|               | MySqlAdvisor            | Warning    | Raised by ``wsrep_sst_method.js`` and ``wsrep_node_name.js`` advisors.          |
++               +-------------------------+------------+---------------------------------------------------------------------------------+
+|               | MySqlTableAnalyzer      | Warning    | Raised by ``schema_check_nopk.js`` advisor.                                     |
++               +-------------------------+------------+---------------------------------------------------------------------------------+
+|               | StorageMyIsam           | Warning    | Raised by ``schema_check_myisam.js`` advisor.                                   |
++               +-------------------------+------------+---------------------------------------------------------------------------------+
+|               | MySqlIndexAnalyzer      | Warning    | Raised by ``schema_check_dupl_index.js`` advisor.                               |
++---------------+-------------------------+------------+---------------------------------------------------------------------------------+
+| Host          | HostSwapV2              | Warning    | If a configurable number of pages has been swapped in/out during a configurable |
+|               |                         |            | period of time. Default 20 pages in 10 minutes.                                 |
++               +-------------------------+------------+---------------------------------------------------------------------------------+
+|               | HostSwapping            | Warning    | >5% swap space has been used.                                                   |
++               +-------------------------+------------+---------------------------------------------------------------------------------+
+|               | HostCpuUsage            | Warning    | >80%, <90% CPU used.                                                            |
++               +-------------------------+------------+---------------------------------------------------------------------------------+
+|               | HostRamUsage            | Warning    | >80%, <90% RAM used.                                                            |
++               +-------------------------+------------+---------------------------------------------------------------------------------+
+|               | HostDiskUsage           | Warning    | >80%, <90% disk space used on a monitored_mountpoint.                           |
++               +-------------------------+------------+---------------------------------------------------------------------------------+
+|               | ProcessCpuUsage         | Warning    | >95 % CPU used in average by a process for 15 minutes.                          |
++---------------+-------------------------+------------+---------------------------------------------------------------------------------+
+| Backup        | BackupFailed            | Warning    | Backup job fails.                                                               |
++---------------+-------------------------+------------+---------------------------------------------------------------------------------+
+| Recovery      | GaleraWsrepMissing      | Warning    | ``wsrep_cluster_address`` or ``wsrep_provider`` is missing.                     |
++               +-------------------------+------------+---------------------------------------------------------------------------------+
+|               | GaleraSstAuth           | Warning    | SST settings (user/pass are wrong).                                             |
++---------------+-------------------------+------------+---------------------------------------------------------------------------------+
+| Network       | HostFirewall            | Warning    | Host is not responding to ping after 3 cycles.                                  |
++               +-------------------------+------------+---------------------------------------------------------------------------------+
+|               | HostSshSlow             | Warning    | It takes 6-12 seconds to SSH into a host.                                       |
++---------------+-------------------------+------------+---------------------------------------------------------------------------------+
+| Cluster       | ClusterTimeDrift        | Warning    | Time drift between ClusterControl and database nodes.                           |
++               +-------------------------+------------+---------------------------------------------------------------------------------+
+|               | ClusterLicenseExpire    | Warning    | License is about to expire.                                                     |
++---------------+-------------------------+------------+---------------------------------------------------------------------------------+
+
+Critical Events
+````````````````
+
++---------------+--------------------------+------------+--------------------------------------------------------------------------------------------+
+| Area          | Alarms                   | Severity   | Description                                                                                |
++===============+==========================+============+============================================================================================+
+| Node          | MySqlDisconnected        | Critical   | Node has disconnected.                                                                     |
++               +--------------------------+------------+--------------------------------------------------------------------------------------------+
+|               | MySqlGrantMissing        | Critical   | Node does not have the correct privileges set for the cmon user.                           |
++               +--------------------------+------------+--------------------------------------------------------------------------------------------+
+|               | MySqlLongRunningQuery    | Critical   | If queries are running for too long time. Only used  if configured, by default it is not.  |
++               +--------------------------+------------+--------------------------------------------------------------------------------------------+
+|               | ProcFailedRestart        | Critical   | A process (HAProxy, ProxySQL, Garbd, MaxScale) could not be restarted after failure.       |
++               +--------------------------+------------+--------------------------------------------------------------------------------------------+
+|               | CertificateExpiration    | Critical   | (<= 7 days), SSL Certificates expiration time.                                             |
++---------------+--------------------------+------------+--------------------------------------------------------------------------------------------+
+| Host          | HostSwapV2               | Critical   | If a configurable number of pages has been swapped in/out during a configurable            |
+|               |                          |            | period of time. Default 20 pages in 10 minutes.                                            |
++               +--------------------------+------------+--------------------------------------------------------------------------------------------+
+|               | HostSwapping             | Critical   | >20% swap space has been used.                                                             |
++               +--------------------------+------------+--------------------------------------------------------------------------------------------+
+|               | HostCpuUsage             | Critical   | >90% CPU used.                                                                             |
++               +--------------------------+------------+--------------------------------------------------------------------------------------------+
+|               | HostRamUsage             | Critical   | >90% RAM used.                                                                             |
++               +--------------------------+------------+--------------------------------------------------------------------------------------------+
+|               | HostDiskUsage            | Critical   | >90% disk space used on a monitored_mountpoint.                                            |
++               +--------------------------+------------+--------------------------------------------------------------------------------------------+
+|               | ProcessCpuUsage          | Critical   | >99 % CPU used in average by a process for 15 minutes.                                     |
++---------------+--------------------------+------------+--------------------------------------------------------------------------------------------+
+| Backup        | BackupVerificationFailed | Critical   | Backup verification fails.                                                                 |
++---------------+--------------------------+------------+--------------------------------------------------------------------------------------------+
+| Recovery      | GaleraWsrepMissing       | Critical   | ``wsrep_cluster_address`` or ``wsrep_provider`` is missing, and still missing              |
+|               |                          |            | after 20 sample cycles which is ~ 100 seconds in this case)                                |
++               +--------------------------+------------+--------------------------------------------------------------------------------------------+
+|               | GaleraClusterSplit       | Critical   | There is a split brain.                                                                    |
++               +--------------------------+------------+--------------------------------------------------------------------------------------------+
+|               | ClusterRecoveryFail      | Critical   | Recovery has failed.                                                                       |
++               +--------------------------+------------+--------------------------------------------------------------------------------------------+
+|               | GaleraConfigProblem1     | Critical   | A configuration issue preventing the node to start.                                        |
++               +--------------------------+------------+--------------------------------------------------------------------------------------------+
+|               | GaleraNodeRecoveryFail   | Critical   | Automatic recovery has failed 3 consecutive times.                                         |
++---------------+--------------------------+------------+--------------------------------------------------------------------------------------------+
+| Network       | HostUnreachable          | Critical   | Host is not responding to ping after 3 cycles.                                             |
++               +--------------------------+------------+--------------------------------------------------------------------------------------------+
+|               | HostSshFailed            | Critical   | Please check SSH access to host. The host may also be down.                                |
++               +--------------------------+------------+--------------------------------------------------------------------------------------------+
+|               | HostSshAuth              | Critical   | Please check whether the configured SSH key is authenticated on the host.                  |
++               +--------------------------+------------+--------------------------------------------------------------------------------------------+
+|               | HostSudoError            | Critical   | ``sudo`` command error on host.                                                            |
++               +--------------------------+------------+--------------------------------------------------------------------------------------------+
+|               | HostSshSlow              | Critical   | It takes >12 seconds to SSH into a host.                                                   |
++---------------+--------------------------+------------+--------------------------------------------------------------------------------------------+
+| Cluster       | ClusterFailure           | Critical   | Cluster is failure.                                                                        |
++               +--------------------------+------------+--------------------------------------------------------------------------------------------+
+|               | ClusterLicenseExpire     | Critical   | License is expired.                                                                        |
++---------------+--------------------------+------------+--------------------------------------------------------------------------------------------+
+
 
 Cloud Providers
 +++++++++++++++++

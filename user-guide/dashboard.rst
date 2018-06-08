@@ -29,11 +29,11 @@ ClusterControl's top menu.
 
 Left-side navigation provides quick access to ClusterControl administration menu. See `Sidebar <sidebar.html>`_.
 	
-*Cluster List*
+**Cluster List**
 
 List of database clusters managed by ClusterControl with summarized status. Database cluster deployed by (or imported into) ClusterControl will be listed in this page. See `Database Cluster List`_.
 
-*Cluster Actions*
+**Cluster Actions**
 
 Provides shortcuts to main cluster functionality. Every supported database cluster has its own set of menu:
 	- `MySQL <mysql/overview.html#actions>`_

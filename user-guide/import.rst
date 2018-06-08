@@ -142,13 +142,13 @@ Import Existing MySQL Galera
 	- This is not recommended for clusters with more than 2000 database objects.
 	
 * **Node AutoRecovery**
-	- ClusterControl will perform automatic recovery if it detects any of the nodes in the cluster is down.
+	- Toggle on so ClusterControl will perform automatic recovery if it detects any of the nodes in the cluster is down.
 	
 * **Cluster AutoRecovery**
-	- ClusterControl will perform automatic recovery if it detects the cluster is down or degraded.
+	- Toggle on so ClusterControl will perform automatic recovery if it detects the cluster is down or degraded.
 
 * **Automatic Node Discovery**
-	- You only need to specify ONE Galera node and ClusterControl will discover the rest based on ``wsrep_cluster_address``.
+	- If toggled on, you only need to specify ONE Galera node and ClusterControl will discover the remaining nodes based on the hostname/IPs used for Galera's intra-node communication. Replication slaves, load balancers, and other supported services connected to the Galera Cluster can be added after the import has finished.
 
 * **Add Node**
 	- Specify the target node and press 'Enter' for each of them. If you have *Automatic Node Discovery* enabled, you only need to specify only one node.

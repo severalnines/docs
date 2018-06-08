@@ -583,7 +583,7 @@ Deploys a new PostgreSQL standalone or streaming replication cluster from Cluste
 * **Repository**
 	- Use Vendor Repositories - Provision software by setting up and using the database vendor's preferred software repository. ClusterControl will always install the latest version of what is provided by database vendor repository.
 	- Do Not Setup Vendor Repositories - Provision software by using repositories already setup on the nodes. The User has to set up the software repository manually on each database node and ClusterControl will use this repository for deployment. This is good if the database nodes are running without internet connections.
-	- Use Mirrored Repositories - Create and mirror the current database vendor's repository and then deploy using the local mirrored repository. This is a preferred option when you have to scale the PostgreSQL in the future, to ensure the newly provisioned node will always have the same version as the rest of the members.
+	- Create New Repositories - Create and mirror the current database vendor's repository and then deploy using the local mirrored repository. This is a preferred option when you have to scale the PostgreSQL in the future, to ensure the newly provisioned node will always have the same version as the rest of the members.
 	
 3) Define Topology
 ```````````````````
@@ -594,5 +594,11 @@ Deploys a new PostgreSQL standalone or streaming replication cluster from Cluste
 * **Add slaves to master A**
 	- Add a slave node connected to master A. Press 'Enter' to add more slave.
 	
+4) Deployment Summary
+`````````````````````
+
+* **Synchronous Replication**
+	- Toggle on if you would like to use synchronous streaming replication between the master and the chosen slave. Synchronous replication can be enabled per individual slave node with considerable performance overhead.
+
 * **Deploy**
 	- Starts the PostgreSQL standalone or replication deployment.

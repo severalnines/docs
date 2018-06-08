@@ -28,7 +28,24 @@ You can choose to create a full backup using :term:`pg_dumpall` or :term:`pg_bas
 
 * **Storage Directory**
 	- You can opt to use another backup directory as you wish. If you leave this field blank, ClusterControl will use the default backup directory specified in the *Settings > Default backup directory*.
-	
+
+* **Backup Subdirectory**
+	- Set the name of the backup subdirectory. This string may hold standard ``%X`` field separators, the ``%06I`` for example will be replaced by the numerical ID of the backup in 6 field wide format that uses '0' as leading fill characters. Default value: ``BACKUP-%I``.
+
+	========= ===================
+	Variable  Description
+	========= ===================
+	B         The date and time when the backup creation was beginning.
+	H         The name of the backup host, the host that created the backup.
+	i         The numerical ID of the cluster.
+	I         The numerical ID of the backup.
+	J         The numerical ID of the job that created the backup.
+	M         The backup method (e.g. "mysqldump").
+	O         The name of the user who initiated the backup job.
+	S         The name of the storage host, the host that stores the backup files.
+	%         The percent sign itself. Use two percent signs, ``%%`` the same way the standard ``printf()`` function interprets it as one percent sign.
+	========= ===================
+
 * **Netcat Port**
 	- Specify the port number that will be used by ClusterControl to stream backup created on the database node. This port must be opened on both source and destination hosts. Only available if you choose *Store on Controller* in *Storage Location*.
 	
@@ -74,8 +91,25 @@ Creates backup schedules of the database.
 * **Storage Directory**
 	- You can opt to use another backup directory as you wish. If you leave this field blank, ClusterControl will use the default backup directory specified in the *Settings > Default backup directory*.
 
+* **Backup Subdirectory**
+	- Set the name of the backup subdirectory. This string may hold standard ``%X`` field separators, the ``%06I`` for example will be replaced by the numerical ID of the backup in 6 field wide format that uses '0' as leading fill characters. Default value: ``BACKUP-%I``.
+
+	========= ===================
+	Variable  Description
+	========= ===================
+	B         The date and time when the backup creation was beginning.
+	H         The name of the backup host, the host that created the backup.
+	i         The numerical ID of the cluster.
+	I         The numerical ID of the backup.
+	J         The numerical ID of the job that created the backup.
+	M         The backup method (e.g. "mysqldump").
+	O         The name of the user who initiated the backup job.
+	S         The name of the storage host, the host that stores the backup files.
+	%         The percent sign itself. Use two percent signs, ``%%`` the same way the standard ``printf()`` function interprets it as one percent sign.
+	========= ===================
+
 * **Netcat Port**
-	- Specify the port number that will be used by ClusterControl to stream backup created on the database node. This port must be opened on both source and destination hosts. Only available if you choose *Store on Controller* in *Backup Location*.
+	- Specify the port number that will be used by ClusterControl to stream backup created on the database node. This port must be opened on both source and destination hosts. Only available if you choose *Store on Controller* in *Storage Location*.
 
 * **Use Compression**
 	- Yes - Tells the chosen backup method to compress all output data, including the transaction log file and meta data files.
@@ -109,8 +143,8 @@ This section explains backup method used by ClusterControl.
 
 .. Note:: Backup process performed by ClusterControl is running as a background thread (RUNNING3) which doesn't block any other non-backup jobs in queue. If the backup job takes hours to complete, other non-backup jobs can still run simultaneously via the main thread (RUNNING). You can see the job progress at *ClusterControl > Logs > Jobs*.
 
-pg_dump
-.........
+pg_dumpall
+...........
 
 ClusterControl performs :term:`pg_dumpall` against all databases together with ``--clean`` option, which include SQL commands to clean (drop) databases before recreating them. DROP commands for roles and tablespaces are added as well. The output will be in ``.sql.gz`` extention and file name contains the timestamp of the backup.
 

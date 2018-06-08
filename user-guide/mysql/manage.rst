@@ -522,7 +522,7 @@ Users
 
 Shows a summary of MySQL user and privileges for the cluster. All of the changes are automatically synced to all database nodes in the cluster. For master-slave setup, ClusterControl will create the schema and user on the active master.
 
-Click on *Edit* to update the existing user or *Drop User* to remove the existing user. Click on *Create New User* to open the user creation wizard:
+You can filter the list by username, hostname, database or table in the text box. Click on *Edit* to update the existing user or *Drop User* to remove the existing user. Click on *Create New User* to open the user creation wizard:
 
 * **Username**
 	- MySQL username.

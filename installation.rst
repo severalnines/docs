@@ -682,7 +682,7 @@ Verify the container is running by using the ps command:
 
 	$ docker ps
 
-For more example on deployments with Docker images, please refer to `ClusterControl on Docker <http://www.severalnines.com/blog/clustercontrol-docker>`_. For more info on the configuration options, please refer to `ClusterControl's Docker Hub <https://registry.hub.docker.com/u/severalnines/clustercontrol/>`_ page.
+For more example on deployments with Docker images, please refer to `ClusterControl on Docker <http://www.severalnines.com/blog/clustercontrol-docker>`_ and `the Docker image Github page <https://github.com/severalnines/docker/>`_. For more info on the configuration options, please refer to `ClusterControl's Docker Hub <https://registry.hub.docker.com/u/severalnines/clustercontrol/>`_ page.
 
 Manual Installation
 -------------------
