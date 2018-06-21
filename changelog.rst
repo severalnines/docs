@@ -8,6 +8,40 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.6.1
 -----------------
 
+Mainteannce Release: June 15th, 2018
+++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.6.1-4848
+	- clustercontrol-controller-1.6.1-2605
+	- clustercontrol-notifications-111
+
+* UI:
+	- Fix schedule backup verification with mysqldump.
+	- Fix empty configuration template dropdown for add node (MySQL Galera).
+	- Fix to allow controller host timezone when scheduling maintenance mode.
+	- Fix for the schedule maintenance mode dialog closing immediately.
+	- Fix stuck scrolling with the PostgreSQL advisor's page.
+	- Fix missing validation for the xtrabackup ``--use-memory`` option.
+	- Add 'Lock DDL per table' option for xtrabackup.
+	- Fixes to cmon-events to handle filtering correctly.
+
+* Controller:
+	- Alarms/Notifications: Fixed a bug refreshing alarm thresholds. This prevented user specified thresholds in cmon_X.cnf from being applied.
+	- Mongo: Adding numa node number check before installing or using numactl for mongo.
+	- PostgreSQL host granting (pg_hba) fixed
+	- PostgreSQL: show error log when node failed to start.
+	- PostgreSQL: fixed an issue with pg_hba file error when using IPv6
+	- PostgreSQL/HAProxy: HAProxy did not refresh postgres node state after rebuild of a slave.
+	- ProxySQL: Include more data in the error report.
+	- ProxySQL: Adding sanity check on admin port for registering existing proxysql node.
+	- ProxySQL: Updated ProxySQL galera checker script to use 1.4.8
+	- Galera: Fixed a crashing bug in case of missing ``wsrep_sst_auth``
+	- Maxscale: Fixed so that the software will not be installed if it is already installed on the node.
+
+* Events/Notifications:
+- Fixed a bug which ignored the configured filter. This caused e.g a Warning alarm to create a notification, when only Critical was configured. 
+
 Initial Release: May 25th, 2018
 +++++++++++++++++++++++++++++++
 
