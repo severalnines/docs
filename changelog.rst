@@ -8,7 +8,30 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.6.1
 -----------------
 
-Mainteannce Release: June 15th, 2018
+Maintenance Release: June 28th, 2018
+++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.6.1-2621
+
+* Controller:
+	- MariaDB: Deployment fix caused by a mix up of authentication_string and password in the ``mysql.user`` table.
+	- Restore slaves/Rebuild nodes (MySQL, PostgreSQL) - Making the directory of the datadir backup configurable. Specify ``datadir_backup_path`` in ``/etc/cmon.d/cmon_X.cnf``. By default the datadir will be copied (after the server has been shutdown, but before restoring/rebuilding) using a filesystem copy to ``{datadir}_bak``. 
+	- Error reporting: A fix to also include the include files of a database node configuration file.
+	- Alarms: Fixed an issue when the measured value was a NaN or INF.
+	- MySQL: Add Node could fail due to a bug in version detection.
+	- General: A fix allowing other jobs to run in parallel with remove cluster jobs.
+
+Maintenance Release: June 26th, 2018
+++++++++++++++++++++++++++++++++++++
+
+* Build: 
+	- clustercontrol-1.6.1-4865
+
+* UI:
+	- Remove the default 0 sized ``cc-ldap.log`` file from the package overwriting the existing ldap log file.
+
+Maintenance Release: June 15th, 2018
 ++++++++++++++++++++++++++++++++++++
 
 * Build:
