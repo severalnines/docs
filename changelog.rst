@@ -8,6 +8,16 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.6.1
 -----------------
 
+Maintenance Release: July 4th, 2018
+++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.6.1-4896
+
+* UI:
+	- Identical host charts fix for SQL and Data Nodes with MySQL Cluster (NDB).
+	- 'DB User Management' fix with MySQL Cluster (NDB). Create and edit DB users works again.
+
 Maintenance Release: June 28th, 2018
 ++++++++++++++++++++++++++++++++++++
 
