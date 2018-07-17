@@ -292,66 +292,36 @@ This section shows example ClusterControl installation with Chef and requires yo
 	$ tar -xzf clustercontrol-*
 	$ rm -Rf *.tar.gz
 
-2. Run ``s9s_helper.sh`` to auto generate SSH key files, ClusterControl API token, and data bag items:
+2. Run ``s9s_helper.sh`` to auto generate SSH key file, ClusterControl API token and data bag items:
 
 .. code-block:: bash
 
   $ cd ~/chef-repo/cookbooks/clustercontrol/files/default
   $ ./s9s_helper.sh
-  ==============================================
-  Helper script for ClusterControl Chef cookbook
-  ==============================================
-  ClusterControl requires an email address to be configured as super admin user.
-  What is your email address? [admin@localhost.xyz]: admin@domain.com
-  
-  What is the IP address for ClusterControl host?: 192.168.50.100
-  
-  ClusterControl will create a MySQL user called 'cmon' for automation tasks.
-  Enter the user cmon password [cmon] : cmonP4ss2014
-  
-  What is your database cluster type? 
-  (galera|mysqlcluster|mysql_single|replication|mongodb) [galera]: 
-  
-  What is your Galera provider?
-  (codership|percona|mariadb) [percona]: codership
-  
-  ClusterControl requires an OS user for passwordless SSH. If user is not root, the user must be in sudoer list.
-  What is the OS user? [root]: ubuntu
-  
-  Please enter the sudo password (if any). Just press enter if you are using sudo without password: 
-  What is your SSH port? [22]: 
-  
-  List of your MySQL nodes (comma-separated list): 192.168.50.101,192.168.50.102,192.168.50.103
-  ClusterControl needs to have your database nodes' MySQL root password to perform installation and grant privileges.
-  
-  Enter the MySQL root password on the database nodes [password]: myR00tP4ssword
-  We presume all database nodes are using the same MySQL root password.
-  
-  Database data path [/var/lib/mysql]: 
-  
-  Generating config.json..
-  {
-   "id" : "config",
-   "cluster_type" : "galera",
-   "vendor" : "codership",
-   "email_address" : "admin@domain.com",
-   "ssh_user" : "ubuntu",
-   "cmon_password" : "cmonP4ss2014",
-   "mysql_root_password" : "myR00tP4ssword",
-   "mysql_server_addresses" : "192.168.50.101,192.168.50.102,192.168.50.103",
-   "datadir" : "/var/lib/mysql",
-   "clustercontrol_host" : "192.168.50.100",
-   "clustercontrol_api_token" : "1913b540993842ed14f621bba22272b2d9471d57"
-  }
-  
-  Data bag file generated at /home/ubuntu/chef-repo/cookbooks/clustercontrol/files/default/config.json
-  To upload the data bag, you can use the following command:
-  $ knife data bag create clustercontrol
-  $ knife data bag from file clustercontrol /home/ubuntu/chef-repo/cookbooks/clustercontrol/files/default/config.json
-  
-  Re-upload the cookbook since it contains a newly generated SSH key: 
-  $ knife cookbook upload clustercontrol
-  ** We highly recommend you to use encrypted data bag since it contains confidential information **
+	==============================================
+	Helper script for ClusterControl Chef cookbook
+	==============================================
+	
+	ClusterControl will install a MySQL server and setup the MySQL root user.
+	Enter the password for MySQL root user [password] : R00tP4ssw0rd
+	
+	ClusterControl will create a MySQL user called 'cmon' for automation tasks.
+	Enter the password for user cmon [cmon] : Bj990sPkj
+	
+	Generating config.json..
+	{
+	    "id" : "config",
+	    "mysql_root_password" : "R00tP4ssw0rd",
+	    "cmon_password" : "Bj990sPkj",
+	    "clustercontrol_api_token" : "662894d3e854ed779babd895a82dc0f8eed86ccc"
+	}
+	
+	Data bag file generated at /root/cookbooks/clustercontrol/files/default/config.json
+	To upload the data bag, you can use following command:
+	$ knife data bag create clustercontrol
+	$ knife data bag from file clustercontrol /root/cookbooks/clustercontrol/files/default/config.json
+	
+	** We highly recommend you to use encrypted data bag since it contains confidential information **
 
 3. As per instructions above, on Chef Workstation host, do:
 
@@ -364,10 +334,10 @@ This section shows example ClusterControl installation with Chef and requires yo
 	Updated data_bag_item[clustercontrol::config]
 	
 	$ knife cookbook upload clustercontrol
-	Uploading clustercontrol [0.1.0]
+	Uploading clustercontrol [0.1.6]
 	Uploaded 1 cookbook.
 
-4. Create two roles, ``cc_controller`` and ``cc_db_hosts``:
+4. Create a role, ``cc_controller``:
 
 .. code-block:: bash
 
@@ -376,41 +346,18 @@ This section shows example ClusterControl installation with Chef and requires yo
 	description "ClusterControl Controller"
 	run_list ["recipe[clustercontrol]"]
 
-The DB host role:
-
-.. code-block:: bash
-
-  $ cat cc_db_hosts.rb
-  name "cc_db_hosts"
-  description "Database hosts monitored by ClusterControl"
-  run_list ["recipe[clustercontrol::db_hosts]"]
-  override_attributes({ 
-    "mysql" => {
-       "basedir" => "/usr/local/mysql"
-     }
-  })
-
-
-.. Note:: In above example, we set an override attribute because the MySQL server is installed under ``/usr/local/mysql``. For more details on attributes, please refer to ``attributes/default.rb`` in the cookbook.
-
 5. Add the defined roles into Chef Server:
 
 .. code-block:: bash
 
 	$ knife role from file cc_controller.rb
 	Updated Role cc_controller!
-	 
-	$ knife role from file cc_db_hosts.rb
-	Updated Role cc_db_hosts!
 
 6. Assign the roles to the relevant nodes:
 
 .. code-block:: bash
 
 	$ knife node run_list add clustercontrol.domain.com "role[cc_controller]"
-	$ knife node run_list add galera1.domain.com "role[cc_db_hosts]"
-	$ knife node run_list add galera2.domain.com "role[cc_db_hosts]"
-	$ knife node run_list add galera3.domain.com "role[cc_db_hosts]"
 
 
 Chef Client
@@ -1334,13 +1281,13 @@ RedHat/CentOS
 
 	$ mkdir ~/s9s_tmp
 	$ cd ~/s9s_tmp
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-1.6.0-4699-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.6.0-310-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.6.0-2537-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications-1.6.0-88-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh-1.6.0-44-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud-1.6.0-118-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud-1.6.0-118-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-1.6.1-4801-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.6.1-324-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.6.1-2579-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications-1.6.1-94-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh-1.6.1-53-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud-1.6.1-121-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud-1.6.1-121-x86_64.rpm
 
 .. Attention:: In this example, we downloaded the package directly to simplify the package preparation step. If the ClusterControl server does not have Internet connections, you have to upload the packages manually to the mentioned staging path.
 
@@ -1378,13 +1325,13 @@ Debian/Ubuntu
 
 	$ mkdir ~/s9s_tmp
 	$ cd ~/s9s_tmp
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol_1.6.0-4699_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.6.0-310_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.6.0-2537-x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications_1.6.0-88_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh_1.6.0-44_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud_1.6.0-118_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud_1.6.0-118_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol_1.6.1-4801_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.6.1-324_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.6.1-2579-x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications_1.6.1-94_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh_1.6.1-53_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud_1.6.1-121_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud_1.6.1-121_x86_64.deb
 
 .. Attention:: In this example, we downloaded the package directly to simplify the package preparation step. If the ClusterControl server does not have internet connections, you have to upload the packages manually to the mentioned staging path.
 

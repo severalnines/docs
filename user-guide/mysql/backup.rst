@@ -42,7 +42,7 @@ To create an instant backup, you have options to create a full backup using mysq
 	- You can opt to use another backup directory as you wish. If you leave this field blank, ClusterControl will use the default backup directory specified in the *Settings > Default backup directory*.
 
 * **Backup Subdirectory**
-	- Set the name of the backup subdirectory. This string may hold standard ``%X`` field separators, the ``%06I`` for example will be replaced by the numerical ID of the backup in 6 field wide format that uses '0' as leading fill characters. Default value: ``BACKUP-%I``.
+	- Set the name of the backup subdirectory. The full backup path will be *Storage Directory*/*Backup Subdirectory*/. This string may hold standard ``%X`` field separators, the ``%06I`` for example will be replaced by the numerical ID of the backup in 6 field wide format that uses '0' as leading fill characters. Default value: ``BACKUP-%I``.
 
 	========= ===================
 	Variable  Description
@@ -153,7 +153,7 @@ Creates backup schedules of the database. You can choose to create a full or inc
 	- You can opt to use another backup directory as you wish. If you leave this field blank, ClusterControl will use the default backup directory specified in the *Settings > Default backup directory*.
 
 * **Backup Subdirectory**
-	- Set the name of the backup subdirectory. This string may hold standard ``%X`` field separators, the ``%06I`` for example will be replaced by the numerical ID of the backup in 6 field wide format that uses '0' as leading fill characters. Default value: ``BACKUP-%I``.
+	- Set the name of the backup subdirectory. The full backup path will be *Storage Directory*/*Backup Subdirectory*/. This string may hold standard ``%X`` field separators, the ``%06I`` for example will be replaced by the numerical ID of the backup in 6 field wide format that uses '0' as leading fill characters. Default value: ``BACKUP-%I``.
 
 	========= ===================
 	Variable  Description

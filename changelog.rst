@@ -5,6 +5,50 @@ Change Logs
 
 This change logs list details about updates in each version of ClusterControl.
 
+Changes in v1.6.2
+-----------------
+
+Initial Release: July 16th, 2018
+++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.6.2-4942
+	- clustercontrol-controller-1.6.2-2662
+	- clustercontrol-cmonapi-1.6.2-330
+	- clustercontrol-cloud-1.6.2-141
+	- clustercontrol-ssh-1.6.2-59
+	- clustercontrol-notifications-1.6.2-136
+
+Welcome to our new 1.6.2 release!
+
+**Feature Details**
+
+* Backup:
+	- Continuous Archiving and Point-in-Time Recovery (PITR) for PostgreSQL.
+	- Rebuild a node from a backup with MySQL Galera clusters to avoid SST.
+	- Option to restore external backups stored on a DB node (instead of only the Controller host).
+
+* MySQL/Galera:
+	- Rebuild a Galera node from a backup to avoid SST.
+
+* Security:
+	- Consolidate security functionality on an easily accessible single page.
+	- Enable/Disable:
+		- Client/Server SSL encryption for MySQL based clusters.
+		- SSL replication traffic encryption for MySQL Galera based clusters.
+
+* ProxySQL:
+	- Clear/Reset Top Queries.
+	- Advanced query rules options: Error and OK messages, sticky connection and multiplex.
+	- Autofill match digest for a query rule.
+
+* Cloud:
+	- Destructive actions now cleanup used cloud resources (accounting).
+
+* Misc:
+	- ClusterControl (CMON) Runtime Configuration page.
+	- Support for MongoDB v3.6.
+
 Changes in v1.6.1
 -----------------
 
