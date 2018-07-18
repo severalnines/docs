@@ -1281,13 +1281,13 @@ RedHat/CentOS
 
 	$ mkdir ~/s9s_tmp
 	$ cd ~/s9s_tmp
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-1.6.1-4801-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.6.1-324-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.6.1-2579-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications-1.6.1-94-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh-1.6.1-53-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud-1.6.1-121-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud-1.6.1-121-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-1.6.2-4942-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.6.2-330-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.6.2-2662-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications-1.6.2-136-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh-1.6.2-59-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud-1.6.2-141-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud-1.6.2-141-x86_64.rpm
 
 .. Attention:: In this example, we downloaded the package directly to simplify the package preparation step. If the ClusterControl server does not have Internet connections, you have to upload the packages manually to the mentioned staging path.
 
@@ -1325,13 +1325,13 @@ Debian/Ubuntu
 
 	$ mkdir ~/s9s_tmp
 	$ cd ~/s9s_tmp
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol_1.6.1-4801_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.6.1-324_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.6.1-2579-x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications_1.6.1-94_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh_1.6.1-53_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud_1.6.1-121_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud_1.6.1-121_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol_1.6.2-4942_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.6.2-330_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.6.2-2662-x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications_1.6.2-136_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh_1.6.2-59_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud_1.6.2-141_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud_1.6.2-141_x86_64.deb
 
 .. Attention:: In this example, we downloaded the package directly to simplify the package preparation step. If the ClusterControl server does not have internet connections, you have to upload the packages manually to the mentioned staging path.
 

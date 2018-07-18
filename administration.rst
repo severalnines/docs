@@ -25,7 +25,7 @@ RedHat/CentOS
 .. code-block:: bash
 
 	$ yum clean all
-	$ yum install clustercontrol clustercontrol-cmonapi clustercontrol-controller clustercontrol-ssh clustercontrol-notifications clustercontrol-cloud clustercontrol-clud
+	$ yum install clustercontrol clustercontrol-cmonapi clustercontrol-controller clustercontrol-ssh clustercontrol-notifications clustercontrol-cloud clustercontrol-clud s9s-tools
 
 3) Restart the ClusterControl services:
 
@@ -42,6 +42,7 @@ For systemd:
 
 .. code-block:: bash
 
+	$ systemctl daemon-reload
 	$ systemctl restart cmon
 	$ systemctl restart cmon-ssh
 	$ systemctl restart cmon-events
@@ -59,7 +60,7 @@ Debian/Ubuntu
 .. code-block:: bash
 
 	$ sudo apt-get update
-	$ sudo apt-get install clustercontrol clustercontrol-cmonapi clustercontrol-controller clustercontrol-ssh clustercontrol-notifications clustercontrol-cloud clustercontrol-clud
+	$ sudo apt-get install clustercontrol clustercontrol-cmonapi clustercontrol-controller clustercontrol-ssh clustercontrol-notifications clustercontrol-cloud clustercontrol-clud s9s-tools
 
 3) Restart the ClusterControl services:
 
@@ -76,6 +77,7 @@ For systemd:
 
 .. code-block:: bash
 
+	$ systemctl daemon-reload
 	$ systemctl restart cmon
 	$ systemctl restart cmon-ssh
 	$ systemctl restart cmon-events
@@ -98,13 +100,13 @@ RedHat/CentOS
 
 .. code-block:: bash
 
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-1.6.0-4699-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.6.0-310-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.6.0-2537-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications-1.6.0-88-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh-1.6.0-44-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud-1.6.0-118-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud-1.6.0-118-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-1.6.2-4942-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.6.2-330-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.6.2-2662-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications-1.6.2-136-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh-1.6.2-59-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud-1.6.2-141-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud-1.6.2-141-x86_64.rpm
 
 2) Install using yum so dependencies are met:
 
@@ -142,13 +144,13 @@ Debian/Ubuntu
 
 .. code-block:: bash
 
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol_1.6.0-4699_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.6.0-310_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.6.0-2537-x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications_1.6.0-88_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh_1.6.0-44_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud_1.6.0-118_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud_1.6.0-118_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol_1.6.2-4942_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.6.2-330_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.6.2-2662-x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications_1.6.2-136_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh_1.6.2-59_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud_1.6.2-141_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud_1.6.2-141_x86_64.deb
 
 2) Upload the packages to the server and install them using dpkg command:
 
