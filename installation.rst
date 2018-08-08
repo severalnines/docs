@@ -780,14 +780,8 @@ For systemd:
 
 .. code-block:: bash
 
-	$ systemctl enable cmon
-	$ systemctl enable cmon-ssh
-	$ systemctl enable cmon-events
-	$ systemctl enable cmon-cloud
-	$ systemctl start cmon
-	$ systemctl start cmon-ssh
-	$ systemctl start cmon-events
-	$ systemctl start cmon-cloud
+	$ systemctl enable cmon cmon-ssh cmon-events cmon-cloud
+	$ systemctl start cmon cmon-ssh cmon-events cmon-cloud
 
 10. Configure Apache to use ``AllowOverride=All`` and set up SSL key and certificate:
 
@@ -985,14 +979,8 @@ For systemd:
 
 .. code-block:: bash
 
-	$ systemctl enable cmon
-	$ systemctl enable cmon-ssh
-	$ systemctl enable cmon-events
-	$ systemctl enable cmon-cloud
-	$ systemctl start cmon
-	$ systemctl start cmon-ssh
-	$ systemctl start cmon-events
-	$ systemctl start cmon-cloud
+	$ systemctl enable cmon cmon-ssh cmon-events cmon-cloud
+	$ systemctl start cmon cmon-ssh cmon-events cmon-cloud
 
 10. Configure Apache ``AllowOverride`` and setting up SSL:
 
@@ -1275,7 +1263,7 @@ RedHat/CentOS
 
 	$ mysqladmin -uroot password yourR00tP4ssw0rd
 
-3. Create the staging directory called ``s9s_tmp`` and download/upload the latest version of ClusterControl RPM packages from the `Severalnines download page <http://www.severalnines.com/downloads/cmon/>`_:
+3. Create the staging directory called ``s9s_tmp`` and download/upload the latest version of ClusterControl RPM packages from the `Severalnines download page <http://www.severalnines.com/downloads/cmon/>`_, for example:
 
 .. code-block:: bash
 
@@ -1319,7 +1307,7 @@ Debian/Ubuntu
 	$ sudo apt-get install -y --force-yes mysql-client mysql-server
 	$ sudo systemctl enable mysql
 
-2. Create the staging directory called ``s9s_tmp`` and download the latest version of ClusterControl DEB packages from `Severalnines download page <http://www.severalnines.com/downloads/cmon/>`_:
+2. Create the staging directory called ``s9s_tmp`` and download the latest version of ClusterControl DEB packages from `Severalnines download page <http://www.severalnines.com/downloads/cmon/>`_, for example:
 
 .. code-block:: bash
 

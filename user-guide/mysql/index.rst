@@ -26,6 +26,7 @@ Contents:
    mysql/performance
    mysql/backup
    mysql/manage
+   mysql/security
    mysql/alarms
    mysql/logs
    mysql/settings

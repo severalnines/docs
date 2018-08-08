@@ -78,6 +78,17 @@ You can configure the graceful shutdown timeout (default is 1800 seconds) in the
 
 The node will be shutdown and enter maintenance mode.
 
+Enable WAL Archiving
+`````````````````````
+
+To utilize PITR, user has to take a :term:`pg_basebackup` backup, and if Write-ahead Log (WAL) files are "archived" after the backup, then it is possible to roll forward to any timestamp from backup creation time until the most recent event captured in the WAL files. This job will update the configuration of the chosen node to enable the WAL archiving.
+
+* **Compress WAL Archive**
+	- Toggle on if you want to compress the WAL archive. Default is on.
+
+* **Custom WAL Archive Directory (Optional)**
+	- Specify a custom directory for WAL Archive. Default to one path up the data directory, for example if data directory at ``/var/lib/pgsql/10/data`` then the WAL archive directory is located at ``/var/lib/pgsql/10/wal_archive``.
+
 Stop Node
 ``````````
 
@@ -95,7 +106,7 @@ Starts the monitored process of the selected host. For example, if the node's ro
 Rebuild Replication Slave
 ``````````````````````````
 
-Exclusive for slave node. Rebuilds replication slave on this node from another master. This is only relevant if you have setup a replication slave for the cluster and you want to re-sync the data. It uses ``pg_basebackup`` to stage the replication data.
+Exclusive for slave node. It rebuilds replication slave on this node from another master. This is only relevant if you have setup a replication slave for the cluster and you want to re-sync the data. It uses ``pg_basebackup`` to stage the replication data.
 
 .. caution:: *Rebuilding Replication Slave* will wipe out the selected node's PostgreSQL data directory.
 

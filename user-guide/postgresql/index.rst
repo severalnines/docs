@@ -20,6 +20,7 @@ Contents:
    postgresql/performance
    postgresql/backup
    postgresql/manage
+   postgresql/security
    postgresql/alarms
    postgresql/logs
    postgresql/settings

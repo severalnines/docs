@@ -61,7 +61,7 @@ Provides list of generated operational reports. Click on any of the entries will
 	- Refresh the operational report list.
 
 Schedules
-+++++++++++++++++
+++++++++++
 
 List of scheduled operational report.
 

@@ -8,6 +8,20 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.6.2
 -----------------
 
+Maintenance Release: July 23rd, 2018
+++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.6.2-4959
+
+* UI:
+	- Fix copy and paste in the Query Monitor (PostgreSQL)
+	- Show trimmed query in full for Query Monitor (PostgreSQL)
+	- Fix dialog labels for AppArmor/SELinux
+	- Partial backup warning only for xtrabackup/mariadbbackup
+	- Security page is currently only for MySQL/PostgreSQL and fixes for use existing certificates
+
+
 Initial Release: July 16th, 2018
 ++++++++++++++++++++++++++++++++++++
 

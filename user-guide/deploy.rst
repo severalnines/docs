@@ -391,7 +391,7 @@ Deploys a new MongoDB Replica Set. The database cluster will be automatically ad
 	- MongoDB - MongoDB Server by MongoDB Inc.
 
 * **Version**
-	- The supported version is 3.2 and 3.4 for Percona and additional 3.6 for MongoDB.
+	- The supported MongoDB versions are 3.2, 3.4 and 3.6.
 
 * **Server Data Directory**
 	- Location of MongoDB data directory. Default is ``/var/lib/mongodb``.
@@ -506,7 +506,7 @@ Deploys a new MongoDB Sharded Cluster. The database cluster will be automaticall
 	- MongoDB - MongoDB Server by MongoDB Inc
 
 * **Version**
-	- The supported version is 3.2.
+	- The supported MongoDB versions are 3.2, 3.4 and 3.6.
 
 * **Server Data Directory**
 	- Location of MongoDB data directory. Default is ``/var/lib/mongodb``.

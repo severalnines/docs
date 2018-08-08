@@ -126,10 +126,23 @@ Configures email notification settings for alarms generated for the database clu
 	Digest  Send a summary of alarms raised everyday at *Send digests at*
 	======= ===========
 
-Version
-````````
+Runtime Configuration
++++++++++++++++++++++
 
-Lists out the version of ClusterControl components installed on the node.
+Summarizes the active ClusterControl Controller (CMON) runtime configuration parameters and displays the versions of ClusterControl Controller and ClusterControl UI packages. All parameters listed here are loaded directly from ``cmon.cmon_configuration`` table, displayed by the current cluster ID. You can filter out the variables by using the Search field on top of the table. Each parameter has the Current Value (the active value loaded into ClusterControl) and also the Default Value (if undefined, ClusterControl will use this value) as well as description of the parameter.
+
+.. seealso:: `ClusterControl Controller (CMON) Component <../../components.html#clustercontrol-controller-cmon>`_.
+
+Some configuration parameters can be modified directly from the UI like ``swap_warning`` (*Settings > Thresholds > Swap Warning*) and ``backup_subdir`` (*Backup > Settings > Default Backup Subdirectory*). Some parameters have to be set inside CMON configuration file for the respective cluster ID.
+
+Thus, there are two ways to modify the value of any parameter:
+
+1. Change the value directly from the UI if exists. This will save it into cmon database. No cmon restart requires.
+2. Append the parameter line inside CMON configuration file for the respective cluster at ``/etc/cmon.d/cmon_X.cnf`` (where X is the cluster ID). This requires cmon restart to get it loaded into cmon database. 
+
+As a side note, the settings that are set through UI will always take precedence.
+
+.. Note:: You can also run ``cmon --help-config`` to get the details of supported parameters.
 
 Thresholds
 ++++++++++

@@ -549,8 +549,8 @@ You can filter the list by username, hostname, database or table in the text box
 	- Available if you click *Show Advanced Options*. Toggle on the option if this user must be authenticated using SSL. Default is false.
 
 * **Privileges**
-	- Specify the privilege for this user. If the "privileges" text box is active, it will list out all possible privileges on the server.
-	- Specify the database or table name. It can be in '*.*', 'db_name', 'db_name.*' or 'db_name.tbl_name' format.
+	- Specify the privilege for this user. If the *Privileges* text box is active, it will list out all possible privileges on the server.
+	- Specify the database or table name. It can be in ``*.*``, ``{database_name}``, ``{database_name}.*`` or ``{database_name}.{table_name}`` format.
 
 * **Add Statement**
 	- Add another *Privileges* statement builder entry for this user.
@@ -560,7 +560,7 @@ Inactive Users
 
 Shows all accounts across clusters that are not been used since the last server restart. Server must have been running for at least 8 hours to check for inactive accounts.
 
-You can drop particular accounts by clicking the 'Drop User' button to initiate the action.
+You can drop particular accounts by clicking the *Drop User* button to initiate the action.
 
 Import Database Dumpfile
 ``````````````````````````
@@ -595,6 +595,8 @@ Upgrades
 ++++++++
 
 Performs minor software upgrade, for example from MySQL 5.7.x to MySQL 5.7.y in rolling upgrade fashion. The job will perform the software upgrade based on what is available on the package repository for the particular vendor.
+
+.. Attention:: MySQL major version upgrade is not supported by ClusterControl. This action has to be perform
 
 * **Upgrade**
 	- Upgrades are online and are performed on one node at a time. The node will be stopped, then software will be updated, and then the node will be started again. If a node fails to upgrade, the upgrade process is aborted.

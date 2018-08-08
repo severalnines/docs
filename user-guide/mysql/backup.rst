@@ -94,6 +94,9 @@ To create an instant backup, you have options to create a full backup using mysq
 	- Yes - Uses ``LOCK TABLES FOR BACKUP`` where it supported when making a backup.
 	- No - Sets ``--no-backup-locks`` which use ``FLUSH NO_WRITE_TO_BINLOG TABLES`` and ``FLUSH TABLES WITH READ LOCK`` when making backup.
 
+* **Lock DDL per Table**
+	- Sets ``--lock-ddl-per-table``. Enable this flag if you have backup errors like '[FATAL] InnoDB: An optimized(without redo logging) DDLoperation has been performed'. This only applies to Percona Xtrabackup v2.4.8 and later version. Setting this flag may cause blocked updates to tables for highly loaded servers under some circumstances. Please see `Avoiding the "An optimized (without redo logging) DDL operation has been performed" Error with Percona XtraBackup <https://www.percona.com/blog/2017/08/08/avoiding-the-an-optimized-without-redo-logging-ddloperation-has-been-performed-error-with-percona-xtrabackup/>`_, `Concurrent DDL can break xtrabackup-v2 SST in 10.2 <https://jira.mariadb.org/browse/MDEV-14095>`_ and `Implement LOCK TABLES FOR BACKUP from Percona Server <https://jira.mariadb.org/browse/MDEV-5336>`_.
+
 * **Xtrabackup Parallel Copy Threads**
 	- Exclusive for xtrabackup/mariabackup. This option specifies the number of threads to use to copy multiple data files concurrently when creating a backup. The default value is 1 (i.e., no concurrent transfer).
 

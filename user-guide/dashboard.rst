@@ -14,10 +14,10 @@ ClusterControl's top menu.
 	- Aggregated view of events happened across the clusters. See `Activity`_.
 	
 * **Deploy**
-	- Opens the *Deploy/Import Cluster* modal dialog. See `Deploy Database Cluster`_.
+	- Opens the *Deploy/Import Cluster* modal dialog. See `Deploy Database Cluster <index.html#deploy-database-cluster>`_.
 
 * **Import**
-	- Opens the *Import Cluster* modal dialog. See `Import Existing Server/Cluster`_.
+	- Opens the *Import Cluster* modal dialog. See `Import Existing Server/Cluster <index.html#import-existing-server-cluster>`_.
 
 * **Global Settings**
 	- ClusterControl global settings. See `Global Settings`_.
@@ -146,6 +146,12 @@ The license key is validated during runtime. Reload your web browser after regis
 
 .. Note:: When the license expires, ClusterControl defaults back to the Community Edition. For features comparison, please refer to `ClusterControl product page <http://www.severalnines.com/pricing>`_.
 
+Runtime Configurations
++++++++++++++++++++++++
+
+A shortcut to ClusterControl Controller runtime configurations per cluster. Runtime configuration shows the active ClusterControl Controller (CMON) runtime configuration parameters and displays the versions of ClusterControl Controller and ClusterControl UI packages. All parameters listed are loaded directly from ``cmon.cmon_configuration`` table, grouped by cluster ID.
+
+Clicking on any of the list will redirect user to the *Runtime Configurations* page for that particular cluster.
 
 Database Cluster List
 ---------------------

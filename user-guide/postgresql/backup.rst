@@ -151,7 +151,7 @@ ClusterControl performs :term:`pg_dumpall` against all databases together with `
 pg_basebackup
 ..............
 
-pg_basebackup is used to take base backups of a running PostgreSQL database cluster. These are taken without affecting other clients to the database, and can be used both for point-in-time recovery and as the starting point for a log shipping or streaming replication standby servers. It makes a binary copy of the database cluster files, while making sure the system is put in and out of backup mode automatically. Backups are always taken of the entire database cluster; it is not possible to back up individual databases or database objects.
+:term:`pg_basebackup` is used to take base backups of a running PostgreSQL database cluster. These are taken without affecting other clients to the database, and can be used both for point-in-time recovery and as the starting point for a log shipping or streaming replication standby servers. It makes a binary copy of the database cluster files, while making sure the system is put in and out of backup mode automatically. Backups are always taken of the entire database cluster; it is not possible to back up individual databases or database objects.
 
 ClusterControl connects to the replication stream using the replication user (default is ``cmon_replication``) with ``--wal-method=fetch`` option when creating the backup. The output will be ``base.tar.gz`` inside the backup directory.
 
@@ -183,7 +183,7 @@ Failed    Backup was failed.
 Restore Backup
 ``````````````
 
-Restores ``pg_dump`` or ``pg_basebackup`` backup file created by ClusterControl and listed in the `Backup List`_. 
+Restores ``pg_dumpall`` or ``pg_basebackup`` backup file created by ClusterControl and listed in the `Backup List`_. 
 
 Restore on node
 .................
@@ -205,7 +205,7 @@ For pg_basebackup (offline restore):
 4. Checking disk space on the target server.
 5. Prepare and restore the backup.
 6. Start the target node.
-5. Follow the instruction in the *ClusterControl > Activity > Jobs* on how to rebuild the slaves.
+7. Follow the instruction in the *ClusterControl > Activity > Jobs* on how to rebuild the slaves.
 
 * **Restore backup on**
 	- The backup will be restored to the selected server.
@@ -220,11 +220,31 @@ Settings
 
 Manages the backup settings.
 
-* **Default backup directory**
+* **Default Backup Directory**
 	- Default path for the backup directory. ClusterControl will create the backup directory on the destination host if doesn't exist.
 
-* **Backup retention period**
+* **Default Backup Subdirectory**
+	- Set the name of the backup subdirectory. This string may hold standard ``%X`` field separators, the ``%06I`` for example will be replaced by the numerical ID of the backup in 6 field wide format that uses '0' as leading fill characters. Default value: ``BACKUP-%I``.
+
+	========= ===================
+	Variable  Description
+	========= ===================
+	B         The date and time when the backup creation was beginning.
+	H         The name of the backup host, the host that created the backup.
+	i         The numerical ID of the cluster.
+	I         The numerical ID of the backup.
+	J         The numerical ID of the job that created the backup.
+	M         The backup method (e.g. "mysqldump").
+	O         The name of the user who initiated the backup job.
+	S         The name of the storage host, the host that stores the backup files.
+	%         The percent sign itself. Use two percent signs, ``%%`` the same way the standard ``printf()`` function interprets it as one percent sign.
+	========= ===================
+
+* **Backup retention period (days)**
 	- The number of days ClusterControl keeps the existing backups. Backups older than the value defined here will be deleted. You can also customize the retention period per backup (default, custom or keep forever) under *Backup Retention* when creating or scheduling the backup.
 
-* **Backup cloud retention period**
+* **Backup cloud retention period (days)**
 	- The number of days ClusterControl keeps the uploaded backups in the cloud. Backups older than the value defined here will be deleted.
+	
+* **PITR Retention Hours**
+	- This setting specifies how long WAL files are kept. Default is 0 which means old WAL files will be kept forever.

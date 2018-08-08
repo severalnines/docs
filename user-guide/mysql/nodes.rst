@@ -82,7 +82,21 @@ Monitor
 Top Queries
 '''''''''''
 
-List of queries digested by the ProxySQL instance.
+List of queries digested by the ProxySQL instance. 
+
+* **Clear Queries**
+  - Resets the top query list. This is equal to run ``SELECT * FROM stats_mysql_query_digest_reset LIMIT 1;`` inside ProxySQL admin interface.
+
+For each query, there are menu if you roll over on the row:
+
+* **Create Rule**
+	- Create a query rule for the selected query into ProxySQL. This will open a pop-up dialog for you to fine tune the query rule before saving it into ProxySQL. By default, Clustercontrol will auto-fill two text fields - *Match Pattern* and *Match Digest*. However, you can only choose to save only one of the field into ProxySQL.
+
+* **Cache Query**
+	- Cache the selected query into ProxySQL. This will open a pop-up dialog for you to fine tune the query rule before saving it into ProxySQL.
+
+* **Full Digests**
+	- Show full digest statement.
 
 Rules
 '''''
@@ -90,10 +104,10 @@ Rules
 List out all query rules created under this ProxySQL instance.
 
 * **Add New Rule**
-	- Details at ProxySQL MySQL query rules `wiki site <https://github.com/sysown/proxysql/wiki/MySQL-Query-Rules>`_.
+	- Creates a new query rule. Details at ProxySQL `MySQL query rules <https://github.com/sysown/proxysql/wiki/Main-(runtime)#mysql_query_rules>`_.
 
 * **Edit**
-	- Edit an existing query rule.
+	- Edit an existing query rule. This will expand a dialog for you to fine tune the query rule before updating it into ProxySQL.
 
 * **Delete**
 	- Delete an existing query rule.
@@ -110,7 +124,7 @@ List out all backend servers created under this ProxySQL instance.
 	- Max Replication Lag: Specify how many seconds ProxySQL should tolerate a lagging slave as healthy.
 	- Max Connection: Specify maximum number of connections allowed to access this backend server.
 	- Max Latency(ms): Specify maximum latency in microseconds 
-	- Use SSL: Use SSL to the backend server. Details at `ProxySQL SSL documentation <https://github.com/sysown/proxysql/wiki/SSL-configuration>`_.
+	- Use SSL: Use SSL to the backend server. Details at `ProxySQL SSL Support <https://github.com/sysown/proxysql/wiki/SSL-Support>`_.
 	- Use Compression: Use compression to the backend server.
 
 * **Host Groups**
@@ -123,11 +137,14 @@ Users
 
 List out all users created under this ProxySQL.
 
+* **Import Users**
+	- Opens the import wizard. ClusterControl will list out MySQL users retrieved from the database cluster. Check the boxes that you would like to import and click *Next*. In the next stage, you have to specify the default hostgroup for the selected users before instructing ClusterControl to start importing those users.
+
 * **Add New User**
-	- Create a new user or add an existing user created on the backend MySQL server.
+	- Creates a new user for the ProxySQL instance as well as the backend MySQL server. 
 
 * **Edit**
-	- Edit the selected user.
+	- Edit the selected user. This will expand a dialog for you to fine tune the user details before updating it into ProxySQL.
 
 * **Drop User**
 	- Drop the selected user.
@@ -135,7 +152,12 @@ List out all users created under this ProxySQL.
 Variables
 '''''''''
 
-List all ProxySQL variables for this instance. You can filter the variables using the lookup field.
+List all ProxySQL variables for this instance. You can filter the variables using the lookup field. Details at `ProxySQL Global Variables <https://github.com/sysown/proxysql/wiki/Global-variables>`_.
+
+Scheduler Scripts
+'''''''''''''''''
+
+List out scheduler script, commonly being configured if you are running ProxySQL on top of Galera Cluster. Scheduler is a cron-like implementation integrated inside ProxySQL with millisecond granularity. Details at `ProxySQL Scheduler <https://github.com/sysown/proxysql/wiki/Scheduler>`_.
 
 Node Actions
 ++++++++++++
@@ -197,7 +219,7 @@ Galera Cluster
 These are specific options available for Galera nodes:
 
 * **Resync Node**
-	- Removes all files in the datadir and forces a full resync (SST) of the node. This is necessary sometimes if the galera node is trying Node Recovery multiple times and there is e.g., a filesystem issue. Wait for its completion before starting another node with Initial Start.
+	- Removes all files in the datadir on this node and forces a full resync any existing full backup or SST from a donor. The former is recommended to bring the joiner node to the closest point and gain the probability of IST which is a non-blocking operation. This is necessary sometimes if the Galera node is trying to recover multiple times and there is for example a filesystem issue. Wait for its completion before starting another node with *Initial Start*.
 
 * **Bootstrap Cluster**
 	- Launches the bootstrap cluster window. ClusterControl will stop all running nodes before bootstrapping the cluster from the selected Galera node.
@@ -282,3 +304,20 @@ These are specific options available for MySQL standalone nodes:
 
 * **Enable Read Only**
   - Enables read-only by setting up ``SET GLOBAL read_only = ON``. This option is only available if read-only is off.
+
+
+ProxySQL
+`````````
+
+The following are specific options available for ProxySQL nodes:
+
+* **Sync Instances**
+	- Synchronizes a ProxySQL configuration with other instances to keep them identical. You can perform syncing operation (export & import), export (backup) or import (restore) of ProxySQL configurations. 
+	- For export (backup), the configuration data will be exported into several SQL dump files where applicable. The following configuration data will be exported: 
+		- Query Rules
+		- Host Groups/Servers
+		- Users and corresponding MySQL users
+		- Global Variables
+		- Scheduler
+		- proxysql.cnf
+	- For import (restore), the existing configuration  will be overwritten.

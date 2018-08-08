@@ -1,7 +1,7 @@
 Overview
 --------
 
-Provides summary of all database nodes in the cluster. This page is accessible only if there is a cluster deployed by ClusterControl via `Deploy Database Cluster <../../user-guide/index.html#deploy-database-cluster>`_ or imported into ClusterControl via `Import Existing Server/Database Cluster <../../user-guide/index.html#import-existing-server-cluster>`_.
+Provides summary of all database nodes in the cluster. This page is accessible only if there is a cluster deployed by ClusterControl via `Deploy Database Cluster <../../user-guide/index.html#deploy-database-cluster>`_ or imported into ClusterControl via `Import Existing Server/Cluster <../../user-guide/index.html#import-existing-server-cluster>`_.
 
 Actions
 +++++++
@@ -27,12 +27,6 @@ Galera Cluster
 
 * **Clone Cluster** 
 	- See `Clone Cluster`_.
-    
-* **Create SSL Encryption**
-  - See `Create SSL Encryption`_.
-
-* **Create SSL Galera Encryption**
-  - See `Create SSL Galera Encryption`_.
 
 * **Find Most Advanced Node**
 	- Finds which is the most advanced node in the cluster. This is very useful to determine which node to be bootstrapped if the cluster doesn't have any primary component or when ClusterControl automatic recovery is disabled.
@@ -42,7 +36,7 @@ Galera Cluster
 
 * **Delete Cluster**
 	- This action will remove the corresponding cluster from ClusterControl supervision and will NOT uninstall the actual database cluster.
-	- If you want to re-add the cluster, you have to use `Add Existing Server/Cluster <../../user-guide/index.html#add-existing-server-cluster>`_.
+	- If you want to re-add the cluster, you have to use `Import Existing Server/Cluster <../../user-guide/index.html#import-existing-server-cluster>`_.
 
 * **Deregister Cluster from UI**
 	- Unregister a database cluster from the ClusterControl UI. 
@@ -53,9 +47,6 @@ Galera Cluster
 
 * **Stop Cluster**
 	- Stop all nodes in the cluster.
-
-* **Disable SSL Encryption**
-	- Disables SSL encryption for the cluster. This option is only available if you have enabled SSL encryption using *Create SSL Encryption*.
 
 MySQL Replication
 ``````````````````
@@ -71,13 +62,10 @@ MySQL Replication
 
 * **Find Most Advanced Node**
     - Finds which is the most advanced node in the replication setup. This is very useful to determine which slaves has the most updated data before being promoted to a new master.
-    
-* **Enable SSL Encryption**
-    - See `Enable SSL Encryption`_ section.
 
 * **Delete Cluster**
 	- This action will remove the corresponding cluster from ClusterControl supervision and will NOT uninstall the actual database cluster.
-	- If you want to re-add the cluster, you have to use `Add Existing Server/Cluster <../../user-guide/index.html#add-existing-server-cluster>`_.
+	- If you want to re-add the cluster, you have to use `Import Existing Server/Cluster <../../user-guide/index.html#import-existing-server-cluster>`_.
 
 * **Deregister Cluster from UI**
 	- Unregister a database cluster from the ClusterControl UI. 
@@ -98,12 +86,9 @@ MySQL Standalone
 * **Change RPC API Token**
 	- Serves as the authentication string by ClusterControl UI to connect to CMON RPC interface. Each cluster has its own unique token.
 
-* **Enable SSL Encryption**
-    - See `Enable SSL Encryption`_ section.
-
 * **Delete Cluster**
 	- This action will remove the corresponding cluster from ClusterControl supervision and will NOT uninstall the actual database cluster.
-	- If you want to re-add the cluster, you have to use `Add Existing Server/Cluster <../../user-guide/index.html#add-existing-server-cluster>`_.
+	- If you want to re-add the cluster, you have to use `Import Existing Server/Cluster <../../user-guide/index.html#import-existing-server-cluster>`_.
 
 * **Deregister Cluster from UI**
 	- Unregister a database cluster from the ClusterControl UI. 
@@ -126,7 +111,7 @@ MySQL Group Replication
 
 * **Delete Cluster**
 	- This action will remove the corresponding cluster from ClusterControl supervision and will NOT uninstall the actual database cluster.
-	- If you want to re-add the cluster, you have to use `Add Existing Server/Cluster <../../user-guide/index.html#add-existing-server-cluster>`_.
+	- If you want to re-add the cluster, you have to use `Import Existing Server/Cluster <../../user-guide/index.html#import-existing-server-cluster>`_.
 
 * **Deregister Cluster from UI**
 	- Unregister a database cluster from the ClusterControl UI. 
@@ -149,7 +134,7 @@ MySQL Cluster
 
 * **Delete Cluster**
 	- This action will remove the corresponding cluster from ClusterControl supervision and will NOT uninstall the actual database cluster.
-	- If you want to re-add the cluster, you have to use `Add Existing Server/Cluster <../../user-guide/index.html#add-existing-server-cluster>`_.
+	- If you want to re-add the cluster, you have to use `Import Existing Server/Cluster <../../user-guide/index.html#import-existing-server-cluster>`_.
 
 * **Deregister Cluster from UI**
 	- Unregister a database cluster from the ClusterControl UI. 
@@ -316,32 +301,6 @@ A clone will be created of this cluster. The following procedure applies:
 * **DB Node (1-9)**
 	- The database node IP address or hostname. The enable fields is depending on the Cloned Cluster Size.
 
-
-Create SSL Encryption
-``````````````````````
-
-Enable encrypted SSL client-server connections for the database node(s). The same certificate will be used on all nodes. To enable SSL encryption the nodes must be restarted. Select 'Restart Nodes' to perform a rolling restart of the nodes.
-
-* **Create Certificate**
-    - Create a self-signed certificate immediately and use it to setup SSL encryption.
-
-* **Certificate Expiration (days)**
-    - Number of days before the certificate become expired and invalid. Default is 10 years (3650 days).
-
-* **Use Certificate**
-    - Choose the certificate and key that generated by `Key Management <../../user-guide/index.html#key-management>`_.
-
-* **Restart Cluster**
-    - Restart Nodes - Automatically perform rolling restart of the nodes after setting up certificate and key.
-    - Do Not Restart Nodes - Do nothing after setting up certificate and key. User has to perform the server restart manually.
-
-Create SSL Galera Encryption
-````````````````````````````
-
-Exclusive for Galera Cluster. This feature configures Galera replication to use SSL instead of plain replication between Galera nodes. The SSL key and certificate will be created on the Galera nodes. During this operation the cluster will be stopped and started again.
-
-* **Certificate is to be expired in (days)**
-    - Number of days before the certificate become expired and invalid. Default is 10 years (3650 days).
 
 Cluster Load
 ++++++++++++

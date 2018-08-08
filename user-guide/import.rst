@@ -62,7 +62,7 @@ When importing an existing MySQL Replication, ClusterControl will do the followi
 	- Supported version:
 		- Percona Server (5.5, 5.6, 5.7)
 		- MariaDB Server (10.1, 10.2)
-		- MySQL Server (5.7)
+		- Oracle MySQL Server (5.7)
 
 * **Basedir**
 	- MySQL base directory. Default is ``/usr``. ClusterControl assumes all MySQL nodes are using the same base directory.
@@ -257,7 +257,7 @@ ClusterControl is able to manage and monitor an existing MongoDB/Percona Server 
 	- MongoDB - MongoDB Server by MongoDB Inc (formerly 10gen).
 
 * **Version**
-	- The supported version is 3.2.
+	- The supported MongoDB version are 3.2, 3.4 and 3.6.
 
 * **Server Port**
 	- MongoDB server port. Default is 27017.
@@ -317,7 +317,7 @@ ClusterControl is able to manage and monitor an existing MongoDB/Percona Server 
 	- MongoDB - MongoDB Server by MongoDB Inc
 
 * **Version**
-	- The supported version is 3.2.
+	- The supported MongoDB version are 3.2, 3.4 and 3.6.
 
 * **Admin User**
 	- MongoDB admin user.
@@ -365,7 +365,7 @@ ClusterControl is able to manage/monitor an existing set of PostgreSQL 9.x serve
 	- Password for *User*. ClusterControl assumes that you are using the same postgres password for all instances under this group.
 	
 * **Version**
-	- PostgreSQL server version on the target server/cluster.
+	- PostgreSQL server version on the target server/cluster. Supported versions are 9.6 and 10.x.
 
 * **Basedir**
 	- PostgreSQL base directory. Default is ``/usr``. ClusterControl assumes all PostgreSQL nodes are using the same base directory.

@@ -43,10 +43,7 @@ For systemd:
 .. code-block:: bash
 
 	$ systemctl daemon-reload
-	$ systemctl restart cmon
-	$ systemctl restart cmon-ssh
-	$ systemctl restart cmon-events
-	$ systemctl restart cmon-cloud
+	$ systemctl restart cmon cmon-ssh cmon-events cmon-cloud
 
 Upgrade is now complete. Verify the new version at *ClusterControl UI > Settings > CMON Settings > Version* or by using command ``cmon -v``. You should re-login if your ClusterControl UI session is active.
 
@@ -78,10 +75,7 @@ For systemd:
 .. code-block:: bash
 
 	$ systemctl daemon-reload
-	$ systemctl restart cmon
-	$ systemctl restart cmon-ssh
-	$ systemctl restart cmon-events
-	$ systemctl restart cmon-cloud
+	$ systemctl restart cmon cmon-ssh cmon-events cmon-cloud
 
 Upgrade is now complete. Verify the new version at *ClusterControl UI > Settings > CMON Settings > Version* or by using command ``cmon -v``. You should re-login if your ClusterControl UI session is active.
 
@@ -96,7 +90,7 @@ Manual Upgrade
 RedHat/CentOS
 ''''''''''''''
 
-1) Download the latest version of ClusterControl related RPM packages from `Severalnines download site <http://www.severalnines.com/downloads/cmon/>`_:
+1) Download the latest version of ClusterControl related RPM packages from `Severalnines download site <http://www.severalnines.com/downloads/cmon/>`_, for example:
 
 .. code-block:: bash
 
@@ -130,17 +124,14 @@ For systemd:
 
 .. code-block:: bash
 
-	$ systemctl restart cmon
-	$ systemctl restart cmon-ssh
-	$ systemctl restart cmon-events
-	$ systemctl restart cmon-cloud
+	$ systemctl restart cmon cmon-ssh cmon-events cmon-cloud
 
 Upgrade is now complete. Verify the new version at *ClusterControl UI > Settings > CMON Settings > Version*. You should re-login if your ClusterControl UI session is active.
 
 Debian/Ubuntu
 '''''''''''''
 
-1) Download the latest version of ClusterControl related DEB packages from `Severalnines download site <http://www.severalnines.com/downloads/cmon/>`_:
+1) Download the latest version of ClusterControl related DEB packages from `Severalnines download site <http://www.severalnines.com/downloads/cmon/>`_, for example:
 
 .. code-block:: bash
 
@@ -173,10 +164,7 @@ For systemd:
 
 .. code-block:: bash
 
-	$ systemctl restart cmon
-	$ systemctl restart cmon-ssh
-	$ systemctl restart cmon-events
-	$ systemctl restart cmon-cloud
+	$ systemctl restart cmon cmon-ssh cmon-events cmon-cloud
 
 Upgrade is now complete. Verify the new version at *ClusterControl UI > Settings > CMON Settings > Version*. You should re-login if your ClusterControl UI session is active.
 

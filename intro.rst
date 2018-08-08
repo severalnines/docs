@@ -3,7 +3,7 @@
 Introduction
 ============
 
-This documentation covers ClusterControl version 1.6.1 which was released on May 25th, 2018. This release contains key new features along with performance improvements and bug fixes. Release change log is available at `Change Logs <changelog.html>`_.
+This documentation covers ClusterControl version 1.6.2 which was released on July 16th, 2018. This release contains key new features along with performance improvements and bug fixes. Release change log is available at `Change Logs <changelog.html>`_.
 
 What is ClusterControl? 
 -----------------------
@@ -116,6 +116,7 @@ ClusterControl is able to handle most of the administration tasks required to ma
 * MySQL point-in-time recovery
 * Upload backups to AWS S3/Google Cloud Storage/Azure Storage
 * Stop/Start/Bootstrap database service
+* Rebuild a database node from a backup to avoid SST
 * Deploy a new database server/cluster on-premises or on cloud
 * Add existing MySQL/MariaDB server/cluster, MongoDB replica set and PostgreSQL server
 * Scale your database cluster (add/remove Galera node, garbd and replication slave)
