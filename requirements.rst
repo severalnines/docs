@@ -1,5 +1,3 @@
-.. _requirements:
-
 Requirements
 ============
 
@@ -311,7 +309,7 @@ For AWS cloud users, you can use the corresponding key pair by uploading it onto
 
   ssh_identity=/path/to/keypair/aws.pem
 
-If you use DSA (CMON defaults to RSA), then you need to follow `these instructions <http://support.severalnines.com/entries/23498833-Using-DSA-keys-instead-of-RSA-key-based-authentitication>`_.
+If you use DSA (CMON defaults to RSA), then you need to follow instructions in this page, `Using DSA keys instead of RSA - key-based authentitication <http://support.severalnines.com/entries/23498833-Using-DSA-keys-instead-of-RSA-key-based-authentitication>`_.
 
 
 Sudo password
@@ -337,7 +335,7 @@ If the sudo user's home directory is encrypted, you might be facing following sc
 
 Encrypted home directories aren’t decrypted until the login is successful, and your SSH keys are stored in your home directory. The first SSH connection you make will require a password. While the subsequent connections will no longer need password since the SSH service is able to read the ``authorized_key`` (inside user's homedir) in decrypted environment.
 
-To solve this, you need to follow `these instructions <http://support.severalnines.com/entries/23490521-Passwordless-SSH-in-Encrypted-Home-Directory>`_.
+To solve this, you need to follow instructions in this page, `Passwordless SSH in Encrypted Home Directory <http://support.severalnines.com/entries/23490521-Passwordless-SSH-in-Encrypted-Home-Directory>`_.
 
 Timezone
 --------

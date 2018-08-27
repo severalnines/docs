@@ -8,6 +8,29 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.6.2
 -----------------
 
+Maintenance Release: August 21st, 2018
++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.6.2-5025
+	- clustercontrol-controller-1.6.2-2718
+
+* UI:
+	- Fix broken "Resync Node" from backup (MySQL Galera).
+	- Misc ACL privileges fixes to Deployments, Activity Viewer, Left Side Navigation, and default user.
+	- Correctly handle empty responses on the User Management page.
+
+* Controller:
+	- Backup: Fixed an issue with parallel backups when executed on the controller.
+	- Backup: A fix to recreate the backup user with the proper privileges.
+	- ProxySQL: Fixed an issue with broken stats (e.,g the 'Questions' was not properly accounted for). 
+	- ProxySQL: Fixed an issue with version detection (added fallbacks).
+	- PostgreSQL: Added support for creating user entries with masks other than /32 via s9s cli.
+	- PostgreSQL: Fixed an issue with connection errors from HAProxy to PostgreSQL with IPv6.
+	- Replication: Failover scripts did not get executed.
+	- MongoDb: Updated the repo key.
+
+
 Maintenance Release: July 23rd, 2018
 ++++++++++++++++++++++++++++++++++++
 
@@ -131,7 +154,8 @@ Maintenance Release: June 15th, 2018
 	- Maxscale: Fixed so that the software will not be installed if it is already installed on the node.
 
 * Events/Notifications:
-- Fixed a bug which ignored the configured filter. This caused e.g a Warning alarm to create a notification, when only Critical was configured. 
+	- Fixed a bug which ignored the configured filter. This caused e.g a Warning alarm to create a notification, when only Critical was configured. 
+
 
 Initial Release: May 25th, 2018
 +++++++++++++++++++++++++++++++

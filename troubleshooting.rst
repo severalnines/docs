@@ -48,7 +48,7 @@ Reporting and Debugging
 If the above does not address the issues you are having, please refer to our `knowledge base <http://support.severalnines.com/categories/20019191-Knowledge-Base>`_ or contact us via our Support Portal by creating a support request at http://support.severalnines.com/tickets/new. We encourage you to make use of our `Error Reporting`_ tool as described in the next section when creating a support ticket.
 
 Error Reporting
-'''''''''''''''
++++++++++++++++
 
 ClusterControl provides error reporting tool called ``s9s_error_reporter``. This can greatly facilitate the troubleshooting process as it collects the necessary information on the entire database cluster setup and archives it in a package. You can use this tool to generate error reports, and then attach the generated tar ball package to the Support Ticket.
 
@@ -91,7 +91,7 @@ So attach the generated log file to your Support Issue, and we will be able to h
 .. Note:: We also recommend you take a screenshot showing the problem area, e.g, the Overview from the UI is always great to see if there are node failures, cluster issues or missing data.
 
 Debugging ClusterControl Controller (CMON)
-''''''''''''''''''''''''''''''''''''''''''
+++++++++++++++++++++++++++++++++++++++++++
 
 Starting from ClusterControl v1.3.0, ClusterControl comes with debuginfo package. In case if you encounter CMON crash, please install the debuginfo package and the necessary packages as shown below.
 
@@ -119,7 +119,7 @@ Install Debugging Components (RedHat/CentOS)
     debuginfo-install clustercontrol-controller
 
 Install Debugging Components (Debian/Ubuntu)
-``````````````````````````````````````````````
+````````````````````````````````````````````
 
 1. Install ClusterControl debuginfo package and gdb:
 
@@ -164,7 +164,7 @@ In this case, we have version "4.9" installed for libstc++6. Finally, install th
 
 
 Debugging Steps
-````````````````
+```````````````
 
 Debugging is a program that produces a core dump. It consists of the recorded state of the working memory of a computer program at a specific time, generally when the program has crashed or otherwise terminated abnormally. ClusterControl Controller (CMON) package comes with a cron file installed under ``/etc/cron.d/`` which will auto-restart if the cmon process is terminated abnormally. Typically, you may notice if cmon process has crashed by looking at the ``dmesg`` output.
 
@@ -187,7 +187,7 @@ When cmon crashes there will now be a core file in ``/tmp``. Compress the core d
 Attach the full output and potentially replace sensitive information with "XXXXXXXXX". Traces may contain password information.
 
 CMON on Foreground
-````````````````````
++++++++++++++++++++
 
 If you would like to run cmon as foreground process, you can do that by invoking ``-d`` option:
 
@@ -199,7 +199,7 @@ If you would like to run cmon as foreground process, you can do that by invoking
 CMON will enable LOG_DEBUG messages and print detailed information on the screen (stdout) as well as ``/var/log/cmon.log`` or ``/var/log/cmon_{cluster ID}.log``. Press ``Ctrl + C`` to terminate the process. In certain cases, the CMON  output might be needed to get insight on the problem.
 
 Debugging ClusterControl UI
-'''''''''''''''''''''''''''
++++++++++++++++++++++++++++
 
 To enable ClusterControl UI debug, SSH into the ClusterControl node and adjust following values inside ``{wwwroot}/clustercontrol/app/Config/core.php``:
 
@@ -224,7 +224,7 @@ If you need further assistance, please contact us via our support channel by `su
 
 
 ClusterControl Controller (CMON)
-''''''''''''''''''''''''''''''''
+++++++++++++++++++++++++++++++++
 
 This section covers common issues encountered related to ClusterControl Controller (CMON).
 
@@ -242,6 +242,7 @@ CMON unable to restart MySQL using service command
 	galera1.domain.com: Starting mysqld
 
 * **Troubleshooting steps:**
+
 1. SSH into the DB node and check the user's environment path variable:
 
 .. code-block:: bash
@@ -294,6 +295,7 @@ CMON process dies with “Critical error (mysql error code 1)”
 	(ERROR) Critical error (mysql error code 1) occurred - shutting down
 
 * **Troubleshooting steps:**
+
 1) Run the following command on the ClusterControl host to check if the ClusterControl host has the ability to connect to the DB host with current credentials:
 
 .. code-block:: bash
@@ -319,7 +321,7 @@ CMON process dies with “Critical error (mysql error code 1)”
 Where, [ClusterControl IP] is ClusterControl IP address and [cmon password] is ``mysql_password`` value inside CMON configuration file.
 
 ClusterControl UI
-''''''''''''''''''
++++++++++++++++++
 
 This section covers common issues encountered related to ClusterControl UI.
 
