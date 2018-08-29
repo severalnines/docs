@@ -3,7 +3,7 @@
 Introduction
 ============
 
-This documentation covers ClusterControl version 1.6.2 which was released on July 16th, 2018. This release contains key new features along with performance improvements and bug fixes. Release change log is available at `Change Logs <changelog.html>`_.
+This documentation covers ClusterControl version 1.6.2 which was released on July 16\ :sup:`th`\ , 2018. This release contains key new features along with performance improvements and bug fixes. Release change log is available at `Change Logs <changelog.html>`_.
 
 What is ClusterControl? 
 -----------------------
