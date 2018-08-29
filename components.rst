@@ -1373,7 +1373,7 @@ Name, shorthand                        Description
 ====================================== ===========
 |minus|\ |minus|\ list, -L             List the clusters.
 |minus|\ |minus|\ stat                 Print the details of one or more clusters.
-|minus|\ |minus|\ create               Create a new account to be used on the cluster to access the database(s).
+|minus|\ |minus|\ create               Create a new cluster. When this command line option is provided the program will contact the controller and register a new job that will eventually create a new cluster.
 |minus|\ |minus|\ ping                 Check the connection to the controller.
 |minus|\ |minus|\ register             Registers an existing cluster in the controller. This option is very similar to the ``--create`` option, but it of course will not install a new cluster, it just registers one.
 |minus|\ |minus|\ rolling-restart      Restart the nodes without stopping the cluster.
