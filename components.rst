@@ -2035,6 +2035,8 @@ Restore backup ID 3 on cluster ID 2:
 		--backup-id=3 \
 		--wait
 
+.. Note:: If the backup is encrypted, it will be decrypted automatically when restoring.
+
 Create a job to verify the given backup identified by the backup ID. The job will attempt to install MySQL on the test server using the same  settings as for the given cluster, then restore the backup on this test server. The job returns OK only if the backup is successfully restored on the test server:
 
 .. code-block:: bash

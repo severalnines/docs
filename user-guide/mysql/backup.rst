@@ -74,14 +74,14 @@ To create an instant backup, you have options to create a full backup using mysq
 * **PITR Compatible**
 	- Exclusive for mysqldump and if binary log is enabled. A mysqldump PITR-compatible backup contains one single dump file, with GTID info, binlog file and position. Thus, only the database node that produces binary log will have the "PITR Compatible" option available. See `Point-in-Time Recovery`_.
 
-* **Upload Backup to cloud**
-	- Automatically upload the finished backup to AWS S3 or Google Cloud Storage. This backup can then be downloaded and restored from the cloud. You have to configure `Cloud Credentials <../index.html#cloud-providers>`_ beforehand. 
+* **Upload Backup to the cloud**
+	- Upload the backup to the cloud storage. The upload process happens right after the backup is successfully created. This feature requires you to set up the cloud credentials first. See `Cloud Providers <../index.html#cloud-providers>`_.
 
 * **Backup Individual Schema**
 	- Exclusive for mysqldump. Each selected databases is backed up individually, in its own directory in the storage directory.
 
 * **Enable Encryption**
-	- Encrypts the generated backup. Backup is encrypted at rest using AES-256 CBC algorithm, where the encryption key will be created automatically. If you choose to store the backup on the controller node, the backup files are transferred in encrypted format through :term:`socat` or :term:`netcat`.
+	- Encrypts the generated backup. Backup is encrypted at rest using AES-256 CBC algorithm, where the encryption key will be created automatically and stored inside CMON configuration file for this cluster. See `Backup Encryption and Decryption`_.
 
 * **Retention**
 	- How long ClusterControl should keep this backup once successfully created. You can set a custom period in days or keep it forever. Otherwise, ClusterControl will use the default retention period.
@@ -199,12 +199,10 @@ Creates backup schedules of the database. You can choose to create a full or inc
 	- Exclusive for mysqldump and if binary log is enabled. A mysqldump PITR-compatible backup contains one single dump file, with GTID info, binlog file and position. Thus, only the database node that produces binary log will have the "PITR Compatible" option available. See `Point-in-Time Recovery`_.
 
 * **Upload Backup to the cloud**
-	- Upload the backup to the cloud storage. The upload process happens right after the backup is successfully created.
-	- This feature requires you to set up the cloud credentials first. See `Cloud Providers <../index.html#cloud-providers>`_.
+	- Upload the backup to the cloud storage. The upload process happens right after the backup is successfully created. This feature requires you to set up the cloud credentials first. See `Cloud Providers <../index.html#cloud-providers>`_.
 
 * **Enable Encryption**
-	- Encrypts the generated backup. Backup is encrypted at rest using AES-256 CBC algorithm, where the encryption key will be created automatically and stored inside CMON configuration file for this cluster. 
-	- Encryption happens on the backup node. If you choose to store the backup on the controller node, the backup files are streamed over in encrypted format through :term:`socat` or :term:`netcat`. 
+	- Encrypts the generated backup. Backup is encrypted at rest using AES-256 CBC algorithm, where the encryption key will be created automatically and stored inside CMON configuration file for this cluster. See `Backup Encryption and Decryption`_.
 
 * **Retention**
 	- How long ClusterControl should keep this backup once successfully created. You can set a custom period in days or keep it forever. Otherwise, ClusterControl will use the default retention period.
@@ -461,6 +459,30 @@ The following steps will be performed:
 	- Exclusive for mysqldump. Toggle to ON to perform ``RESET MASTER`` before performing the restoration. This may be needed if the dump file contains GTID information.
 	
 .. Warning:: If the dump file contains the mysql database, then it is required that the dump file contains the 'cmon' account and the same privileges. Else the controller cannot connect after the restore due to changed privileges.
+
+Backup Encryption and Decryption
+++++++++++++++++++++++++++++++++
+
+If encryption option is enabled for a particular backup, ClusterControl will uses :term:`OpenSSL` to encrypt the backup using AES-256 CBC algorithm. Encryption happens on the backup node. If you choose to store the backup on the controller node, the backup files are streamed over in encrypted format through :term:`socat` or :term:`netcat`.
+
+If compression is enabled, the backup is first compressed and then encrypted resulting in smaller backup sizes. The encryption key will be generated automatically (if not exists) and stored inside CMON configuration for the particular cluster under ``backup_encryption_key`` option. This key is stored with base64 encoded and should be decoded first before using it as an argument to pass when decrypting the backup. The following command shows how to decode the key:
+
+.. code-block:: bash
+
+	$ cat /etc/cmon.d/cmon_X.cnf | grep ^backup_encryption_key | cut -d"'" -f2 | base64 -d > keyfile.key
+
+Where X is the cluster ID. The above command will read the ``backup_encryption_key`` value and decode the value to a binary output. Thus, it is important to redirect the output to a file, as in the example, we redirected the output to ``keyfile.key``. The key file which stores the actual encryption key can be used in the openssl command to decrypt the backup, for example:
+
+.. code-block:: bash
+
+	$ cat {BACKUPFILE}.aes256 | openssl enc -d -aes-256-cbc -pass file:/path/to/keyfile.key > backup_file.xbstream.gz
+	
+Or, you can pass the stdin to the respective restore command chain, for example:
+
+.. code-block:: bash
+
+	$ cat {BACKUPFILE}.aes256 | openssl enc -d -aes-256-cbc -pass file:/path/to/keyfile.key | gzip -dc | xbstream -x -C /var/lib/mysql
+
 
 Settings
 ++++++++

@@ -141,6 +141,11 @@ Glossary
 		
 		.. seealso:: http://en.wikipedia.org/wiki/Netcat
 
+	OpenSSL
+		OpenSSL is a robust, commercial-grade, and full-featured toolkit for the Transport Layer Security (TLS) and Secure Sockets Layer (SSL) protocols.
+		
+		.. seealso:: https://www.openssl.org/
+
 	pg_basebackup
 		A utility to take base backups of a running PostgreSQL database cluster. These are taken without affecting other clients to the database, and can be used both for point-in-time recovery and as the starting point for a log shipping or streaming replication standby servers.
 		

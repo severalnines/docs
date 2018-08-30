@@ -45,7 +45,7 @@ Software Dependencies
 
 The following software is required by ClusterControl:
 
-- MySQL server (5.1 or later, preferably 5.5 or later)
+- MySQL server (5.1 or later, preferably 5.5 or later. MySQL 8.0 is not supported yet)
 - MySQL client
 - Apache web server (2.2 or later)
 	- mod_rewrite
@@ -78,29 +78,27 @@ Supported Databases
 
 The following table shows supported database clusters with recommended minimum nodes:
 
-+-----------------+----------------------------+--------------------------------+-----------------------------------------------------------------------------+
-| Database type   | Cluster type               | Version                        | Minimum recommended nodes                                                   |
-+=================+============================+================================+=============================================================================+
-| MySQL/MariaDB   | MySQL Cluster (NDB)        | 7.1 and later                  | 5 hosts (2 data nodes + 2 API/mgmd nodes + 1 ClusterControl node)           |
-|                 +----------------------------+--------------------------------+-----------------------------------------------------------------------------+
-|                 | MySQL replication          | 5.5 and later                  | 3 hosts (1 master node + 1 standby master/slave + 1 ClusterControl node)    |
-|                 +----------------------------+--------------------------------+-----------------------------------------------------------------------------+
-|                 | * MySQL Galera Cluster     | * 5.5/5.6/5.7 (MySQL/Percona)  | 4 hosts (3 master nodes + 1 ClusterControl node)                            |
-|                 | * Percona XtraDB Cluster   | * 5.5/10.0/10.1 (MariaDB)      |                                                                             |
-|                 | * MariaDB Galera Cluster   |                                |                                                                             |
-|                 +----------------------------+--------------------------------+-----------------------------------------------------------------------------+
-|                 | Single instance            | 5.5 and later                  | 2 hosts (1 MySQL node + 1 ClusterControl node)                              |
-+-----------------+----------------------------+--------------------------------+-----------------------------------------------------------------------------+
-| MongoDB/Percona | Replicated sharded cluster | 3.2 and later                  | 4 hosts (3 config servers/2 mongos/2 shard servers + 1 ClusterControl node) |
-| Server for      +----------------------------+                                +-----------------------------------------------------------------------------+
-| MongoDB         | Sharded cluster            |                                | 4 hosts (3 config servers/2 mongos/2 shard servers + 1 ClusterControl node) |
-|                 +----------------------------+                                +-----------------------------------------------------------------------------+
-|                 | Replica set                |                                | 3 hosts (2 replica servers + 1 ClusterControl node)                         |
-+-----------------+----------------------------+--------------------------------+-----------------------------------------------------------------------------+
-| PostgreSQL      | Single instance            | 9.x                            | 2 hosts (1 PostgreSQL node + 1 ClusterControl node)                         |
-|                 +----------------------------+                                +-----------------------------------------------------------------------------+
-|                 | Replication                |                                | 3 hosts (1 master node + 1 slave node + 1 ClusterControl node)              |
-+-----------------+----------------------------+--------------------------------+-----------------------------------------------------------------------------+
++-----------------+----------------------------+--------------------------------+---------------------------------------------------------------------------------+
+| Database type   | Cluster type               | Version                        | Minimum recommended nodes                                                       |
++=================+============================+================================+=================================================================================+
+| MySQL/MariaDB   | MySQL Cluster (NDB)        | 7.1 and later                  | 5 hosts (2 data nodes + 2 API/mgmd nodes + 1 ClusterControl node)               |
+|                 +----------------------------+--------------------------------+---------------------------------------------------------------------------------+
+|                 | MySQL replication          | 5.1/5.5/5.6/5.7                | 3 hosts (1 master node + 1 standby master/slave + 1 ClusterControl node)        |
+|                 +----------------------------+--------------------------------+---------------------------------------------------------------------------------+
+|                 | * MySQL Galera Cluster     | * 5.5/5.6/5.7 (MySQL/Percona)  | 4 hosts (3 master nodes + 1 ClusterControl node)                                |
+|                 | * Percona XtraDB Cluster   | * 5.5/10.0/10.1/10.2 (MariaDB) |                                                                                 |
+|                 | * MariaDB Galera Cluster   |                                |                                                                                 |
+|                 +----------------------------+--------------------------------+---------------------------------------------------------------------------------+
+|                 | Single instance            | 5.5/5.6/5.7                    | 2 hosts (1 MySQL node + 1 ClusterControl node)                                  |
++-----------------+----------------------------+--------------------------------+---------------------------------------------------------------------------------+
+| MongoDB/Percona | Sharded cluster            | 3.2/3.4/3.6                    | 4 hosts (3 config servers / 3 shard servers / 2 mongos + 1 ClusterControl node) |
+| Server for      +----------------------------+                                +---------------------------------------------------------------------------------+
+| MongoDB         | Replica set                |                                | 4 hosts (3 replica servers + 1 ClusterControl node)                             |
++-----------------+----------------------------+--------------------------------+---------------------------------------------------------------------------------+
+| PostgreSQL      | Single instance            | 9.x/10.x                       | 2 hosts (1 PostgreSQL node + 1 ClusterControl node)                             |
+|                 +----------------------------+                                +---------------------------------------------------------------------------------+
+|                 | Streaming Replication      |                                | 3 hosts (1 master node + 1 slave node + 1 ClusterControl node)                  |
++-----------------+----------------------------+--------------------------------+---------------------------------------------------------------------------------+
 
 Firewall and Security Groups
 ----------------------------
@@ -126,7 +124,7 @@ ClusterControl supports various database and application vendors and each has it
 +-------------------------------------------------+----------------------------------------+
 | Database Cluster (Vendor)                       | Port/Service                           |
 +=================================================+========================================+
-| MySQL/MariaDB (Single instance and replication) | * 22 (SSH)                             |
+| MySQL/MariaDB (single instance and replication) | * 22 (SSH)                             |
 |                                                 | * ICMP (echo reply/request)            |
 |                                                 | * 3306 (MySQL)                         |
 +-------------------------------------------------+----------------------------------------+

@@ -4,12 +4,12 @@ Backup
 Provides interface for database backup and restore management, scheduling and reporting. Each backup will be assigned with a backup ID and ClusterControl creates a directory under *Storage Directory* to store the backups based on this ID. On top of the page, you can see 3 function tabs followed by the created backup list underneath it.
 
 Create Backup
-`````````````
++++++++++++++
 
 Creates or schedules a PostgreSQL backup. 
 
 Create Backup
-.............
+``````````````
 
 You can choose to create a full backup using :term:`pg_dumpall` or :term:`pg_basebackup`. Backups can be stored on the database host that is performing the backup, or the files can be streamed to the ClusterControl host. The backup created by this feature will be a full backup.
 
@@ -56,18 +56,18 @@ You can choose to create a full backup using :term:`pg_dumpall` or :term:`pg_bas
 * **Compression Level**
 	- Specify the compression level for the backup. This is according to :term:`gzip` compression level. 1 is the fastest compression (least compression) and 9 indicates the slowest compression (best compression).
 
-* **Upload Backup to cloud**
-	- Automatically upload the finished backup to AWS S3 or Google Cloud Storage. This backup can then be downloaded and restored from the cloud. You have to configure `Cloud Credentials <../index.html#cloud-providers>`_ beforehand.
+* **Upload Backup to the cloud**
+	- Uploads the backup to the cloud storage. The upload process happens right after the backup is successfully created. This feature requires you to set up the cloud credentials first. See `Cloud Providers <../index.html#cloud-providers>`_.
 
 * **Enable Encryption**
-	- Encrypts the generated backup. Backup is encrypted at rest using AES-256 CBC algorithm, where the encryption key will be created automatically. If you choose to store the backup on the controller node, the backup files are transferred in encrypted format through :term:`socat` or :term:`netcat`.
+	- Encrypts the generated backup. Backup is encrypted at rest using AES-256 CBC algorithm, where the encryption key will be created automatically and stored inside CMON configuration file for this cluster. See `Backup Encryption and Decryption`_.
 
 * **Retention**
 	- How long ClusterControl should keep this backup once successfully created. You can set a custom period in days or keep it forever. Otherwise, ClusterControl will use the default retention period.
 
 
 Schedule Backup
-................
+````````````````
 
 Creates backup schedules of the database.
 
@@ -108,6 +108,9 @@ Creates backup schedules of the database.
 	%         The percent sign itself. Use two percent signs, ``%%`` the same way the standard ``printf()`` function interprets it as one percent sign.
 	========= ===================
 
+* **Upload Backup to the cloud**
+	- Upload the backup to the cloud storage. The upload process happens right after the backup is successfully created. This feature requires you to set up the cloud credentials first. See `Cloud Providers <../index.html#cloud-providers>`_.
+
 * **Netcat Port**
 	- Specify the port number that will be used by ClusterControl to stream backup created on the database node. This port must be opened on both source and destination hosts. Only available if you choose *Store on Controller* in *Storage Location*.
 
@@ -126,37 +129,37 @@ Creates backup schedules of the database.
 	- List of database host to failover in case the target node is down during the scheduled backup.
 
 * **Enable Encryption**
-	- Encrypts the generated backup. Backup is encrypted at rest using AES-256 CBC algorithm, where the encryption key will be created automatically. If you choose to store the backup on the controller node, the backup files are transferred in encrypted format through :term:`socat` or :term:`netcat`.
+	- Encrypts the generated backup. Backup is encrypted at rest using AES-256 CBC algorithm, where the encryption key will be created automatically and stored inside CMON configuration file for this cluster. See `Backup Encryption and Decryption`_.
 
 * **Retention**
 	- How long ClusterControl should keep this backup once successfully created. You can set a custom period in days or keep it forever. Otherwise, ClusterControl will use the default retention period.
   
 Scheduled Backups
-`````````````````
++++++++++++++++++
 
 List of scheduled backups. You can enable and disable the schedule by toggling it accordingly. The created schedule can be edited and deleted.
 
 Backup Method
-`````````````
++++++++++++++
 
 This section explains backup method used by ClusterControl.
 
 .. Note:: Backup process performed by ClusterControl is running as a background thread (RUNNING3) which doesn't block any other non-backup jobs in queue. If the backup job takes hours to complete, other non-backup jobs can still run simultaneously via the main thread (RUNNING). You can see the job progress at *ClusterControl > Logs > Jobs*.
 
 pg_dumpall
-...........
+``````````
 
 ClusterControl performs :term:`pg_dumpall` against all databases together with ``--clean`` option, which include SQL commands to clean (drop) databases before recreating them. DROP commands for roles and tablespaces are added as well. The output will be in ``.sql.gz`` extention and file name contains the timestamp of the backup.
 
 pg_basebackup
-..............
+``````````````
 
 :term:`pg_basebackup` is used to take base backups of a running PostgreSQL database cluster. These are taken without affecting other clients to the database, and can be used both for point-in-time recovery and as the starting point for a log shipping or streaming replication standby servers. It makes a binary copy of the database cluster files, while making sure the system is put in and out of backup mode automatically. Backups are always taken of the entire database cluster; it is not possible to back up individual databases or database objects.
 
 ClusterControl connects to the replication stream using the replication user (default is ``cmon_replication``) with ``--wal-method=fetch`` option when creating the backup. The output will be ``base.tar.gz`` inside the backup directory.
 
 Backup List
-````````````
++++++++++++
 
 Provides a list of finished backup jobs. The status can be:
 
@@ -181,12 +184,12 @@ Failed    Backup was failed.
 	- Manually upload the created backup to cloud storage. This will open "Upload Backup" wizard.
 
 Restore Backup
-``````````````
+++++++++++++++
 
 Restores ``pg_dumpall`` or ``pg_basebackup`` backup file created by ClusterControl and listed in the `Backup List`_. 
 
 Restore on node
-.................
+````````````````
 
 You can restore up to a certain incremental backup by clicking on the *Restore* button for the respective backup ID. The following steps will be performed:
 
@@ -215,8 +218,31 @@ For pg_basebackup (offline restore):
 	
 .. Attention:: The data directory must have enough space to accommodate the restored backup.
 
+Backup Encryption and Decryption
+++++++++++++++++++++++++++++++++
+
+If encryption option is enabled for a particular backup, ClusterControl will uses :term:`OpenSSL` to encrypt the backup using AES-256 CBC algorithm. Encryption happens on the backup node. If you choose to store the backup on the controller node, the backup files are streamed over in encrypted format through :term:`socat` or :term:`netcat`.
+
+If compression is enabled, the backup is first compressed and then encrypted resulting in smaller backup sizes. The encryption key will be generated automatically (if not exists) and stored inside CMON configuration for the particular cluster under ``backup_encryption_key`` option. This key is stored with base64 encoded and should be decoded first before using it as an argument to pass when decrypting the backup. The following command shows how to decode the key:
+
+.. code-block:: bash
+
+	$ cat /etc/cmon.d/cmon_X.cnf | grep ^backup_encryption_key | cut -d"'" -f2 | base64 -d > keyfile.key
+
+Where X is the cluster ID. The above command will read the ``backup_encryption_key`` value and decode the value to a binary output. Thus, it is important to redirect the output to a file, as in the example, we redirected the output to ``keyfile.key``. The key file which stores the actual encryption key can be used in the openssl command to decrypt the backup, for example:
+
+.. code-block:: bash
+
+	$ cat {BACKUPFILE}.aes256 | openssl enc -d -aes-256-cbc -pass file:/path/to/keyfile.key > backup_file.sql.gz
+	
+Or, you can pass the stdin to the respective restore command chain, for example:
+
+.. code-block:: bash
+
+	$ cat {BACKUPFILE}.aes256 | openssl enc -d -aes-256-cbc -pass file:/path/to/keyfile.key | gunzip | psql -p5432 -f-
+
 Settings
-````````
+++++++++
 
 Manages the backup settings.
 
