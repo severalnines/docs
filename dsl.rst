@@ -3,12 +3,12 @@
 ClusterControl DSL
 ==================
 
-This documentation provides detailed information on ClusterControl Domain Specific Language (DSL). The DSL syntax is similar to JavaScript, with extensions to provide access to ClusterControl’s internal data structures and functions. The CCDSL allows you to execute SQL statements, run shell commands/programs across all your cluster hosts, and retrieve results to be processed for advisors/alerts or any other actions.
+This documentation provides detailed information on ClusterControl Domain Specific Language (DSL). The DSL syntax is similar to JavaScript, with extensions to provide access to ClusterControl's internal data structures and functions. The CCDSL allows you to execute SQL statements, run shell commands/programs across all your cluster hosts, and retrieve results to be processed for advisors/alerts or any other actions.
 
 Introduction
 ------------
 
-This language will be provided for the users, to implement monitoring related code in a language similar to JavaScript. The code is executed on the ClusterControl CMON Controller and will have access to the cluster nodes through the network.
+This language will be provided for the users, to implement monitoring related code in a language similar to JavaScript. The code is executed on the Cmon Controller and will have access to the cluster nodes through the network.
 
 The language is different from JavaScript in some ways. Here is a list of the most important differences:
 
@@ -19,13 +19,15 @@ The language is different from JavaScript in some ways. Here is a list of the mo
 * We have a ``List`` type.
 * JavaScript uses a period in function names like ``JSON.parse(text)``, here we use the C++ notation like ``JSON::parse(text)``.
 * New variables created on-the-fly in functions are local variables and not globals.
-* The language implements a C like ``#include`` preprocessor directive.
+* The language implements a C like #include preprocessor directive.
+
+Supported ClusterControl Controller (CMON) version: 1.7.0.
 
 Language basics
 ---------------
 
 Preprocessor directives
-````````````````````````
++++++++++++++++++++++++
 
 This system has no preprocessor, the parsing is done in one stage. Some expressions however are implemented the same way it is implemented in most of the C/C++ language preprocessors. Here is a list of the supported preprocessor directives.
 
@@ -36,7 +38,7 @@ This system has no preprocessor, the parsing is done in one stage. Some expressi
 	Preprocessor directive to protect an include file to be included multiple times. The same as in the C/C++ languages.
 
 Types
-``````
++++++
 
 Here is an example of the new operator.
 
@@ -70,7 +72,7 @@ Here is an example of the new operator.
 * CmonJob
 
 Literals
-````````
+++++++++
 
 **Boolean literals**. These are just simply ``true`` and ``false``.
 
@@ -171,7 +173,7 @@ The available error literals are the following:
     a.typeName() == "Map" &&
     a["one"]["two"] == "value";
 
-The map keys could be listed using the .keys() method:
+The map keys could be listed using the ``.keys()`` method:
 
 .. code-block:: javascript
 
@@ -200,10 +202,10 @@ Regular expressions has the type CmonRegExp.
 Functions
 ---------
 
-If the function is called with the wrong number of arguments the return value will be an '#ARGS!' error (the type of the return value will be "Error").
+If the function is called with the wrong number of arguments the return value will be an ``#ARGS!`` error (the type of the return value will be "Error").
 
 JSON Functions
-```````````````
+++++++++++++++
 
 * ``Map JSON::parse(text)``
     Parses a JSon string and returns it in a Map format.
@@ -244,16 +246,16 @@ And the raw reply:
   }
 
 Controller Functions
-````````````````````
+++++++++++++++++++++
 
 * ``abort()``
-	Aborts the execution of the script and presents the backtrace showing where exactly the abort() function was executed.
+	Aborts the execution of the script and presents the backtrace showing where exactly the ``abort()`` function was executed.
 
 * ``exit(exitstatus)``
-	Ends the execution of the script and returns the exitstatus to the Cmon environment. Ends the script with normal program termination.
+	Ends the execution of the script and returns the exit status to the Cmon environment. Ends the script with normal program termination.
 
 * ``main(...)``
-	If a main() function is provided once the program lines outside the functions are executed the main() function will be executed. The arguments of the main() function will be passed from the running environment and the return value of the main() will be sent back as exit status. Except if the exit() function is used to set the exit status.
+	If a ``main()`` function is provided once the program lines outside the functions are executed the ``main()`` function will be executed. The arguments of the ``main()`` function will be passed from the running environment and the return value of the ``main()`` will be sent back as exit status. Except if the ``exit()`` function is used to set the exit status.
 
 .. code-block:: javascript
 
@@ -268,25 +270,25 @@ Controller Functions
   var global2 = 11;
 
 Input/Output Functions
-``````````````````````
++++++++++++++++++++++++
 
 * ``string print([value]...)``
-	Prints all the vaues as one message with the severity set to 'info'. Also returns the printed string.
+	Prints all the values as one message with the severity set to 'info'. Also returns the printed string.
 
 * ``string warning([value]...)``
-	Prints all the vaues as one message with the severity set to 'warning'. Also returns the printed string.
+	Prints all the values as one message with the severity set to 'warning'. Also returns the printed string.
 
 * ``string error([value]...)``
-	Prints all the vaues as one message with the severity set to 'critical'. Also returns the printed string.
+	Prints all the values as one message with the severity set to 'critical'. Also returns the printed string.
 
 General Tag Functions
-`````````````````````
++++++++++++++++++++++++
 
 * ``string value.typeName()``
 	Returns the type name of the value.
 
 * ``string value.toString([formatid])``
-	Returns the value converted to string. If the format ID is specified the string will be formatted accordingly. The available format specifiers are defined in "cmon/io.h".
+	Returns the value converted to string. If the format ID is specified the string will be formatted accordingly. The available format specifiers are defined in ``cmon/io.h``.
 
 .. code-block:: c++
 
@@ -360,7 +362,7 @@ General Tag Functions
 	Converts the value into boolean. String like "true" and "false" will be recognized, integer values will have true value when they are not equal to zero.
 
 Mathematical Functions
-``````````````````````
++++++++++++++++++++++++
 
 * ``number rand()``
 	Creates a random number between 0 and 1.
@@ -456,13 +458,13 @@ Mathematical Functions
 	Returns the number rounded to the nearest odd number.
 
 * ``number convert(number, from, to)``
-	Converts between units. Supported units are byte, kbyte, mbyte, gbyte, tbyte, celsius, kelvin, fahrenheit, hz, mhz, ghz. When the 'units' utility program is installed more units are available for CONVERT().
+	Converts between units. Supported units are byte, kbyte, mbyte, gbyte, tbyte, celsius, kelvin, fahrenheit, hz, mhz, ghz. When the 'units' utility program is installed more units are available for ``CONVERT()``.
 
 * ``number isodd(number)``
 	Returns true if the number is odd.
 
 Functions providing information about values
-````````````````````````````````````````````
+++++++++++++++++++++++++++++++++++++++++++++++
 
 * ``boolean iserr(value)``
 	Returns true if the value is an error.
@@ -480,7 +482,7 @@ Functions providing information about values
 	Returns true if the value is an array.
 
 String Functions
-````````````````
+++++++++++++++++
 
 * ``integer asc(text)``
 	Returns the ASCII value of the first character in the string.
@@ -540,13 +542,13 @@ String Functions
 	Returns the value converted into a floating point double precision number.
 
 String Tag Functions
-````````````````````
+++++++++++++++++++++
 
 * ``int string.length()``
 	Returns the length of the string.
 
 * ``int string.indexOf(substring, [start])``
-	Returns the position of the first occurrence of the substring in the string. Retturns -1 of the substring was not found.
+	Returns the position of the first occurrence of the substring in the string. Returns -1 of the substring was not found.
 
 * ``array string.split(separatorstring)``
 	Returns an array that contains all the substrings separated by the given separator in the original string.
@@ -594,7 +596,7 @@ String Tag Functions
 	Returns true if the string represents a valid IPv4 address.
 
 General Array Functions
-````````````````````````
++++++++++++++++++++++++
 
 * ``value choose(position, value, [value]...)``
 	Returns the value at the given position of the values. The first value is returned when position is 1.
@@ -621,7 +623,7 @@ General Array Functions
 	Searches for a value and returns the relative position of the item found.
 
 Statistical Functions
-``````````````````````
++++++++++++++++++++++
 
 Statistical functions will provide statistical calculations on number sets. The values for most functions can be passed through individual arguments or using arrays. Here is an example:
 
@@ -710,7 +712,7 @@ Statistical functions will provide statistical calculations on number sets. The 
 	Uses the "least squares" method to find the linear equation that fits the data. Returns the y-axis intersection point of the line.
 
 Regular Expression Functions
-``````````````````````````````
+++++++++++++++++++++++++++++
 
 Regular expressions has the type CmonReExp with the following tag functions:
 
@@ -730,14 +732,14 @@ When the toString() function is called the CmonRegExp type it supports the follo
 
 * ``%r`` - The regular expression string itself.
 
-* ``%j`` - The regular expression and the modifiers in JavaScript notation (e.g. "/[0-9]+/ig").
+* ``%j`` - The regular expression and the modifiers in JavaScript notation (e.g. ``/[0-9]+/ig``).
 
 * ``%m`` - The matched string if there is any.
 
 * ``%nm`` - The nth matched sub-expression where n is an integer number.
 
 Date and Time Functions
-````````````````````````
++++++++++++++++++++++++
 
 This type is different from the JavaScript Date type.
 
@@ -757,9 +759,9 @@ This type is different from the JavaScript Date type.
 	Returns how many seconds must be added to the local time because of the daylight saving time
 
 * ``CmonDateTime dateTime::toString([format])``
-	Converts the date&time to string. The available formats are defined in the "cmon/io.h" header file. Here are some examples:
+	Converts the date&time to string. The available formats are defined in the ``cmon/io.h`` header file. Here are some examples:
 
-When the toString() function is called on a CmonDateTime function and a format string is passed as the first argument the CmonDateTime will support all the format specifiers supported by the strftime() standard C library function. Please check the documentation of the strftime() for further details.
+When the ``toString()`` function is called on a CmonDateTime function and a format string is passed as the first argument the CmonDateTime will support all the format specifiers supported by the ``strftime()`` standard C library function. Please check the documentation of the ``strftime()`` for further details.
 
 .. code-block:: c++
 
@@ -815,7 +817,7 @@ When the toString() function is called on a CmonDateTime function and a format s
 	Sunday = 1, Monday = 2,... Saturday = 7.
 
 CmonHost Tag Functions
-```````````````````````
++++++++++++++++++++++++
 
 Here is an example for the CmonHost tag functions. The variable host1 here has the CmonHost object type.
 
@@ -845,6 +847,9 @@ Here is an example for the CmonHost tag functions. The variable host1 here has t
 * ``string CmonHost::message()``
 	Returns a human readable string that describes the status of the host.
 
+* ``string CmonHost::dataDir()``
+	The data directory of the specified host instance.
+
 * ``string CmonHost::description()``
 	FIXME: Documentation.
 
@@ -857,8 +862,11 @@ Here is an example for the CmonHost tag functions. The variable host1 here has t
 * ``string CmonHost::distributionRelease()``
 	Returns the release number of the OS distribution running on the host.
 
+* ``string CmonHost::nodeType()``
+	Returns the nodeType of the host (controller, galera, mysql, postgresql ..)
+
 * ``string CmonHost::role()``
-	FIXME: Documentation.
+	Returns the role of the host (master, slave, ...)
 
 * ``int CmonHost::pingDelay()``
 	FIXME: Documentation.
@@ -896,6 +904,9 @@ Here is an example for the CmonHost tag functions. The variable host1 here has t
 * ``list host.sqlStats(startTime, endTime)``
 	Returns a list with the sql server statistics of the host. The fields in the map are described in the CmonSqlStats properties section. If the requested data is not collected for some reason the #N/A error is returned. See the `Obtaining and processing statistical information`_ section for some examples.
 
+* ``list host.mongoStats(startTime, endTime)``
+	Returns a list with the mongo server statistics of the host. The fields in the map are described in the CmonSqlStats properties section. If the requested data is not collected for some reason the #N/A error is returned. See the `Obtaining and processing statistical information`_ section for some examples.
+
 * ``list host.networkInfo()``
 	Returns a list of maps, one list item for each monitored network interface. The fields in the map are documented in the CmonNetworkStats properties section.
 
@@ -909,7 +920,7 @@ Here is an example for the CmonHost tag functions. The variable host1 here has t
 	Returns a list of maps, one list item for each CPU cores. The fields in the maps are documented in the CmonCpuStats properties section.
 
 * ``list host.cpuStats(startTime, endTime, [coreid])``
-	Returns a list of maps, one list item for each CPU statistical sample in the given periiod. If the third argument is provided returns only samples for the cpu with the given ID. The fields in the maps are documented in the CmonCpuStats properties section.
+	Returns a list of maps, one list item for each CPU statistical sample in the given period. If the third argument is provided returns only samples for the cpu with the given ID. The fields in the maps are documented in the CmonCpuStats properties section.
 
 * ``map host.system(command)``
 	Executes a shell command on the host. Returns a map that contains information about the return value and the standard output of the executed process.
@@ -930,20 +941,35 @@ Here is an example for the CmonHost tag functions. The variable host1 here has t
     return retval["success"];
   }
 
+* ``map host.sqlSystemVariables()``
+	Returns the map of the cached SQL system variables, (``SHOW GLOBAL VARIABLES`` for MySQL, ``SHOW ALL`` for PostgreSQL).
+
+* ``value host.sqlSystemVariable(name)``
+	Returns the cached value of an SQL variable, (``SHOW GLOBAL VARIABLES`` for MySQL, ``SHOW ALL`` for PostgreSQL).
+
+* ``map host.sqlStatusVariables()``
+	Returns the map of the cached SQL system status variables, (``SHOW GLOBAL STATUS`` for MySQL).
+
+* ``value host.sqlStatusVariable(name)``
+	Returns the cached value of an SQL status (``SHOW GLOBAL STATUS`` for MySQL).
+
 * ``CmonClusterConfig host.config([fileName])``
 	Loads the configuration from the host (together with the include files and the files from the include directories) and returns a CmonClusterConfig object that holds all the information from the files.
 
 * ``map host.executeSqlQuery(query)``
-	Executes the SQL query (an SQL expression that has return data, e.g. a SELECT) and returns the results. The returned map will have a value for "success" to show if the operation was successful or not, an "errorMessage" that holds a human readable error message and a "result" field that holds an array with all the data the SQL server sent. Please check `Executing SQL commands and queries`_ section for some examples. A similar function (``CmonDb::executeSqlQuery()``) is available to execute an SQL query on the Cmon Database.
+	Executes the SQL query (an SQL expression that has return data, e.g. ``SELECT``) and returns the results. The returned map will have a value for "success" to show if the operation was successful or not, an "errorMessage" that holds a human readable error message and a "result" field that holds an array with all the data the SQL server sent. Please check `Executing SQL commands and queries`_ section for some examples. A similar function (``CmonDb::executeSqlQuery()``) is available to execute an SQL query on the Cmon Database.
+
+* ``map host.executeMongoQuery(dbname, query)``
+	Executes the mongo query (an JS expression that has return data, e.g. ``{ serverStatus : 1 }``) on the specified database (dbname) and returns the results. The returned map will have a value for "success" to show if the operation was successful or not, an "errorMessage" that holds a human readable error message and a "result" field that holds an map with all the data the mongo server sent.
 
 * ``map host.executeSqlCommand(sqlCommand)``
 	Executes the SQL command (an SQL expression that has no return data, e.g. an INSERT or an UPDATE) and returns the status. The returned map will have a value for "success" to show if the operation was successful or not and an "errorMessage" that holds a human readable error message. Please check `Executing SQL commands and queries`_ section for some examples.
 
 * ``boolean host.sqlPing([timeout])``
-	Executes a neutral SQL command (e.g. SELECT 1;) on the host to see if the SQL server up and able to run queries. Returns true if the SQL server returns a valid reply. If the argument is provided it controls how many seconds the the function will try to reach the server.
+	Executes a neutral SQL command (e.g. ``SELECT 1;``) on the host to see if the SQL server up and able to run queries. Returns true if the SQL server returns a valid reply. If the argument is provided it controls how many seconds the the function will try to reach the server.
 
 CmonMySqlHost Tag Functions
-````````````````````````````
++++++++++++++++++++++++++++
 
 The CmonMySqlHost inherits all the properties and tag functions of the CmonHost.
 
@@ -957,26 +983,26 @@ The CmonMySqlHost inherits all the properties and tag functions of the CmonHost.
 	Returns the value of the 'read_only' SQL variable.
 
 CmonClusterConfig Tag Functions
-````````````````````````````````
++++++++++++++++++++++++++++++++
 
 The CmonClusterConfig is a class that represents a set of configuration files found on one or more hosts of the cluster.
 
 * ``string config.errorMessage()``
-	Returns a human readable error message that descibe the state of the last operation.
+	Returns a human readable error message that describe the state of the last operation.
 
 * ``list config.variable([variableName])``
 	Returns a list of variables found in the configuration. If the variable name is not provided returns all the variables defined in the configuration file. Every list element is a Map that holds the following keys: "variablename", "linenumber", "value", "filepath" and "section".
 
 * ``value config.setVariable(section, variableName, value)``
-	Sets the variable in the given section to the given value. If the variable or the section is not in the configuration it will be added. Please note that this function schanges the configuration object, the change to has an effect the cluster configuration has to be saved.
+	Sets the variable in the given section to the given value. If the variable or the section is not in the configuration it will be added. Please note that this function changes the configuration object, the change to has an effect the cluster configuration has to be saved.
 
 * ``map config.save()``
 	Saves the configuration to the original host(s) using the original filename(s). The return map shall have the "success" and the "errorMessage" set to reflect if the operation was successful.
 
 CmonAdvice Tag Functions
-````````````````````````
++++++++++++++++++++++++++
 
-CmonAdvice is a class that represents an action to be taken by the administrator of the cluster advised by the advisor, a code that executed by the Cmon Controller. An advice is mostly constructed of human readable edscriptions together with some information that help tracking where and when the advice was created.
+CmonAdvice is a class that represents an action to be taken by the administrator of the cluster advised by the advisor, a code that executed by the Cmon Controller. An advice is mostly constructed of human readable descriptions together with some information that help tracking where and when the advice was created.
 
 * ``void advice.setTitle(title)``
 	Sets the title for the advice. The title should be a short description for the advice.
@@ -991,7 +1017,7 @@ CmonAdvice is a class that represents an action to be taken by the administrator
 	Returns the name of the creator.
 
 * ``void advice.setJustification(justification)``
-	Sets the justification for the advice. The justificatio is a detailed description about the reason why the advisor decided there should be an action taken. The justification usually contain measured values if human readable form.
+	Sets the justification for the advice. The justification is a detailed description about the reason why the advisor decided there should be an action taken. The justification usually contain measured values if human readable form.
 
 * ``string advice.justification()``
 	Returns the justification for the advice.
@@ -1003,7 +1029,7 @@ CmonAdvice is a class that represents an action to be taken by the administrator
 	Returns the detailed description of the advice.
 
 * ``void advice.setSeverity(Severity)``
-	Sets the severity level for the advice. Severity level for an avice is the same as the severity levels for the alarms as it is defined in alarms.h.
+	Sets the severity level for the advice. Severity level for an advice is the same as the severity levels for the alarms as it is defined in ``alarms.h``.
 
 * ``Severity advice.severity()``
 	Returns the severity level for the advice.
@@ -1011,30 +1037,25 @@ CmonAdvice is a class that represents an action to be taken by the administrator
 * ``void advice.setHost(host)``
 	Sets the host for the advice so the user will know which host was investigated when the advice was given.
   
-When the toString() function is called the CmonAdvice supports the following format specifiers:
+When the ``toString()`` function is called the CmonAdvice supports the following format specifiers:
 
-* ``%t`` - The title of the advice.
-
-* ``%j`` - The justification for the advice.
-
-* ``%a`` - The description, the advice itself.
-
-* ``%c`` - The creator of the advice.
-
-* ``%h`` - The name of the host if there is a host set for the advice.
-
-* ``%E`` - A multi line description of the advice that contain multiple properties.
+	* ``%t`` - The title of the advice.
+	* ``%j`` - The justification for the advice.
+	* ``%a`` - The description, the advice itself.
+	* ``%c`` - The creator of the advice.
+	* ``%h`` - The name of the host if there is a host set for the advice.
+	* ``%E`` - A multi line description of the advice that contain multiple properties.
 
 
 CmonJob Functions
-``````````````````
++++++++++++++++++
 
 The CmonJob type represents a job or a task that the Cmon controller can execute. These jobs are usually executed asynchronously. The script creates a job, stores all the necessary information in the CmonJob object and pushes into the execution queue. Then the controller executes the job and sends its results to the UI where the user can check what happened.
 
 The CmonJob type is supported from version 1.2.11 of Cmon.
 
 General Job Functions
-'''''''''''''''''''''
+``````````````````````
 
 * ``Bool job.enqueue()``
     Checks the job for consistency and sends it to the execution queue. Returns true if everything went well.
@@ -1046,10 +1067,10 @@ General Job Functions
     Returns the unique numerical ID for the job. Only jobs that are enqueued for execution has valid (greater than 0) IDs.
 
 * ``CmonJob CmonJob::getJob(jobid)``
-    Reads the job with the specified job ID from the Cmon database. Returns #N/A if the job was not found.
+    Reads the job with the specified job ID from the Cmon database. Returns ``#N/A`` if the job was not found.
 
 Backup Handling
-'''''''''''''''
+````````````````
 
 The following methods are related to jobs that create backups.
 
@@ -1062,7 +1083,7 @@ The following methods are related to jobs that create backups.
 * ``Bool job.setBackupMethod(method)``
     Sets what kind of backup will be created, what software will be used to create the backup file. Returns true if the job is valid, all the properties are in order. Currently the following methods are supported:
   
-  * null - If the backup method is missing one will be chosen. FIXME: some clusters might not tolerate an empty string here.
+  * null - If the backup method is missing one will be chosen.
   * "auto" - To use the default backup software for the given cluster type. (This means mysqldump now).
   * "none" - This is the same as "auto".
   * "mysqldump" - Use the mysqldump program to create a backup.
@@ -1103,7 +1124,7 @@ The following example shows how easy and simple to create a job that will create
 
 
 Cluster Configuration Jobs
-'''''''''''''''''''''''''''
+``````````````````````````
 
 Some functions change the state or configuration of the cluster. Adding and removing nodes, starting and stopping nodes or the entire cluster are the most important jobs in this section.
 
@@ -1111,7 +1132,7 @@ Some functions change the state or configuration of the cluster. Adding and remo
     Creates a job that ultimately will add a new node to the cluster. The node is identified by the host name passed as the first argument. If the second argument is true the database software is also installed on the new node and so the third argument must be the file name of the configuration file template.
 
 CmonGraph Tag Functions
-````````````````````````
++++++++++++++++++++++++
 
 A CmonGraph consists of one or more plots. These plots are usually shown as lines, lines with points on them or bars to represent a number of values in a two dimensional (x/y) coordinate system. Various properties of these plots can be set using the plot index, that is a number referencing the plots from 1 to the last plot.
 
@@ -1131,16 +1152,16 @@ A CmonGraph consists of one or more plots. These plots are usually shown as line
 	Sets which data array column is used as data for the given plot.
 
 * ``boolean graph.setPlotStyle(plotIdx, style)``
-	Sets what style will be used to plot the data. Check the "cmon/graph.h" include file for the available styles.
+	Sets what style will be used to plot the data. Check the ``cmon/graph.h`` include file for the available styles.
 
 Cluster Functions
-``````````````````
++++++++++++++++++
 
 * ``array cluster::hosts()``
 	Returns all the CmonHosts that are considered as part of he cluster. This function also returns the host of the Cmon controller.
 
 * ``array cluster::mySqlNodes()``
-	Returns all the CmonMySqlHosts that are considered as part of the cluster. The CmonMySqlHost inherits the properties and functions of the CmonHost, so where a CmonHost can be used a CmonMySqlHost is also accepted (e.g. CmonHost::executeSqlQuery() also works for CmonMySqlHost).
+	Returns all the CmonMySqlHosts that are considered as part of the cluster. The CmonMySqlHost inherits the properties and functions of the CmonHost, so where a CmonHost can be used a CmonMySqlHost is also accepted (e.g. ``CmonHost::executeSqlQuery()`` also works for CmonMySqlHost).
 
 * ``array cluster::galeraNodes()``
 	Returns the Galera nodes of the cluster. The returned list holds CmonGaleraHost type items.
@@ -1151,8 +1172,11 @@ Cluster Functions
 * ``array cluster::mongoNodes()``
 	Returns the MongoDb nodes of the cluster. The returned list holds CmonMongoNode type items.
 
+* ``array cluster::maxscaleNodes()``
+	Returns the MaxScale nodes of the cluster. The returned list holds CmonMaxScaleHost type items.
+
 * ``array cluster::ndbdNodes()``
-	Returns the Ndb nodes of the cluster. The returned list holds CmonNdbHost type items.
+	Returns the NDB nodes of the cluster. The returned list holds CmonNdbHost type items.
 
 * ``string cluster::statustext()``
 	Returns the human readable description of the cluster status.
@@ -1164,7 +1188,7 @@ Cluster Functions
 	Restarts the nodes without stopping the cluster.
 
 Cmon Functions
-``````````````
+++++++++++++++
 
 * ``text cmon::version()``
 	Returns the Cmon version as a string.
@@ -1185,7 +1209,7 @@ Cmon Functions
 	Returns the domain name of the computer running the Cmon controller.
 
 General alarm functions
-```````````````````````
++++++++++++++++++++++++
 
 * ``int Alarm::alarmId(category, isHost, title, message, recommendation)``
 	Registers a new alarm type if an alarm type with the same properties is not registered already. Returns the alarm type that can be used to raise and clear alarms with these properties. Use this function to implement custom alarms for the Cmon system. Please check the `Alarms`_ section for examples.
@@ -1194,13 +1218,13 @@ General alarm functions
 	Registers a new check type if a check type with the same properties is not registered already. Checks are in reality alarms that have warning and critical levels so they can easily be used to check numerical values. Returns the alarm type that can be used to raise and clear alarms with these properties calling the ``host.checkValue()`` function.
 
 Mail functions
-``````````````
+++++++++++++++
 
 * ``Map Mail::sendMail(subject, body, [component])``
-	Appends a new mail message to the outgoing folder of the Cmon system. The third (optional) argument controls the component which will ultimately used to decide what recipients will get the email. The possible values are defined in the ComponentType enum in the "cmon/alarms.h" file.
+	Appends a new mail message to the outgoing folder of the Cmon system. The third (optional) argument controls the component which will ultimately used to decide what recipients will get the email. The possible values are defined in the ComponentType enum in the ``cmon/alarms.h`` file.
 
 License functions
-``````````````````
++++++++++++++++++
 
 * ``text license::statustext()``
 	Returns a short string describing the status of the license.
@@ -1212,7 +1236,7 @@ License functions
 	A negative value indicates the Cmon license expired or not found, positive values show how many days the license has left.
 
 Cmon Database functions
-````````````````````````
++++++++++++++++++++++++
 
 The Cmon Database is the SQL database where the Cmon stores all its internal data. This database is accessible from the JS programs.
 
@@ -1223,7 +1247,7 @@ Examples
 --------
 
 Executing SQL commands and queries
-``````````````````````````````````
+++++++++++++++++++++++++++++++++++
 
 The following example demonstrates how to execute an SQL query on an arbitrary host of a cluster and receive the results in an array. The return value of the ``host.executeSqlQuery()`` holds the success/failed status of the query, the error message and also the results in a two dimensional array.
 
@@ -1282,7 +1306,7 @@ Here is an example that shows how to execute an SQL query on the Cmon Database:
   }
 
 Executing shell commands
-`````````````````````````
++++++++++++++++++++++++++
 
 .. code-block:: javascript
 
@@ -1298,7 +1322,7 @@ Executing shell commands
   }
 
 Obtaining and processing statistical information
-`````````````````````````````````````````````````
+++++++++++++++++++++++++++++++++++++++++++++++++
 
 The following example shows how to obtain statistical data from a specific host about a specific time interval and how to process the data using low-level indexing operators. For the most task there are more efficient high-level statistical functions that can be used without looping through the data, but low-level access can be also beneficial for custom calculations.
 
@@ -1374,7 +1398,7 @@ The next example shows a sophisticated recipe to process some of the statistical
   }
 
 Alarms
-``````
+++++++
 
 .. code-block:: c++
 
@@ -1405,7 +1429,7 @@ The following example demonstrates how to create a custom alarm type and raise a
 .. code-block:: c++
 
   //
-  // Demonstating custom alarms.
+  // Demonstrating custom alarms.
   //
   #include "cmon/alarms.h"
   //
@@ -1431,7 +1455,7 @@ The following example demonstrates how to create a custom alarm type and raise a
   //
 
 Configuration files
-````````````````````
++++++++++++++++++++
 
 .. code-block:: c++
   
@@ -1452,7 +1476,7 @@ Configuration files
   }
 
 Creating graphs
-````````````````
++++++++++++++++
 
 The following example shows how to create a graph, set up with statistical data and return to the UI to be shown as an image.
 
