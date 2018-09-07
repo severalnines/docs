@@ -387,36 +387,163 @@ That's it. At this point, the standby server has taken over the primary role.
 Changing 'cmon' or 'root' Password
 ----------------------------------
 
-ClusterControl has a helper script to change MySQL root password of your database cluster and for cmon database user called ``s9s_change_passwd``. It requires you to supply the old password so cmon user could access the database nodes and perform password update automatically. This tool is NOT intended for password reset.
+For MySQL-based clusters, ClusterControl requires two database users, 'cmon' and 'root' with full privileges and grant option. Most of the time, ClusterControl will use 'cmon' user for monitoring, management and maintenance operations. However, there are some operations which only 'root' user is capable of performing like granting 'cmon' user for the first time after restoration and scaling up a new database nodes. 
 
-On ClusterControl server, get :term:`s9s-admin tools` from our `Github repository <https://github.com/severalnines/s9s-admin>`_:
+In ClusterControl context, both 'cmon' and 'root' users are immutable. The password is defined under ``mysql_password`` variable for 'cmon', while for the MySQL root password should be defined under ``monitored_mysql_root_password`` variable. The variable ``mysql_password`` exists in every cluster's CMON configuration file, located under ``/etc/cmon.d`` directory. Thus, if you have 5 clusters managed by this ClusterControl instance, you need to update the ``mysql_password`` variable for 6 times (1 inside ``/etc/cmon.cnf`` + 5 inside ``/etc/cmon.d/cmon_*.cnf``), as shown in `Changing cmon Password`_.
 
-.. code-block:: bash
+Changing cmon Password
+++++++++++++++++++++++
 
-	$ git clone https://github.com/severalnines/s9s-admin.git
+.. Note:: Before changing the 'cmon' database user password, you must know the MySQL root password for the ClusterControl node and all of the database nodes.
 
-If you have already cloned s9s-admin, it's important for you to update it first:
+The steps are:
 
-.. code-block:: bash
-
-	$ cd s9s-admin
-	$ git pull
-
-To change password for the 'cmon' user:
+1) Stop ClusterControl Controller (CMON) service:
 
 .. code-block:: bash
 
-	$ cd s9s-admin/ccadmin
-	$ ./s9s_change_passwd --cmon -i1 -p <current cmon password> -n <new cmon password>
+	$ systemctl stop cmon # systemd
+	$ service cmon stop # sysvinit
 
-To change password for the 'root' user:
+2) Update the 'cmon' user password on ClusterControl node. Retrieve the userhost information for 'cmon' beforehand:
+
+.. code-block:: mysql
+
+  mysql> SELECT user,host FROM mysql.user WHERE user = 'cmon';
+	+------+------------+
+	| user | host       |
+	+------+------------+
+	| cmon | 10.0.0.156 |
+	| cmon | 127.0.0.1  |
+	| cmon | localhost  |
+	+------+------------+
+
+Then update the 'cmon' password for every host accordingly:
+
+.. code-block:: mysql
+
+	mysql> SET PASSWORD for 'cmon'@'10.0.0.156' = PASSWORD('&5?2+SW9bGq');
+	mysql> SET PASSWORD for 'cmon'@'127.0.0.1' = PASSWORD('&5?2+SW9bGq');
+	mysql> SET PASSWORD for 'cmon'@'localhost' = PASSWORD('&5?2+SW9bGq');
+
+3) Update the 'cmon' user password on all monitored MySQL nodes. Retrieve the userhost information for 'cmon' beforehand:
+
+.. code-block:: mysql
+
+	mysql> SELECT user,host FROM mysql.user WHERE user = 'cmon';
+	+------+------------+
+	| user | host       |
+	+------+------------+
+	| cmon | 10.0.0.156 |
+	| cmon | cc.local   |
+	+------+------------+
+
+When updating the password, run the following statements on the correct node depending on the cluster type:
+
+* On one of the MySQL node for Galera Cluster.
+* On the master server for MySQL Replication.
+* On the primary node for MySQL Group Replication.
+* On all MySQL API nodes for MySQL Cluster (NDB).
+
+.. code-block:: mysql
+
+	mysql> SET PASSWORD for 'cmon'@'10.0.0.156' = PASSWORD('&5?2+SW9bGq');
+	mysql> SET PASSWORD for 'cmon'@'cc.local' = PASSWORD('&5?2+SW9bGq');
+
+
+4) Edit the value of ``mysql_password`` variables inside all ClusterControl related files:
+
+* CMON main configuration file: ``/etc/cmon.cnf`` under ``mysql_password`` variable.
+* Cluster configuration file: ``/etc/cmon.d/cmon_*.cnf`` under ``mysql_password`` variable.
+* ClusterControl UI configuration file: ``/var/www/html/clustercontrol/bootstrap.php`` under ``DB_PASS`` constant.
+* ClusterControl CMONAPI configuration file: ``/var/www/html/cmonapi/config/database.php`` under ``DB_PASS`` constant.
+
+The following output show the post-edited value when filtering out the password variables:
+
+.. code-block:: mysql
+
+	$ cat /etc/cmon.cnf | grep ^mysql_password
+	mysql_password='&5?2+SW9bGq'
+	$ cat /etc/cmon.d/cmon_1.cnf | grep ^mysql_password # Galera Cluster
+	mysql_password='&5?2+SW9bGq'
+	$ cat /etc/cmon.d/cmon_2.cnf | grep ^mysql_password # MySQL Replication
+	mysql_password='&5?2+SW9bGq'
+	$ cat /var/www/html/clustercontrol/bootstrap.php | grep DB_PASS
+	define('DB_PASS', '&5?2+SW9bGq');
+	$ cat /var/www/html/cmonapi/config/database.php | grep DB_PASS
+	define('DB_PASS', '&5?2+SW9bGq');
+
+.. Note:: If you don't like repetition, you can use Linux replace tool like ``sed`` to do the job in one shot.
+
+5) Start ClusterControl Controller (CMON) service:
 
 .. code-block:: bash
 
-	$ cd s9s-admin/ccadmin
-	$ ./s9s_change_passwd --root -i1 -p <cmon password> -o <old root password> -n <new root password>
+	$ systemctl start cmon # systemd
+	$ service cmon start # sysvinit
 
-.. Warning:: The script only supports alpha-numeric characters. Special characters like "$!%?" will not work.
+Verify if CMON starts correctly by looking at the ``/var/log/cmon.log`` or ``/var/log/cmon_*.log``.
+
+Changing MySQL Root Password of your Database Server/Cluster
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+ClusterControl requires a working MySQL root password for management, restoration and granting purposes. It is not necessary for MySQL root user to be granted with remote access because all operations involving this user will be executed via SSH locally. Use ``monitored_mysql_root_password`` value to set the correct password in the CMON configuration file for the respective cluster.
+
+The basic steps involve changing the MySQL root password, update ``monitored_mysql_root_password`` variable in the respective CMON configuration file and restart the ClusterControl (CMON) service. For example, supposed we are having 3 MySQL-based clusters managed by a single ClusterControl server (10.0.0.156) and we would like to update the MySQL root password on all clusters, with the following cluster ID and configuration file:
+
+========================= == ==================
+Cluster                   ID Configuration File
+========================= == ==================
+MariaDB Galera Cluster    1  /etc/cmon.d/cmon_1.cnf
+MySQL Replication         2  /etc/cmon.d/cmon_2.cnf
+MySQL Cluster (NDB)       3  /etc/cmon.d/cmon_3.cnf
+========================= == ==================
+
+1) Update the MySQL root user password on all monitored MySQL nodes. Retrieve the userhost information for root beforehand:
+
+.. code-block:: mysql
+
+	mysql> SELECT user,host FROM mysql.user WHERE user = 'root';
+	+------+------------+
+	| user | host       |
+	+------+------------+
+	| root | localhost  |
+	| root | ::1        |
+	| root | 127.0.0.1  |
+	+------+------------+
+
+
+When updating the password, run the following statements on the correct node depending on the cluster type:
+
+* On one of the MySQL node for Galera Cluster.
+* On the master server for MySQL Replication.
+* On the primary node for MySQL Group Replication.
+* On all MySQL API nodes for MySQL Cluster (NDB).
+
+.. code-block:: mysql
+
+	mysql> SET PASSWORD for 'root'@'localhost' = PASSWORD('&5?2+SW9bGq');
+	mysql> SET PASSWORD for 'root'@'::1' = PASSWORD('&5?2+SW9bGq');
+	mysql> SET PASSWORD for 'root'@'127.0.0.1' = PASSWORD('&5?2+SW9bGq');
+
+2) Edit the value of ``monitored_mysql_root_password`` variable inside the respective CMON configuration for that particular cluster ID. For example, if we changed the root password for cluster ID 2, we would need to update the value inside ``/etc/cmon.d/cmon_2.cnf`` accordingly. The following output show the post-edited value when filtering out the password variables for all clusters (assuming we have changed the MySQL root password on all clusters to '&5?2+SW9bGq'):
+
+.. code-block:: mysql
+
+	$ cat /etc/cmon.d/cmon_1.cnf | grep ^monitored_mysql_root_password
+	monitored_mysql_root_password='&5?2+SW9bGq'
+	$ cat /etc/cmon.d/cmon_2.cnf | grep ^monitored_mysql_root_password
+	monitored_mysql_root_password='&5?2+SW9bGq'
+	$ cat /etc/cmon.d/cmon_3.cnf | grep ^monitored_mysql_root_password
+	monitored_mysql_root_password='&5?2+SW9bGq'
+
+3) Restart ClusterControl Controller (CMON) service to load the changes:
+
+.. code-block:: bash
+
+	$ systemctl restart cmon # systemd
+	$ service cmon restart # sysvinit
+
 
 Graceful Shutdown
 -----------------
@@ -537,10 +664,7 @@ On systemd:
 
 .. code-block:: bash
 
-	$ systemctl stop cmon
-	$ systemctl stop cmon-ssh
-	$ systemctl stop cmon-events
-	$ systemctl stop cmon-cloud
+	$ systemctl stop cmon cmon-ssh cmon-events cmon-cloud
 
 On SysVinit:
 
@@ -565,7 +689,7 @@ On Debian/Ubuntu:
 
 	$ sudo apt-get remove -y clustercontrol*
 
-Else, to uninstall ClusterControl Controller manually so you can to re-use the host for other purposes, kill the CMON process and remove all ClusterControl related files and databases:
+Else, to uninstall ClusterControl Controller manually so you can re-use the host for other purpose, kill the CMON process and remove all ClusterControl related files and databases:
 
 .. code-block:: bash
 
@@ -583,6 +707,8 @@ Else, to uninstall ClusterControl Controller manually so you can to re-use the h
 	$ rm -rf {wwwroot}/clustercontrol*
 	$ rm -rf {wwwroot}/cc-*
 
+.. Note:: Replace ``{wwwroot}`` with value defined in CMON configuration file.
+
 For CMON and ClusterControl UI databases and privileges:
 
 .. code-block:: mysql
@@ -592,4 +718,3 @@ For CMON and ClusterControl UI databases and privileges:
 	mysql> DELETE FROM mysql.user WHERE user = 'cmon';
 	mysql> FLUSH PRIVILEGES;
 
-.. Note:: Replace ``{wwwroot}`` with value defined in CMON configuration file.
