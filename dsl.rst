@@ -804,8 +804,8 @@ When the ``toString()`` function is called on a CmonDateTime function and a form
 * ``int dateTime.hour()``
 	Returns the 'hours' part of the time.
 
-* ``int dateTime.hour()``
-	Returns the 'hours' part of the time.
+* ``int dateTime.day()``
+	Returns the 'day' of the month based on the given time.
 
 * ``int dateTime.month()``
 	Returns the month in the year between 1 and 12.
@@ -1046,6 +1046,19 @@ When the ``toString()`` function is called the CmonAdvice supports the following
 	* ``%h`` - The name of the host if there is a host set for the advice.
 	* ``%E`` - A multi line description of the advice that contain multiple properties.
 
+
+Enum List of Severities
+``````````````````````````
+* ``Undefined = -1``
+* ``Ok = 0``
+* ``Warning = 1``
+* ``Critical = 2``
+
+
+.. code-block:: javascript
+	var advice = new CmonAdvice();
+	advice.setSeverity(1); // Where 1 == Warning which is same as advice.setSeverity(Warning)
+	advice.setSeverity(0); // Where 0 == Warning which is same as advice.setSeverity(Ok)
 
 CmonJob Functions
 +++++++++++++++++
