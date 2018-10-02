@@ -7,7 +7,7 @@ This user guide covers ClusterControl with MySQL-based clusters, namely:
 	* MySQL Galera Cluster
 	* Percona XtraDB Cluster
 	* MariaDB Galera Cluster
-* MySQL Cluster
+* MySQL Cluster (NDB)
 * MySQL/MariaDB Replication
 * MySQL/MariaDB single instance
 * MySQL Group Replication
@@ -21,6 +21,7 @@ Contents:
    
    mysql/overview
    mysql/nodes
+   mysql/dashboards
    mysql/topology
    mysql/query-monitor
    mysql/performance

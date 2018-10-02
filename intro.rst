@@ -3,7 +3,7 @@
 Introduction
 ============
 
-This documentation covers ClusterControl version 1.6.2 which was released on July 16\ :sup:`th`\ , 2018. This release contains key new features along with performance improvements and bug fixes. Release change log is available at `Change Logs <changelog.html>`_.
+This documentation covers ClusterControl version 1.7.0 which was released on September 24\ :sup:`th`\ , 2018. This release contains key new features along with performance improvements and bug fixes. Release change log is available at :ref:`Changelog`.
 
 What is ClusterControl? 
 -----------------------
@@ -40,7 +40,7 @@ ClusterControl consists of a number of components:
 |                                    |                              | ClusterControl.                                                                    |
 +------------------------------------+------------------------------+------------------------------------------------------------------------------------+
 
-.. seealso:: `ClusterControl Components <components.html>`_.
+.. seealso:: :ref:`ClusterControl Components <Components>`.
 
 Supported Database Server/Cluster
 ---------------------------------
@@ -48,7 +48,6 @@ Supported Database Server/Cluster
 ClusterControl supports the following database servers/clusters:
 
 - Galera Cluster
-	- MySQL Galera Cluster (Codership)
 	- Percona XtraDB Cluster (Percona)
 	- MariaDB Galera Cluster (MariaDB)
 - MySQL Cluster (NDB)
@@ -61,7 +60,7 @@ ClusterControl supports the following database servers/clusters:
 	- Replicated sharded cluster
 - PostgreSQL
 	- Single instance
-	- Replication
+	- Streamign replication
 	
 Supported Load Balancer
 ------------------------
@@ -82,9 +81,11 @@ ClusterControl components must reside on an independent node apart from your dat
    :alt: Example deployment
    :align: center
 
-Once the cmon service is started, it would load up all configuration options inside :file:`/etc/cmon.cnf` and :file:`/etc/cmon.d/cmon_*.cnf` (if exists) into CMON database. Each CMON configuration file represents a cluster with distinct cluster ID. It starts by registering hosts, collecting information and periodically perform check-ups and scheduled jobs on all managed nodes through SSH. Setting up a passwordless SSH is vital in ClusterControl. ClusterControl connects to all managed nodes as ``os_user`` using SSH key defined in ``ssh_identity`` inside CMON configuration file. Details on this is explained under `Passwordless SSH <requirements.html#passwordless-ssh>`_ section.
+Once the cmon service is started, it would load up all configuration options inside :file:`/etc/cmon.cnf` and :file:`/etc/cmon.d/cmon_*.cnf` (if exists) into CMON database. Each CMON configuration file represents a cluster with distinct cluster ID. It starts by registering hosts, collecting information and periodically perform check-ups and scheduled jobs on all managed nodes through SSH. Setting up a passwordless SSH is vital in ClusterControl for agentless management purposes. For monitoring, ClusterControl can be configured with both agentless and agent-based setup, see :ref:`Components - ClusterControl Controller - Monitoring Operations` for details.
 
-What user really needs to do is to access ClusterControl UI located at :samp:`http://{ClusterControl_host}/clustercontrol` and start managing your database infrastructure from there. You can begin by importing an existing database cluster, or create a new database server or cluster. ClusterControl supports monitoring multiple clusters and cluster types under single ClusterControl server as shown in the following figure:
+ClusterControl connects to all managed nodes as ``os_user`` using SSH key defined in ``ssh_identity`` inside CMON configuration file. Details on this is explained under `Passwordless SSH <requirements.html#passwordless-ssh>`_ section.
+
+What user really needs to do is to access ClusterControl UI located at :samp:`http://{ClusterControl_host}/clustercontrol` and start managing your database infrastructure from there. You can begin by importing an existing database cluster, or create a new database server or cluster, on-premises or in the cloud. ClusterControl supports monitoring multiple clusters and cluster types under a single ClusterControl server as shown in the following figure:
 
 .. image:: img/cc_deploy_multiple.png
    :alt: Example multiple cluster deployment
@@ -96,7 +97,7 @@ ClusterControl exposes all functionality through remote procedure calls (RPC) on
    :alt: ClusterControl architecture
    :align: center
 
-ClusterControl has minimal performance impact due to its monitoring responsibility and will not cause any downtime to your database server or cluster. In fact, it will perform automatic recovery (if enabled) when it finds a failed database node or cluster.
+ClusterControl has minimal performance impact especially with agent-based monitoring setup and will not cause any downtime to your database server or cluster. In fact, it will perform automatic recovery (if enabled) when it finds a failed database node or cluster.
 
 Features
 --------
@@ -131,7 +132,7 @@ ClusterControl is able to handle most of the administration tasks required to ma
 * Client-server encryption, replication encryption, backup encryption (at-rest or in-transit)
 * and many more..
 
-For more details, please refer to `ClusterControl product page <http://severalnines.com/product/clustercontrol>`_. You might also want to look at the `ClusterControl changelog <changelog.html>`_ for the latest development update.
+For more details, please refer to `ClusterControl product page <http://severalnines.com/product/clustercontrol>`_. You might also want to look at the :ref:`ClusterControl changelog <Changelog>` for the latest development update.
 
 .. rubric:: Footnotes
 

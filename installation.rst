@@ -1,14 +1,20 @@
+.. _Installation:
+
 Installation
 ============
 
 This section provides detailed information on how to get ClusterControl installed on your environment. If you are looking for a simpler way to install ClusterControl, please have a look at `Getting Started <getting-started.html>`_.
+
+.. _Installation - Severalnines Repository:
 
 Severalnines Repository
 -----------------------
 
 Severalnines provides YUM/APT repositories accessible at http://repo.severalnines.com . Automatic installation procedure (as described in `Automatic Installation`_) automatically configures the ClusterControl node with respective package repository.
 
-YUM repository
+.. _Installation - Severalnines Repository - YUM Repository:
+
+YUM Repository
 ++++++++++++++
 
 1. Manually import the Severalnines repository public key into your RPM keyring:
@@ -61,7 +67,9 @@ For nightly build (development release):
 
 	$ yum search clustercontrol
 
-APT repository
+.. _Installation - Severalnines Repository - APT Repository:
+
+APT Repository
 ++++++++++++++
 
 1. Manually add Severalnines repository public key into your APT keyring:
@@ -106,6 +114,7 @@ For nightly build (development release):
 
 	$ sudo apt-cache search clustercontrol
 
+.. _Installation - Automatic Installation:
 
 Automatic Installation
 ----------------------
@@ -631,6 +640,8 @@ Verify the container is running by using the ps command:
 
 For more example on deployments with Docker images, please refer to `ClusterControl on Docker <http://www.severalnines.com/blog/clustercontrol-docker>`_ and `the Docker image Github page <https://github.com/severalnines/docker/>`_. For more info on the configuration options, please refer to `ClusterControl's Docker Hub <https://registry.hub.docker.com/u/severalnines/clustercontrol/>`_ page.
 
+.. _Installation - Manual Installation:
+
 Manual Installation
 -------------------
 
@@ -668,10 +679,12 @@ Make sure the following is ready prior to this installation:
 * Passwordless SSH from ClusterControl node to all nodes (including the ClusterControl node itself) has been configured correctly.
 * You must have internet connection on ClusterControl node during the installation process. Otherwise, see `Offline Installation`_.
 
+.. _Installation - Manual Installation - Redhat-CentOS:
+
 Redhat/CentOS
 +++++++++++++
 
-1. Setup `Severalnines YUM Repository <installation.html#yum-repository>`_.
+1. Setup :ref:`Installation - Severalnines Repository - YUM Repository`.
 
 2. Disable SElinux and open required ports (or stop iptables):
 
@@ -874,14 +887,16 @@ You will then be redirected to the ClusterControl landing page.
 
 .. Note:: Replace ``{SSH user}`` and ``{IP address of the target node}`` with appropriate values. Repeat the command for all target hosts.
 
-The installation is complete and you can start to import existing or deploy a new database cluster. Please review the `User Guide <user-guide/>`_ for details.
+The installation is complete and you can start to import existing or deploy a new database cluster. Please review the :ref:`User Guide` for details.
+
+.. _Installation - Manual Installation - Debian-Ubuntu:
 
 Debian/Ubuntu
 +++++++++++++
 
 The following steps should be performed on the ClusterControl node, unless specified otherwise. Ensure you have Severalnines repository and ClusterControl UI installed. Please refer to Severalnines Repository section for details. Omit sudo if you are installing as root user. Take note that for Ubuntu 12.04/Debian 7 and earlier, replace all occurrences of ``/var/www/html`` with ``/var/www`` in the following instructions.
 
-1. Setup `Severalnines APT Repository <installation.html#apt-repository>`_.
+1. Setup :ref:`Installation - Severalnines Repository - APT Repository`.
 
 2. If you have AppArmor running, disable it and open the required ports (or stop iptables):
 
@@ -1132,8 +1147,9 @@ You will then be redirected to the ClusterControl landing page.
 
 .. Note:: Replace ``{SSH user}`` and ``{IP address of the target node}`` with appropriate values. Repeat the command for all target hosts.
 
-The installation is complete and you can start to import existing or deploy a new database cluster. Please review the `User Guide <user-guide/>`_ for details.
+The installation is complete and you can start to import existing or deploy a new database cluster. Please review the :ref:`User Guide` for details.
 
+.. _Installation - Offline Installation:
 
 Offline Installation
 --------------------
@@ -1151,7 +1167,7 @@ Take note that the following ClusterControl features will not work without Inter
 Prior to the offline install, make sure you meet the following requirements for the ClusterControl node:
 
 * Ensure the offline repository is ready. We assume that you already configured an offline repository. Details on how to setup offline repository is explained in the `Setting up Offline Repository`_ section.
-* Firewall, SELinux or AppArmor must be turned off. You can turn on the firewall once the installation has completed. Make sure to allow ports as defined in `Firewall and Security Groups <requirements.html#firewall-and-security-groups>`_.
+* Firewall, SELinux or AppArmor must be turned off. You can turn on the firewall once the installation has completed. Make sure to allow ports as defined in :ref:`Requirements - Firewall and Security Groups`.
 * MySQL server must be installed and running on the ClusterControl host.
 
 Setting up Offline Repository
@@ -1311,13 +1327,13 @@ RedHat/CentOS
 
 	$ mkdir ~/s9s_tmp
 	$ cd ~/s9s_tmp
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-1.6.2-4942-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.6.2-330-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.6.2-2662-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications-1.6.2-136-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh-1.6.2-59-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud-1.6.2-141-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud-1.6.2-141-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-1.7.0-5224-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.7.0-333-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.7.0-2800-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications-1.7.0-139-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh-1.7.0-62-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud-1.7.0-147-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud-1.7.0-147-x86_64.rpm
 
 .. Attention:: In this example, we downloaded the package directly to simplify the package preparation step. If the ClusterControl server does not have Internet connections, you have to upload the packages manually to the mentioned staging path.
 
@@ -1355,13 +1371,13 @@ Debian/Ubuntu
 
 	$ mkdir ~/s9s_tmp
 	$ cd ~/s9s_tmp
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol_1.6.2-4942_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.6.2-330_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.6.2-2662-x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications_1.6.2-136_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh_1.6.2-59_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud_1.6.2-141_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud_1.6.2-141_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol_1.7.0-5224_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.7.0-333_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.7.0-2800-x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications_1.7.0-139_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh_1.7.0-62_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud_1.7.0-147_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud_1.7.0-147_x86_64.deb
 
 .. Attention:: In this example, we downloaded the package directly to simplify the package preparation step. If the ClusterControl server does not have internet connections, you have to upload the packages manually to the mentioned staging path.
 

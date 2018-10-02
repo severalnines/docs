@@ -1,5 +1,7 @@
+.. _Deploy Database Cluster:
+
 Deploy Database Cluster
------------------------
+-------------------------
 
 Opens a step-by-step modal dialog to deploy a new set of database cluster. The following database cluster types are supported:
 
@@ -77,7 +79,7 @@ Starting from version 1.4.0, it's possible to setup a master-master replication 
 	- Oracle - MySQL Server by Oracle
 
 * **Version**
-	- Select the MySQL version for new deployment. For Oracle, only 5.7 is supported. For Percona, 5.6 and 5.7 while MariaDB, 10.1 and 10.2 are supported.
+	- Select the MySQL version for new deployment. For Oracle, only 5.7 is supported. For Percona, 5.6 and 5.7 while MariaDB, 10.1, 10.2 and 10.3 are supported.
 
 * **Server Data Directory**
 	- Location of MySQL data directory. Default is ``/var/lib/mysql``.
@@ -167,10 +169,9 @@ By default, ClusterControl deploys MySQL Galera with the following configuration
 * **Vendor**
 	- Percona - Percona XtraDB Cluster by Percona
 	- MariaDB - MariaDB Server (Galera embedded) by MariaDB
-	- Codership - MySQL Galera Cluster by Codership
 
 * **Version**
-	- Select the MySQL version for new deployment. For Codership, 5.7 is available, while Percona supports 5.6 and 5.7. If you pick MariaDB, 10.1 and 10.2 are supported.
+	- Select the MySQL version for new deployment. For Percona, 5.6 and 5.7 are supported while MariaDB, 10.1, 10.2 and 10.3 are supported.
 
 * **Server Data Directory**
 	- Location of MySQL data directory. Default is ``/var/lib/mysql``.

@@ -166,6 +166,11 @@ Glossary
 		
 		.. seealso:: http://galeracluster.com/documentation-webpages/weightedquorum.html
 
+	Prometheus
+		An open-source monitoring system with a dimensional data model, flexible query language, efficient time series database and modern alerting approach.
+		
+		.. seealso:: https://prometheus.io/
+
 	ProxySQL
 		ProxySQL is an open source high-performance MySQL proxy with a GPL license.
 	

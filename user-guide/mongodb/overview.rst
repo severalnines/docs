@@ -1,7 +1,11 @@
+.. _MongoDB - Overview:
+
 Overview
 --------
 
 Provides summary of all database nodes in the cluster. This page is accessible only if there is a cluster deployed by ClusterControl via `Deploy Database Cluster <../../user-guide/index.html#deploy-database-cluster>`_ or imported into ClusterControl via `Import Existing Server/Database Cluster <../../user-guide/index.html#import-existing-server-cluster>`_.
+
+.. _MongoDB - Overview - Actions:
 
 Actions
 ++++++++

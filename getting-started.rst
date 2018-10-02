@@ -1,4 +1,4 @@
-.. _getting-started:
+.. _Getting Started:
 
 Getting Started
 ===============
@@ -9,7 +9,7 @@ Install the latest ClusterControl:
 
 .. code-block:: bash
   
-  $ wget http://www.severalnines.com/downloads/cmon/install-cc
+  $ wget --no-check-certificate https://severalnines.com/downloads/cmon/install-cc
   $ chmod +x install-cc
   $ ./install-cc   # as root or sudo user
 
@@ -29,7 +29,7 @@ If you want to perform a non-interactive installation, you can assign each varia
 
 *Step #2*
 
-Open your web browser to http://[ClusterControl_host]/clustercontrol and create the default Admin user by entering a valid email address and password.
+Open your web browser to :samp:`https://{ClusterControl IP address or hostname}/clustercontrol` and create the default Admin user by entering a valid email address and password.
 
 *Step #3*
 
@@ -47,15 +47,15 @@ Setup passwordless SSH to all target nodes (ClusterControl and all database node
 
 *Step #4*
 
-Deploy a new server/cluster or add an existing database server/cluster into ClusterControl via:
+Deploy a new server/cluster or import an existing database server/cluster into ClusterControl via:
 
-`Add Existing Servers/Clusters <user-guide/index.html#add-existing-server-cluster>`_ | `Create Database Cluster <user-guide/index.html#create-database-cluster>`_ | `Create Database Node <user-guide/index.html#create-database-node>`_
+:ref:`Import Existing Server Cluster` | :ref:`Deploy Database Cluster` | :ref:`Deploy in the Cloud`
 
 *Step #5*
 
 Start managing and monitor your database instances:
 
-`ClusterControl User Guide <user-guide/index.html>`_
+:ref:`User Guide`
 
 *Step #6*
 

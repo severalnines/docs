@@ -1,7 +1,11 @@
+.. _MySQL - Backup:
+
 Backup
 -------
 
 Provides interface for database backup and restore management, scheduling and reporting. Each backup is assigned with a backup ID and ClusterControl creates a directory under *Storage Directory* to store the backups based on this ID.
+
+.. _MySQL - Backup - Create Backup:
 
 Create Backup
 +++++++++++++
@@ -111,9 +115,10 @@ To create an instant backup, you have options to create a full backup using mysq
 	- Yes - Use PIGZ instead of standard gzip. This is helpful if you want to backup very large data set.
 	- No - Use the standard gzip.	
 
+.. _MySQL - Backup - Schedule Backup:
 
 Schedule Backup
-................
+````````````````
 
 Creates backup schedules of the database. You can choose to create a full or incremental backup using xtrabackup, mariabackup or mysqldump. 
 
@@ -225,12 +230,15 @@ Creates backup schedules of the database. You can choose to create a full or inc
 	- Exclusive for xtrabackup/mariabackup. 
 	- Yes - Use PIGZ instead of standard gzip. This is helpful if you want to backup very large data set.
 	- No - Use the standard gzip.
- 
+
+.. _MySQL - Backup - Scheduled Backups: 
   
 Scheduled Backups
 +++++++++++++++++
 
 List of scheduled backups. You can enable and disable the schedule by toggling it accordingly. The created schedule can be edited and deleted.
+
+.. _MySQL - Backup - Backup Method:
 
 Backup Method
 ++++++++++++++
@@ -274,6 +282,8 @@ NDB backup (MySQL Cluster)
 
 NDB backup triggers ``START BACKUP`` command on management node and perform mysqldump on each of the SQL nodes subsequently. These backup files will be created and streamed to ClusterControl node based on *ClusterControl > Settings > Backup > Backup Directory* location.
 
+.. _MySQL - Backup - Backup List:
+
 Backup List
 +++++++++++
 
@@ -301,6 +311,8 @@ All incremental backups are automatically grouped together under the last full b
 * **Upload**
 	- Manually upload the created backup to cloud storage. This will open "Upload Backup" wizard.
 
+.. _MySQL - Backup - Verify Backup:
+
 Verify Backup
 +++++++++++++
 
@@ -324,6 +336,8 @@ Performs backup verification job.
 * **Verify the backup after N hours after completion**
 	- Performs the backup verification after the specified hours once the backup is completed.
 
+.. _MySQL - Backup - Restore Backup:
+
 Restore Backup
 ++++++++++++++
 
@@ -331,6 +345,8 @@ Restores mysqldump, Percona Xtrabackup or MariaDB Backup created by ClusterContr
 
 - `Restore on node`_.
 - `Restore and verify on standalone host`_.
+
+.. _MySQL - Backup - Restore Backup - Point-in-Time Recovery:
 
 Point-in-Time Recovery
 ``````````````````````
@@ -413,7 +429,9 @@ You can monitor the job progress under *Activity > Jobs > Verify Backup* where C
 	- Check the box to disable firewall (recommended).
 
 * **Shutdown the server after the backup have been restored**
-	- Select "Yes" if you want ClusterControl to shutdown the server after restoration completes. Select "No" if you want to let it run after restoration completes and the node will be listed under `Nodes <nodes.html>`_. You are then responsible for removing the MySQL server.
+	- Select "Yes" if you want ClusterControl to shutdown the server after restoration completes. Select "No" if you want to let it run after restoration completes and the node will be listed under :ref:`MySQL - Nodes`. You are then responsible for removing the MySQL server.
+
+.. _MySQL - Backup - Restore External Backup:
 
 Restore External Backup
 +++++++++++++++++++++++
@@ -428,7 +446,7 @@ The following steps will be performed:
 2. Copy backup files to the selected server.
 3. Restore the backup.
 4. Start the cluster.
-5. Follow the instruction in the *ClusterControl > Logs > Job > Job Message* on how to bootstrap the cluster.
+5. Follow the instruction in the *ClusterControl > Activity > Jobs* on how to bootstrap the cluster.
 
 .. Note:: Only ``xbstream``, ``xbstream.gz``, ``.sql.gz`` extensions are supported. Do prepare your external backup with one of these extensions beforehand.
 
@@ -460,6 +478,8 @@ The following steps will be performed:
 	
 .. Warning:: If the dump file contains the mysql database, then it is required that the dump file contains the 'cmon' account and the same privileges. Else the controller cannot connect after the restore due to changed privileges.
 
+.. _MySQL - Backup - Backup Encryption and Decryption:
+
 Backup Encryption and Decryption
 ++++++++++++++++++++++++++++++++
 
@@ -483,6 +503,7 @@ Or, you can pass the stdin to the respective restore command chain, for example:
 
 	$ cat {BACKUPFILE}.aes256 | openssl enc -d -aes-256-cbc -pass file:/path/to/keyfile.key | gzip -dc | xbstream -x -C /var/lib/mysql
 
+.. _MySQL - Backup - Settings:
 
 Settings
 ++++++++

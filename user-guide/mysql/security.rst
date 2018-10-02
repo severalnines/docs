@@ -1,17 +1,21 @@
+.. _MySQL - Security:
+
 Security
 ---------
 
 .. Note:: This feature is introduced in version 1.6.2.
 
-Consolidates cluster-wide security functionality on an easily accessible single page. In the previous versions, cluster-wide security configuration fell under `Cluster Actions <overview.html#actions>`_ menu. Supported security functionalities are:
+Consolidates cluster-wide security functionality on an easily accessible single page. In the previous versions, cluster-wide security configuration fell under :ref:`MySQL's Cluster Actions <MySQL - Overview - Actions>` menu. Supported security functionalities are:
 
-- Client/Server SSL encryption for MySQL-based clusters.
-- SSL replication traffic encryption for MySQL Galera-based clusters.
+- Client/Server SSL encryption for MySQL/MariaDB-based clusters.
+- SSL replication traffic encryption for MySQL/MariaDB Galera-based clusters.
+- Audit Logging
 
 There are currently under development functionalities for MySQL:
 
 - Transparent Data Encryption, also known as Data-at-Rest Encryption
-- Audit Logging
+
+.. _MySQL - Security - SSL Encryption:
 
 SSL Encryption
 +++++++++++++++
@@ -34,7 +38,7 @@ Use Existing Certificate
 ''''''''''''''''''''''''
 
 * **Selected Certificate**
-	- Pick an exiting certificate, stored by `Key Management <../../user-guide/index.html#key-management>`_.
+	- Pick an exiting certificate, stored by :ref:`Key Management`.
 
 * **Restart Cluster**
 	- Restart Nodes - Automatically perform rolling restart of the nodes after setting up certificate and key.
@@ -50,6 +54,7 @@ Disable
 
 Disables SSL encryption for the cluster. This option is only available if you have enabled SSL encryption.
 
+.. _MySQL - Security - Galera SSL Encryption:
 
 Galera SSL Encryption
 ++++++++++++++++++++++
@@ -69,7 +74,7 @@ Use Existing Certificate
 ''''''''''''''''''''''''
 
 * **Selected Certificate**
-	- Pick an exiting certificate, stored by `Key Management <../../user-guide/index.html#key-management>`_.
+	- Pick an exiting certificate, stored by :ref:`Key Management`.
 	
 Change Certificate
 ``````````````````
@@ -80,3 +85,36 @@ Disable
 ````````
 
 Disables Galera SSL encryption for the cluster. This option is only available if you have enabled Galera SSL encryption.
+
+.. _MySQL - Security - Audit Log:
+
+Audit Log
++++++++++
+
+Enable
+``````
+
+Only for MariaDB-based clusters. Enable Audit Logging on MariaDB-based clusters using policy-based monitoring and logging of connection and query activity. This feature will enable audit logging on all nodes in the cluster. 
+
+* **Log Path**
+	- The filename to store the audit log in the log directory ``/var/log/mysql/``. Alternatively, it can contain a path relative to the data directory or an absolute path.
+
+* **Rotation Size**
+	- Log file size in MB before log rotation happens. Changing this default value will require a cluster restart.
+
+* **Rotations**
+	- Number of log files to keep after rotation.
+
+* **Show Advanced Options**
+	- Expands the advanced options.
+
+* **Events**
+	- Specify MySQL/MariaDB audit events that you would like to capture. ClusterControl preloads the audit events as you type. Multiple values are allowed.
+
+* **Exclude Users**
+	- Exclude the specify MySQL/MariaDB user(s) from the auditing. ClusterControl preloads all database users in a dropdown. Multiple values are allowed.
+
+Disable
+````````
+
+Disables Audit Log for the cluster. This option is only available if you have enabled Audit Log.

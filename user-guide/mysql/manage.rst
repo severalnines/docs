@@ -29,7 +29,7 @@ Configurations
 
 Manages the configuration files of your database, HAProxy and Garbd nodes. For MySQL database, changes can be persisted to database variables across one node or a group of nodes at once, dynamic variables are changed directly without a restart.
 
-.. Note:: ClusterControl does not store configuration changes history so there is no versioning at the moment. Only one version is exist at one time. It imports the latest configuration files every 30 minutes and overwrites it in CMON database. This limitation will be improved in the upcoming release where ClusterControl shall support configuration versioning with dynamic import interval.
+.. Note:: ClusterControl does not store configuration changes history so there is no versioning at the moment. Only one version exists at one time. It imports the latest configuration files every 30 minutes and overwrites it in CMON database. This limitation will be improved in the upcoming release where ClusterControl shall support configuration versioning with dynamic import interval.
 
 * **Save**
 	- Save the changes that you have made and push them to the corresponding node.
@@ -118,6 +118,8 @@ Variable                     Description
 ``@GROUP_NAME@``             Default is ``grouprepl``. Value specified during cluster deployment takes precedence.
 ``@PEERS@``                  Automatically configured based on members in the Group Replication cluster.
 ============================ ==============
+
+.. _MySQL - Manage - Load Balancer:
 
 Load Balancer
 ++++++++++++++

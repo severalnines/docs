@@ -15,6 +15,7 @@ Contents:
    
    postgresql/overview
    postgresql/nodes
+   postgresql/dashboards
    postgresql/topology
    postgresql/query-monitor
    postgresql/performance

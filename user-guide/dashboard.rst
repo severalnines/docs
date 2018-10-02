@@ -1,3 +1,5 @@
+.. _Dashboard:
+
 Dashboard
 =========
 
@@ -14,20 +16,20 @@ ClusterControl's top menu.
 	- Aggregated view of events happened across the clusters. See `Activity`_.
 	
 * **Deploy**
-	- Opens the *Deploy/Import Cluster* modal dialog. See `Deploy Database Cluster <index.html#deploy-database-cluster>`_.
+	- Opens the *Deploy/Import Cluster* modal dialog. See :ref:`Deploy Database Cluster`.
 
 * **Import**
-	- Opens the *Import Cluster* modal dialog. See `Import Existing Server/Cluster <index.html#import-existing-server-cluster>`_.
+	- Opens the *Import Cluster* modal dialog. See :ref:`Import Existing Server Cluster`.
 
 * **Global Settings**
-	- ClusterControl global settings. See `Global Settings`_.
+	- ClusterControl global settings. See :ref:`Global Settings`.
 
 * **Logout**
 	- Logs out from ClusterControl and return to the login page.
 	
 **Sidebar**
 
-Left-side navigation provides quick access to ClusterControl administration menu. See `Sidebar <sidebar.html>`_.
+Left-side navigation provides quick access to ClusterControl administration menu. See :ref:`Sidebar`.
 	
 **Cluster List**
 
@@ -36,9 +38,9 @@ List of database clusters managed by ClusterControl with summarized status. Data
 **Cluster Actions**
 
 Provides shortcuts to main cluster functionality. Every supported database cluster has its own set of menu:
-	- `MySQL <mysql/overview.html#actions>`_
-	- `MongoDB <mongodb/overview.html#actions>`_
-	- `PostgreSQL <postgresql/overview.html#actions>`_
+	- :ref:`MySQL's Cluster Actions <MySQL - Overview - Actions>`
+	- :ref:`MongoDB's Cluster Actions <MongoDB - Overview - Actions>`
+	- :ref:`PostgreSQL's Cluster Actions <PostgreSQL - Overview - Actions>`
 
 Activity
 --------
@@ -82,6 +84,8 @@ Logs
 
 Shows aggregated view of ClusterControl logs which require user's attention across clusters (logs with severity WARNING and ERROR). Each log entry has a message subject, severity level, component, the corresponding cluster name and also timestamp. All the logs listed here are also accessible directly under individual cluster at *Logs > CMON Logs*.
 
+.. _Global Settings:
+
 Global Settings
 ---------------
 
@@ -121,7 +125,9 @@ For reference purpose, following is an example of yum definition if *Local Mirro
 	gpgcheck = 0
 	gpgkey = http://10.0.0.10/cmon-repos/percona-5.6-yum-el7/localrepo-gpg-pubkey.asc
 
-	
+
+.. _Cluster Registrations:
+
 Cluster Registrations
 ++++++++++++++++++++++
 
@@ -130,6 +136,8 @@ From a ClusterControl UI instance, this enables the user to register a database 
 .. Note:: The CMONAPI token is critical and hidden under asterisk values. This token provides authentication access for ClusterControl UI to communicate with the CMON backend services directly. Please keep this token in a safe place.
 
 You can retrieve the CMONAPI token manually at ``{wwwroot}/cmonapi/config/bootstrap.php`` on line containing ``CMON_TOKEN`` value, where ``{wwwroot}`` is location of Apache document root.
+
+.. _Subscriptions:
 
 Subscriptions
 ++++++++++++++
@@ -145,6 +153,86 @@ Following screenshot shows example on filing up the license information:
 The license key is validated during runtime. Reload your web browser after registering a new license.
 
 .. Note:: When the license expires, ClusterControl defaults back to the Community Edition. For features comparison, please refer to `ClusterControl product page <http://www.severalnines.com/pricing>`_.
+
+.. _Configure Mail Server:
+
+Configure Mail Server
++++++++++++++++++++++
+
+Configures how email notifications should be sent out. ClusterControl supports two options for sending email notifications, either using local mail commands via local MTA (Sendmail/Postfix/Exim) or using an external SMTP server. Make sure the local MTA is installed and verified using *Test Email* button.
+
+Use SMTP Server (Recommended)
+``````````````````````````````
+
+* **SMTP**
+	- SMTP mail server address that you are going to use to send email.
+
+* **SMTP Port**
+	- SMTP port for mail server. Usually this value is 25 or 587, depending on your SMTP mail server configuration.
+
+* **SMTP sUsername**
+	- SMTP user name. Leave empty if no authentication required.
+
+* **SMTP Password**
+	- SMTP password. Leave empty if no authentication required.
+
+* **Reply-to/From**
+	- Specify the sender of the email. This will appear in the 'From' field of mail header.
+
+* **SMTP TLS/SSL required**
+	- Check this box if you want to use TLS/SSL for extra security. The mail server must support TLS/SSL.
+
+* **Send Test Email**
+	- Test the mail settings. If successful, an email will be sent to all users in the *Email Notification Settings*. Do not forget to add a recipient before pressing this button.
+	
+Use Sendmail
+````````````
+
+* **Use sendmail**
+	- Use this option to use sendmail to send notifications. See `Installing Sendmail`_ if you haven't installed Sendmail. If you want to use Postfix, see `Using Postfix`_.
+
+* **Reply-to/From**
+	- Specify the sender of the email. This will appear in the 'From' field of mail header.
+
+Installing Sendmail
+'''''''''''''''''''
+
+On ClusterControl server, install the following packages:
+
+.. code-block:: bash
+
+	$ apt-get install sendmail mailutils #Debian/Ubuntu
+	$ yum install sendmail mailx #RHEL/CentOS
+
+Start the sendmail service:
+
+.. code-block:: bash
+
+	$ systemctl start sendmail #systemd
+	$ service sendmail start #sysvinit
+
+Verify if it works:
+
+.. code-block:: bash
+
+	$ echo "test message" | mail -s "test subject" myemail@example.com
+
+Replace myemail@example.com with your email address.
+
+Using Postfix
+'''''''''''''
+
+Many of Linux distributions come with Sendmail as default MTA. To replace Sendmail and use other MTA, e.g Postfix, you just need to uninstall Sendmail, install Postfix and start the service. Following example shows commands that need to be executed on ClusterControl node as root user for RHEL:
+
+.. code-block:: bash
+
+	$ service sendmail stop 
+	$ yum remove sendmail -y 
+	$ yum install postfix mailx cronie -y 
+	$ chkconfig postfix on 
+	$ service postfix start
+
+.. _Runtime Configurations:
 
 Runtime Configurations
 +++++++++++++++++++++++

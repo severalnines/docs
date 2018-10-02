@@ -1,4 +1,4 @@
-.. _components:
+.. _Components:
 .. include:: <isotech.txt>
 
 Components
@@ -35,6 +35,8 @@ ClusterControl consists of a number of components:
 +------------------------------------+------------------------------+------------------------------------------------------------------------------------+
 
 
+.. _Components - ClusterControl Controller:
+
 ClusterControl Controller (CMON)
 --------------------------------
 
@@ -47,78 +49,79 @@ CMON controller package is available at `Severalnines download site <http://www.
 
 A configuration file ``/etc/cmon.cnf`` is required to initially setup the CMON Controller. It is possible to have several configuration files each for multiple clusters as described in the `Configuration File`_ section.
 
+.. _Components - ClusterControl Controller - Command Line Arguments:
+
 Command Line Arguments
 +++++++++++++++++++++++
 
 By default if you just run ``cmon`` (without any arguments), cmon defaults to run in the background. ClusterControl Controller (cmon) supports several command line options as shown below:
 
 ``-h, --help``
-
 * Print the help.
 
 ``--help-config``
-
-* Print the manual for configuration parameters. See `Configuration Options`_ for details.
+* Print the manual for configuration parameters. See `Configuration Options`_.
 
 ``-v, --version``
-
 * Prints out the version number and build info.
 
 ``--logfile=[filepath]``
+* The path of the log file to be used.
 
-The path of the log file to be used.
+``-s, --syslog``
+* Also log to syslog.
+
+``-g, --grant``
+* Create grants.
+
+``-i, --init``
+* Creates configuration file and database.
+
+``--help-init``
+* Shows the special options for ``--init``.
 
 ``-d, --nodaemon``
-
 * Run in foreground. Ctrl + C to exit.
 
 ``-r, --directory=[directory]``
-
 * Running directory.
 
 ``-p, --rpc-port=[integer]``
-
 * Listen on RPC port. Default is 9500.
 
 ``-t, --rpc-tls=<bool>``
-
 * Enable TLS on RPC port. Default is false.
 
 ``-b, --bind-addr='ip1,ip2..'``
-
-* Bind Remote Procedure Call (RPC) to IP addresses (default is 127.0.0.1,::1). By default cmon binds to ‘127.0.0.1’ and ‘::1’. If another bind-address is needed, then it is possible to define the bind addresses in the file ``/etc/default/cmon``. The CMON init script translates those RPC\_* ones into command line options.
-
-* Example
+* Bind Remote Procedure Call (RPC) to IP addresses (default is 127.0.0.1,::1). By default cmon binds to '127.0.0.1' and '::1'. If another bind-address is needed, then it is possible to define the bind addresses in the file ``/etc/default/cmon``. The CMON init script translates those ``RPC\_*`` ones into command line options. Example:
 
 .. code-block:: bash
 
 	RPC_PORT=9500
-	RPC_BIND_ADDRESSES="10.10.10.13,192.168.33.1"
+	RPC_BIND_ADDRESSES="10.10.10.13,192.168.33.1,127.0.0.1"
 
 ``-u, --upgrade-schema``
-
 * Try to upgrade the CMON schema (Supported from CMON version 1.2.12 and later).
 
 ``-U, --cmondb-user=USERNAME``
-
 * Sets the user name to access the CMON database.
 
 ``-P, --cmondb-password=PASSWORD``
-
 * Uses the password to access the CMON database.
 
 ``-H, --cmondb-host=HOSTNAME``
-
 * Access the CMON database on the given host.
 
 ``-D, --cmondb-name=DATABASE``
-
 * Sets the CMON database name.
 
 ``-e, --events-client=URL``
-
 * Additional RPC URL where backend sends events.
 
+``-c, --cloud-service=URL``
+* A custom clustercontrol-cloud service URL.
+
+.. _Components - ClusterControl Controller - Configuration File:
 
 Configuration File
 +++++++++++++++++++
@@ -196,6 +199,8 @@ An example of CMON configuration file hierarchy is as follows:
 
 The CMON Controller will import the configuration options defined in each configuration file into the CMON database during process starts up. Once loaded, CMON then use all the loaded information to manage clusters based on the ``cluster_id`` value.
 
+.. _Components - ClusterControl Controller - Configuration Options:
+
 Configuration Options
 +++++++++++++++++++++++
 
@@ -212,7 +217,7 @@ The configuration options can be divided into the following categories:
 7. Management
 8. Security & Encryption
 
-Following is the list of common configuration options inside CMON configuration file. You can also see them by using ``--help-config`` parameter in the terminal:
+Following is the list of configuration options inside CMON configuration file. You can also see them by using ``--help-config`` parameter in the terminal:
 
 .. code-block:: bash
 
@@ -222,6 +227,9 @@ Following is the list of common configuration options inside CMON configuration 
 General
 ````````
 
+``controller_id=<integer>``
+* An arbitrary identifier string of this controller instance.
+
 ``cluster_id=<integer>``
 
 * Cluster identifier. This will be used by CMON to indicate which cluster to provision. It must be unique, two clusters can not share the same ID.	
@@ -229,7 +237,7 @@ General
 
 ``name=<string>``
 
-* Cluster name. The cluster name configured under *ClusterControl > DB cluster > Settings > General Settings > Cluster Name* precedes this.
+* Cluster name. The cluster name configured under *ClusterControl > DB cluster > Settings > CMON Settings > Cluster Name* precedes this.
 * Example: ``name=cluster_1``
 
 ``cluster_name=<string>``
@@ -788,34 +796,144 @@ Encryption and Security
 * `ClusterControl UI`_ needs this key stored as RPC API Token to communicate with CMON RPC interface. Each cluster should be configured with different ``rpc_key`` value. This value is automatically generated when new cluster/server is created or added into ClusterControl.
 * Example: ``rpc_key=VJZKhr5CvEGI32dP``
 
-Agentless
-++++++++++
+.. _Components - ClusterControl Controller - Management and Deployment Operations:
 
-Starting from version 1.2.5, ClusterControl introduced an agentless mode of operation. There is no need to install agents on the managed nodes. Users only need to install the CMON controller package on the ClusterControl host, and make sure that passwordless SSH and the CMON database user GRANTs are properly set up on each of the managed hosts.
+Management and Deployment Operations
+++++++++++++++++++++++++++++++++++++
 
-The agentless mode is the default and recommended type of setup. Starting from version 1.2.9, an agentful setup is no longer supported.
+For management and deployment jobs, ClusterControl performs these jobs by pushing remote commands via SSH to the target node. Users only need to install the CMON controller package on the ClusterControl host, and make sure that passwordless SSH and the CMON database user GRANTs are properly set up on each of the managed hosts. This mechanism requires no agent which simplifies the setup of the whole infrastructure. Agent-based mode of operation is only supported for monitoring jobs, as described in the next section.
+
+.. _Components - ClusterControl Controller - Monitoring Operations:
+
+Monitoring Operations
+++++++++++++++++++++++
+
+Generally, ClusterControl performs its monitoring, alerting and trending duties by using the following 4 ways:
+
+1) **SSH** - Host metrics collection using SSH library.
+2) **Prometheus** - Host and database metrics collection using :term:`Prometheus` server and exporters.
+3) **Database client** - Database metrics collection using the CMON database client library.
+4) **Advisor** - Mini programs written using :ref:`ClusterControl DSL` and running within ClusterControl itself, for monitoring, tuning and alerting purposes.
+
+Starting from version 1.7.0, ClusterControl supports two methods of monitoring operation:
+
+1) Agentless monitoring (default).
+2) Agent-based monitoring with :term:`Prometheus`.
+
+Monitoring operation method is a non-global configuration and bounded per cluster. This allows you to have two different database clusters configured with two different monitoring methods simultaneously. For example, Cluster A uses SSH sampling while Cluster B uses Prometheus agent-based setup to gather host monitoring data. 
+
+Regardless of the monitoring method chosen, database and load balancer (except HAProxy) metrics are still being sampled by CMON's database client library agentlessly and store inside `CMON Database`_ for reporting (alarms, notifications, operational reports) and accurate management decision for critical operations like failover and recovery. Having said that, with agent-based monitoring, ClusterControl does not use SSH to sample host metrics which can be very excessive in some environments.
+
+.. Caution:: ClusterControl allows you to switch between agentless and agent-based monitoring per cluster. However, you will lose the monitoring data each time you are doing this.
+
+.. _Components - ClusterControl Controller - Agentless Monitoring:
+
+Agentless Monitoring
+````````````````````
+
+For host and load balancer stats collection, ClusterControl executes this task via SSH with super-user privilege. Therefore, passwordless SSH with super-user privilege is vital, to allow ClusterControl to run the necessary commands remotely with proper escalation. With this pull approach, there are a couple of advantages as compared to agent-based monitoring method:
+
+* Agentless - There is no need for agent to be installed, configured and maintained.
+* Unifying the management and monitoring configuration - SSH can be used to pull monitoring metrics or push management jobs on the target nodes.
+* Simplify the deployment - The only requirement is proper passwordless SSH setup and that's it. SSH is also very secure and encrypted.
+* Centralized setup - One ClusterControl server can manage multiple servers and clusters, provided it has sufficient resources.
+
+However, there are also drawbacks with the agentless monitoring approach, a.k.a pull mechanism:
+
+* The monitoring data is accurate only from ClusterControl perspective. For example, if there is a network glitch and ClusterControl loses communication to the monitored host, the sampling will be skipped until the next available cycle.
+* For high granularity monitoring, there will be network overhead due to increase sampling rate where ClusterControl needs to establish more connections to every target hosts.
+* ClusterControl will keep on attempting to re-establish connection to the target node, because it has no agent to do this on its behalf.
+* Redundant data sampling if you have more than one ClusterControl server monitoring a cluster, since each ClusterControl server has to pull the monitoring data for itself.
+
+The above points are the reasons we introduced agent-based monitoring, as described in the next section.
+
+.. _Components - ClusterControl Controller - Agent-based Monitoring:
+
+Agent-based Monitoring
+``````````````````````
+
+Starting from version 1.7.0, ClusterControl introduced an agent-based monitoring integration with :term:`Prometheus`. Other operations like management, scaling and deployment are still performed through agentless approach as described in the `Management and Deployment Operations`_. Agent-based monitoring can eliminate excessive SSH connections to the monitored hosts and offload the monitoring jobs to another dedicated monitoring system like Prometheus.
+
+.. Note:: Only MySQL-based and PostgreSQL-based clusters are supported at the moment.
+
+With agent-based configuration, you can use a set of new dashboards that use Prometheus as the data source and give access to its flexible query language and multi-dimensional data model with time series data identified by metric name and key/value pairs. Simply said, in this configuration, ClusterControl integrates with Prometheus to retrieve the collected monitoring data and visualize them in the ClusterControl UI, just like a GUI client for Prometheus. ClusterControl also connects to the exporter via HTTP GET and POST methods to determine the process state for process management purposes.
+
+One Prometheus data source can be shared among multiple clusters within ClusterControl. You have the options to deploy a new Prometheus server or import an existing Prometheus server, under *ClusterControl > Dashboards > Enable Agent Based Monitoring*. 
+
+Monitoring Tools
+````````````````
+
+For agentless monitoring mode, ClusterControl monitoring duty only requires OpenSSH server package on the monitored hosts. ClusterControl uses *libssh* client library to collect host metrics for the monitored hosts - CPU, memory, disk usage, network, disk IO, process, etc. OpenSSH client package is required on the ClusterControl host only for setting up passwordless SSH and debugging purposes. Other SSH implementations like Dropbear and TinySSH are not supported.
+
+For agent-based monitoring mode, ClusterControl requires a :term:`Prometheus` server to be running, and all monitored nodes to be configured with at least three exporters (depending on the node's role):
+
+1) `Process exporter <https://github.com/ncabatoff/process-exporter>`_
+2) `Node/system metrics exporter <https://github.com/prometheus/node_exporter>`_
+3) Database or application exporters:
+	* `MySQL exporter <https://github.com/prometheus/mysqld_exporter>`_
+	* `PostgreSQL exporter <https://github.com/wrouesnel/postgres_exporter>`_
+	* `ProxySQL exporter <https://github.com/percona/proxysql_exporter>`_
+
+ClusterControl also connects to the process exporter via HTTP calls directly to determine the process state of the node. No sampling via SSH is involved in this process.
+
+When gathering the database stats and metrics, regardless of the monitoring operation method, ClusterControl Controller (CMON) connects to the database server directly via database client libraries - *libmysqlclient* (MySQL/MariaDB and ProxySQL), *libpq* (PostgreSQL) and *libmongocxx* (MongoDB). That is why it's crucial to setup proper privileges for ClusterControl server from database servers perspective. For MySQL-based clusters, ClusterControl requires database user "cmon" while for other databases, any username can be used for monitoring, as long as it is granted with super-user privileges. Most of the time, ClusterControl will setup the required privileges (or use the specified database user) automatically during the cluster import or cluster deployment stage.
+
+For load balancers, ClusterControl requires the following additional tools:
+
+* Maxadmin on the MariaDB MaxScale server.
+* netcat and/or socat on the HAProxy server to connect to HAProxy socket file.
+* ProxySQL requires mysql client on the ProxySQL server.
+
+The following diagram summarizes both host and database monitoring processes executed by ClusterControl using *libssh* and database client libraries (agentless approach):
+
+.. image:: img/cc_monitoring_agentless.png
+   :align: center
+
+The following diagram summarizes both host and database monitoring processes executed by ClusterControl using :term:`Prometheus` and database client libraries (agent-based approach):
+
+.. image:: img/cc_monitoring_agent_based.png
+   :align: center
+
+Timeouts and Intervals
+``````````````````````
+
+ClusterControl Controller (CMON) is a multi-threaded process. For agentless monitoring, ClusterControl Controller sampling thread connects via SSH to each monitored host once and maintain persistent connection (hence, no timeout) until the host drops or disconnects it when sampling host stats. It may establish more connections depending on the jobs assigned to the host, since most of the management jobs run in their own thread. For example, cluster recovery runs on the recovery thread, Advisor execution runs on a cron-thread, as well as process monitoring which runs on process collector thread.
+
+For agent-based monitoring, the *Scrape Interval* and *Data Retention* period are depending on the Prometheus settings.
+
+ClusterControl monitoring thread performs the following sampling operations in the following interval:
+
+======================================= ========
+Metrics                                 Interval
+======================================= ========
+MySQL query/status/variables            Every second
+Process collection (``/proc``)          Every 10 seconds
+Server detection                        Every 10 seconds
+Host (``/proc``, ``/sys``)              Every 30 seconds (configurable via ``host_stats_collection_interval``)
+Database (PostgreSQL and MongoDB only)  Every 30 seconds (configurable via ``db_stats_collection_interval``)
+Database schema                         Every 3 hours (configurable via ``db_schema_stats_collection_interval``)
+Load balancer                           Every 15 seconds (configurable via ``lb_stats_collection_interval``)
+======================================= ========
+
+The Advisors (imperative scripts), which can be created, compiled, tested and scheduled directly from ClusterControl UI, under *Manage -> Developer Studio*, can make use of SSH and database client libraries for monitoring, data processing and alerting within ClusterControl domain with the following restrictions:
+
+* 5 seconds of hard time limit for SSH execution,
+* 10 seconds of default time limit for database connection, configurable via ``net_read_timeout``, ``net_write_timeout``, ``connect_timeout`` in CMON configuration file,
+* 60 seconds of total script execution time limit before CMON ungracefully aborts it.
+
+For short-interval monitoring data like MySQL queries and status, data are stored directly into CMON database. While for long-interval monitoring data like weekly/monthly/yearly data points are aggregated every 60 seconds and stored in memory for 10 minutes. These behaviors are not configurable due to the architecture design.
+
+
+.. _Components - ClusterControl Controller - CMON Database:
 
 CMON Database
 ++++++++++++++
 
-The CMON Controller requires a MySQL database running on ``mysql_hostname`` as defined in CMON configuration file. The database name and user is ‘cmon’ and is immutable.
-
 The CMON database is the persistent store for all monitoring data collected from the managed nodes, as well as all ClusterControl meta data (e.g. what jobs there are in the queue, backup schedules, backup statuses, etc.). ClusterControl CMONAPI contains logic to query the CMON DB, e.g. for cluster statistics that is presented in the ClusterControl UI.
 
-The CMON database dump files are shipped with the CMON Controller package and can be found under ``/usr/share/cmon`` once it installed. When performing a manual upgrade from an older version, it is compulsory to apply the SQL modification files relative to the upgrade. For example, when upgrading from version 1.2.0 to version 1.2.5, apply all SQL modification files between those versions in sequential order:
+The CMON Controller requires a MySQL database running on ``mysql_hostname`` as defined in CMON configuration file. The database name and user is 'cmon' and is immutable. The CMON database dump files are shipped together with the CMON Controller package and can be found under ``/usr/share/cmon`` once it is installed. 
 
-1. cmon_db_mods-1.2.0-1.2.1.sql
-2. cmon_db_mods-1.2.3-1.2.4.sql
-3. cmon_db_mods-1.2.4-1.2.5.sql
-
-Note that there is no 1.2.1 to 1.2.2 SQL modification file. That means there is no changes on the CMON database structure between those versions. The database upgrade procedure will not remove any of the existing data inside the CMON database. You can just use simple MySQL import command as follow:
-
-.. code-block:: bash
-
-	mysql -f -ucmon -p{cmon_password} -h{mysql_hostname} -P{mysql_port} cmon < /usr/share/cmon/cmon_db.sql
-	mysql -f -ucmon -p{cmon_password} -h{mysql_hostname} -P{mysql_port} cmon < /usr/share/cmon/cmon_data.sql
-
-MySQL user 'cmon' needs to have proper access to CMON DB by performing following grant:
+MySQL user 'cmon' needs to have proper access to CMON database by performing following grant:
 
 Grant all privileges to 'cmon' at ``hostname`` value (as defined in CMON configuration file) on ClusterControl host: 
 
@@ -835,21 +953,14 @@ For each managed database server, on the managed database server, grant all priv
 
 	GRANT ALL PRIVILEGES ON *.* TO 'cmon'@'{hostname}' IDENTIFIED BY '{mysql_password}' WITH GRANT OPTION;
 
-Don't forget to run ``FLUSH PRIVILEGES`` on each of the above statement so the grant will be kept after restart. If users deploy using the deployment package generated from the Severalnines Cluster Configurator and installer script, this should be configured correctly.
+If one deploys a cluster using ClusterControl deployment wizard, the above GRANTs will be configured automatically.
 
-Database Client
-+++++++++++++++
-
-For MySQL-based clusters, CMON Controller requires MySQL client to connect to CMON database. This package usually comes by default when installing MySQL server required by CMON database.
-
-For MongoDB cluster, the CMON Controller requires to have both MySQL and MongoDB client packages installed and correctly defined in CMON configuration file on ``mysql_basedir`` and ``mongodb_basedir`` option.
-
-For PostgreSQL, the CMON controller doesn't require any PostgreSQL clients installed on the node. All PostgreSQL commands will be executed locally on the managed PostgreSQL node via SSH.
+.. _Components - ClusterControl CMONAPI:
 
 ClusterControl REST API (CMONAPI)
 ---------------------------------
 
-The CMONAPI is a RESTful interface, and exposes all ClusterControl functionality as well as monitoring data stored in the CMON DB. Each CMONAPI connects to one CMON DB instance. Several instances of the ClusterControl UI can connect to one CMONAPI as long as they utilize the correct CMONAPI token and URL. The CMON token is automatically generated during installation and is stored inside ``config/bootstrap.php``.
+The CMONAPI is a RESTful interface, and exposes all ClusterControl functionality as well as monitoring data stored in the `CMON database`_. Each CMONAPI connects to one CMON database instance. Several instances of the ClusterControl UI can connect to one CMONAPI as long as they utilize the correct CMONAPI token and URL. The CMON token is automatically generated during installation and is stored inside ``config/bootstrap.php``.
 
 You can generate the CMONAPI token manually by using following command:
 
@@ -867,34 +978,22 @@ Both ClusterControl CMONAPI and UI must be running on the same version to avoid 
 
 .. Attention:: We are gradually in the process of migrating all functionalities in REST API to RPC interface. Kindly expect the REST API to be obsolete in the near future.
 
+.. _Components - ClusterControl UI:
+
 ClusterControl UI
 -----------------
 
 ClusterControl UI provides a modern web user interface to visualize the cluster and perform tasks like backup scheduling, configuration changes, adding nodes, rolling upgrades, etc. It requires a MySQL database called 'dcps', to store cluster information, users, roles and settings. It interacts with CMON controller via remote procedure call (RPC) or REST API interface.
 
-You can install the ClusterControl UI independently on another server by running following command:
+ClusterControl UI page can be accessed through following URL: 
 
-.. code-block:: bash
-
-	yum install clustercontrol # RHEL/CentOS
-	sudo apt-get install clustercontrol # Debian/Ubuntu
-	
-.. Note:: Omit 'sudo' if you are running as root.
-
-The ClusterControl UI can connect to multiple CMON Controller servers (if they have installed the CMONAPI) and provides a centralized view of the entire database infrastructure. Users just need to register the CMONAPI token and URL for a specific cluster on the Cluster Registrations page.
-
-The ClusterControl UI will load the cluster in the database cluster list, similar to the screenshot below:
-
-.. image:: img/docs_cc_ui_15.png
-   :align: center
+:samp:`https://{ClusterControl IP address or hostname}/clustercontrol`
 
 Similar to the CMONAPI, the ClusterControl UI is running on Apache and located under ``/var/www/html/clustercontrol`` (RedHat/CentOS/Ubuntu >14.04) or ``/var/www/clustercontrol`` (Debian <8/Ubuntu <14.04). The web server must support rule-based rewrite engine and must be able to follow symlinks. 
 
-ClusterControl UI page can be accessed through following URL: 
+Please refer to :ref:`User Guide` for the functionalities available in the ClusterControl UI.
 
-:samp:`https://[ClusterControl IP address or hostname]/clustercontrol`
-
-Please refer to `User Guide <user-guide/index.html>`_ for more details on the functionality available in the ClusterControl UI.
+.. _Components - ClusterControl SSH:
 
 ClusterControl SSH
 -------------------
@@ -929,6 +1028,9 @@ Communication is based on HTTPS, so it is possible to access your servers from b
 
 .. Warning:: ClusterControl does not provide extra layers of authentication and authorization when accessing the cluster from web-based SSH terminal. User who has access to the cluster in the ClusterControl UI may capable of accessing the terminal as a privileged user. Use `Access Control <user-guide/index.html#access-control>`_ to limit them.
 
+
+.. _Components - ClusterControl Notifications:
+
 ClusterControl Notifications
 ----------------------------
 
@@ -943,6 +1045,8 @@ Additional resources on setting up integration with third-party tools are listed
 	* Documentation:
 		* `Integrations <user-guide/index.html#integrations>`_
 
+.. _Components - ClusterControl Cloud:
+
 ClusterControl Cloud
 --------------------
 
@@ -956,7 +1060,9 @@ This package installs the following new files:
 
 By default, this service will use port 9518 on localhost interface. Cloud credentials are stored under ``/var/lib/cmon/`` with permission set to root only.
 
-.. Note:: ClusterControl Cloud is a reintroduction of a feature called 'Service Providers', available in ClusterControl 1.4 and older. 
+.. Note:: ClusterControl Cloud is a reintroduction of a feature called 'Service Providers', available in ClusterControl 1.4 and older.
+
+.. _Components - ClusterControl Cloud File Manager:
 
 ClusterControl Cloud File Manager (CLUD)
 -----------------------------------------
@@ -1001,6 +1107,7 @@ Name, shorthand                                 Description
 |minus|\ |minus|\ version                       Print the version.
 =============================================== ===========
 
+.. _Components - ClusterControl CLI:
 
 ClusterControl CLI
 ------------------
@@ -1030,6 +1137,8 @@ ClusterControl CLI opens a new door for cluster automation where you can easily 
 	- Configuration changes of db nodes.
 
 The command line tool is invoked by executing a binary called ``s9s``. The commands are basically JSON messages being sent over to the ClusterControl Controller (CMON) RPC interface. Communication between the s9s (the command line tool) and the cmon process (ClusterControl Controller) is encrypted using TLS and requires the port 9501 to be opened on controller and the client host.
+
+.. _Components - ClusterControl CLI - Installation:
 
 Installation
 +++++++++++++
@@ -1136,6 +1245,8 @@ To build from source, you may require additional packages and tools to be instal
 	$ s9s --help
 
 It is possible to build the s9s command line client on Linux and Mac OS/X.
+
+.. _Components - ClusterControl CLI - Configuration:
 
 Configuration
 ++++++++++++++
@@ -1321,6 +1432,8 @@ Copy the SSH public key to the ClusterControl Controller host, for example 10.0.
 
 	$ s9s cluster --list
 	cluster_1 cluster_2 cluster_3
+
+.. _Components - ClusterControl CLI - Usage:
 
 Usage 
 ++++++
@@ -1814,6 +1927,8 @@ The following example shows how a node in a given cluster can be restarted. When
 
 Change a configuration value for a PostgreSQL server:
 
+.. code-block:: bash
+
 	$ s9s node \
 		--change-config \
 		--nodes=192.168.1.115 \
@@ -1993,7 +2108,7 @@ Create a mongodump backup on 10.0.0.148 for cluster named 'MongoDB ReplicaSet 3.
 		--nodes=10.0.0.148 \
 		--backup-directory=/storage/backups
 
-Schedule a full backup using MariaDB backup everyday at 12:00 AM:
+Schedule a full backup using MariaDB backup every midnight at 12:00 AM:
 
 .. code-block:: bash
 
@@ -2002,7 +2117,7 @@ Schedule a full backup using MariaDB backup everyday at 12:00 AM:
 		--nodes=10.10.10.19:3306 \
 		--cluster-name=MDB101 \
 		--backup-dir=/home/vagrant/backups \
-		--recurrence='* 0 * * *'
+		--recurrence='0 0 * * *'
 
 Schedule an incremental backup using MariaDB backup everyday at 12:30 AM:
 
@@ -2798,12 +2913,16 @@ List a detailed list of the properties the CmonUser type has:
 		--type=CmonUser \
 		--long
 
+.. _Components - ClusterControl CLI - Limitations:
+
 Limitations
 +++++++++++
 
 Currently the s9s command line tool has a user management module that is not yet fully integrated with ClusterControl UI and ClusterControl Controller. For example, there is no RBAC (Role-Based Access Control) for a user (see Setup and Configuration how to create a user). This means that any user created to be used with the s9s command line tool has a full access to all clusters managed by the ClusterControl server.
 
 Users created by the command line client will be shown in Job Messages, but it is not possible to use this user to authenticate and login from the UI. Thus, the users created from the command line client are all super admins.
+
+.. _Components - ClusterControl CLI - Reporting Issues:
 
 Reporting Issues
 ++++++++++++++++++

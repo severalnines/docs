@@ -1,3 +1,5 @@
+.. _Import Existing Server Cluster:
+
 Import Existing Server/Cluster
 ------------------------------
 
@@ -11,20 +13,20 @@ Opens a wizard to import the existing database setup into ClusterControl. The fo
 * MySQL Cluster (NDB)
 * MongoDB ReplicaSet
 * MongoDB Shards
-* PostgreSQL (standalone or replication)
+* PostgreSQL (standalone or streaming replication)
 
 There are some prerequisites that need to be fulfilled prior to adding the existing setup. The existing database cluster/server must:
 
-* Verify that sudo is working properly if you are using a non-root user. See 
-* Passwordless SSH from ClusterControl node to database nodes has been configured correctly. See
-* The target cluster must not be in degraded state. For example, if you have a three-node Galera cluster, all nodes must be alive, accessible and in synced.
+* Verify that sudo is working properly if you are using a non-root user. See :ref:`Requirements - Operating System User`.
+* Passwordless SSH from ClusterControl node to database nodes has been configured correctly. See :ref:`Requirements - Passwordless SSH`.
+* The target cluster must not be in a degraded state. For example, if you have a three-node Galera cluster, all nodes must be alive, accessible and in synced.
 
-For more details, refer to the `Requirement <../requirements.html>`_ section. Each time you add an existing cluster or server, ClusterControl will trigger a job under *ClusterControl > Settings > Cluster Jobs*. You can see the progress and status under this page. A window will also appear with messages showing the progress.
+For more details, refer to the :ref:`Requirements` section. Each time you add an existing cluster or server, ClusterControl will trigger a job under *ClusterControl > Settings > Cluster Jobs*. You can see the progress and status under this page. A window will also appear with messages showing the progress.
 
 Import Existing MySQL Replication
 +++++++++++++++++++++++++++++++++
 
-ClusterControl is able to manage/monitor an existing set of MySQL servers (standalone or replication). Individual hosts specified in the same list will be added to the same server group in the UI. ClusterControl assumes that you are using the same MySQL root password for all instances specified in the group and it will attempt to determine the server role as well (master, slave, multi or standalone).
+ClusterControl is able to manage and monitor an existing set of MySQL servers (standalone or replication). Individual hosts specified in the same list will be added to the same server group in the UI. ClusterControl assumes that you are using the same MySQL root password for all instances specified in the group and it will attempt to determine the server role as well (master, slave, multi or standalone).
 
 When importing an existing MySQL Replication, ClusterControl will do the following:
 
@@ -39,10 +41,10 @@ When importing an existing MySQL Replication, ClusterControl will do the followi
 
 * **SSH User**
 	- Specify root if you have root credentials.
-	- If you use 'sudo' to execute system commands, specify the name that you wish to use here. The user must exists on all nodes. See `Operating System User <../requirements.html#operating-system-user>`_.
+	- If you use 'sudo' to execute system commands, specify the name that you wish to use here. The user must exists on all nodes. See :ref:`Requirements - Operating System User`.
 	
 * **SSH Key Path**
-	- Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See `Passwordless SSH <../requirements.html#passwordless-ssh>`_.
+	- Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See :ref:`Requirements - Passwordless SSH`.
 
 * **Sudo Password**
 	- Specify the password if the SSH user that you specified under *SSH User* requires sudo password to run super-privileged commands. Ignore this if *SSH User* is root or have no sudo password.
@@ -61,7 +63,7 @@ When importing an existing MySQL Replication, ClusterControl will do the followi
 * **MySQL Version**
 	- Supported version:
 		- Percona Server (5.5, 5.6, 5.7)
-		- MariaDB Server (10.1, 10.2)
+		- MariaDB Server (10.1, 10.2, 10.3)
 		- Oracle MySQL Server (5.7)
 
 * **Basedir**
@@ -80,14 +82,14 @@ When importing an existing MySQL Replication, ClusterControl will do the followi
 	- Toggle on to enable information_schema queries to track databases and tables growth. Queries to the information_schema may not be suitable when having many database objects (hundreds of databases, hundreds of tables in each database, triggers, users, events, stored procedures, etc). If disabled, the query that would be executed will be logged so it can be determined if the query is suitable in your environment.
 	- This is not recommended for clusters with more than 2000 database objects.
 
+* **Import as Standalone Nodes**
+	- Toggle on if you only importing a standalone node (by specifying only one node under 'Add Nodes' section).
+
 * **Node AutoRecovery**
 	- ClusterControl will perform automatic recovery if it detects any of the nodes in the cluster is down.
 	
 * **Cluster AutoRecovery**
 	- ClusterControl will perform automatic recovery if it detects the cluster is down or degraded.
-
-* **Import as Standalone Nodes**
-	- Toggle on if you only importing a standalone node (by specifying only one node under 'Add Nodes' section).
 
 * **Add Nodes**
 	- Enter the MySQL single instances' IP address or hostname that you want to group under this cluster.
@@ -103,10 +105,10 @@ Import Existing MySQL Galera
 
 * **SSH User**
 	- Specify root if you have root credentials.
-	- If you use 'sudo' to execute system commands, specify the name that you wish to use here. The user must exists on all nodes. See `Operating System User <../requirements.html#operating-system-user>`_.
+	- If you use 'sudo' to execute system commands, specify the name that you wish to use here. The user must exists on all nodes. See :ref:`Requirements - Operating System User`.
 	
 * **SSH Key Path**
-	- Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See `Passwordless SSH <../requirements.html#passwordless-ssh>`_.
+	- Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See :ref:`Requirements - Passwordless SSH`.
 
 * **Sudo Password**
 	- Specify the password if the SSH user that you specified under *SSH User* requires sudo password to run super-privileged commands. Ignore this if *SSH User* is root or have no sudo password.
@@ -122,8 +124,10 @@ Import Existing MySQL Galera
 	- MariaDB - MariaDB Galera Cluster by MariaDB
 	- Codership - MySQL Galera Cluster by Codership
 
-* **MySQL Version**
-	- Select MySQL version of the target cluster.
+* **Version**
+	- Supported version:
+		- Percona Server (5.5, 5.6, 5.7)
+		- MariaDB Server (10.1, 10.2, 10.3)
 
 * **Basedir**
 	- MySQL base directory. Default is ``/usr``. ClusterControl assumes MySQL is having the same base directory on all nodes.
@@ -167,10 +171,10 @@ ClusterControl is able to manage and monitor an existing production deployed MyS
 
 * **SSH User**
 	- Specify root if you have root credentials.
-	- If you use 'sudo' to execute system commands, specify the name that you wish to use here. The user must exists on all nodes. See `Operating System User <../requirements.html#operating-system-user>`_.
+	- If you use 'sudo' to execute system commands, specify the name that you wish to use here. The user must exists on all nodes. See :ref:`Requirements - Operating System User`.
 	
 * **SSH Key Path**
-	- Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See `Passwordless SSH <../requirements.html#passwordless-ssh>`_.
+	- Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See :ref:`Requirements - Passwordless SSH`.
 
 * **Sudo Password**
 	- Specify the password if the SSH user that you specified under *SSH User* requires sudo password to run super-privileged commands. Ignore this if *SSH User* is root or have no sudo password.
@@ -238,10 +242,10 @@ ClusterControl is able to manage and monitor an existing MongoDB/Percona Server 
 
 * **SSH User**
 	- Specify root if you have root credentials.
-	- If you use 'sudo' to execute system commands, specify the name that you wish to use here. The user must exists on all nodes. See `Operating System User <../requirements.html#operating-system-user>`_.
+	- If you use 'sudo' to execute system commands, specify the name that you wish to use here. The user must exists on all nodes. See :ref:`Requirements - Operating System User`.
 	
 * **SSH Key Path**
-	- Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See `Passwordless SSH <../requirements.html#passwordless-ssh>`_.
+	- Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See :ref:`Requirements - Passwordless SSH`.
 
 * **Sudo Password**
 	- Specify the password if the SSH user that you specified under *SSH User* requires sudo password to run super-privileged commands. Ignore this if *SSH User* is root or have no sudo password.
@@ -253,7 +257,7 @@ ClusterControl is able to manage and monitor an existing MongoDB/Percona Server 
 ``````````````````````````
 
 * **Vendor**
-	- Percona - Percona Server for MongoDB by Percona (formerly Tokutek).
+	- Percona - Percona Server for MongoDB by Percona.
 	- MongoDB - MongoDB Server by MongoDB Inc (formerly 10gen).
 
 * **Version**
@@ -287,10 +291,10 @@ ClusterControl is able to manage and monitor an existing MongoDB/Percona Server 
 
 * **SSH User**
 	- Specify root if you have root credentials.
-	- If you use 'sudo' to execute system commands, specify the name that you wish to use here. The user must exists on all nodes. See `Operating System User <../requirements.html#operating-system-user>`_.
+	- If you use 'sudo' to execute system commands, specify the name that you wish to use here. The user must exists on all nodes. See :ref:`Requirements - Operating System User`.
 	
 * **SSH Key Path**
-	- Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See `Passwordless SSH <../requirements.html#passwordless-ssh>`_.
+	- Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See :ref:`Requirements - Passwordless SSH`.
 
 * **Sudo Password**
 	- If you use sudo with password, specify it here. Ignore this if *SSH User* is root or sudoer does not need a sudo password.
@@ -341,10 +345,10 @@ ClusterControl is able to manage/monitor an existing set of PostgreSQL 9.x serve
 
 * **SSH User**
 	- Specify root if you have root credentials.
-	- If you use 'sudo' to execute system commands, specify the name that you wish to use here. The user must exists on all nodes. See `Operating System User <../requirements.html#operating-system-user>`_.
+	- If you use 'sudo' to execute system commands, specify the name that you wish to use here. The user must exists on all nodes. See :ref:`Requirements - Operating System User`.
 	
 * **SSH Key Path**
-	- Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See `Passwordless SSH <../requirements.html#passwordless-ssh>`_.
+	- Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See :ref:`Requirements - Passwordless SSH`.
 
 * **Sudo Password**
 	- Specify the password if the SSH user that you specified under *SSH User* requires sudo password to run super-privileged commands. Ignore this if *SSH User* is root or have no sudo password.

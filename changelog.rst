@@ -1,12 +1,107 @@
-.. _changelog:
+.. _Changelog:
 
 Change Logs
 ===========
 
 This change logs list details about updates in each version of ClusterControl.
 
+Changes in v1.7.0
+-----------------
+
+Maintenance Release: September 26\ :sup:`th`\ , 2018
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build: 
+	- clustercontrol-1.7.0-5224
+	- clustercontrol-controller-1.7.0-2798
+
+* UI:
+	- Nodes Page: Fixed a regression with the node charts where the last four graphs had "no data points".
+	- User Management: Fixed a navigational issue making the Clusters list show up as empty.
+	- Events (Server Side): Fixed an configuration issue regarding CMON events notifications, which could lead to a 'Enable Events' dialog showing up too frequently.
+
+* Controller:
+	- Operational Reports: Fixed an issue where the cluster type in the operational reports was missing
+	- Operational Reports: Fixed an issue where the creation of operational reports could deadlock.
+	- Deploy (MySQL based setups): Fixed a deployment issue where a sanity check failed to determine if percona-xtrabackup was successfully installed.
+	- MongoDb: Fixed an issue with configuration file handling when mongos and mongod's are colocated.
+	- Prometheus: A couple of minor optimisations to queries (improved filtering of disk device/fs)
+	- ProxySQL: Fixed an installation issue on LXD containers.
+
+
+Initial Release: September 24\ :sup:`th`\ , 2018
++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.0-5208
+	- clustercontrol-controller-1.7.0-2792
+	- clustercontrol-cmonapi-1.7.0-333
+	- clustercontrol-cloud-1.7.0-147
+	- clustercontrol-ssh-1.7.0-62
+	- clustercontrol-notifications-1.7.0-139
+
+In this release we are introducing support for agent based monitoring with Prometheus (open-source systems monitoring and alerting system). Enable your cluster to use Prometheus exporters to collect metrics on your nodes and hosts. Avoid excessive SSH activity for monitoring and metrics collections and use SSH connectivity only for management operations. 
+
+You can use a set of new dashboards that uses Prometheus as the data source and gives access to its flexible query language and multi-dimensional data model with time series data identified by metric name and key/value pairs. In future releases we will be adding more features such as allowing you to create and import your own dashboards. 
+
+We have also a new security feature to enable Audit Logging for MySQL based clusters. Enable policy-based monitoring and logging of connection and query activity executed on your MySQL servers. 
+
+Finally we have added support to easily scale out your cloud deployed clusters by automating the cloud instance creation for the new DB node.  
+
+**Feature Details**
+
+* Agent Based Monitoring:
+	- Install a Prometheus v2.3.x server on a specified host.
+	- Install/enable Prometheus exporters on your nodes and hosts with MySQL and PostgreSQL based clusters.
+	- Supported Exporters:
+		- Node/machine metrics
+		- Process - /proc metrics
+		- MySQL server metrics
+		- PostgreSQL metrics
+		- ProxySQL metrics
+* New dashboards:
+	- Cross Server Graphs
+	- System Overview
+	- MySQL Overview
+	- MySQL Replication
+	- MySQL Performance Schema
+	- MySQL InnoDB Metrics
+	- Galera Cluster Overview
+	- Galera Graphs
+	- PostgreSQL Overview
+	- ProxySQL Overview
+* Security:
+	- Enable/disable Audit Logging on your MySQL based clusters. Enable policy-based monitoring and logging of connection and query activity.
+* Cloud:
+	- Cloud Scaling. Automatically launch cloud instances and add nodes to your cloud deployed clusters.
+* Misc:
+	- Support for MariaDB v10.3.
+	- New 'demote master to slave' action for MySQL replication clusters.
+	- Customize the timezone for dates and time shown across the application.
+	- UI toasters/notifications for CMON events and alarms. Enables 'Server Sent' events to be sent to the web application for a more dynamic updated user interface.
+	- Improved workflow to enable PITR for PostgreSQL.
+	- Added performance graphs for ProxySQL hosts.
+
+
 Changes in v1.6.2
 -----------------
+
+Maintenance Release: September 14\ :sup:`th`\ , 2018
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.6.2-5148
+	- clustercontrol-controller-1.6.2-2769
+
+* Controller:
+	- Backup (MariaDB Backup): Use mbstream instead of xbstream. This removes the dependency to the Percona Xtrabackup package. 
+	- Advisors (MySQL): Improved TimeZone advisor to check if the timezones on the MySQL servers are aligned. This fixes an issue with e.g CET and CEST timezone which are from MySQL's perspective treated the same.
+	- Backup (Verify Backup):  Fixed an issue regarding connectivity. Now the *Verify Backup* does not rely on the MySQL system database tables from cluster db node to perform the verification. This removes the need for a port (9999 by default) to be opened between the cluster node(s) and the backup verification server.
+	- Job handling: Improved parallelism.
+
+* UI:
+	- MaxScale: Fixed an issue in password validation
+	- ACLs: Fixed a number of issues in ACL handling.
 
 Maintenance Release: August 27\ :sup:`th`\ , 2018
 +++++++++++++++++++++++++++++++++++++++++++++++++

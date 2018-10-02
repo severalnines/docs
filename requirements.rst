@@ -1,7 +1,11 @@
+.. _Requirements:
+
 Requirements
 ============
 
 This section provides detailed information on ClusterControl requirement on hardware, system environment and security policy.
+
+.. _Requirements - Hardware:
 
 Hardware
 --------
@@ -26,6 +30,8 @@ Following is the expected system environment for the ClusterControl host:
 	* Digital Ocean
 * Internet connection (for selected cluster deployment)
 
+.. _Requirements - Operating System:
+
 Operating system
 ----------------
 
@@ -39,6 +45,8 @@ The following do not work:
 
 * CentOS 5.4 and earlier
 * Fedora Core 16 and earlier
+
+.. _Requirements - Software Dependencies:
 
 Software Dependencies
 ---------------------
@@ -62,6 +70,8 @@ The following software is required by ClusterControl:
 
 .. Note:: If ClusterControl is installed via installation script (install-cc) or package manager (yum/apt), all dependencies will be automatically satisfied.
 
+.. _Requirements - Supported Browsers:
+
 Supported Browsers
 ------------------
 
@@ -73,32 +83,35 @@ Ensure to keep up-to-date of these browsers as we are very likely taking advanta
 
 .. Note:: ClusterControl is built and tested only on the mentioned web browsers. Some major web browsers like Safari, Opera and Internet Explorer could also work.
 
+.. _Requirements - Supported Databases:
+
 Supported Databases
 -------------------
 
 The following table shows supported database clusters with recommended minimum nodes:
 
-+-----------------+----------------------------+--------------------------------+---------------------------------------------------------------------------------+
-| Database type   | Cluster type               | Version                        | Minimum recommended nodes                                                       |
-+=================+============================+================================+=================================================================================+
-| MySQL/MariaDB   | MySQL Cluster (NDB)        | 7.1 and later                  | 5 hosts (2 data nodes + 2 API/mgmd nodes + 1 ClusterControl node)               |
-|                 +----------------------------+--------------------------------+---------------------------------------------------------------------------------+
-|                 | MySQL replication          | 5.1/5.5/5.6/5.7                | 3 hosts (1 master node + 1 standby master/slave + 1 ClusterControl node)        |
-|                 +----------------------------+--------------------------------+---------------------------------------------------------------------------------+
-|                 | * MySQL Galera Cluster     | * 5.5/5.6/5.7 (MySQL/Percona)  | 4 hosts (3 master nodes + 1 ClusterControl node)                                |
-|                 | * Percona XtraDB Cluster   | * 5.5/10.0/10.1/10.2 (MariaDB) |                                                                                 |
-|                 | * MariaDB Galera Cluster   |                                |                                                                                 |
-|                 +----------------------------+--------------------------------+---------------------------------------------------------------------------------+
-|                 | Single instance            | 5.5/5.6/5.7                    | 2 hosts (1 MySQL node + 1 ClusterControl node)                                  |
-+-----------------+----------------------------+--------------------------------+---------------------------------------------------------------------------------+
-| MongoDB/Percona | Sharded cluster            | 3.2/3.4/3.6                    | 4 hosts (3 config servers / 3 shard servers / 2 mongos + 1 ClusterControl node) |
-| Server for      +----------------------------+                                +---------------------------------------------------------------------------------+
-| MongoDB         | Replica set                |                                | 4 hosts (3 replica servers + 1 ClusterControl node)                             |
-+-----------------+----------------------------+--------------------------------+---------------------------------------------------------------------------------+
-| PostgreSQL      | Single instance            | 9.x/10.x                       | 2 hosts (1 PostgreSQL node + 1 ClusterControl node)                             |
-|                 +----------------------------+                                +---------------------------------------------------------------------------------+
-|                 | Streaming Replication      |                                | 3 hosts (1 master node + 1 slave node + 1 ClusterControl node)                  |
-+-----------------+----------------------------+--------------------------------+---------------------------------------------------------------------------------+
++-----------------+----------------------------+-------------------------------------+---------------------------------------------------------------------------------+
+| Database type   | Cluster type               | Version                             | Minimum recommended nodes                                                       |
++=================+============================+=====================================+=================================================================================+
+| MySQL/MariaDB   | MySQL Cluster (NDB)        | 7.1 and later                       | 5 hosts (2 data nodes + 2 API/mgmd nodes + 1 ClusterControl node)               |
+|                 +----------------------------+-------------------------------------+---------------------------------------------------------------------------------+
+|                 | MySQL replication          | 5.1/5.5/5.6/5.7                     | 3 hosts (1 master node + 1 standby master/slave + 1 ClusterControl node)        |
+|                 +----------------------------+-------------------------------------+---------------------------------------------------------------------------------+
+|                 | * Percona XtraDB Cluster   | * 5.5/5.6/5.7 (MySQL/Percona)       | 4 hosts (3 nodes + 1 ClusterControl node)                                       |
+|                 | * MariaDB Galera Cluster   | * 5.5/10.0/10.1/10.2/10.3 (MariaDB) |                                                                                 |
+|                 +----------------------------+-------------------------------------+---------------------------------------------------------------------------------+
+|                 | Single instance            | 5.5/5.6/5.7                         | 2 hosts (1 MySQL node + 1 ClusterControl node)                                  |
++-----------------+----------------------------+-------------------------------------+---------------------------------------------------------------------------------+
+| MongoDB/Percona | Sharded cluster            | 3.2/3.4/3.6                         | 4 hosts (3 config servers / 3 shard servers / 2 mongos + 1 ClusterControl node) |
+| Server for      +----------------------------+                                     +---------------------------------------------------------------------------------+
+| MongoDB         | Replica set                |                                     | 4 hosts (3 replica servers + 1 ClusterControl node)                             |
++-----------------+----------------------------+-------------------------------------+---------------------------------------------------------------------------------+
+| PostgreSQL      | Single instance            | >9.6/10.x                           | 2 hosts (1 PostgreSQL node + 1 ClusterControl node)                             |
+|                 +----------------------------+                                     +---------------------------------------------------------------------------------+
+|                 | Streaming Replication      |                                     | 3 hosts (1 master node + 1 slave node + 1 ClusterControl node)                  |
++-----------------+----------------------------+-------------------------------------+---------------------------------------------------------------------------------+
+
+.. _Requirements - Firewall and Security Groups:
 
 Firewall and Security Groups
 ----------------------------
@@ -128,9 +141,9 @@ ClusterControl supports various database and application vendors and each has it
 |                                                 | * ICMP (echo reply/request)            |
 |                                                 | * 3306 (MySQL)                         |
 +-------------------------------------------------+----------------------------------------+
-| * MySQL Galera Cluster                          | * 22 (SSH)                             |
+| * MariaDB Galera Cluster                        | * 22 (SSH)                             |
 | * Percona XtraDB Cluster                        | * ICMP (echo reply/request)            |
-| * MariaDB Galera Cluster                        | * 3306 (MySQL)                         |
+|                                                 | * 3306 (MySQL)                         |
 |                                                 | * 4444 (SST)                           |
 |                                                 | * 4567 TCP/UDP (Galera)                |
 |                                                 | * 4568 (Galera IST)                    |
@@ -162,7 +175,7 @@ ClusterControl supports various database and application vendors and each has it
 |                                                 | * 3307 (MySQL load-balanced)           |
 |                                                 | * 3308 (MySQL load-balanced read-only) |
 +-------------------------------------------------+----------------------------------------+
-| MaxScale                                        | * 22 (SSH)                             |
+| MariaDB MaxScale                                | * 22 (SSH)                             |
 |                                                 | * ICMP (echo reply/request)            |
 |                                                 | * 6033 (MaxAdmin - CLI)                |
 |                                                 | * 4006 (Round robin listener)          |
@@ -184,7 +197,9 @@ ClusterControl supports various database and application vendors and each has it
 |                                                 | * 6033 (MySQL load-balanced)           |
 +-------------------------------------------------+----------------------------------------+
 
-Hostnames and IP addresses
+.. _Requirements - Hostnames and IP Addresses:
+
+Hostnames and IP Addresses
 --------------------------
 
 It is recommended for users to setup a proper host definition file in ``/etc/hosts`` file. The file should be identical on all servers in your cluster. Otherwise, your database cluster might not work as expected with ClusterControl. Below is an example of a host definition file:
@@ -202,6 +217,8 @@ You need to separate the 127.0.0.1 entry from your real hostname, specifying it 
 
   $ hostname -I
   10.0.1.10 # This is good. IP address returned is neither 127.0.0.1 nor 127.0.1.1
+
+.. _Requirements - Operating System User:
 
 Operating System User
 ---------------------
@@ -244,12 +261,16 @@ You can also verify this with SSH command line used by CMON (assuming passwordle
 
 where ``[OS user]`` is the name of the user you intend to use during the installation, and ``[IP address/hostname]`` is the IP address or hostname of a node in your cluster.
 
+.. _Requirements - Passwordless SSH:
+
 Passwordless SSH
 ----------------
 
 Proper passwordless SSH setup from ClusterControl node to all nodes (including ClusterControl node) is mandatory. When adding a new node, the node must be accessible via passwordless SSH from ClusterControl beforehand.
 
-Setting up passwordless SSH
+.. _Requirements - Passwordless SSH - Setting up Passwordless SSH:
+
+Setting up Passwordless SSH
 +++++++++++++++++++++++++++
 
 To setup a passwordless SSH, make sure you generate a SSH key and copy it from the ClusterControl host as the designated user to the target host. Take note that ClusterControl also requires passwordless SSH to itself, so do not forget to set this up as described in the example below. 
@@ -309,6 +330,7 @@ For AWS cloud users, you can use the corresponding key pair by uploading it onto
 
 If you use DSA (CMON defaults to RSA), then you need to follow instructions in this page, `Using DSA keys instead of RSA - key-based authentitication <http://support.severalnines.com/entries/23498833-Using-DSA-keys-instead-of-RSA-key-based-authentitication>`_.
 
+.. _Requirements - Passwordless SSH - Sudo Password:
 
 Sudo password
 +++++++++++++
@@ -335,6 +357,8 @@ Encrypted home directories aren’t decrypted until the login is successful, and
 
 To solve this, you need to follow instructions in this page, `Passwordless SSH in Encrypted Home Directory <http://support.severalnines.com/entries/23490521-Passwordless-SSH-in-Encrypted-Home-Directory>`_.
 
+.. _Requirements - Timezone:
+
 Timezone
 --------
 
@@ -357,6 +381,8 @@ UTC is however recommended. Configure NTP client for each host with a working ti
 .. code-block:: bash
 
 	$ ntpdate -u [NTP server, e.g europe.pool.ntp.org]
+
+.. _Requirements - License:
 
 License
 -------

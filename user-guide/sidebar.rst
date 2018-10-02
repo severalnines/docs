@@ -1,58 +1,42 @@
+.. _Sidebar:
+
 Sidebar
 =======
 
 Left-side navigation menu provides shortcuts to manage clusters, roles, users, notifications, integration, reporting, authentication, keys and certificates.
 
+.. _Clusters:
+
 Clusters
 --------
 
 List of database clusters managed by ClusterControl with summarized status. Database cluster deployed by (or added into) ClusterControl will be listed in this page. See `Database Cluster List <dashboard.html#database-cluster-list>`_ section.
+
+.. _Operational Reports:
 	
 Operational Reports
 -------------------
 
-Generates or creates schedule of operational reports. The current default report shows a cluster's health and performance at the time it was generated compared to one day ago.
- 
-The report provides information about:
+Generates or schedules operational reports. Operational report is a comprehensive way to understand the state of your database cluster along the time. The reports can be generated in-place or can be delivered to you via email, which make things conveniently easy if you have a reporting silo.
 
-- Cluster Information
-	- Cluster
-	- Nodes
-	- Backup summary
-	- Top queries summary
-- Node Status Overview
-	- CPU usage
-	- Data throughput
-	- Load average
-	- Free disk space
-	- RAM usage
-	- Network throughput
-	- Server load
-	- Handler
-- Schema Change Report
-	- Detect schema changes (CREATE and ALTER TABLE. Drop table is not supported yet)
-	- Need to set ``schema_change_detection_address=1`` inside ``/etc/cmon.d/cmon_X.cnf``.
-- Availability (All clusters)
-	- Node availability summary
-	- Cluster availability summary
-	- Total uptime
-	- Total downtime
-	- Last state change
-- Backup (All clusters)
-	- Backup list
-	- Backup details
-	- Backup policy
-- Package Upgrade Report (generate available software and security packages to upgrade)
-- Database Growth Report (beta)
+There are 5 types of reports available:
+
+* Availability report - All clusters.
+* Backup report - All clusters.
+* Schema change report - MySQL/MariaDB-based cluster only.
+* Daily system report - Per cluster.
+* Package upgrade report - Per cluster.
+
+See `Types of Operational Reports`_ for more details. Check out the operational report examples in this blog post, `Become a ClusterControl DBA: Operational Reports for MySQL, MariaDB, PostgreSQL & MongoDB <https://severalnines.com/blog/become-clustercontrol-dba-operational-reports-mysql-mariadb-postgresql-mongodb>`_.
 
 Generated Reports
 +++++++++++++++++
 
-Provides list of generated operational reports. Click on any of the entries will open the operational report in a new window.
+Provides list of generated operational reports. Click on any of the entries will open the generated operational report in a new window.
 
 * **Create**
-	- Create an operational report immediately.
-	- Specify the cluster name and operational type. Optionally, you can click on 'Add Email' button to add recipients into the list.
+	- Create an operational report. See `Types of Operational Reports`_.
+	- Specify the cluster name and operational type. Optionally, you can click on 'Add Email' button to add recipients into the list. 
 
 * **Delete**
 	- Delete the selected operational report.
@@ -66,7 +50,7 @@ Schedules
 List of scheduled operational report.
 
 * **Schedule**
-	- Schedule an operational report at an interval. You can schedule it daily, weekly and monthly. Optionally, you can click on 'Add Email' button to add recipients into the list.
+	- Schedules an operational report at an interval. You can schedule it daily, weekly and monthly. Optionally, you can click on 'Add Email' button to add recipients into the list.
 
 * **Edit**
 	- Edit the selected schedule.
@@ -76,6 +60,73 @@ List of scheduled operational report.
 
 * **Refresh**
 	- Refresh the schedule list.
+
+Types of Operational Reports
+++++++++++++++++++++++++++++
+
+Availability Report
+```````````````````
+
+*All Clusters*
+
+The report generates the uptime/downtime and availability report for each cluster managed by ClusterControl. You can see information about availability statistics of your databases, the cluster type, total uptime and downtime, current state of the cluster and when that state last changed.
+
+Backup Report
+`````````````
+
+*All Clusters*
+
+The report summarizes backups for each cluster managed by ClusterControl. It contains two sections - backup summary and backup details, where the former basically gives you a short summary of when the last backup was created, if it completed successfully or failed, backup verification status, success rate and retention period. The latter section provides the list of backups executed on the cluster with the state, type and size within the specified interval.
+
+ClusterControl also provides examples of backup policy if it finds any of the monitored database cluster running without any scheduled backup or delayed slave configured.
+
+Schema Change Report
+````````````````````
+
+*MySQL/MariaDB-based cluster only*
+
+This report compares the selected MySQL/MariaDB database changes in table structure which happened between two different generated reports. In the MySQL/MariaDB older versions, DDL operation is a non-atomic operation (pre 8.0) and requires full table copy (pre 5.6 for most operations) - blocking other transactions until it completes. Schema changes could become a huge pain once your tables get a significant amount of data and must be carefully planned especially in a clustered setup. In a multi-tiered development environment, we have seen many cases where developers silently modify the table structure, resulting in significant impact to query performance.
+
+In order for ClusterControl to produce an accurate report, special options must be configured inside CMON configuration file for the respective cluster:
+
+* ``schema_change_detection_address`` - Checks will be executed using SHOW TABLES/SHOW CREATE TABLE to determine if the schema has changed. The checks are executed on the address specified and is of the format HOSTNAME:PORT. The ``schema_change_detection_databases`` must also be set. A differential of a changed table is created (using diff).
+* ``schema_change_detection_databases`` - Comma separated list of databases to monitor for schema changes. If empty, no checks are made.
+
+.. Note:: Only ``CREATE TABLE`` and ``ALTER TABLE`` are detected. ``DROP TABLE`` is not supported yet.
+
+Supposed we have a MariaDB Galera Cluster with cluster ID 27 and we would like to monitor schema changes for database "myapp" and "sbtest". Pick one of the database nodes as the value of ``schema_change_detection_address``. For MySQL replication, this should be the master host, or any slave host that holds the databases (in case partial replication is active). Then, inside ``/etc/cmon.d/cmon_27.cnf``, add the two following lines:
+
+.. code-block:: bash
+
+	schema_change_detection_address=10.0.0.30:3306
+	schema_change_detection_databases=myapp,sbtest
+
+Restart CMON service to load the change:
+
+.. code-block:: bash
+
+	$ systemctl restart cmon
+
+Take note only new tables or changed tables are printed in the report. The first report is only for metadata collection for comparison in the subsequent rounds, thus we have to run it for at least twice to see the difference. For the first and foremost report, ClusterControl only returns the result of metadata collection. With the first report as the baseline, the subsequent reports will return the output that we are expecting for.
+
+
+Daily System Report
+```````````````````
+
+*Per Cluster*
+
+The current default report shows a cluster's health and performance at the time it was generated compared to one day ago. Under the summary section, it lists out the nodes in the cluster, their type, role (master or slave), status of the node, uptime and the OS. It also reports the top queries summary as well as node status overview in histogram format like CPU usage, data throughput, load average, disk usage and throughput, RAM usage, network throughput, server load and handler.
+
+Package Upgrade Report
+``````````````````````
+
+*Per Cluster*
+
+This report gives a summary of packages available for upgrade by the repository manager on the monitored hosts. It summarizes the total number of packages available for upgrade as well as the related managed service for the cluster like load balancer, virtual IP address and arbitrator. This report can greatly help us plan our maintenance window efficiently. For critical upgrades like security and database packages, we could prioritize it over non-critical upgrades, which could be consolidated with other less priority maintenance windows.
+
+For an accurate reporting, ensure you always use stable and trusted repositories on every host. In some undesirable occasions, the monitored hosts could be configured with an outdated repository after an upgrade (e.g, every MariaDB major version uses different repository), incomplete internal repository (e.g, partial mirrored from the upstream) or bleeding edge repository (commonly for unstable nightly-build packages).
+
+.. _Email Notifications:
 
 Email Notifications
 -------------------
@@ -135,6 +186,8 @@ Configures global email notifications across clusters.
 	Digest  Send a summary of alarms raised everyday at *Send digests at*
 	======= ===========
 
+.. _Integrations:
+
 Integrations
 -------------
 
@@ -142,6 +195,8 @@ Manages ClusterControl integration modules. Starting from version 1.5.0, there a
 
 - 3rd Party Notifications via *clustercontrol-notifications* package.
 - Cloud Provider integration via *clustercontrol-cloud* and *clustercontrol-clud* packages.
+
+.. _Integrations - 3rd Party Notifications:
 
 3rd Party Notifications
 +++++++++++++++++++++++++
@@ -307,13 +362,14 @@ Critical Events
 |               | ClusterLicenseExpire     | Critical   | License is expired.                                                                        |
 +---------------+--------------------------+------------+--------------------------------------------------------------------------------------------+
 
+.. _Integrations - Cloud Providers:
 
 Cloud Providers
 +++++++++++++++++
 
 Manages resources and credentials for cloud providers. Note that this new feature requires two modules called *clustercontrol-cloud* and *clustercontrol-clud*. The former is a helper daemon which extends CMON capability of cloud communication, while the latter is a file manager client to upload and download files on cloud instances. Both packages are dependencies of the *clustercontrol* UI package, which will be installed automatically if do not exist. 
 
-.. seealso:: `ClusterControl Components <../components.html>`_.
+.. seealso:: :ref:`ClusterControl Components <Components>`.
 
 The credentials that have been set up here can be used to:
 
@@ -439,6 +495,8 @@ Name               Credential name.
 Read from JSON     The service account definition in JSON format.
 Comment (Optional) Description of the credential.
 ================== ============
+
+.. _Key Management:
 
 Key Management
 --------------
@@ -603,8 +661,12 @@ Import keys and certificates into ClusterControl's certificate repository. The i
 * **Import**
   - Start the import process.
 
+.. _User Management:
+
 User Management
 ---------------
+
+.. _User Management - Teams: 
   
 Teams
 +++++
@@ -617,6 +679,8 @@ As a roundup, here is how the different entities relate to each other:
    :align: center
 
 .. Note:: ClusterControl creates 'Admin' team by default.
+
+.. _User Management - Users: 
 
 Users
 +++++
@@ -634,6 +698,8 @@ Role            Description
 =============== ============
 
 To create a custom role, see `Access Control`_.
+
+.. _User Management - Access Control: 
 
 Access Control
 ++++++++++++++
@@ -689,6 +755,8 @@ Feature                      Description
 **Custom Advisor**           Custom Advisors page - *ClusterControl > Manage > Custom Advisors*
 **SSL Key Management**       Key Management page - *ClusterControl > Settings (top-menu) > Key Management*
 ============================ ============
+
+.. _User Management - LDAP Settings: 
 
 LDAP Settings
 +++++++++++++
@@ -765,6 +833,8 @@ Thus, for FreeIPA, the user’s and group’s DN should use compatible schema, `
    :align: center
 
 For example on integrating ClusterControl with FreeIPA and Windows Active Directory, please refer to this blog post, `Integrating ClusterControl with FreeIPA and Windows Active Directory for Authentication <http://severalnines.com/blog/integrating-clustercontrol-freeipa-and-windows-active-directory-authentication>`_.
+
+.. _User Management - Clusters: 
 
 Clusters
 ++++++++

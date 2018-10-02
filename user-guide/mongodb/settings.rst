@@ -1,3 +1,5 @@
+.. _MongoDB - Settings:
+
 Settings
 --------
 
@@ -30,56 +32,6 @@ General Settings
 * **Log Interval**
 	- How many minutes between automatic MongoDB error log collection retrieval.
 
-Configure Mailserver
-````````````````````
-
-Configures how email notifications should be sent out. ClusterControl supports two options for sending email notifications, either using local mail commands via local MTA (Sendmail/Postfix/Exim) or using an external SMTP server. Make sure the local MTA is installed and verified using *Test Email* button.
-
-Option 1: Sendmail
-''''''''''''''''''
-
-* **Use sendmail**
-	- Use this option to enable sendmail to send notifications. Instructions on how to set up Sendmail can be found in this guide, `Setting up mail notifications <http://support.severalnines.com/entries/22897447-setting-up-mail-notifications>`_. If you want to use Postfix, see `Using Postfix`_.
-
-* **Reply-to/From**
-	- Specify the sender of the email. This will appear in the 'From' field of mail header.
-
-Option 2: SMTP Server (Recommended)
-''''''''''''''''''''''''''''''''''''
-
-* **SMTP Server**
-	- SMTP mail server address that you are going to use to send email.
-
-* **SMTP Port**
-	- SMTP port for mail server. Usually this value is 25 or 587, depending on your SMTP mail server configuration.
-
-* **SMTP TLS/SSL required**
-	- Check this box if you want to use TLS/SSL for extra security. The mail server must support TLS/SSL.
-
-* **Username**
-	- SMTP user name. Leave empty if no authentication required.
-
-* **Password**
-	- SMTP password. Leave empty if no authentication required.
-
-* **Reply-to/From**
-	- Specify the sender of the email. This will appear in the 'From' field of mail header.
-
-* **Test Email**
-	- Test the mail settings. If successful, an email will be sent to all users in the `Email Notification Settings`_. Do not forget to add a recipient before pressing this button.
-
-Using Postfix
-''''''''''''''''''
-
-Many of Linux distributions come with Sendmail as default MTA. To replace Sendmail and use other MTA, e.g Postfix, you just need to uninstall Sendmail, install Postfix and start the service. Following example shows commands that need to be executed on ClusterControl node as root user for RHEL:
-
-.. code-block:: bash
-
-	$ service sendmail stop 
-	$ yum remove sendmail -y 
-	$ yum install postfix mailx cronie -y 
-	$ chkconfig postfix on 
-	$ service postfix start
 
 Email Notification Settings
 ````````````````````````````
@@ -131,7 +83,7 @@ Runtime Configuration
 
 Summarizes the active ClusterControl Controller (CMON) runtime configuration parameters and displays the versions of ClusterControl Controller and ClusterControl UI packages. All parameters listed here are loaded directly from ``cmon.cmon_configuration`` table, displayed by the current cluster ID. You can filter out the variables by using the Search field on top of the table. Each parameter has the Current Value (the active value loaded into ClusterControl) and also the Default Value (if undefined, ClusterControl will use this value) as well as description of the parameter.
 
-.. seealso:: `ClusterControl Controller (CMON) Component <../../components.html#clustercontrol-controller-cmon>`_.
+.. seealso:: :ref:`Components - ClusterControl Controller`.
 
 Some configuration parameters can be modified directly from the UI like ``swap_warning`` (*Settings > Thresholds > Swap Warning*) and ``backup_subdir`` (*Backup > Settings > Default Backup Subdirectory*). Some parameters have to be set inside CMON configuration file for the respective cluster ID.
 

@@ -1,4 +1,4 @@
-.. _administration:
+.. _Administration:
 
 Administration
 ===============
@@ -18,7 +18,7 @@ This is the recommended way to upgrade ClusterControl. The following upgrade pro
 RedHat/CentOS
 ``````````````
 
-1) Setup the `Severalnines Repository <installation.html#severalnines-repository>`_.
+1) Setup the :ref:`Installation - Severalnines Repository - YUM Repository`.
 
 2) Clear yum cache so it will retrieve the latest repository list and perform the upgrade:
 
@@ -50,7 +50,7 @@ Upgrade is now complete. Verify the new version at *ClusterControl UI > Settings
 Debian/Ubuntu
 ``````````````
 
-1) Setup the `Severalnines Repository <installation.html#severalnines-repository>`_.
+1) Setup the :ref:`Installation - Severalnines Repository - APT Repository`.
 
 2) Update the repository list and perform the upgrade:
 
@@ -94,13 +94,13 @@ RedHat/CentOS
 
 .. code-block:: bash
 
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-1.6.2-4942-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.6.2-330-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.6.2-2662-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications-1.6.2-136-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh-1.6.2-59-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud-1.6.2-141-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud-1.6.2-141-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-1.7.0-5224-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.7.0-333-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.7.0-2800-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications-1.7.0-139-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh-1.7.0-62-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud-1.7.0-147-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud-1.7.0-147-x86_64.rpm
 
 2) Install using yum so dependencies are met:
 
@@ -135,13 +135,13 @@ Debian/Ubuntu
 
 .. code-block:: bash
 
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol_1.6.2-4942_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.6.2-330_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.6.2-2662-x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications_1.6.2-136_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh_1.6.2-59_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud_1.6.2-141_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud_1.6.2-141_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol_1.7.0-5224_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.7.0-333_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.7.0-2800-x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications_1.7.0-139_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh_1.7.0-62_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud_1.7.0-147_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud_1.7.0-147_x86_64.deb
 
 2) Upload the packages to the server and install them using dpkg command:
 
@@ -210,7 +210,7 @@ Where, ``{wwwroot}`` is equal to the Apache document root and ``{mysql_password}
 Restoring ClusterControl
 ------------------------
 
-Manual restoration can be performed by reverting the backup action and copying everything back to its original location. Restoration may require you to re-grant the 'cmon' user since the backup will not import the grant table of it. Please review the `CMON Database <components.html#cmon-database>`_ on how to grant the 'cmon' user cmon.
+Manual restoration can be performed by reverting the backup action and copying everything back to its original location. Restoration may require you to re-grant the 'cmon' user since the backup will not import the grant table of it. Please review the :ref:`Components - ClusterControl Controller - CMON Database` on how to grant the 'cmon' user cmon.
 
 Securing ClusterControl
 -----------------------
@@ -269,7 +269,7 @@ ClusterControl requires same custom SSH port across all nodes in the cluster. Ma
 HTTP or HTTPS
 +++++++++++++
 
-Running HTTP or HTTPS on custom port will change the ClusterControl UI and the CMONAPI URL e.g :samp:`http://{ClusterControl_host}:8080/clustercontrol` and :samp:`https://{ClusterControl_host}:4433/cmonapi`. Thus, you may need to re-register the new CMONAPI URL for managed cluster at ClusterControl UI `Cluster Registration <user-guide/index.html#cluster-registrations>`_ page.
+Running HTTP or HTTPS on custom port will change the ClusterControl UI and the CMONAPI URL e.g :samp:`http://{ClusterControl_host}:8080/clustercontrol` and :samp:`https://{ClusterControl_host}:4433/cmonapi`. Thus, you may need to re-register the new CMONAPI URL for managed cluster at ClusterControl UI :ref:`Cluster Registration` page.
 
 MySQL
 ++++++
@@ -364,7 +364,7 @@ Installing Standby Server
 
 Steps described in this section must be performed on the secondary ClusterControl server.
 
-1) Install ClusterControl as explained in the `Getting Started <getting-started.html>`_ page.
+1) Install ClusterControl as explained in the :ref:`Getting Started` page.
 
 2) Add the same cluster via *ClusterControl > Import*. Ensure you choose "Enable Node AutoRecovery: No" and "Enable Cluster AutoRecovery: No" in the dialog box. Click "Add Cluster" to start the import job.
 

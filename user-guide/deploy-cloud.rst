@@ -1,3 +1,5 @@
+.. _Deploy in the Cloud:
+
 Deploy in the Cloud
 -------------------
 
@@ -17,7 +19,7 @@ The following database cluster types are supported:
 
 There are prerequisites that need to be fulfilled prior to the deployment:
 
-* A working cloud credential profile on the supported cloud platform. See `Cloud Providers`_.
+* A working cloud credential profile on the supported cloud platform. See :ref:`Integrations - Cloud Providers`.
 * If the cloud instance is inside a private network, the network must support auto-assign public IP address. ClusterControl only connects to the created cloud instance via public network. 
 
 Under the hood, the deployment process does the following:
@@ -121,7 +123,7 @@ Select Credential
 Select one of the existing cloud credentials or you can create a new one by clicking on the *Add New Credential* button.
 
 * **Add New Credential**
-	- Opens the cloud credential configuration wizard. See `Cloud Providers`_.
+	- Opens the cloud credential configuration wizard. See :ref:`Integrations - Cloud Providers`.
 
 Select Virtual Machine
 +++++++++++++++++++++++
@@ -164,8 +166,6 @@ Known Limitations
 There are known limitations for the cloud deployment feature:
 
 * There is currently no 'accounting' in place for the cloud instances. You will need to manually remove created cloud instances.
-* You cannot add or remove a node automatically with cloud instances.
 * You cannot deploy a load balancer automatically with a cloud instance.
-* Scaling up is similar to the standard host, where you need to create the cloud instance manually and specify the host under scaling options (*Add Node* or *Add Replication Slave*).
 
-We appreciate your feedbacks, feature requests and bug reports. Contact us via the support channel or create a feature request. See `FAQ <../faq.html#technical>`_.
+We appreciate your feedbacks, feature requests and bug reports. Contact us via the support channel or create a feature request. See :ref:`FAQ` for details.

@@ -1,7 +1,11 @@
+.. _MySQL - Overview:
+
 Overview
 --------
 
-Provides summary of all database nodes in the cluster. This page is accessible only if there is a cluster deployed by ClusterControl via `Deploy Database Cluster <../../user-guide/index.html#deploy-database-cluster>`_ or imported into ClusterControl via `Import Existing Server/Cluster <../../user-guide/index.html#import-existing-server-cluster>`_.
+Provides summary of all database nodes in the cluster. This page is accessible only if there is a cluster deployed by ClusterControl via :ref:`Deploy Database Cluster` or imported into ClusterControl via :ref:`Import Existing Server Cluster`.
+
+.. _MySQL - Overview - Actions:
 
 Actions
 +++++++
@@ -12,7 +16,7 @@ Galera Cluster
 ``````````````
 
 * **Add Load Balancer**
-	- See `Add Load Balancer <manage.html#load-balancer>`_.
+	- See :ref:`MySQL - Manage - Load Balancer`.
 
 * **Add Node**
 	- See `Add Node`_.
@@ -23,7 +27,7 @@ Galera Cluster
 * **Change RPC API Token**
 	- Serves as the authentication string by ClusterControl UI to connect to CMON RPC interface. Each cluster has its own unique token.
 	
-.. Note:: You can retrieve the RPC API Token value directly from respective ``/etc/cmon.d/cmon_{clusterID}.cnf``.
+.. Note:: You can retrieve the RPC API Token value directly from the respective CMON configuration file, ``/etc/cmon.d/cmon_{clusterID}.cnf``.
 
 * **Clone Cluster** 
 	- See `Clone Cluster`_.
@@ -36,11 +40,11 @@ Galera Cluster
 
 * **Delete Cluster**
 	- This action will remove the corresponding cluster from ClusterControl supervision and will NOT uninstall the actual database cluster.
-	- If you want to re-add the cluster, you have to use `Import Existing Server/Cluster <../../user-guide/index.html#import-existing-server-cluster>`_.
+	- If you want to re-add the cluster, you have to use :ref:`Import Existing Server Cluster`.
 
 * **Deregister Cluster from UI**
 	- Unregister a database cluster from the ClusterControl UI. 
-	- You can still re-register your cluster to ClusterControl at a later stage by using `Cluster Registrations <../../user-guide/index.html#cluster-registrations>`_.
+	- You can still re-register your cluster to ClusterControl at a later stage by using :ref:`Cluster Registrations`.
 	
 * **Remove Node**
 	- Remove a managed node from the cluster.
@@ -55,7 +59,7 @@ MySQL Replication
 	- See `Add Node`_ section.
 	
 * **Add Load Balancer**
-	- See `Add Load Balancer <manage.html#load-balancer>`_ section.
+	- See :ref:`MySQL - Manage - Load Balancer`.
 
 * **Change RPC API Token**
 	- Serves as the authentication string by ClusterControl UI to connect to CMON RPC interface. Each cluster has its own unique token.
@@ -65,11 +69,11 @@ MySQL Replication
 
 * **Delete Cluster**
 	- This action will remove the corresponding cluster from ClusterControl supervision and will NOT uninstall the actual database cluster.
-	- If you want to re-add the cluster, you have to use `Import Existing Server/Cluster <../../user-guide/index.html#import-existing-server-cluster>`_.
+	- If you want to re-add the cluster, you have to use :ref:`Import Existing Server Cluster`.
 
 * **Deregister Cluster from UI**
 	- Unregister a database cluster from the ClusterControl UI. 
-	- You can still re-register your cluster to ClusterControl at a later stage by using `Cluster Registrations <../../user-guide/index.html#cluster-registrations>`_.
+	- You can still re-register your cluster to ClusterControl at a later stage by using :ref:`Cluster Registrations`.
 	
 * **Remove Node**
 	- Remove a managed node from the cluster.
@@ -81,18 +85,18 @@ MySQL Standalone
 	- See `Add Node`_ section.
 	
 * **Add Load Balancer**
-	- See `Add Load Balancer <manage.html#load-balancer>`_ section.
+	- See :ref:`MySQL - Manage - Load Balancer`.
 
 * **Change RPC API Token**
 	- Serves as the authentication string by ClusterControl UI to connect to CMON RPC interface. Each cluster has its own unique token.
 
 * **Delete Cluster**
 	- This action will remove the corresponding cluster from ClusterControl supervision and will NOT uninstall the actual database cluster.
-	- If you want to re-add the cluster, you have to use `Import Existing Server/Cluster <../../user-guide/index.html#import-existing-server-cluster>`_.
+	- If you want to re-add the cluster, you have to use :ref:`Import Existing Server Cluster`.
 
 * **Deregister Cluster from UI**
 	- Unregister a database cluster from the ClusterControl UI. 
-	- You can still re-register your cluster to ClusterControl at a later stage by using `Cluster Registrations <../../user-guide/index.html#cluster-registrations>`_.
+	- You can still re-register your cluster to ClusterControl at a later stage by using :ref:`Cluster Registrations`.
 
 MySQL Group Replication
 ````````````````````````
@@ -111,11 +115,11 @@ MySQL Group Replication
 
 * **Delete Cluster**
 	- This action will remove the corresponding cluster from ClusterControl supervision and will NOT uninstall the actual database cluster.
-	- If you want to re-add the cluster, you have to use `Import Existing Server/Cluster <../../user-guide/index.html#import-existing-server-cluster>`_.
+	- If you want to re-add the cluster, you have to use :ref:`Import Existing Server Cluster`.
 
 * **Deregister Cluster from UI**
 	- Unregister a database cluster from the ClusterControl UI. 
-	- You can still re-register your cluster to ClusterControl at a later stage by using `Cluster Registrations <../../user-guide/index.html#cluster-registrations>`_.
+	- You can still re-register your cluster to ClusterControl at a later stage by using :ref:`Cluster Registrations`.
 	
 * **Remove Node**
 	- Remove a managed node from the cluster.
@@ -127,18 +131,18 @@ MySQL Cluster
 	- Add MySQL Cluster SQL node. See `Add Node`_ section.
 
 * **Add Load Balancer**
-	- See `Add Load Balancer <manage.html#load-balancer>`_ section.
+	- See :ref:`MySQL - Manage - Load Balancer`.
 	
 * **Change RPC API Token**
 	- Serves as the authentication string by ClusterControl UI to connect to CMON RPC interface. Each cluster has its own unique token.
 
 * **Delete Cluster**
 	- This action will remove the corresponding cluster from ClusterControl supervision and will NOT uninstall the actual database cluster.
-	- If you want to re-add the cluster, you have to use `Import Existing Server/Cluster <../../user-guide/index.html#import-existing-server-cluster>`_.
+	- If you want to re-add the cluster, you have to use :ref:`Import Existing Server Cluster`.
 
 * **Deregister Cluster from UI**
 	- Unregister a database cluster from the ClusterControl UI. 
-	- You can still re-register your cluster to ClusterControl at a later stage by using `Cluster Registrations <../../user-guide/index.html#cluster-registrations>`_.
+	- You can still re-register your cluster to ClusterControl at a later stage by using :ref:`Cluster Registrations`.
 
 Add Node
 ````````
@@ -301,6 +305,7 @@ A clone will be created of this cluster. The following procedure applies:
 * **DB Node (1-9)**
 	- The database node IP address or hostname. The enable fields is depending on the Cloned Cluster Size.
 
+.. _MySQL - Overview - Cluster Load:
 
 Cluster Load
 ++++++++++++
@@ -308,7 +313,7 @@ Cluster Load
 The Cluster Load graph provides overview of aggregated load on your database cluster. To jump into individual database load, click on ‘Show Servers’.
 
 * **Dash Settings**
-	- Customize the Cluster Load dashboard. See `Custom Dashboard`_ section.
+	- Customize the Cluster Load dashboard. See :ref:`MySQL - Overview - Custom Dashboard` section.
 
 * **Show Servers**
 	- Show real-time individual node database load.
@@ -340,10 +345,12 @@ The Cluster Load graph provides overview of aggregated load on your database clu
 * **Queries**
 	- The total of all queries running across all nodes. The total number of queries is including statements like SET, BEGIN, COMMIT, etc. These statements are frequently executed by ORMs or during creation of a connection (for instance "SET NAMES UTF8") and thus create a lot of "Queries" even though they are not any queries that read or write to the database. Therefore a sum of selects, updates, deletes and inserts will not the same as the value of "Queries".
 
+.. _MySQL - Overview - Custom Dashboard:
+
 Custom Dashboard
 +++++++++++++++++
 
-Customize the dashboard in the `Overview`_ page by selecting which metrics and graphs to display. For Galera nodes, 6 graphs are configured by default:
+Customize the dashboard in the :ref:`MySQL - Overview` page by selecting which metrics and graphs to display. For Galera nodes, 6 graphs are configured by default:
 
 ====================== ===========
 Dashboard Name         Description
@@ -370,7 +377,9 @@ The created custom dashboards will appear as tabs right before *Dash Settings*.
 * **Selected as Default Graph**
 	- Choose Yes if you want to set the graph as default when viewing the Overview page.
 
-.. Note:: You can rearrange dashboard order by drag and drop.
+.. Note:: You can re-arrange dashboard order by drag and drop.
+
+.. _MySQL - Overview - Server Load:
 
 Server Load
 +++++++++++
@@ -379,6 +388,8 @@ Drill down into metrics for individual servers. Click on *Show CPU, Net and Disk
 
 * **Show CPU, Net and Disk**
 	- Drill down to each of the selected node’s CPU, network and disk load.
+
+.. _MySQL - Overview - Cluster-wide Queries:
 
 Cluster-wide Queries
 +++++++++++++++++++++
@@ -406,12 +417,14 @@ Provides aggregated view of all queries running across all database nodes in the
 * **Max Lock Time**
 	- The maximum amount of time the query spent waiting to acquire the lock it needs to run.
 
-Hosts/Nodes Statistics
-+++++++++++++++++++++++
+.. _MySQL - Overview - Database Nodes Stats:
 
-This provides a summary of host and replication-related stats for all nodes. These values are refreshed every *Refresh rate* values defined at the top of the page. 
+Database Stats
+++++++++++++++
 
-Each database cluster has it’s own set of statistics as explained below:
+This provides a summary of database and replication-related metrics for all nodes. These values are refreshed every *Refresh rate* values defined at the top of the page. 
+
+Each database cluster has it’s own set of metrics as explained below:
 
 Galera Cluster
 ``````````````
@@ -763,13 +776,15 @@ Data Nodes Grid
 * **Refresh**
 	- Fetch the latest update.
 
-Hosts
-++++++
+.. _MySQL - Overview - Hosts Stats:
 
-Shows collected system statistics in a table as below:
+Hosts Stats
++++++++++++
+
+Shows collected host metrics in a grid as below:
 
 * **Ping(us)**
-	- Ping round trip from ClusterControl host to each host in microseconds.
+	- Ping round trip time (RTT) from ClusterControl host in microseconds.
 
 * **CPU Util/Steal**
 	- Total of CPU utilization in percentage.
