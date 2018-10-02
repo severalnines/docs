@@ -1370,7 +1370,7 @@ Debian/Ubuntu
 .. code-block:: bash
 
 	$ sudo apt-get -f install ntp gnuplot
-	$ sudo dpkg -i clustercontrol-*.deb
+	$ sudo dpkg -i clustercontrol*.deb
 
 4. Execute the post-installation script to configure ClusterControl components and follow the installation wizard accordingly:
 

@@ -147,7 +147,7 @@ Debian/Ubuntu
 
 .. code-block:: bash
 
-	$ sudo dpkg -i clustercontrol-*.deb
+	$ sudo dpkg -i clustercontrol*.deb
 
 3) Restart the ClusterControl services:
 
