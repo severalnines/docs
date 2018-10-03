@@ -860,6 +860,8 @@ With agent-based configuration, you can use a set of new dashboards that use Pro
 
 One Prometheus data source can be shared among multiple clusters within ClusterControl. You have the options to deploy a new Prometheus server or import an existing Prometheus server, under *ClusterControl > Dashboards > Enable Agent Based Monitoring*. 
 
+.. Attention:: Importing external Prometheus host (which was not deployed by ClusterControl) is not supported at the moment due to possibility of incompatible data structures exposed by Prometheus exporters.
+
 Monitoring Tools
 ````````````````
 
