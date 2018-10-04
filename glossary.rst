@@ -38,6 +38,11 @@ Glossary
 		
 		.. seealso:: https://en.wikipedia.org/wiki/Cron
 
+	daemon
+		Daemon turns other processes into daemons.
+		
+		.. seealso:: http://libslack.org/daemon/
+
 	DN
 		A Distinguished Name (DN) is used to uniquely name a directory object.
 		
