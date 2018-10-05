@@ -865,7 +865,13 @@ One Prometheus data source can be shared among multiple clusters within ClusterC
 Monitoring Tools
 ````````````````
 
+Agentless
+''''''''''
+
 For agentless monitoring mode, ClusterControl monitoring duty only requires OpenSSH server package on the monitored hosts. ClusterControl uses *libssh* client library to collect host metrics for the monitored hosts - CPU, memory, disk usage, network, disk IO, process, etc. OpenSSH client package is required on the ClusterControl host only for setting up passwordless SSH and debugging purposes. Other SSH implementations like Dropbear and TinySSH are not supported.
+
+Agent-based
+''''''''''''
 
 For agent-based monitoring mode, ClusterControl requires a :term:`Prometheus` server on port 9090 to be running, and all monitored nodes to be configured with at least three exporters (depending on the node's role):
 
@@ -878,13 +884,50 @@ For agent-based monitoring mode, ClusterControl requires a :term:`Prometheus` se
 
 On every monitored host, ClusterControl will configure and daemonize exporter process using a program called :term:`daemon`. Thus, ClusterControl host must have an Internet connection to automate the Prometheus deployment. Apart from Prometheus scrape process, ClusterControl also connects to the process exporter via HTTP calls directly to determine the process state of the node. No sampling via SSH is involved in this process.
 
+The collector flags are configured based on the node's role, as shown in the following table (some exporters do not use collector flags):
+
++--------------------+------------------------------------------------+
+| Exporter           |  Collector Flags                               |
++====================+================================================+
+| mysqld_exporter    | * collect.info_schema.processlist              |
+|                    | * collect.info_schema.tables                   |
+|                    | * collect.info_schema.innodb_metrics           |
+|                    | * collect.global_status                        |
+|                    | * collect.global_variables                     |
+|                    | * collect.slave_status                         |
+|                    | * collect.perf_schema.tablelocks               |
+|                    | * collect.perf_schema.eventswaits              |
+|                    | * collect.perf_schema.file_events              |
+|                    | * collect.perf_schema.file_instances           |
+|                    | * collect.binlog_size                          |
+|                    | * collect.perf_schema.tableiowaits             |
+|                    | * collect.perf_schema.indexiowaits             |
+|                    | * collect.info_schema.tablestats               |
++--------------------+------------------------------------------------+
+| node_exporter      | arp, bcache, bonding, conntrack, cpu,          |
+|                    | diskstats, edac, entropy, filefd, filesystem,  |
+|                    | hwmon, infiniband, ipvs, loadavg, mdadm,       |
+|                    | meminfo, netdev, netstat, nfs, nfsd, sockstat, |
+|                    | stat, textfile, time, timex, uname, vmstat,    |
+|                    | wifi, xfs, zfs                                 |
++--------------------+------------------------------------------------+
+
+Database Client Libraries
+'''''''''''''''''''''''''
+
 When gathering the database stats and metrics, regardless of the monitoring operation method, ClusterControl Controller (CMON) connects to the database server directly via database client libraries - *libmysqlclient* (MySQL/MariaDB and ProxySQL), *libpq* (PostgreSQL) and *libmongocxx* (MongoDB). That is why it's crucial to setup proper privileges for ClusterControl server from database servers perspective. For MySQL-based clusters, ClusterControl requires database user "cmon" while for other databases, any username can be used for monitoring, as long as it is granted with super-user privileges. Most of the time, ClusterControl will setup the required privileges (or use the specified database user) automatically during the cluster import or cluster deployment stage.
+
+Load Balancers
+''''''''''''''
 
 For load balancers, ClusterControl requires the following additional tools:
 
 * Maxadmin on the MariaDB MaxScale server.
 * netcat and/or socat on the HAProxy server to connect to HAProxy socket file.
 * ProxySQL requires mysql client on the ProxySQL server.
+
+Agentless vs Agent-based Architecture 
+`````````````````````````````````````
 
 The following diagram summarizes both host and database monitoring processes executed by ClusterControl using *libssh* and database client libraries (agentless approach):
 
