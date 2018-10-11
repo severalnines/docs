@@ -8,6 +8,29 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.7.0
 -----------------
 
+Maintenance Release: October 10\ :sup:`th`\ , 2018
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.0-5259
+	- clustercontrol-controller-1.7.0-2825
+
+* Frontend:
+	- SSE (Server Side Events): Fixed when a toaster was shown prompting configuration suggestions when a security token is invalid.
+	- Advisors: Fixed an issue with importing of advisors and the overwrite flag was not respected.
+	- Cloud: Fixed and issue with subnets and AZs
+	- Backup: Added 'MySQL Db Only' as a dump type for mysqldump. This creates a dump of only the mysql database.
+
+* Controller:
+	- General: Fixed an issue to chown a dir only if ClusterControl created it.
+	- Advisors: A fix to properly handle multiple partitions in ``s9s/host/disk_space_usage.js``.
+	- MongoDb: Fixed an issue where a stepDown was attempted on a shard router (mongos), and the restart node job failed.
+	- Prometheus: Fail install if a running Prometheus server is detected.
+	- Prometheus: Updates to queries and optimisations.
+	- Postgres: Fixed an issue when deploying 9.2.
+	- Galera: Fixed a bug where the desync node did not work when using MariaDb Backup.
+	- MySQL Replication: Fixed a bug when the node got the wrong node status after a restart.
+
 Maintenance Release: September 26\ :sup:`th`\ , 2018
 +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
