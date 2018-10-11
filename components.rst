@@ -42,7 +42,7 @@ ClusterControl Controller (CMON)
 
 ClusterControl Controller (CMON) is the core backend process that performs all automation and management procedures. It is installed as ``/usr/sbin/cmon``. It comes with a collection of helper scripts in ``/usr/bin`` directory (prefixed with s9s\_) to complete specific tasks. However, some of the scripts have been deprecated due to the corresponding tasks are now being handled by the CMON core process.
 
-CMON controller package is available at `Severalnines download site <http://www.severalnines.com/downloads/cmon/>`_. RedHat-based systems should download and install the RPM package while Debian-based systems should download and extract the DEB package. The package name is formatted as:
+ClusterControl Controller builds are available at :ref:`Installation - Severalnines Repository`. The packages are also available at `Severalnines download site <http://www.severalnines.com/downloads/cmon/>`_. RedHat-based systems should download and install the RPM package while Debian-based systems should download and install the DEB package. The package name is formatted as:
 
 * RPM package (RedHat-based systems): ``clustercontrol-controller-[version]-[build number]-[architecture].rpm``
 * DEB package (Debian-based systems): ``clustercontrol-controller-[version]-[build number]-[architecture].deb``
@@ -56,70 +56,51 @@ Command Line Arguments
 
 By default if you just run ``cmon`` (without any arguments), cmon defaults to run in the background. ClusterControl Controller (cmon) supports several command line options as shown below:
 
-``-h, --help``
-* Print the help.
+========================================= ===========
+Shorthand, Option                         Description
+========================================= ===========
+``-h``, ``--help``                        Print the help.
+``--help-config``                         Print the manual for configuration parameters. See `Configuration Options`_.
+``-v``, ``--version``                     Prints out the version number and build info.
+``--logfile=[filepath]``                  The path of the log file to be used.
+``-s``, ``--syslog``                      Also log to syslog.
+``-g``, ``--grant``                       Create grants.
+``-i``, ``--init``                        Creates configuration file and database.
+``--help-init``                           Shows the special options for ``--init``.
+``-d``, ``--nodaemon``                    Run in foreground. Ctrl + C to exit.
+``-r``, ``--directory=[directory]``       Running directory.
+``-p``, ``--rpc-port=[integer]``          Listen on RPC port. Default is 9500.
+``-t``, ``--rpc-tls=<bool>``              Enable TLS on RPC port. Default is false.
+``-b``, ``--bind-addr='ip1,ip2..'``       Bind Remote Procedure Call (RPC) to IP addresses (default is 127.0.0.1,::1). By default cmon binds to '127.0.0.1' and '::1'. If another bind-address is needed, then it is possible to define the bind addresses in the file ``/etc/default/cmon``. See `Startup File`_.
+``-u``, ``--upgrade-schema``              Try to upgrade the CMON schema (Supported from CMON version 1.2.12 and later).
+``-U``, ``--cmondb-user=USERNAME``        Sets the user name to access the CMON database.
+``-P``, ``--cmondb-password=PASSWORD``    Uses the password to access the CMON database.
+``-H``, ``--cmondb-host=HOSTNAME``        Access the CMON database on the given host.
+``-D``, ``--cmondb-name=DATABASE``        Sets the CMON database name.
+``-e``, ``--events-client=URL``           Additional RPC URL where backend sends events.
+``-c``, ``--cloud-service=URL``           A custom clustercontrol-cloud service URL.
+========================================= ===========
 
-``--help-config``
-* Print the manual for configuration parameters. See `Configuration Options`_.
+.. _Components - ClusterControl Controller - Startup File:
 
-``-v, --version``
-* Prints out the version number and build info.
+Startup File
+++++++++++++
 
-``--logfile=[filepath]``
-* The path of the log file to be used.
-
-``-s, --syslog``
-* Also log to syslog.
-
-``-g, --grant``
-* Create grants.
-
-``-i, --init``
-* Creates configuration file and database.
-
-``--help-init``
-* Shows the special options for ``--init``.
-
-``-d, --nodaemon``
-* Run in foreground. Ctrl + C to exit.
-
-``-r, --directory=[directory]``
-* Running directory.
-
-``-p, --rpc-port=[integer]``
-* Listen on RPC port. Default is 9500.
-
-``-t, --rpc-tls=<bool>``
-* Enable TLS on RPC port. Default is false.
-
-``-b, --bind-addr='ip1,ip2..'``
-* Bind Remote Procedure Call (RPC) to IP addresses (default is 127.0.0.1,::1). By default cmon binds to '127.0.0.1' and '::1'. If another bind-address is needed, then it is possible to define the bind addresses in the file ``/etc/default/cmon``. The CMON init script translates those ``RPC\_*`` ones into command line options. Example:
+To customize the cmon startup process, you can define the `Command Line Arguments`_ in a custom file, instead of hacking up the init script directly. The CMON init script (or systemd) will append all configuration options defined inside ``/etc/default/cmon`` when starting up the cmon and translates those options into command line arguments. For example:
 
 .. code-block:: bash
 
+	$ cat /etc/default/cmon
 	RPC_PORT=9500
 	RPC_BIND_ADDRESSES="10.10.10.13,192.168.33.1,127.0.0.1"
+	EVENTS_CLIENT=http://127.0.0.1:9510
+	CLOUD_SERVICE=http://127.0.0.1:9518
 
-``-u, --upgrade-schema``
-* Try to upgrade the CMON schema (Supported from CMON version 1.2.12 and later).
+In the example above, cmon will bind into those IP addresses and listen to port 9500 once started. If you filter out the ps output from the server, you should get the following:
 
-``-U, --cmondb-user=USERNAME``
-* Sets the user name to access the CMON database.
+.. code-block:: bash
 
-``-P, --cmondb-password=PASSWORD``
-* Uses the password to access the CMON database.
-
-``-H, --cmondb-host=HOSTNAME``
-* Access the CMON database on the given host.
-
-``-D, --cmondb-name=DATABASE``
-* Sets the CMON database name.
-
-``-e, --events-client=URL``
-* Additional RPC URL where backend sends events.
-
-``-c, --cloud-service=URL``
-* A custom clustercontrol-cloud service URL.
+	/usr/sbin/cmon --rpc-port=9500 --bind-addr='10.10.10.13,192.168.33.1,127.0.0.1' --events-client='http://127.0.0.1:9510' --cloud-service='http://127.0.0.1:9518'
 
 .. _Components - ClusterControl Controller - Configuration File:
 
@@ -204,9 +185,7 @@ The CMON Controller will import the configuration options defined in each config
 Configuration Options
 +++++++++++++++++++++++
 
-All of the options and values as described below must not contain any whitespace between them. Any changes to the CMON configuration file requires a CMON service restart before they are applied.
-
-The configuration options can be divided into the following categories:
+Values that consists of special characters must be enclosed with single-quote. Any changes to the CMON configuration file requires a service restart before they are applied. The configuration options can be divided into the following categories:
 
 1. `General Cluster`_
 2. `CMON`_
@@ -230,7 +209,7 @@ General Cluster
 ````````````````
 
 ========================================= ===========
-Options                                   Description
+Option                                    Description
 ========================================= ===========
 ``cluster_id=<integer>``                  Cluster identifier. This will be used by CMON to indicate which cluster to provision. It must be unique, two clusters can not share the same ID. Example: ``cluster_id=1``.
 ``name=<string>``                         Cluster name. The cluster name configured under *ClusterControl > DB cluster > Settings > CMON Settings > Cluster Name* precedes this. Example: ``name='Galera Cluster'``. Other alias: ``cluster_name``.
@@ -241,14 +220,14 @@ Options                                   Description
 ``cmon_use_mail=<boolean integer>``       Setting to use the 'mail' command for e-mailing. Default is 0 (false).
 ``enable_html_emails=<boolean integer>``  Enables sending of HTML e-mails. Default is 1 (true).
 ``cmon_mail_sender=<email>``              The sender email address when sending out emails.
-``frontend_url=<url>``                    The ClusterControl URL to be embedded inside e-mail notifications. Example ``frontend_url=https://monitor.domain.com/clustercontrol``
+``frontend_url=<url>``                    The ClusterControl URL to be embedded inside e-mail notifications. Example ``frontend_url='https://monitor.domain.com/clustercontrol'``
 ========================================= ===========
 
 CMON
 ````
 
 ====================================== ===========
-Options                                Description
+Option                                 Description
 ====================================== ===========
 ``hostname=<string>``                  Hostname or IP address of the controller host. Example: ``hostname=192.168.0.10``.
 ``controller_id=<integer>``            An arbitrary identifier string of this controller instance. Example: ``controller_id=1``. 
@@ -287,7 +266,7 @@ Operating System
 `````````````````
 
 ====================================== ===========
-Options                                Description
+Option                                 Description
 ====================================== ===========
 ``os=<string>``                        Operating system runs across the cluster, including ClusterControl host. 'redhat' for RedHat-based distributions (CentOS/Red Hat Enterprise Linux/Oracle Linux) or 'debian' for Debian-based distributions (Debian/Ubuntu). Example: ``os=redhat``.
 ``osuser=<string>``                    Operating system user that will be used by CMON to perform automation tasks like cluster recovery, backups and upgrades. This user must be able to perform super-user activities. Using root is recommended. Example: ``os_user=root``. Other aliases: ``os_user``, ``ssh_user``.
@@ -303,7 +282,7 @@ SSH
 ````
 
 ====================================== ===========
-Options                                Description
+Option                                 Description
 ====================================== ===========
 ``ssh_identify=<path>``                The SSH key or key pair file that will be used by CMON to connect managed nodes (including ClusterControl node) passwordlessly. If undefined, CMON will use the home directory of ``os_user`` and look for ``.ssh/id_rsa`` file.	Example: ``ssh_identity=/root/.ssh/id_rsa``. Other aliases: ``ssh_keypath``, ``identity_file``.
 ``ssh_port=<integer>``                 The SSH port used by CMON to connect to managed nodes. If undefined, default to 22.	Example: ``ssh_port=22``.
@@ -320,7 +299,7 @@ ClusterControl Recovery
 ````````````````````````
 
 =================================================== ===========
-Options                                             Description
+Option                                              Description
 =================================================== ===========
 ``enable_cluster_autorecovery=<boolean integer>``   If undefined, CMON defaults to 0 (false) and will NOT perform automatic recovery if it detects cluster failure. Supported value is 1 (cluster recovery is enabled) or 0 (cluster recovery is disabled).
 ``enable_node_autorecovery=<boolean integer>``      If undefined, CMON default to 0 (false) and will NOT perform automatic recovery if it detects node failure. Supported value is 1 (node recovery is enabled) or 0 (node recovery is disabled).
@@ -334,7 +313,7 @@ Monitoring and Thresholds
 ``````````````````````````
 
 =================================================== ===========
-Options                                             Description
+Option                                              Description
 =================================================== ===========
 ``monitored_mountpoints=<paths>``                   The MySQL/MongoDB/PostgreSQL data directory used by database nodes for disk performance in comma separated list. Example: ``monitored_mountpoints=/var/lib/mysql,/mnt/data/mysql``. Other alias: ``monitored_mount_points``.
 ``monitored_nics=<string>``                         List of network interface name to be monitored for network performance in comma separated list. Example: ``monitored_nics=eth1,eth2``.
@@ -386,7 +365,7 @@ Query Monitor
 ``````````````
 
 ======================================================================= ===========
-Options                                                                 Description
+Option                                                                  Description
 ======================================================================= ===========
 ``long_query_time=<float>``                                             Threshold value for slow query checking. Default 0.5. Example: ``long_query_time=0.0003``.
 ``log_queries_not_using_indexes=<boolean integer>``                     Set query monitor to detect queries not using indexes. Default is 0 (false).
@@ -408,28 +387,27 @@ Backup
 ``````
 
 ============================================ ===========
-Options                                      Description
+Option                                       Description
 ============================================ ===========
 ``netcat_port=<integer>``                    The netcat port used to stream backups. Default is 9999. Example: ``netcat_port=9999``.
 ``backup_user=<string>``                     The database username for backups. Example ``backup_user=backupuser``.
-``backup_encryption_key=<string>``           The AES encryption key used for backups in base64.
+``backup_encryption_key=<string>``           The AES encryption key used for backups in base64. See :ref:`MySQL - Backup - Backup Encryption and Decryption` for details.
 ``backupdir=<path>``                         The default backup directory, to be pre-filled in ClusterControl UI. Example: ``backupdir=/storage/backup``.
 ``backup_subdir=<string>``                   Set the name of the backup subdirectory. For more details on the formatting, see `Backup Subdirectory Variables`_. Default is "BACKUP-%I". Example: ``backup_subdir=BACKUP-%I-%D``.
 ``backup_retention=<integer>``               How many days to keep the backups. Backups matching retention period are removed. Default is 31. Example: ``backup_retention=15``.
 ``backup_cloud_retention=<integer>``         How many days to keep the uploaded backups to cloud. Backups matching retention period are removed. Default is 180. Example=``backup_cloud_retention=90``.
 ``backup_n_safety_copies=<integer>``         How many completed full backups will be kept regardless of their retention status. Default is 1. Example: ``backup_n_safety_copies=3``.
-``datadir_backup_path=<path>``               During restore/rebuild operations a backup (filesystem copy) of the existing datadir maybe performed (user decides). Unless specified, the default datadir backup location is DATADIR_bak, e.g ``/var/lib/mysql_bak`` if the datadir is ``/var/lib/mysql``.
+``datadir_backup_path=<path>``               During restore/rebuild operations a backup (filesystem copy) of the existing data directory (datadur) maybe performed (user decides). Unless specified, the default data directory backup location is DATADIR_bak, e.g ``/var/lib/mysql_bak`` if the datadir is ``/var/lib/mysql``.
 ``disable_backup_email=<boolean integer>``   This setting controls if emails are sent or not if a backup finished or failed. This feature is disabled by default, meaning backup emails are sent. Other alias: ``disable_backup_emails``.
-``wal_retention_hours=<boolean integer>``    Retention hours (to erase old WAL archive logs) for PITR. Default: 0. Other alias: ``pitr_retention_hours``.
 ============================================ ===========
 
 MySQL/MariaDB Nodes
 ````````````````````
 
 ======================================================================= ===========
-Options                                                                 Description
+Option                                                                  Description
 ======================================================================= ===========
-``mysql_server_addresses=<string>``                                     Comma separated list of MySQL hostnames or IP addresses (with or without port is supported). For MySQL Cluster, this should be the list of MySQL API node IP addresses.	In case of Galera Cluster, you can add ``?slave`` or ``?bvs`` to the URL so ClusterControl will register the node accordingly. Example: ``mysql_server_addresses=192.168.0.11:3306,192.168.0.12:3306,192.168.0.13:3306,192.168.0.14:3306?slave``.
+``mysql_server_addresses=<string>``                                     Comma separated list of MySQL hostnames or IP addresses (with or without port is supported). For MySQL Cluster, this should be the list of MySQL API node IP addresses.	In case of Galera Cluster, you can add ``?slave`` or ``?bvs`` (backup verification server) to the URL so ClusterControl will register the node accordingly. Example: ``mysql_server_addresses=192.168.0.11:3306,192.168.0.12:3306,192.168.0.13:3306,192.168.0.14:3306?slave``.
 ``monitored_mysql_port=<integer>``                                      MySQL port for the managed cluster. ClusterControl assumes all DB nodes are listening on the same port. Default is 3306. Example: ``monitored_mysql_port=3306``. Other aliases: ``cmon_local_mysql_port``, ``local_mysql_port``.
 ``monitored_mysql_root_user=<string>``                                  MySQL root user for the managed cluster. ClusterControl assumes all DB nodes are using the same root user. The user must have same privileges as root (SUPER with GRANT OPTION). This is required when you want to scale your cluster by adding a new DB node or replication slave. Default is "root". Example: ``monitored_mysql_root_user=dbadmin``.
 ``monitored_mysql_root_password=<string>``                              MySQL root password for the managed cluster. ClusterControl assumes all DB nodes are using the same root password. This is required when you want to scale your cluster by adding a new DB node or replication slave. Example: ``monitored_mysql_root_password='r00tP$@^%sw0rd'``.
@@ -474,7 +452,7 @@ MongoDB Nodes
 ``````````````
 
 =================================================== ===========
-Options                                             Description
+Option                                              Description
 =================================================== ===========
 ``mongodb_server_addresses=<string>``               Comma separated list of MongoDB shard or replica IP addresses with port. Example: ``mongodb_server_addresses=192.168.0.11:27017,192.168.0.12:27017,192.168.0.13:27017``.
 ``mongoarbiter_server_addresses=<string>``          Comma separated list of MongoDB arbiter IP addresses with port.	Example: `mongoarbiter_server_addresses=192.168.0.11:27019,192.168.0.12:27019,192.168.0.13:27019`.
@@ -491,11 +469,12 @@ PostgreSQL Nodes
 ````````````````
 
 =================================================== ===========
-Options                                             Description
+Option                                              Description
 =================================================== ===========
-``postgresql_server_addresses=<string>``            The PostgreSQL node instances. Example: ``postgresql_server_addresses=192.168.10.100``. Other alias: ``postgre_server_addresses``.
+``postgresql_server_addresses=<string>``            Comma separated list of PostgreSQL instances with port. Example: ``postgresql_server_addresses=192.168.10.100:5432,192.168.10.101:5432``. Other alias: ``postgre_server_addresses``.
 ``postgresql_user=<string>``                        The PostgreSQL admin user name. Default is postgres. Example: ``postgresql_user=postgres``. Other alias: ``postgre_user``.
 ``postgresql_password=<string>``                    The PostgreSQL admin password. Example: ``postgresql_password='p4s$^#0rd123'``. Other alias: ``postgre_password``.
+``wal_retention_hours=<boolean integer>``           Retention hours to erase old WAL archive logs for PITR. Default is 0, means WAL archive logs are kept forever. Other alias: ``pitr_retention_hours``.
 =================================================== ===========
 
 .. _Components - ClusterControl Controller - Management and Deployment Operations:
