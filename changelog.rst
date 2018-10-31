@@ -8,6 +8,62 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.7.0
 -----------------
 
+
+Maintenance Release: October 30\ :sup:`th`\ , 2018
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+* Build:
+	- clustercontrol-controller-1.7.0-2859
+	- clustercontrol-1.7.0-5319
+	- clustercontrol-cloud-1.7.0-154
+	- clustercontrol-notifications-1.7.0-153
+	- clustercontrol-ssh-1.7.0-66
+
+* Frontend (UI):
+	- Keepalived: Added a fix to show the role, i.e which keepalived node that has the VIP assigned.
+	- Deploy: Added ``.`` (dot), (space) and ``/`` (backslash) as allowed symbols for the password field. 
+	- ProxySQL:  corrected use of proxysql match digest/pattern fields.
+	- General: Improved session handling.
+	- SSE (Server Side Events): Improvements to show notifications.
+	- OS service files fixes to handle non English locales for cmon-cloud, cmon-events, and cmon-ssh.
+
+* Controller:
+	- Deploy/Import Cluster: Fixed an issue to allow ``\`` (backslash) in the admin user password (mysql root password).
+	- Backup: Restore backup on a Galera cluster (mariabackup/xtrabackup) to a single node shuts down whole cluster even if bootstrap cluster was disabled.
+	- Backup: mariabackup qpress support.
+	- Backup: Increased the size of the backup record (TEXT -> MEDIUMTEXT).
+	- Backup: Fail early if an attempt is made to take an xtrabackup on a MariaDB 10.3 server, and warn if xtrabackup is attempted on the MariaDB 10.2 series. Using mariabackup on 10.2 and 10.3 is recommended.
+	- Backup: Verification now supports ``--use-memory`` option.
+	- Deploy MariaDB 10.3: Fix buggy ``galera_new_cluster`` (https://jira.mariadb.org/browse/MDEV-17379).
+	- Galera: Fixed an issue with rebuilding node from the backup.
+	- Galera/Replication: Fixed an issue preventing a node from being rebuilt if only mariabackup was available on the node. Also improved error messages.
+	- Keepalived: Added information which node has the VIP assigned.
+
+
+Maintenance Release: October 19\ :sup:`th`\ , 2018
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.0-5281
+
+* Frontend (UI):
+	- Add Node with 'Rebuild from Backup': Fix wrong backup id parameter in the job spec.
+	- Add Node: Moved rebuild backup dropdown.
+	- Mail server configuration: Fix invalid port length.
+	- Rebuild from backup: Fix to only show successful backups in the dropdown.
+	- Removed xtrabackup option from MariaDB v10.3 clusters since it's no longer working with v10.3.
+
+Maintenance Release: October 16\ :sup:`th`\ , 2018
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.0-2832
+
+* Controller:
+	- MariaDB: Fixed an issue with rebuild replication slave to support MariaDb Backup.
+	- Configuration Management: Fixed an issue preventing to assign decimal values to a database variable.
+
 Maintenance Release: October 10\ :sup:`th`\ , 2018
 +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
