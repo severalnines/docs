@@ -41,6 +41,11 @@ ClusterControl has been tested on the following operating systems:
 * Ubuntu 12.04/14.04/16.04/18.04 LTS
 * Debian 7.x/8.x/9.x
 
+For the managed nodes, the deployment feature has been tested on the following operating systems:
+* RedHat/CentOS 6.x/7.x
+* Ubuntu 12.04/14.04/16.04/18.04 LTS
+* Debian 7.x/8.x/9.x
+
 The following do not work:
 
 * CentOS 5.4 and earlier
@@ -51,7 +56,7 @@ The following do not work:
 Software Dependencies
 ---------------------
 
-The following software is required by ClusterControl:
+The following softwares are required by ClusterControl:
 
 - MySQL server (5.1 or later, preferably 5.5 or later. MySQL 8.0 is not supported yet)
 - MySQL client
@@ -59,14 +64,14 @@ The following software is required by ClusterControl:
 	- mod_rewrite
 	- mod_ssl
 	- allow .htaccess override
-- PHP (5 or later)
+- PHP (5.4 or later)
 	- RHEL: php, php-mysql, php-gd, php-ldap, php-curl
 	- Debian: php5-common, php5-mysql, php5-gd, php5-ldap, php5-curl, php5-json
 - Linux Kernel Security (SElinux or AppArmor) - must be disabled or set to permissive mode
 - OpenSSH server/client
 - BASH (recommended: version 4 or later)
 - NTP server - All servers’ time must be synced under one time zone
-- netcat - for streaming backups
+- socat or netcat - for streaming backups
 
 .. Note:: If ClusterControl is installed via installation script (install-cc) or package manager (yum/apt), all dependencies will be automatically satisfied.
 
@@ -81,7 +86,7 @@ We highly recommend user to use the following web browsers when accessing Cluste
 	
 Ensure to keep up-to-date of these browsers as we are very likely taking advantage of the new features available in the latest version.
 
-.. Note:: ClusterControl is built and tested only on the mentioned web browsers. Some major web browsers like Safari, Opera and Internet Explorer could also work.
+.. Note:: ClusterControl is built and tested only on the mentioned web browsers. Some major web browsers like Safari, Opera and Microsoft Edge could also work.
 
 .. _Requirements - Supported Databases:
 
