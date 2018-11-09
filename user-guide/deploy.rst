@@ -18,8 +18,8 @@ Opens a step-by-step modal dialog to deploy a new set of database cluster. The f
 
 There are prerequisites that need to be fulfilled prior to the deployment:
 
-* Verify that sudo is working properly if you are using a non-root user. See `Operating System User <../requirements.html#operating-system-user>`_.
-* Passwordless SSH is configured from ClusterControl node to all database nodes. See `Passwordless SSH <../requirements.html#passwordless-ssh>`_.
+* Verify that sudo is working properly if you are using a non-root user. See :ref:`Requirements - Operating System User`.
+* Passwordless SSH is configured from ClusterControl node to all database nodes. See :ref:`Requirements - Passwordless SSH`.
 
 ClusterControl will trigger a deployment job and the progress can be monitored under *ClusterControl > Activity > Jobs*.
 
@@ -35,7 +35,7 @@ By default, ClusterControl deploys MySQL replication with the following configur
 * PERFORMANCE_SCHEMA is disabled.
 * Generated account credentials are stored inside ``/etc/mysql/secrets-backup.cnf``.
 
-If you would like to customize the above configurations, modify the template base file to suit your needs before proceed to the deployment. See `Base Template Files <user-guide/mysql/manage.html#base-template-files>`_ for details.
+If you would like to customize the above configurations, modify the template base file to suit your needs before proceed to the deployment. See :ref:`MySQL - Manage - Configurations - Base Template Files` for details.
 
 Starting from version 1.4.0, it's possible to setup a master-master replication from scratch under 'Define Topology' tab. You can add more slaves later after the deployment completes.
 
@@ -46,10 +46,10 @@ Starting from version 1.4.0, it's possible to setup a master-master replication 
 
 * **SSH User**
 	- Specify root if you have root credentials.
-	- If you use 'sudo' to execute system commands, specify the name that you wish to use here. The user must exists on all nodes. See `Operating System User <../requirements.html#operating-system-user>`_.
+	- If you use 'sudo' to execute system commands, specify the name that you wish to use here. The user must exists on all nodes. See :ref:`Requirements - Operating System User`.
 	
 * **SSH Key Path**
-	- Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See `Passwordless SSH <../requirements.html#passwordless-ssh>`_.
+	- Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See :ref:`Requirements - Passwordless SSH`.
 
 * **Sudo Password**
 	- If you use sudo with password, specify it here. Ignore this if *SSH User* is root or sudoer does not need a sudo password.
@@ -139,10 +139,10 @@ By default, ClusterControl deploys MySQL Galera with the following configuration
 
 * **SSH User**
 	- Specify root if you have root credentials.
-	- If you use 'sudo' to execute system commands, specify the name that you wish to use here. The user must exists on all nodes. See `Operating System User <../requirements.html#operating-system-user>`_.
+	- If you use 'sudo' to execute system commands, specify the name that you wish to use here. The user must exists on all nodes. See :ref:`Requirements - Operating System User`.
 	
 * **SSH Key Path**
-	- Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See `Passwordless SSH <../requirements.html#passwordless-ssh>`_.
+	- Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See :ref:`Requirements - Passwordless SSH`.
 
 * **Sudo Password**
 	- If you use sudo with password, specify it here. Ignore this if *SSH User* is root or sudoer does not need a sudo password.
@@ -209,10 +209,10 @@ Deploys a new MySQL Cluster (NDB) by Oracle. The cluster consists of management 
 
 * **SSH User**
 	- Specify root if you have root credentials.
-	- If you use 'sudo' to execute system commands, specify the name that you wish to use here. The user must exists on all nodes. See `Operating System User <../requirements.html#operating-system-user>`_.
+	- If you use 'sudo' to execute system commands, specify the name that you wish to use here. The user must exists on all nodes. See :ref:`Requirements - Operating System User`.
 	
 * **SSH Key Path**
-	- Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See `Passwordless SSH <../requirements.html#passwordless-ssh>`_.
+	- Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See :ref:`Requirements - Passwordless SSH`.
 
 * **Sudo Password**
 	- If you use sudo with password, specify it here. Ignore this if *SSH User* is root or sudoer does not need a sudo password.
@@ -291,10 +291,10 @@ Deploys a new :term:`MySQL Group Replication` cluster by Oracle. This is a beta 
 
 * **SSH User**
 	- Specify root if you have root credentials.
-	- If you use 'sudo' to execute system commands, specify the name that you wish to use here. The user must exists on all nodes. See `Operating System User <../requirements.html#operating-system-user>`_.
+	- If you use 'sudo' to execute system commands, specify the name that you wish to use here. The user must exists on all nodes. See :ref:`Requirements - Operating System User`.
 	
 * **SSH Key Path**
-	- Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See `Passwordless SSH <../requirements.html#passwordless-ssh>`_.
+	- Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See :ref:`Requirements - Passwordless SSH`.
 
 * **Sudo Password**
 	- If you use sudo with password, specify it here. Ignore this if *SSH User* is root or sudoer does not need a sudo password.
@@ -360,10 +360,10 @@ Deploys a new MongoDB Replica Set. The database cluster will be automatically ad
 
 * **SSH User**
 	- Specify root if you have root credentials.
-	- If you use 'sudo' to execute system commands, specify the name that you wish to use here. The user must exists on all nodes. See `Operating System User <../requirements.html#operating-system-user>`_.
+	- If you use 'sudo' to execute system commands, specify the name that you wish to use here. The user must exists on all nodes. See :ref:`Requirements - Operating System User`.
 	
 * **SSH Key Path**
-	- Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See `Passwordless SSH <../requirements.html#passwordless-ssh>`_.
+	- Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See :ref:`Requirements - Passwordless SSH`.
 
 * **Sudo Password**
 	- If you use sudo with password, specify it here. Ignore this if *SSH User* is root or sudoer does not need a sudo password.
@@ -436,10 +436,10 @@ Deploys a new MongoDB Sharded Cluster. The database cluster will be automaticall
 
 * **SSH User**
 	- Specify root if you have root credentials.
-	- If you use 'sudo' to execute system commands, specify the name that you wish to use here. The user must exists on all nodes. See `Operating System User <../requirements.html#operating-system-user>`_.
+	- If you use 'sudo' to execute system commands, specify the name that you wish to use here. The user must exists on all nodes. See :ref:`Requirements - Operating System User`.
 	
 * **SSH Key Path**
-	- Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See `Passwordless SSH <../requirements.html#passwordless-ssh>`_.
+	- Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See :ref:`Requirements - Passwordless SSH`.
 
 * **Sudo Password**
 	- If you use sudo with password, specify it here. Ignore this if *SSH User* is root or sudoer does not need a sudo password.
@@ -542,10 +542,10 @@ Deploys a new PostgreSQL standalone or streaming replication cluster from Cluste
 
 * **SSH User**
 	- Specify root if you have root credentials.
-	- If you use 'sudo' to execute system commands, specify the name that you wish to use here. The user must exists on all nodes. See `Operating System User <../requirements.html#operating-system-user>`_.
+	- If you use 'sudo' to execute system commands, specify the name that you wish to use here. The user must exists on all nodes. See :ref:`Requirements - Operating System User`.
 	
 * **SSH Key Path**
-	- Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See `Passwordless SSH <../requirements.html#passwordless-ssh>`_.
+	- Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See :ref:`Requirements - Passwordless SSH`.
 	
 * **Sudo Password**
 	- If you use sudo with password, specify it here. Ignore this if *SSH User* is root or sudoer does not need a sudo password.
