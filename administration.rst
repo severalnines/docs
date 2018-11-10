@@ -94,13 +94,13 @@ RedHat/CentOS
 
 .. code-block:: bash
 
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-1.7.0-5224-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-1.7.0-5319-x86_64.rpm
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.7.0-333-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.7.0-2800-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications-1.7.0-139-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh-1.7.0-62-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud-1.7.0-147-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud-1.7.0-147-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.7.0-2859-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications-1.7.0-153-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh-1.7.0-66-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud-1.7.0-154-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud-1.7.0-154-x86_64.rpm
 
 2) Install using yum so dependencies are met:
 
@@ -135,13 +135,13 @@ Debian/Ubuntu
 
 .. code-block:: bash
 
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol_1.7.0-5224_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol_1.7.0-5319_x86_64.deb
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.7.0-333_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.7.0-2800-x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications_1.7.0-139_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh_1.7.0-62_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud_1.7.0-147_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud_1.7.0-147_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.7.0-2859-x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications_1.7.0-153_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh_1.7.0-66_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud_1.7.0-154_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud_1.7.0-154_x86_64.deb
 
 2) Upload the packages to the server and install them using dpkg command:
 
