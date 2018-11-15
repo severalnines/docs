@@ -8,6 +8,20 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.7.0
 -----------------
 
+Maintenance Release: November 13\ :sup:`th`\ , 2018
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.0-5375
+	- clustercontrol-controller-1.7.0-2876  
+
+* Frontend(UI):
+	- Fixed an issue with PHP session management on PHP 5.3 and earlier. This manifested itself as e.g the Node page was loading forever, no data in the UI and "Internal Error".
+
+* Controller:
+	- Backup [mariabackup/xtrabackup]: Clean up qpress archives after restoring an xtrabackup|mariabackup compressed backup
+	- Verify Backup [mariabackup/xtrabackup]: Fixed a regression where the wrong restore method was selected.
+
 
 Maintenance Release: October 30\ :sup:`th`\ , 2018
 +++++++++++++++++++++++++++++++++++++++++++++++++++++
