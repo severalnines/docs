@@ -5,6 +5,8 @@ Administration
 
 This section provides detailed information on how to administer ClusterControl.
 
+.. _Administration - Upgrading ClusterControl:
+
 Upgrading ClusterControl
 ------------------------
 
