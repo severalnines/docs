@@ -5,14 +5,14 @@ Troubleshooting
 
 This troubleshooting guide provides detailed information on how to troubleshoot ClusterControl. ClusterControl is an operational management and automation software for database clusters, which aims to simplify deployment, monitoring, management and scaling of clusters. 
 
-This document is a guide to help troubleshoot problems that commonly arise with ClusterControl. In particular, this guide addresses possible problems that may originate from ClusterControl components namely CMON controller, CMON database, ClusterControl UI and ClusterControl CMONAPI. The document provides guidance on troubleshooting steps to identify the problem, with possible solutions. Finally, the document provides instructions on what data to collect when creating error reports to be submitted to `Severalnines Support <http://support.severalnines.com>`_.
+This document is a guide to help troubleshoot problems that commonly arise with ClusterControl. In particular, this guide addresses possible problems that may originate from ClusterControl components namely controller, CMON database, UI, notifications, clouds, web-based SSH and also CMONAPI. The document provides instructions on what data to collect when creating error reports to be submitted to `Severalnines Support <http://support.severalnines.com>`_.
 
-Note that this troubleshooting guide covers the latest ClusterControl version. We recommend you to stay up-to-date with the latest version of ClusterControl as it contains the latest bug fixes. To upgrade ClusterControl to the latest version, please refer to the section on `Upgrading ClusterControl <administration.html#upgrading-clustercontrol>`_.
+Note that this troubleshooting guide covers the latest ClusterControl version. We recommend you to stay up-to-date with the latest version of ClusterControl as it contains the latest bug fixes. To upgrade ClusterControl to the latest version, please refer to the section on :ref:`Administration - Upgrading ClusterControl`.
 
 Logging
 -------
 
-ClusterControl consists of different components which write their own logs. These files reside on the ClusterControl node. By default, CMON and ClusterControl UI run without the debug option enabled. Please refer to `Reporting and Debugging`_ section on how to get them run in debug mode.
+ClusterControl consists of a number of components which write to their own log file. These files reside on the ClusterControl node. By default, CMON and ClusterControl UI run without the debug option enabled. Please refer to `Reporting and Debugging`_ section on how to get them run in debug mode.
 
 If you encounter any problems with ClusterControl, it is highly recommended to examine the related log files:
 
@@ -22,8 +22,6 @@ If you encounter any problems with ClusterControl, it is highly recommended to e
 |                               | RedHat/CentOS                                        | Debian/Ubuntu                                        |
 +===============================+======================================================+======================================================+
 | CMON process log              | /var/log/cmon.log or /var/log/cmon_[cluster_id].log  | /var/log/cmon.log or /var/log/cmon_[cluster_id].log  |
-+-------------------------------+------------------------------------------------------+------------------------------------------------------+
-| ClusterControl deployment log | /tmp/s9s_out_1.log                                   | /tmp/s9s_out_1.log                                   |
 +-------------------------------+------------------------------------------------------+------------------------------------------------------+
 | ClusterControl UI error log   | /var/www/html/clustercontrol/app/tmp/logs/error.log  | /var/www/clustercontrol/app/tmp/logs/debug.log       |
 +-------------------------------+------------------------------------------------------+------------------------------------------------------+
@@ -36,64 +34,44 @@ If you encounter any problems with ClusterControl, it is highly recommended to e
 |                               | * /var/log/httpd/ssl_access_log                      | * /var/log/apache2/ssl_access.log                    |
 +-------------------------------+------------------------------------------------------+------------------------------------------------------+
 
-Output of CMON process log is also accessible directly from *ClusterControl > Logs > CMON Logs*:
-
-.. image:: img/cmon_log.png
-   :alt: CMON log
-   :align: center
+Output of CMON process log per cluster is also accessible directly from *ClusterControl > pick a cluster > Logs > CMON Logs*.
 
 Reporting and Debugging
 -----------------------
 
-If the above does not address the issues you are having, please refer to our `knowledge base <http://support.severalnines.com/categories/20019191-Knowledge-Base>`_ or contact us via our Support Portal by creating a support request at http://support.severalnines.com/tickets/new. We encourage you to make use of our `Error Reporting`_ tool as described in the next section when creating a support ticket.
+If the above does not address the issues you are having, please refer to our `knowledge base <http://support.severalnines.com/categories/20019191-Knowledge-Base>`_ or contact us via our Support Portal by creating a support request at http://support.severalnines.com/tickets/new. We encourage you to make use of our `Error Reporting`_ tool as described in the next section.
 
 Error Reporting
 +++++++++++++++
 
-ClusterControl provides error reporting tool called ``s9s_error_reporter``. This can greatly facilitate the troubleshooting process as it collects the necessary information on the entire database cluster setup and archives it in a package. You can use this tool to generate error reports, and then attach the generated tar ball package to the Support Ticket.
+ClusterControl provides an error reporting tool called ``s9s_error_reporter``. This can greatly facilitate the troubleshooting process as it collects the necessary information on the entire database cluster setup and archives it in a compressed package. Use this tool to generate an error report and then attach the generated tar ball package when creating a `Severalnines Support Ticket <http://support.severalnines.com>`_.
 
-Run all commands below on the ClusterControl node:
-
-.. code-block:: bash
-
-	# If you have already cloned the s9s-admin you can omit the 'git clone ..' command below
-	git clone https://github.com/severalnines/s9s-admin
-	cd s9s-admin
-	git pull
-	cd ccadmin
-
-To invoke it do: 
+To generate an error report, run the following command on ClusterControl node:
 
 .. code-block:: bash
 
 	# as root:
-	bash ./s9s_error_reporter -i 1
-	# as a non-root user:
-	sudo bash ./s9s_error_reporter -i 1 
+	s9s_error_reporter -i 1
+	# or as a non-root user:
+	sudo s9s_error_reporter -i 1 
 
-Where, 1 is the cluster ID of the corresponding cluster.
+Where, 1 is the cluster ID of the corresponding cluster. This tool will generate an error report for the particular cluster. If you have no cluster managed by ClusterControl, you might want to specify 0, where 0 has a special meaning in ClusterControl. It means it will generate a global error report without specifically collecting information about a particular cluster (mostly information about local ClusterControl installation and configuration).
 
-It will print out something like this:
+At the end of the execution, it will print out something like this:
 
 .. code-block:: bash
 
-	Severalnines: Copying logs 
-	192.168.100.150: Executing 'cp /var/lib/mysql/error.log /tmp'[ok] 
-	... 
-	192.168.100.153: Executing 'rm /tmp/cmon.log'[ok]
-	
-	Please attach /tmp/error_report_20120301-215701.tar.gz to the support issue. 
+	Executing tar -C /var/tmp/cmon-000809-42b7c3b595d5282a -czf '/var/www/html/clustercontrol/app/tmp/logs/error-report-2018-11-19_065637-cluster0.tar.gz' error-report-2018-11-19_065637-cluster0
+	Please attach /var/www/html/clustercontrol/app/tmp/logs/error-report-2018-11-19_065637-cluster0.tar.gz to the support issue.
 
-So attach the generated log file to your Support Issue, and we will be able to help you much faster.
-
-``s9s_error_reporter`` generates a tar.gz file containing a lot of information about the cluster (CMON logs, error logs, and the content of some important cmon tables).
+Attach the generated log file to your support issue.
 
 .. Note:: We also recommend you take a screenshot showing the problem area, e.g, the Overview from the UI is always great to see if there are node failures, cluster issues or missing data.
 
 Debugging ClusterControl Controller (CMON)
 ++++++++++++++++++++++++++++++++++++++++++
 
-Starting from ClusterControl v1.3.0, ClusterControl comes with debuginfo package. In case if you encounter CMON crash, please install the debuginfo package and the necessary packages as shown below.
+Starting from ClusterControl v1.3.0, ClusterControl comes with a debuginfo package. In case if you encounter CMON crash, please install the debuginfo package and the necessary packages as shown below.
 
 Install Debugging Components (RedHat/CentOS)
 ````````````````````````````````````````````
