@@ -96,9 +96,9 @@ RedHat/CentOS
 
 .. code-block:: bash
 
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-1.7.0-5319-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-1.7.0-5375-x86_64.rpm
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.7.0-333-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.7.0-2859-x86_64.rpm
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.7.0-2892-x86_64.rpm
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications-1.7.0-153-x86_64.rpm
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh-1.7.0-66-x86_64.rpm
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud-1.7.0-154-x86_64.rpm
@@ -126,6 +126,7 @@ For systemd:
 
 .. code-block:: bash
 
+	$ systemctl daemon-reload
 	$ systemctl restart cmon cmon-ssh cmon-events cmon-cloud
 
 Upgrade is now complete. Verify the new version at *ClusterControl UI > Settings > CMON Settings > Version*. You should re-login if your ClusterControl UI session is active.
@@ -137,9 +138,9 @@ Debian/Ubuntu
 
 .. code-block:: bash
 
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol_1.7.0-5319_x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol_1.7.0-5375_x86_64.deb
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.7.0-333_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.7.0-2859-x86_64.deb
+	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.7.0-2892-x86_64.deb
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications_1.7.0-153_x86_64.deb
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh_1.7.0-66_x86_64.deb
 	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud_1.7.0-154_x86_64.deb
@@ -166,6 +167,7 @@ For systemd:
 
 .. code-block:: bash
 
+	$ systemctl daemon-reload
 	$ systemctl restart cmon cmon-ssh cmon-events cmon-cloud
 
 Upgrade is now complete. Verify the new version at *ClusterControl UI > Settings > CMON Settings > Version*. You should re-login if your ClusterControl UI session is active.
