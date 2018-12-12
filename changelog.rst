@@ -8,6 +8,63 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.7.0
 -----------------
 
+Maintenance Release: December 12\ :sup:`th`\ , 2018
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.0-5548
+	- clustercontrol-controller-1.7.0-2939
+
+* Frontend (UI):
+	- Keepalived: Fixed an issue where it was listed as a 'master' in the Cluster Node bar.
+	- Fixed an issue when the replication slaves of a Galera cluster was not shown under 'Show Server'
+	- Config Mgmt: Removed the Configuration -> Template item as it is deprecated in its current form.
+
+* Controller:
+	- Error Report: Fixed an issue where passwords was not masked.
+	- Deploy Mongodb: Fixed signing keys issues for APT/YUM repos.
+
+Maintenance Release: December 10\ :sup:`th`\ , 2018
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.0-2930
+
+* Controller:
+	- HAProxy: A fix to remove ``/dev/shm/proxyoff`` file when promoting a slave or rebuilding a slave.
+
+Maintenance Release: December 7\ :sup:`th`\ , 2018
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.0-2928 
+
+* Controller:
+	- PostgreSQL: Double-check if slave has properly configured the ``trigger_file`` option in ``recovery.conf``.
+	- Fixed and issue with wrong owner of the stagingDir (``~/s9s_tmp``)
+	- Updated a mongodb.org repo key (replaced the key Richard Kreuter <richard@10gen.com>, with MongoDB 3.4 Release Signing Key <packaging@mongodb.com>
+	- ProxySQL: properly handling # when handling the monitor and admin users passwords.
+
+Maintenance Release: November 27\ :sup:`th`\ , 2018
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.0-5455
+	- clustercontrol-controller-1.7.0-2904
+
+* Frontend (UI):
+	- PHP Sessions fix for PHP v5.3 and earlier: Added the possibility to fallback to previous filebased session handling. If you experience UI issue please set ``define('SESSIONS_FALLBACK', true);`` in ``/var/www/html/clustercontrol/bootstrap.php`` and reload the page.
+	- Backup: Fixed an issue with cron schedule validation in Scheduled Backups.
+	- Dashboards: Minor optimizations and re-organization of some dashboards.
+
+* Controller:
+	- Galera: Clone cluster did not handle default datadir and ``wsrep_cluster_name`` for cloning.
+	- Backup: Backup dir starting with ``/sys`` can't be removed, fixed a security check.
+	- Error Reporting: skip GRA* files from error report.
+	- Operational Reports: system report: Customizable graphs interval (in days unit).
+	- Operational Reports:  changed title from 'Daily System Report' to 'System Report'.
+	- Fixed a bug escaping passwords.
+
 Maintenance Release: November 13\ :sup:`th`\ , 2018
 +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
