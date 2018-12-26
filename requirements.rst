@@ -3,7 +3,7 @@
 Requirements
 ============
 
-This section provides detailed information on ClusterControl requirement on hardware, system environment and security policy.
+This section provides detailed information on ClusterControl requirement on hardware, software, system environment and security configurations.
 
 .. _Requirements - Hardware:
 
@@ -81,7 +81,7 @@ The following softwares are required by ClusterControl:
 Supported Browsers
 ------------------
 
-We highly recommend user to use the following web browsers when accessing ClusterControl UI:
+We highly recommend users to use the following web browsers when accessing ClusterControl UI:
 	- Google Chrome
 	- Mozilla Firefox
 	
@@ -122,7 +122,7 @@ The following table shows supported database clusters with recommended minimum n
 Firewall and Security Groups
 ----------------------------
 
-It is important to secure the ClusterControl node and the database cluster. We recommend user to isolate their database infrastructure from the public Internet and just whitelist the known hosts or networks to connect to the database cluster.
+It is important to secure the ClusterControl host and the database cluster. It is recommended for users to isolate the database infrastructure from public Internet and just whitelist the known hosts or networks to reach the database cluster.
 
 ClusterControl requires ports used by the following services to be opened/enabled:
 
@@ -136,7 +136,7 @@ ClusterControl requires ports used by the following services to be opened/enable
 * CMON Events (default is 9510)
 * CMON SSH (default is 9511)
 * CMON Cloud (default is 9518)
-* Streaming port for backups through netcat (default is 9999)
+* Streaming port for backups through socat/netcat (default is 9999)
 
 ClusterControl supports various database and application vendors and each has its own set of standard ports that need to be reachable. Following ports and services need to be reachable by ClusterControl on the managed database nodes:
 
@@ -239,21 +239,15 @@ You are recommended to install ClusterControl as 'root', and running as root is 
 * The OS user must be allowed to do 'sudo', i.e, it must be in sudoers
 * The OS user must be configured with proper PATH environment variable. The following PATH are expected for user ``myuser``: ``PATH=/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/myuser/.local/bin:/home/myuser/bin``
 
-For sudoers, using passwordless sudo is recommended. To setup a passwordless sudo user, add following line into ``/etc/sudoers``:
+.. Attention:: ClusterControl requires full access of sudo (all commands) for full functionality. Restricting the commands would cause some of the operations to fail (cluster recovery, failover, backup restoration, service control and cluster deployment).
 
-Edit the sudoers with the following command (as root):
-
-.. code-block:: bash
-
-  visudo
-
-And add the following line at the end. Replace ``[OS user]`` with the sudo username of your choice:
+For sudoers, using passwordless sudo is recommended. To setup a passwordless sudo user, open ``/etc/sudoers`` via text editor and add the following line at the end. Replace ``[OS user]`` with the sudo username of your choice:
 
 .. code-block:: bash
 
   [OS user] ALL=(ALL) NOPASSWD: ALL
 
-Open a new terminal to verify it works. You should now be able to run the command below without entering a password:
+Open a new terminal to verify if it works. You should now be able to run the following command without entering a password:
 
 .. code-block:: bash
 
@@ -272,54 +266,98 @@ where ``[OS user]`` is the name of the user you intend to use during the install
 Passwordless SSH
 ----------------
 
-Proper passwordless SSH setup from ClusterControl node to all nodes (including ClusterControl node) is mandatory. When adding a new node, the node must be accessible via passwordless SSH from ClusterControl beforehand.
+Proper passwordless SSH setup from ClusterControl node to all nodes (including ClusterControl node) is mandatory. Before performing any operation on the managed node, the node must be accessible via SSH without using password but using key-based authentication instead.
+
+ClusterControl uses :term:`libssh` which supports the following public key algorithms:
+
+* ssh-rsa
+* rsa-sha2-512
+* rsa-sha2-256
+* ssh-dss
+* ssh-ed25519
+* ecdsa-sha2-nistp256
+* ecdsa-sha2-nistp384
+* ecdsa-sha2-nistp521
+
+.. Note:: Take note that ClusterControl is fully tested with RSA public key. Other supported key types should work on most cases.
 
 .. _Requirements - Passwordless SSH - Setting up Passwordless SSH:
 
 Setting up Passwordless SSH
 +++++++++++++++++++++++++++
 
-To setup a passwordless SSH, make sure you generate a SSH key and copy it from the ClusterControl host as the designated user to the target host. Take note that ClusterControl also requires passwordless SSH to itself, so do not forget to set this up as described in the example below. 
+To setup a passwordless SSH, make sure you generate SSH keys (private and public keys) and copy the public key from the ClusterControl host as the designated user to the target host. Take note that ClusterControl also requires passwordless SSH to itself, so do not forget to set this up as described in the example below. 
 
-Most of the sampling tasks for controller are done locally but there are some tasks that require a working self-passwordless SSH e.g: starting :term:`netcat` when performing backup (to stream created backup to the other node). There are also various places where ClusterControl performs the execution "uniformly" regardless of the node's role or type. So, setting this up is required and failing to do so will result ClusterControl to raise an alarm.
+Most of the sampling tasks for controller are done locally but there are some tasks that require a working self-passwordless SSH e.g: starting :term:`netcat` when performing backup (to stream backup to the other node). There are also various places where ClusterControl performs the execution "uniformly" regardless of the node's role or type. So, setting this up is required and failing to do so will result ClusterControl to raise an alarm.
 
 .. Note:: It is *NOT* necessary to setup two-way passwordless SSH, e.g: from the managed database node to the ClusterControl.
 
-Examples below show how a root user on the ClusterControl host generates and copies a SSH key to a database host, 192.168.0.10:
+To generate a SSH key, use ``ssh-keygen`` command which is available with OpenSSH-client package. On ClusterControl node:
+
+.. code-block:: bash
+
+	$ whoami
+	root
+	$ ssh-keygen -t rsa # press Enter on all prompts
+
+The above command will generate SSH RSA private and public key under user's home directory, ``/root/.ssh/``. The private key, ``id_rsa`` has to be kept secure on the node. The public key, ``id_rsa.pub`` should be copied over to all nodes that want to be accessed by ClusterControl passwordlessly.
+
+The next step is to copy the SSH public key to all nodes. You may use ``ssh-copy-id`` command to achieve this if the destination node support password authentication:
+
+.. code-block:: bash
+
+  $ whoami
+  root
+  $ ls -1 ~/.ssh/id*
+  /root/.ssh/id_rsa
+  /root/.ssh/id_rsa.pub
+  $ ssh-copy-id 192.168.0.10 # specify the root password of 192.168.0.10 if prompted
+
+The command ``ssh-copy-id`` will simply copy the public key from the source server and add it into the destination server's authorized key list, default to ``~/.ssh/autohorized_keys`` of the authenticated SSH user. If password authentication is disabled, then manual copy is required. On ClusterControl node, copy the content of SSH public key located at ``~/.ssh/id_rsa.pub`` and paste it into ``~/.ssh/authorized_keys`` on all managed nodes (including ClusterControl server).
+
+The following example shows how a root user on the ClusterControl host (192.168.0.10) generates and copies a SSH key to databases hosts (192.168.0.11, 192.168.0.12, 192.168.0.13) and to itself (192.168.0.10):
 
 .. code-block:: bash
 
   $ whoami
   root
   $ ssh-keygen -t rsa # press Enter on all prompts
-  $ ssh-copy-id 192.168.0.10 # insert the root password of 192.168.0.10 if prompted
+  $ ls -1 ~/.ssh/id*
+  /root/.ssh/id_rsa
+  /root/.ssh/id_rsa.pub
+  $ ssh-copy-id 192.168.0.10 # specify the root password of 192.168.0.10 if prompted
+  $ ssh-copy-id 192.168.0.11 # specify the root password of 192.168.0.11 if prompted
+  $ ssh-copy-id 192.168.0.12 # specify the root password of 192.168.0.12 if prompted
+  $ ssh-copy-id 192.168.0.13 # specify the root password of 192.168.0.13 if prompted
 
-.. Attention::  Repeat the ``ssh-copy-id`` command to all nodes (including ClusterControl node)
-
-If you are running as a sudo user e.g sysadmin, here is an example:
+If you are running as a sudo user e.g "sysadmin", here is an example:
 
 .. code-block:: bash
 
-  $ whoami
-  sysadmin
-  $ ssh-keygen -t rsa # press Enter on all prompts
-  $ ssh-copy-id 192.168.0.10 # insert the sysadmin password of 192.168.0.10 if prompted
+	$ whoami
+	sysadmin
+	$ ssh-keygen -t rsa # press Enter on all prompts
+	$ ls -1 ~/.ssh/id*
+	/home/sysadmin/.ssh/id_rsa
+	/home/sysadmin/.ssh/id_rsa.pub
+	$ ssh-copy-id 192.168.0.10 # specify the sysadmin password of 192.168.0.10 if prompted
+	$ ssh-copy-id 192.168.0.11 # specify the sysadmin password of 192.168.0.11 if prompted
+	$ ssh-copy-id 192.168.0.12 # specify the sysadmin password of 192.168.0.12 if prompted
+	$ ssh-copy-id 192.168.0.13 # specify the sysadmin password of 192.168.0.13 if prompted
 
-.. Attention::  Repeat the ``ssh-copy-id`` command to all nodes (including ClusterControl node)
-
-You should now able to SSH from ClusterControl to the other server(s) without password:
+You should be able to SSH from ClusterControl to the other server(s) without password:
 
 .. code-block:: bash
 
   $ ssh [username]@[server IP address]
 
-If it does not work, check permissions of the ``.ssh`` directory and the files in it. Some users need to set the following in their ``/etc/ssh/sshd_config`` file:
+For cloud users, you can use the corresponding key pair generated by the cloud provider by uploading it onto ClusterControl host and specify the physical path when configuring the SSH-related parameters via ClusterControl UI (deploy cluster, import nodes, etc). ClusterControl will then use this key to perform tasks that require passwordless SSH and store the path via ``ssh_identity`` variable inside CMON configuration file:
 
 .. code-block:: bash
 
-  RSAAuthentication=Yes
+  ssh_identity=/path/to/keypair/cloud.pem
 
-Do not forget to restart SSH daemon if you make changes in the ``sshd_config`` file.
+If you use other public key algorithm (CMON defaults to RSA), make sure the public key generated on ClusterControl node is copied and allowed on all managed nodes under ``~/.ssh/autohorized_keys``. You can use ``ssh-copy-id`` command (as shown in the example above), or simply copying the public key to all managed nodes manually.
 
 In order to prevent a long running SSH connection to be terminated by the firewall or switch, you may also want to set in ``/etc/ssh/ssh_config`` on the ClusterControl node:
 
@@ -327,14 +365,6 @@ In order to prevent a long running SSH connection to be terminated by the firewa
 
   ServerAliveInterval 30
   ServerAliveCountMax 10
-
-For AWS cloud users, you can use the corresponding key pair by uploading it onto the ClusterControl host and specifying the physical location under ``ssh_identity`` in CMON configuration file:
-
-.. code-block:: bash
-
-  ssh_identity=/path/to/keypair/aws.pem
-
-If you use DSA (CMON defaults to RSA), then you need to follow instructions in this page, `Using DSA keys instead of RSA - key-based authentitication <http://support.severalnines.com/entries/23498833-Using-DSA-keys-instead-of-RSA-key-based-authentitication>`_.
 
 .. _Requirements - Passwordless SSH - Sudo Password:
 
@@ -347,21 +377,23 @@ Sudoers with or without password is possible with sudo configuration option. If 
 
   sudo="echo 'thesudopassword' | sudo -S 2>/dev/null"
 
-.. Attention::  Having ``2>/dev/null`` in the sudo command is compulsory to exclude stderr from the response.
+.. Attention::  Having ``2>/dev/null`` in the sudo command is compulsory to strip out stderr from the response.
 
 Don't forget to restart cmon service to load the option.
+
+.. _Requirements - Passwordless SSH - Encrypted Home Directory:
 
 Encrypted home directory
 ++++++++++++++++++++++++
 
 If the sudo user's home directory is encrypted, you might be facing following scenarios:
 
-* First SSH login will required password, even though you have copied the public key to the remote host ``authorized_keys``
-* If you run another SSH session, while the first SSH session still active, you will able to authenticate without password and the key authentication is successful.
+* First SSH login will required password, even though you have copied the public key to the remote host ``authorized_keys``.
+* If you run another SSH session, while the first SSH session is still active, you will be able to authenticate without password and the key authentication is successful.
 
-Encrypted home directories aren’t decrypted until the login is successful, and your SSH keys are stored in your home directory. The first SSH connection you make will require a password. While the subsequent connections will no longer need password since the SSH service is able to read the ``authorized_key`` (inside user's homedir) in decrypted environment.
+Encrypted home directories are not decrypted until the login is successful, and your SSH keys are stored in your home directory. The first SSH connection you make will require a password. While the subsequent connections will no longer need password since the SSH service is able to read the ``authorized_key`` (inside user's homedir) in decrypted environment.
 
-To solve this, you need to follow instructions in this page, `Passwordless SSH in Encrypted Home Directory <http://support.severalnines.com/entries/23490521-Passwordless-SSH-in-Encrypted-Home-Directory>`_.
+To solve this, you need to follow the instructions in this page, `Passwordless SSH in Encrypted Home Directory <http://support.severalnines.com/entries/23490521-Passwordless-SSH-in-Encrypted-Home-Directory>`_.
 
 .. _Requirements - Timezone:
 
