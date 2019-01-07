@@ -5,8 +5,104 @@ Change Logs
 
 This change logs list details about updates in each version of ClusterControl.
 
+Changes in v1.7.1
+-----------------
+
+Maintenance Release: December 29\ :sup:`th`\ , 2018
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.1-5622
+	- clustercontrol-notifications-1.7.1-159
+
+* Frontend (UI):
+	- MySQL Galera: Fix 'Add Node' regression where the template file was not set in the job specification.
+	- Prevent cmon-events to crash if cmon is not running.
+
+Initial Release: December 21\ :sup:`st`\ , 2018
++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.1-2854
+	- clustercontrol-1.7.1-5617
+	- clustercontrol-cloud-1.7.1-163
+	- clustercontrol-notifications-1.7.1-157
+	- clustercontrol-ssh-1.7.1-70
+	- clustercontrol-cmonapi-1.7.1-338
+
+In this release we have primarily continued to add improvements to our agent based monitoring dashboards and PostgreSQL. 
+
+**Feature Details**
+
+* Agent Based Monitoring:
+	- Install/enable Prometheus exporters on your nodes and hosts with MySQL, PostgreSQL and MongoDB based clusters.
+	- Customize collector flags for the exporters (Prometheus). This allows you for example to disable collecting from MySQL's performance schema if you experience load issues on your server.
+	- Supported Exporters:
+		- Node/host metrics
+		- Process - /proc metrics
+		- MySQL server metrics
+		- PostgreSQL metrics
+		- ProxySQL metrics
+		- HAProxy metrics
+		- MongoDB metrics
+	- Dashboards:
+		- System Overview
+		- Cluster Overview
+		- MySQL Server - General
+		- MySQL Server - Caches
+		- MySQL InnoDB Metrics
+		- Galera Cluster Overview
+		- Galera Server Overview
+		- PostgreSQL Overview
+		- ProxySQL Overview
+		- HAProxy Overview
+		- MongoDB Cluster Overview
+		- MongoDB ReplicaSet
+		- MongoDB Server
+
+* Backup:
+	- Create a cluster from an existing backup with MySQL Galera or PostgreSQL.
+
+* PostgreSQL:
+	- Query Monitoring improvements - View query statistics:
+		- Access by sequential or index scans
+		- Table I/O statistics
+		- Index I/O statistics
+		- Database Wide Statistics
+		- Table Bloat And Index Bloat
+		- Top 10 largest tables
+		- Database Sizes
+		- Last analyzed or vacuumed
+		- Unused indexes
+		- Duplicate indexes
+		- Exclusive lock waits
+	- Verify/restore backup on a standalone host.
+	- Create a cluster from an existing backup.
+	- Support for PostgreSQL 11. Deploy and import clusters.
+
+* MongoDB:
+	- Support to deploy/import and manage MongoDB Inc v4.0
+
+* Misc:
+	- New license format. Please contact sales@severalnines.com for a new license.
+	- Continuing moving ExtJS pages to AngularJS. This time the load balancer and nodes page.
+	- UI logging for troubleshooting web application issues.
+	- ClusterControl Backup/Restore - This feature can be used to migrate a setup from one controller to another controller. Backup the meta data of an entire controller or individual clusters from the s9s CLI. The backup can then be restored on a new controller with a new hostname/IP and the restore process will automatically recreate database access privileges. 
+
 Changes in v1.7.0
 -----------------
+
+Maintenance Release: December 21\ :sup:`st`\ , 2018
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.0-2962
+
+* Controller:
+	- Bugfix for SSH connection negotiation failure on compression methods.
+	- Added support for MaxScale 2.3
+	- Exporters: New ``process_exporter`` version (0.10.10)
+	- Error Reporting: ``s9s_error_reporter -i0`` collects all config files under ``/etc/cmon.d/``
 
 Maintenance Release: December 12\ :sup:`th`\ , 2018
 +++++++++++++++++++++++++++++++++++++++++++++++++++++
