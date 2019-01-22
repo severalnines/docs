@@ -60,7 +60,7 @@ ClusterControl supports the following database servers/clusters:
 	- Replicated sharded cluster
 - PostgreSQL
 	- Single instance
-	- Streamign replication
+	- Streaming replication
 	
 Supported Load Balancer
 ------------------------

@@ -1,7 +1,11 @@
+.. _MySQL - Logs:
+
 Logs
 -----
 
 Provides interface for log messages, CMON jobs and error reporting for troubleshooting and auditing purposes. The tab is embedded with a counter (highlighted in red) indicating there are new jobs executed by ClusterControl under *ClusterControl > Logs > Jobs* which might require your attention.
+
+.. _MySQL - Logs - Jobs:
 
 Jobs
 ++++
@@ -19,11 +23,14 @@ DEFINED  The job has been defined and queued.
 FAILED   The job was stopped due to error.
 ======== ===========
 
+.. _MySQL - Logs - CMON Logs:
+
 CMON Logs
 ++++++++++++
 
 Centralized list of log events from the ClusterControl server. You can filter the output by hostname and log level (ALL, DEBUG, INFO, WARNING, ERROR, CRITICAL, ALERT). Log events listed in this page can also be retrieved directly from the CMON log file of the respective cluster ID, e.g (default is ``/var/log/cmon.log``).
 
+.. _MySQL - Logs - Error Reports:
 
 Error Reports
 +++++++++++++++
@@ -37,6 +44,8 @@ Generates a compressed file (tar ball) containing information about the cluster 
 	- Removes the selected error report from ClusterControl node.
 
 .. Note:: We recommend you take a screenshot showing the problem area, e.g, the Cluster Overview dashboard from the UI is useful if there are node failures, cluster issues or missing data.
+
+.. _MySQL - Logs - System Logs:
 
 System Logs
 +++++++++++++++

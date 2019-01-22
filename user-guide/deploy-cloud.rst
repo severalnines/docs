@@ -19,7 +19,7 @@ The following database cluster types are supported:
 
 There are prerequisites that need to be fulfilled prior to the deployment:
 
-* A working cloud credential profile on the supported cloud platform. See :ref:`Integrations - Cloud Providers`.
+* A working cloud credential profile on the supported cloud platform. See :ref:`Sidebar - Integrations - Cloud Providers`.
 * If the cloud instance is inside a private network, the network must support auto-assign public IP address. ClusterControl only connects to the created cloud instance via public network. 
 
 Under the hood, the deployment process does the following:
@@ -65,7 +65,7 @@ MySQL Galera Cluster
 	- Specify MySQL root password. ClusterControl will configure the same MySQL root password for all instances in the cluster.
 
 * **my.cnf Template**
-	- The template configuration file that ClusterControl will use to deploy the cluster. It must be located under ``/usr/share/cmon/templates`` on the ClusterControl host.
+	- MySQL configuration template file under ``/etc/cmon/templates`` or ``/usr/share/cmon/templates``. See :ref:`MySQL - Manage - Configurations - Base Template Files` for details.
 
 * **MySQL Server Data Directory**
 	- Location of MySQL data directory. Default is ``/var/lib/mysql``.
@@ -92,7 +92,7 @@ MongoDB Replica Set
 	- MongoDB server port. Default is 27017.
 
 * **mongodb.conf Template**
-	- The template configuration file that ClusterControl will use to deploy the cluster. It must be located under ``/usr/share/cmon/templates`` on the ClusterControl host.
+	- MongoDB configuration template file under ``/etc/cmon/templates`` or ``/usr/share/cmon/templates``. See :ref:`MongoDB - Manage - Configurations - Base Template Files` for details.
 	
 * **ReplicaSet Name**
 	- Specify the name of the replica set, similar to ``replication.replSetName`` option in MongoDB.
@@ -123,7 +123,7 @@ Select Credential
 Select one of the existing cloud credentials or you can create a new one by clicking on the *Add New Credential* button.
 
 * **Add New Credential**
-	- Opens the cloud credential configuration wizard. See :ref:`Integrations - Cloud Providers`.
+	- Opens the cloud credential configuration wizard. See :ref:`Sidebar - Integrations - Cloud Providers`.
 
 Select Virtual Machine
 +++++++++++++++++++++++

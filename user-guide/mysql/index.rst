@@ -4,7 +4,6 @@ User Guide for MySQL
 This user guide covers ClusterControl with MySQL-based clusters, namely:
 
 * Galera Cluster for MySQL
-	* MySQL Galera Cluster
 	* Percona XtraDB Cluster
 	* MariaDB Galera Cluster
 * MySQL Cluster (NDB)

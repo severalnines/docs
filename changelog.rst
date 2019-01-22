@@ -8,6 +8,44 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.7.1
 -----------------
 
+Maintenance Release: January 22\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.1-2294
+	- clustercontrol-notifications-1.7.1-168
+
+* Backend:
+	- MySQL/Galera: Fixed a bug in related to the loading of Disk/CPU/Net stats on the *Cluster Overview* page.
+	- HAProxy/ProxySQL/Garbd: Disable firewall/selinux (if requested by the job, default is true for both values).
+	- Replication:  Added a small hint about ``--report-host`` argument being required for add existing slaves.
+	- MongoDB: Fixed an issue when an rolling restart was attempted, but a stop/start of the cluster is required when setting up SSL. 
+	- MongoDB: Added a ``server_selection_try_once``, ``server_selection_timeout_ms`` to allow the user to fine tune connection settings when e.g the network is slow. Run ``cmon --help-config`` to see the complete description.
+
+* ClusterControl notifications:
+	- Fixes to logging.
+	- The license check failed due to the wrong field name, preventing e.g notification plugins from receiving alarm events.
+
+Maintenance Release: January 13\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.1-2985
+
+* Backend:
+	- Bugfix for SSH connection negotiation failure on compression methods.
+	- HAProxy: A configuration error could occur when adding a new node, a 'none' word was wrongly added to the HAProxy configuration.
+	- HAProxy: Deploying HaProxy fails when it builds from source. Missing zlib1g-dev and zlib dependency.
+	- HAProxy: xinetd port was missing a default value. It now defaults to port 9200.
+	- Point in-time Recovery (MySQL): Binary logs could be applied in the wrong order.
+	- MySQL Replication: Switchover hooks do not work (``replication_pre_switchover_script`` and ``replication_post_switchover_script`` are now executed upon *Promote Slave*).
+	- ProxySQL: Importing a user from MySQL fails to duplicate the grants.
+	- Prometheus: A fix to collect the log file from the Prometheus host, instead of the exporter host.
+	- Create cluster job fails on permissions of ssh user when the username contained ``\``.
+	- NDB Cluster: Updated to use MySQL Cluster 7.5.12 binaries.
+	- Operational Reports: A fix to avoid repetition of node information in the 'System Report'.
+	- Cloud: A fix to improve the auto registration of the cmon-cloud binary and improved logging. This also requires a new version of cmon-cloud (new build coming soon).
+
 Maintenance Release: December 29\ :sup:`th`\ , 2018
 +++++++++++++++++++++++++++++++++++++++++++++++++++++
 

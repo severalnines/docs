@@ -1,7 +1,11 @@
+.. _MongoDB - Performance:
+
 Performance
 -----------
 
 Database performance monitoring and advisors.
+
+.. _MongoDB - Performance - Mongo Stats:
 
 Mongo Stats
 +++++++++++
@@ -61,6 +65,8 @@ Quick overview of the status of running mongod instances grouped by shard (or re
 * **Time**
 	- The last time ClusterControl fetch for node's status.
 
+.. _MongoDB - Performance - Overview:
+
 Overview
 +++++++++
 
@@ -86,11 +92,13 @@ Provides an overview of database operations by type and makes it possible to ana
 
 * **opcounters.command**
 	- Provides a graph of the total number of commands issued to the database since the mongod instance last started.
-	
+
+.. _MongoDB - Performance - Advisors:
+
 Advisors
 +++++++++
 
-Lists of scheduled advisors' results created in *ClusterControl > Manage > Developer Studio* using `ClusterControl DSL <../../dsl.html>`_. You can think of it like a 'scheduled mini-program' which executes a script created in Developer Studio and produces a result containing status, advice and justification. Each advisor can be expanded and collapsed by clicking on the dropdown icon at the top right corner. 
+Lists of scheduled advisors' results created in *ClusterControl > Manage > Developer Studio* using :ref:`ClusterControl DSL`. You can think of it like a 'scheduled mini-program' which executes a script created in Developer Studio and produces a result containing status, advice and justification. Each advisor can be expanded and collapsed by clicking on the dropdown icon at the top right corner. 
 
 * **Show Advisors**
 	- Filters the advisor result based on tag.

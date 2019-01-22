@@ -44,7 +44,7 @@ Galera Cluster
 
 * **Deregister Cluster from UI**
 	- Unregister a database cluster from the ClusterControl UI. 
-	- You can still re-register your cluster to ClusterControl at a later stage by using :ref:`Cluster Registrations`.
+	- You can still re-register your cluster to ClusterControl at a later stage by using :ref:`UserGuide - Global Settings - Cluster Registrations`.
 	
 * **Remove Node**
 	- Remove a managed node from the cluster.
@@ -73,7 +73,7 @@ MySQL Replication
 
 * **Deregister Cluster from UI**
 	- Unregister a database cluster from the ClusterControl UI. 
-	- You can still re-register your cluster to ClusterControl at a later stage by using :ref:`Cluster Registrations`.
+	- You can still re-register your cluster to ClusterControl at a later stage by using :ref:`UserGuide - Global Settings - Cluster Registrations`.
 	
 * **Remove Node**
 	- Remove a managed node from the cluster.
@@ -96,7 +96,7 @@ MySQL Standalone
 
 * **Deregister Cluster from UI**
 	- Unregister a database cluster from the ClusterControl UI. 
-	- You can still re-register your cluster to ClusterControl at a later stage by using :ref:`Cluster Registrations`.
+	- You can still re-register your cluster to ClusterControl at a later stage by using :ref:`UserGuide - Global Settings - Cluster Registrations`.
 
 MySQL Group Replication
 ````````````````````````
@@ -119,7 +119,7 @@ MySQL Group Replication
 
 * **Deregister Cluster from UI**
 	- Unregister a database cluster from the ClusterControl UI. 
-	- You can still re-register your cluster to ClusterControl at a later stage by using :ref:`Cluster Registrations`.
+	- You can still re-register your cluster to ClusterControl at a later stage by using :ref:`UserGuide - Global Settings - Cluster Registrations`.
 	
 * **Remove Node**
 	- Remove a managed node from the cluster.
@@ -142,7 +142,7 @@ MySQL Cluster
 
 * **Deregister Cluster from UI**
 	- Unregister a database cluster from the ClusterControl UI. 
-	- You can still re-register your cluster to ClusterControl at a later stage by using :ref:`Cluster Registrations`.
+	- You can still re-register your cluster to ClusterControl at a later stage by using :ref:`UserGuide - Global Settings - Cluster Registrations`.
 
 Add Node
 ````````
@@ -160,7 +160,7 @@ This is only available for Galera Cluster, MySQL Replication (adding slave) and 
 	- IP address or :term:`FQDN` of the target node. If you already have the host added under *ClusterControl > Manage > Hosts*, you can just choose the host from the dropdown menu.
 
 * **Configuration**
-	- Choose a MySQL configuration template for the new node. The configuration file should be created at *ClusterControl > Manage > Configurations > Template Configuration Files*.
+	- Choose a MySQL configuration template for the new node.
 	
 * **Install Software**
 	- If you already have the database server installed on the target host but not yet configured, you can tell ClusterControl to skip the database installation part by choosing 'No'.
@@ -188,7 +188,7 @@ Add an existing DB node
 Use this feature if you have added a DB node manually to your cluster and want it to be detected and managed by ClusterControl. ClusterControl will then detect the new DB node as being part of the cluster and starts to manage and monitor it as with the rest of the cluster nodes. Useful if a node has been created outside of ClusterControl e.g, through Puppet, Chef or Ansible.
 
 * **Hostname**
-	- IP address or :term:`FQDN` of the target node. If you already have the host added under *ClusterControl > Manage > Hosts*, you can just choose the host from the dropdown menu.
+	- IP address or :term:`FQDN` of the target node.
 
 * **Port**
 	- MySQL port. Default is 3306.
@@ -201,10 +201,10 @@ MySQL replication slave requires at least a master with GTID enabled on the Gale
 
 The following must be true for the masters:
 
-* At least one master among the Galera nodes
-* MySQL GTID must be enabled
-* ``log_slave_updates`` must be enabled
-* Master’s MySQL port is accessible by ClusterControl and slaves
+* At least one master among the Galera nodes.
+* MySQL GTID must be enabled.
+* ``log_slave_updates`` must be enabled.
+* Master’s MySQL port is accessible by ClusterControl and slaves.
 
 To configure a Galera node as master, go to *ClusterControl > Nodes > choose the mysql server > Enable Binary Logging*. In the "Enable Binary Logging" dialog, set the binary logs expiration, set "Enable GTID" to yes and "auto-restart node" to yes, then click Proceed.
 
@@ -284,11 +284,11 @@ Exclusive for Galera Cluster. This feature allows you to create, in one click, a
 
 A clone will be created of this cluster. The following procedure applies:
 
-* Create a new Cluster consisting of one node
-* Stage the new Cluster with SST (it is now cloned)
+* Create a new Cluster consisting of one node.
+* Stage the new Cluster with SST (it is now cloned).
 * Nodes will be added to the Cloned Cluster until *Cloned Cluster Size* is reached.
-* Query Monitor settings and settings for Cluster Recovery and Node Recovery options are not cloned
-* The ``my.cnf`` file may not be identical on the Cloned Cluster
+* Query Monitor settings and settings for Cluster Recovery and Node Recovery options are not cloned.
+* The ``my.cnf`` file may not be identical on the Cloned Cluster.
 
 * **Cloned Cluster Name**
 	- The cloned cluster name.
@@ -398,9 +398,6 @@ Provides aggregated view of all queries running across all database nodes in the
 
 * **Filter by Server**
 	- Filter the query list based on database node.
-
-* **Email Query**
-	- Email the selected query to recipients listed in *ClusterControl > Settings > General Settings > Email Notification*.
 
 * **Time**
 	- Timestamp on last query sampling.

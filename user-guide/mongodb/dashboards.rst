@@ -1,9 +1,9 @@
-.. _MySQL - Dashboards:
+.. _MongoDB - Dashboards:
 
 Dashboards
 ----------
 
-.. Note:: This feature is introduced in version 1.7.0.
+.. Note:: This feature is introduced in version 1.7.1.
 
 This feature is only applicable for agent-based monitoring using Prometheus. You will be presented with a notification panel to enable agent-based monitoring if it has not been activated.
 
@@ -29,22 +29,17 @@ Opens a side-menu pop-up to configure a Prometheus server. You can re-use an exi
 Monitoring Dashboards
 ++++++++++++++++++++++
 
-Dashboards are composed of individual monitoring panels arranged on a grid. For MySQL/MariaDB, ClusterControl pre-configures a number of dashboards depending on the cluster type and host's role. The following table explains them:
+Dashboards are composed of individual monitoring panels arranged on a grid. For MongoDB, ClusterControl pre-configures a number of dashboards depending on the cluster type and host's role. The following table explains them:
 
-========================= ============================ ===================
-Dashboard                 Cluster Type                 Description
-========================= ============================ ===================
-System Overview           MySQL/MariaDB-based Clusters Provides panels of host metrics and usage for individual host.
-Cluster Overview          MySQL/MariaDB-based Clusters Provides selected host and database metrics for all hosts for comparison.
-MySQL Server - General    MySQL/MariaDB-based Clusters Provides panels of general database metrics and usage for individual database host.
-MySQL Server - Caches     MySQL/MariaDB-based Clusters Provides important cache-related metrics for individual database host.
-MySQL InnoDB Metrics      MySQL/MariaDB-based Clusters Provides important InnoDB-related metrics for individual database host.
-MySQL Replication         MySQL/MariaDB Replication    Provides panels related to replication for individual database host.
-Galera Overview           Galera Cluster               Provides cross-server Galera cluster metrics for all databases hosts.
-Galera Server Charts      Galera Cluster               Provides panels related to Galera replication metrics for individual database host.
-ProxySQL Overview         Clusters with ProxySQL       Provides important ProxySQL metrics for individual ProxySQL host.
-HAProxy Overview          Clusters with HAProxy        Provides important HAProxy metrics for individual host.
-========================= ============================ ===================
+========================= =================================== ===================
+Dashboard                 Cluster Type                        Description
+========================= =================================== ===================
+System Overview           MongoDB ReplicaSet/Sharded Cluster  Provides panels of host metrics and usage for individual host.
+Cluster Overview          MongoDB ReplicaSet/Sharded Cluster  Provides selected host and database metrics for all hosts for comparison.
+MongoDB Cluster Overview  MongoDB Sharded Cluster             Provides panels related to all mongos of the cluster.
+MongoDB ReplicaSet        MongoDB ReplicaSet/Sharded Cluster  Provides panels related to replica set for individual database host.
+MongoDB Server            MongoDB ReplicaSet/Sharded Cluster  Provides panels of general database metrics and usage for individual database host.
+========================= =================================== ===================
 
 * **Dashboard**
 	- Dropdown list of pre-configured dashboards.

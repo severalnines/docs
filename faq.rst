@@ -43,7 +43,7 @@ Yes, we have a reseller program. Please email us at sales[at]severalnines.com
 Who uses ClusterControl?
 ++++++++++++++++++++++++
 
-We have over 100 paying customers, including the likes of Cisco, BT, CNRS, Ping Identity, Technicolor and Eurovision. A list of references and case studies can be found `Severalnines Customers <http://severalnines.com/customers>`_ page.
+We have over 100 paying customers, including the likes of Cisco, BT, CNRS, Ping Identity, Technicolor and Eurovision. A list of references and case studies can be found at `Severalnines Customers <http://severalnines.com/customers>`_ page.
 
 Technical
 ---------
@@ -76,7 +76,7 @@ Yes. Starting from 1.2.11, ClusterControl does not depend on the DB nodes' opera
 Can I use ClusterControl in an internetless environment?
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-Yes. However some features might not be working well, as explained in `Offline Installation <installation.html#offline-installation>`_ page.
+Yes. However some features might not be working well, as explained in :ref:`Installation - Offline Installation` page.
 
 Can I have a mix of different SSH users per cluster?
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -103,7 +103,7 @@ Please report the bug by `submitting a support request <http://support.severalni
 My cluster is down. What should I do?
 +++++++++++++++++++++++++++++++++++++
 
-Please submit a ticket at our `support site <https://support.severalnines.com/new>`_. If you are a paying customer, please do this with your company email address so the ticket can be assigned to the appropriate support SLA. Please also include an `error report <troubleshooting.html#error-reporting>`_.
+Please submit a ticket at our `support site <https://support.severalnines.com/new>`_. If you are a paying customer, please do this with your company email address so the ticket can be assigned to the appropriate support SLA. Please also include an :ref:`Troubleshooting - Reporting and Debugging - Error Report`.
 
 How can I submit a feature request?
 +++++++++++++++++++++++++++++++++++

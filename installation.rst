@@ -3,7 +3,7 @@
 Installation
 ============
 
-This section provides detailed information on how to get ClusterControl installed on your environment. If you are looking for a simpler way to install ClusterControl, please have a look at `Getting Started <getting-started.html>`_.
+This section provides detailed information on how to get ClusterControl installed on your environment. If you are looking for a simpler way to install ClusterControl, please have a look at :ref:`Getting Started`.
 
 .. _Installation - Severalnines Repository:
 
@@ -133,6 +133,8 @@ Installer Script (install-cc)
 
 Installer script is the recommended way to install ClusterControl. The script must be downloaded and executed on ClusterControl node, which performs all necessary steps to install and configure ClusterControl's packages and dependencies on that particular host. It also supports offline installation with ``NO_INET=1`` variable exported, however you need to have mirrored repository enabled or MySQL and Apache installed and running on that host beforehand. See `Offline Installation`_ for details. The script assumes that the host can install all dependencies via operating system repository.
 
+We encourage user to go to `ClusterControl download page <https://severalnines.com/download-clustercontrol-database-management-system>`_ and download the installer script from there (user registration required). Once registered, you will see the installation instructions similar to what described in this section.
+
 On ClusterControl server, run the following commands:
 
 .. code-block:: bash
@@ -154,6 +156,12 @@ By default, the script will allocate 50% of the host's RAM to InnoDB buffer pool
 	$ INNODB_BUFFER_POOL_SIZE=512 ./install-cc # as root or sudo user
 
 .. Note:: ClusterControl relies on a MySQL server as a data repository for the clusters it manages and an Apache server for the User Interface. The installation script will always install an Apache server on the host. An existing MySQL server can be used or a new MySQL server install is configured for minimum system requirements. If you have a larger server please make the necessary changes to the my.cnf file and restart the MySQL server after the installation.
+
+If you want to perform a non-interactive installation, you can assign each variable with its value beforehand, similar to example below:
+
+.. code-block:: bash
+
+  $ S9S_CMON_PASSWORD=cmonP4ss S9S_ROOT_PASSWORD=root123 S9S_DB_PORT=3306 HOST=10.10.10.10 ./install-cc
 
 Basically, the installation script will attempt to automate the following tasks:
 
@@ -647,15 +655,7 @@ Manual Installation
 
 If you want to have more control on the installation process, you may perform manual installation.
 
-.. note:: Installing and uninstalling ClusterControl should not bring any downtime to the managed database cluster.
-
-The main installation steps are:
-
-1. Install Severalnines yum/apt repository.
-2. Install ClusterControl packages.
-3. Execute the post-installation script (recommended) or perform manual installation.
-
-.. note:: On step #3, performing installation using the post-installation script is highly recommended. Manual installation instructions are provided in this guide for advanced users and reference purpose.
+.. Note:: Installing and uninstalling ClusterControl should not bring any downtime to the managed database cluster.
 
 ClusterControl requires a number of packages to be installed and configured, as described in the following list:
 
@@ -666,6 +666,7 @@ ClusterControl requires a number of packages to be installed and configured, as 
 * *clustercontrol-ssh* - ClusterControl web-based SSH module, if you would like to access the host via SSH directly from ClusterControl UI.
 * *clustercontrol-cloud* - ClusterControl cloud module, if you would like to manage your cloud instances directly from ClusterControl UI.
 * *clustercontrol-clud* - ClusterControl cloud file manager module, if you would like to upload and download backups from cloud storage. It requires ``clustercontrol-cloud``.
+* *s9s-tools* - ClusterControl CLI client, if you would like to manage your cluster using command line interface.
 
 Steps described in the following sections should be performed on ClusterControl node unless specified otherwise.
 
@@ -675,8 +676,7 @@ Requirements
 Make sure the following is ready prior to this installation:
 
 * Verify that sudo is working properly if you are using a non-root user.
-* ClusterControl node must able to connect to all database nodes.
-* Passwordless SSH from ClusterControl node to all nodes (including the ClusterControl node itself) has been configured correctly.
+* ClusterControl node must be able to access to all database nodes via passwordless SSH.
 * You must have internet connection on ClusterControl node during the installation process. Otherwise, see `Offline Installation`_.
 
 .. _Installation - Manual Installation - Redhat-CentOS:
@@ -887,7 +887,7 @@ You will then be redirected to the ClusterControl landing page.
 
 .. Note:: Replace ``{SSH user}`` and ``{IP address of the target node}`` with appropriate values. Repeat the command for all target hosts.
 
-The installation is complete and you can start to import existing or deploy a new database cluster. Please review the :ref:`User Guide` for details.
+The installation is complete and you can start to import existing or deploy a new database cluster. Please review the :ref:`UserGuide` for details.
 
 .. _Installation - Manual Installation - Debian-Ubuntu:
 
@@ -1147,7 +1147,7 @@ You will then be redirected to the ClusterControl landing page.
 
 .. Note:: Replace ``{SSH user}`` and ``{IP address of the target node}`` with appropriate values. Repeat the command for all target hosts.
 
-The installation is complete and you can start to import existing or deploy a new database cluster. Please review the :ref:`User Guide` for details.
+The installation is complete and you can start to import existing or deploy a new database cluster. Please review the :ref:`UserGuide` for details.
 
 .. _Installation - Offline Installation:
 
@@ -1321,28 +1321,23 @@ RedHat/CentOS
 
 	$ mysqladmin -uroot password yourR00tP4ssw0rd
 
-3. Create the staging directory called ``s9s_tmp`` and download/upload the latest version of ClusterControl RPM packages from the `Severalnines download page <http://www.severalnines.com/downloads/cmon/>`_, for example:
+3. Create the staging directory called ``s9s_tmp`` and download the latest version of ClusterControl related RPM packages from `Severalnines download site <https://severalnines.com/downloads/cmon/>`_ and `Severalnines Repository <http://repo.severalnines.com>`_. There are a number of packages you need to download as explained below:
 
-.. code-block:: bash
-
-	$ mkdir ~/s9s_tmp
-	$ cd ~/s9s_tmp
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-1.7.0-5375-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.7.0-333-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.7.0-2892-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications-1.7.0-153-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh-1.7.0-66-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud-1.7.0-154-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud-1.7.0-154-x86_64.rpm
-
-.. Attention:: In this example, we downloaded the package directly to simplify the package preparation step. If the ClusterControl server does not have Internet connections, you have to upload the packages manually to the mentioned staging path.
+- *clustercontrol* - ClusterControl UI - |ClusterControl_UI_rpm|
+- *clustercontrol-cmonapi* - ClusterControl CMONAPI - |ClusterControl_CMONAPI_rpm|
+- *clustercontrol-controller* - ClusterControl Controller (CMON) - |ClusterControl_Controller_rpm|
+- *clustercontrol-notifications* - ClusterControl event module - |ClusterControl_Notifications_rpm|
+- *clustercontrol-ssh* - ClusterControl web-ssh module - |ClusterControl_SSH_rpm|
+- *clustercontrol-cloud* - ClusterControl cloud module - |ClusterControl_Cloud_rpm|
+- *clustercontrol-clud* - ClusterControl cloud's file manager module - |ClusterControl_CLUD_rpm|
+- *s9s-tools* - ClusterControl CLI (s9s) - |s9s_tools_rpm|
 
 4. Perform the package installation manually:
 
 .. code-block:: bash
 
 	$ yum localinstall clustercontrol-*
-
+	$ yum localinstall s9s-tools*
 
 5. Execute the post-installation script to configure ClusterControl components and follow the installation wizard accordingly:
 
@@ -1365,21 +1360,17 @@ Debian/Ubuntu
 	$ sudo apt-get install -y --force-yes mysql-client mysql-server
 	$ sudo systemctl enable mysql
 
-2. Create the staging directory called ``s9s_tmp`` and download the latest version of ClusterControl DEB packages from `Severalnines download page <http://www.severalnines.com/downloads/cmon/>`_, for example:
+2. Create the staging directory called ``s9s_tmp`` and download the latest version of ClusterControl related DEB packages from `Severalnines download site <https://severalnines.com/downloads/cmon/>`_ and `Severalnines Repository <http://repo.severalnines.com>`_. There are a number of packages you need to download as explained below:
 
-.. code-block:: bash
-
-	$ mkdir ~/s9s_tmp
-	$ cd ~/s9s_tmp
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol_1.7.0-5375_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.7.0-333_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.7.0-2892-x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications_1.7.0-153_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh_1.7.0-66_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud_1.7.0-154_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud_1.7.0-154_x86_64.deb
-
-.. Attention:: In this example, we downloaded the package directly to simplify the package preparation step. If the ClusterControl server does not have internet connections, you have to upload the packages manually to the mentioned staging path.
+- *clustercontrol* - ClusterControl UI - |ClusterControl_UI_deb|
+- *clustercontrol-cmonapi* - ClusterControl CMONAPI - |ClusterControl_CMONAPI_deb|
+- *clustercontrol-controller* - ClusterControl Controller (CMON) - |ClusterControl_Controller_deb|
+- *clustercontrol-notifications* - ClusterControl event module - |ClusterControl_Notifications_deb|
+- *clustercontrol-ssh* - ClusterControl web-ssh module - |ClusterControl_SSH_deb|
+- *clustercontrol-cloud* - ClusterControl cloud module - |ClusterControl_Cloud_deb|
+- *clustercontrol-clud* - ClusterControl cloud's file manager module - |ClusterControl_CLUD_deb|
+- *s9s-tools* - ClusterControl CLI (s9s) - |s9s_tools_deb| (for Xenial)
+- *s9s-tools-lib* - ClusterControl CLI (s9s) library - |s9s_tools_lib_deb| (for Xenial)
 
 3. Perform the package installation and ClusterControl dependencies manually:
 
@@ -1387,6 +1378,8 @@ Debian/Ubuntu
 
 	$ sudo apt-get -f install ntp gnuplot
 	$ sudo dpkg -i clustercontrol*.deb
+	$ sudo dpkg -i libs9s0*.deb
+	$ sudo dpkg -i s9s-tools*.deb
 
 4. Execute the post-installation script to configure ClusterControl components and follow the installation wizard accordingly:
 

@@ -55,7 +55,7 @@ Deploy a new server/cluster or import an existing database server/cluster into C
 
 Start managing and monitor your database instances:
 
-:ref:`User Guide`
+:ref:`UserGuide`
 
 *Step #6*
 

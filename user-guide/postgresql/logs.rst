@@ -1,3 +1,5 @@
+.. _PostgreSQL - Logs:
+
 Logs
 -----
 

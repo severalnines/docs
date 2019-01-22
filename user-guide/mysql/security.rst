@@ -38,7 +38,7 @@ Use Existing Certificate
 ''''''''''''''''''''''''
 
 * **Selected Certificate**
-	- Pick an exiting certificate, stored by :ref:`Key Management`.
+	- Pick an exiting certificate, stored by :ref:`Sidebar - Key Management`.
 
 * **Restart Cluster**
 	- Restart Nodes - Automatically perform rolling restart of the nodes after setting up certificate and key.
@@ -74,7 +74,7 @@ Use Existing Certificate
 ''''''''''''''''''''''''
 
 * **Selected Certificate**
-	- Pick an exiting certificate, stored by :ref:`Key Management`.
+	- Pick an exiting certificate, stored by :ref:`Sidebar - Key Management`.
 	
 Change Certificate
 ``````````````````

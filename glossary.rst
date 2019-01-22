@@ -108,6 +108,11 @@ Glossary
 	
 		.. seealso:: http://en.wikipedia.org/wiki/Lightweight_Directory_Access_Protocol
 
+	libssh
+		libssh is a multiplatform C library implementing the SSHv2 protocol on client and server side.
+		
+		.. seealso:: https://www.libssh.org/
+
 	MaxScale
 		MariaDB MaxScale is a next-generation database proxy that manages security, scalability and high availability in scale-out deployments.
 		

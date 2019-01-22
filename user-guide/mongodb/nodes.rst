@@ -66,6 +66,8 @@ Puts individual nodes into maintenance mode which prevents ClusterControl to rai
 
 Alarms and notifications for this node will be activated back once the maintenance period is exceeded, or you explicitly toggling it OFF.
 
+.. Attention::  If node autorecovery is enabled, ClusterControl will always recover a node regardless of the maintenance mode status. Don't forget to disable node autorecovery to avoid ClusterControl interfering your maintenance tasks.
+
 Reboot Host
 ````````````
 

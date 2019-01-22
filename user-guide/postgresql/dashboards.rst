@@ -22,6 +22,9 @@ Opens a side-menu pop-up to configure a Prometheus server. You can re-use an exi
 
 * **Data Retention(days)**
 	- Monitoring data retention period. See `Global Configuration <https://prometheus.io/docs/prometheus/latest/configuration/configuration/>`_.
+	
+* **Configure Exporters**
+	- Manually configure individual exporters scrape interval and command-line arguments to be passed.
 
 Monitoring Dashboards
 ++++++++++++++++++++++
@@ -34,6 +37,7 @@ Dashboard                 Cluster Type                 Description
 System Overview           All Clusters                 Provides panels of host metrics and usage for individual host.
 Cross Server Graphs       All Clusters                 Provides selected host metrics for all hosts for comparison.
 PostgreSQL Overview       PostgreSQL                   Provides panels of general database metrics and usage for individual database host.
+HAProxy Overview          Clusters with HAProxy        Provides important HAProxy metrics for individual host.
 ========================= ============================ ===================
 
 * **Dashboard**

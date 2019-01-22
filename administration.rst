@@ -10,7 +10,9 @@ This section provides detailed information on how to administer ClusterControl.
 Upgrading ClusterControl
 ------------------------
 
-There are several ways to upgrade ClusterControl to the latest version. However, we recommend users to perform `Online Upgrade`_ where the instuctions are mostly up-to-date.
+There are several ways to upgrade ClusterControl to the latest version. However, we recommend users to perform `Online Upgrade`_ where the instructions are mostly up-to-date.
+
+.. _Administration - Upgrading ClusterControl - Online Upgrade:
 
 Online Upgrade
 +++++++++++++++
@@ -81,35 +83,33 @@ For systemd:
 
 Upgrade is now complete. Verify the new version at *ClusterControl UI > Settings > CMON Settings > Version* or by using command ``cmon -v``. You should re-login if your ClusterControl UI session is active.
 
+.. _Administration - Upgrading ClusterControl - Offline Upgrade:
+
 Offline Upgrade
 ++++++++++++++++
 
-The following upgrade procedures can be performed without internet connection on ClusterControl node. You can download the latest ClusterControl packages from `Severalnines download site <http://www.severalnines.com/downloads/cmon/>`_.
-
-Manual Upgrade
-``````````````
+The following upgrade procedures can be performed without internet connection on ClusterControl node. You can download the latest ClusterControl packages from `Severalnines download site <https://severalnines.com/downloads/cmon/>`_.
 
 RedHat/CentOS
-''''''''''''''
+``````````````
 
-1) Download the latest version of ClusterControl related RPM packages from `Severalnines download site <http://www.severalnines.com/downloads/cmon/>`_, for example:
+1) Download the latest version of ClusterControl related RPM packages from `Severalnines download site <https://severalnines.com/downloads/cmon/>`_ and `Severalnines Repository <http://repo.severalnines.com>`_. There are a number of packages you need to download as explained below:
 
-.. code-block:: bash
-
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-1.7.0-5375-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.7.0-333-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.7.0-2892-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications-1.7.0-153-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh-1.7.0-66-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud-1.7.0-154-x86_64.rpm
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud-1.7.0-154-x86_64.rpm
+- *clustercontrol* - ClusterControl UI - |ClusterControl_UI_rpm|
+- *clustercontrol-cmonapi* - ClusterControl CMONAPI - |ClusterControl_CMONAPI_rpm|
+- *clustercontrol-controller* - ClusterControl Controller (CMON) - |ClusterControl_Controller_rpm|
+- *clustercontrol-notifications* - ClusterControl event module - |ClusterControl_Notifications_rpm|
+- *clustercontrol-ssh* - ClusterControl web-ssh module - |ClusterControl_SSH_rpm|
+- *clustercontrol-cloud* - ClusterControl cloud module - |ClusterControl_Cloud_rpm|
+- *clustercontrol-clud* - ClusterControl cloud's file manager module - |ClusterControl_CLUD_rpm|
+- *s9s-tools* - ClusterControl CLI (s9s) - |s9s_tools_rpm|
 
 2) Install using yum so dependencies are met:
 
 .. code-block:: bash
 
 	$ yum localinstall clustercontrol-*
-
+	$ yum localinstall s9s-tools*
 
 3) Restart the ClusterControl services:
 
@@ -132,25 +132,27 @@ For systemd:
 Upgrade is now complete. Verify the new version at *ClusterControl UI > Settings > CMON Settings > Version*. You should re-login if your ClusterControl UI session is active.
 
 Debian/Ubuntu
-'''''''''''''
+``````````````
 
-1) Download the latest version of ClusterControl related DEB packages from `Severalnines download site <http://www.severalnines.com/downloads/cmon/>`_, for example:
+1) Download the latest version of ClusterControl related DEB packages from `Severalnines download site <https://severalnines.com/downloads/cmon/>`_ and `Severalnines Repository <http://repo.severalnines.com>`_. There are a number of packages you need to download as explained below:
 
-.. code-block:: bash
+- *clustercontrol* - ClusterControl UI - |ClusterControl_UI_deb|
+- *clustercontrol-cmonapi* - ClusterControl CMONAPI - |ClusterControl_CMONAPI_deb|
+- *clustercontrol-controller* - ClusterControl Controller (CMON) - |ClusterControl_Controller_deb|
+- *clustercontrol-notifications* - ClusterControl event module - |ClusterControl_Notifications_deb|
+- *clustercontrol-ssh* - ClusterControl web-ssh module - |ClusterControl_SSH_deb|
+- *clustercontrol-cloud* - ClusterControl cloud module - |ClusterControl_Cloud_deb|
+- *clustercontrol-clud* - ClusterControl cloud's file manager module - |ClusterControl_CLUD_deb|
+- *s9s-tools* - ClusterControl CLI (s9s) - |s9s_tools_deb| (for Xenial)
+- *s9s-tools-lib* - ClusterControl CLI (s9s) library - |s9s_tools_lib_deb| (for Xenial)
 
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol_1.7.0-5375_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.7.0-333_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-controller-1.7.0-2892-x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-notifications_1.7.0-153_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-ssh_1.7.0-66_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-cloud_1.7.0-154_x86_64.deb
-	$ wget https://severalnines.com/downloads/cmon/clustercontrol-clud_1.7.0-154_x86_64.deb
-
-2) Upload the packages to the server and install them using dpkg command:
+2) Upload the packages to the server and install them using dpkg coxmmand:
 
 .. code-block:: bash
 
 	$ sudo dpkg -i clustercontrol*.deb
+	$ sudo dpkg -i libs9s0*.deb
+	$ sudo dpkg -i s9s*.deb
 
 3) Restart the ClusterControl services:
 
@@ -172,6 +174,8 @@ For systemd:
 
 Upgrade is now complete. Verify the new version at *ClusterControl UI > Settings > CMON Settings > Version*. You should re-login if your ClusterControl UI session is active.
 
+.. _Administration - Backup Up ClusterControl:
+
 Backing Up ClusterControl
 -------------------------
 
@@ -183,7 +187,7 @@ ClusterControl CMON Controller
 * CMON binary: ``/usr/sbin/cmon``
 * CMON SSH binary: ``/usr/sbin/cmon-ssh``
 * CMON Events binary: ``/usr/sbin/cmon-events``
-* CMON Cloud binary: ``/usr/sbin/cmon-cloud`` and `/usr/sbin/clud`
+* CMON Cloud binary: ``/usr/sbin/cmon-cloud`` and ``/usr/sbin/clud``
 * CMON main configuration file: ``/etc/cmon.cnf``
 * CMON configuration directory and all its content: ``/etc/cmon.d/*``
 * CMON cron file: ``/etc/cron.d/cmon``
@@ -210,14 +214,46 @@ ClusterControl UI
 
 Where, ``{wwwroot}`` is equal to the Apache document root and ``{mysql_password}``, ``{mysql_hostname}``, ``{mysql_port}`` are values defined in CMON configuration file.
 
+.. _Administration - Restoring ClusterControl:
 
 Restoring ClusterControl
 ------------------------
 
 Manual restoration can be performed by reverting the backup action and copying everything back to its original location. Restoration may require you to re-grant the 'cmon' user since the backup will not import the grant table of it. Please review the :ref:`Components - ClusterControl Controller - CMON Database` on how to grant the 'cmon' user cmon.
 
+.. _Administration - Resetting ClusterControl Admin Login:
+
+Resetting ClusterControl Admin Login
+------------------------------------
+
+To reset the admin password for ClusterControl UI, please run the PHP script ``password-reset.php5`` or ``password-reset.php7`` located in ``/var/www/html/clustercontrol/app/tools/``. The script accepts one argument, email address or username of the user that you would like to reset. The password will be reset to 'admin', using the default hash and salt value. Then, user has to manually change the password to something more secure under :ref:`Sidebar - User Management`.
+
+To verify your PHP version, simply use the following command:
+
+.. code-block:: bash
+
+	$ php --version
+	PHP 5.4.16 (cli) (built: Oct 30 2018 19:30:51)
+
+Navigate to the ``tools`` directory:
+
+.. code-block:: bash
+
+	$ cd /var/www/html/clustercontrol/app/tools/
+
+And run the password reset script based on the running PHP version:
+
+.. code-block:: bash
+
+	$ php -e password-reset.php5 {email address/username} # for PHP 5
+	$ php -e password-reset.php7 {email address/username} # for PHP 7 and later
+
+.. _Administration - Securing ClusterControl:
+
 Securing ClusterControl
 -----------------------
+
+.. _Administration - Securing ClusterControl - Firewall and Security Group:
 
 Firewall and Security Group
 ++++++++++++++++++++++++++++
@@ -237,6 +273,8 @@ ClusterControl requires ports used by the following services to be opened/enable
 * CMON SSH (default is 9511)
 * Streaming port for database backup through netcat (default is 9999)
 
+.. _Administration - Securing ClusterControl - SSH:
+
 SSH
 +++
 
@@ -246,15 +284,21 @@ SSH is very critical for ClusterControl. It must be possible to SSH from the Clu
 * Lock down SSH access so it is not possible to SSH into the nodes from any other server than the ClusterControl server.
 * Lock down the ClusterControl server so that it is not possible to SSH into it directly from the outside world.
 
+.. _Administration - Securing ClusterControl - File Permission:
+
 File Permission
 +++++++++++++++
 
 CMON configuration and log files contain sensitive information e.g ``mysql_password`` or ``sudo`` where it stores user’s password. Ensure CMON configuration file, e.g ``/etc/cmon.cnf`` and ``/etc/cmon.d/cmon_[clusterid].cnf`` (if exists) have permission 700 while CMON log files, e.g ``/var/log/cmon.log`` and ``/var/log/cmon_[clusterid].log`` has 740 and both are owned by root.
 
+.. _Administration - Securing ClusterControl - HTTPS:
+
 HTTPS
 ++++++
 
 By default, the installation script installs and configures a self-signed certificate for ClusterControl UI. You can access it by pointing your browser to :samp:`https://{ClusterControl_host}/clustercontrol`. If you would like to use your own SSL certificate (e.g :samp:`https://secure.domain.com/clustercontrol`), just replace the key and certificate path inside Apache’s SSL configuration file and restart Apache daemon. Make sure the server's hostname matches with the SSL domain name that you would like to use.
+
+.. _Administration - Running on Custom Port:
 
 Running on Custom Port
 ----------------------
@@ -273,7 +317,7 @@ ClusterControl requires same custom SSH port across all nodes in the cluster. Ma
 HTTP or HTTPS
 +++++++++++++
 
-Running HTTP or HTTPS on custom port will change the ClusterControl UI and the CMONAPI URL e.g :samp:`http://{ClusterControl_host}:8080/clustercontrol` and :samp:`https://{ClusterControl_host}:4433/cmonapi`. Thus, you may need to re-register the new CMONAPI URL for managed cluster at ClusterControl UI :ref:`Cluster Registration` page.
+Running HTTP or HTTPS on custom port will change the ClusterControl UI and the CMONAPI URL e.g :samp:`http://{ClusterControl_host}:8080/clustercontrol` and :samp:`https://{ClusterControl_host}:4433/cmonapi`. Thus, you may need to re-register the new CMONAPI URL for managed cluster at ClusterControl UI :ref:`UserGuide - Global Settings - Cluster Registrations` page.
 
 MySQL
 ++++++
@@ -292,12 +336,14 @@ If you are running MySQL for CMON database on different ports, several areas nee
 
 .. Note:: Where ``{wwwroot}`` is the Apache document root and ``{custom_port}`` is the MySQL custom port.
 
+.. _Administration - Housekeeping:
+
 Housekeeping
 ------------
 
 ClusterControl monitoring data will be purged based on the value set at *ClusterControl > Settings > General Settings > History* (default is 7 days). Some users might find this value to be too low for auditing purposes. You can increase the value accordingly however, the longer collected data exist in CMON database, the bigger space it needs. It is recommended to lower the disk space threshold under *ClusterControl > Settings > Thresholds > Disk Space Utilization* so you will get early warning in case CMON database grows significantly.
 
-If you intend to manually purge the monitoring data, you can truncate following tables (recommended to truncate based on the following order):
+If you intend to manually purge the monitoring data, you can truncate following tables (it is highly recommended to truncate based on the following order):
 
 .. code-block:: mysql
 
@@ -312,7 +358,11 @@ If you intend to manually purge the monitoring data, you can truncate following 
 	mysql> TRUNCATE TABLE cmon_log_entries;
 	mysql> TRUNCATE TABLE collected_logs;
 
-The CMON process has internal log rotation scheduling where it will log up to 5 MB in size before archiving ``/var/log/cmon.log`` and ``/var/log/cmon_{cluster id}.log``. The archived log will be named as ``cmon.log.1`` (or ``cmon_{cluster id}.log.1``) sequentially, with up to 9 archived log files (total of 10 log files rotation).
+The CMON process has internal log rotation scheduling where it will log up to 5 MB in size before archiving ``/var/log/cmon.log`` and ``/var/log/cmon_{cluster ID}.log``. The archived log will be named as ``cmon.log.1`` (or ``cmon_{cluster ID}.log.1``) sequentially, with up to 9 archived log files (total of 10 log files rotation).
+
+If you have configured very short interval recurring jobs like backup job running every hour, it would produce lots of job activities. We would suggest you to lower the controller job history retention period, to like 1 or 2 days. It can be done using the ``save_history_days=1`` configuration option, set it into ``/etc/cmon.d/cmon_{clustre ID}.cnf``, and restart CMON to apply the changes. The controller only keep the last two days job history. The default value is 7. For more details see :ref:`Components - ClusterControl Controller - Configuration Options` or ``cmon --help-config`` output.
+
+.. _Administration - Health Checks:
 
 Health Checks
 -------------
@@ -335,6 +385,8 @@ ClusterControl Notifications   ``systemctl status cmon-events`` or ``service cmo
 In shell scripting, expect the above commands to return a good response like exit code 0 to indicate a running process. You could also use other means by checking the process list, connecting to the respective service ports or inspecting the log files.
 
 .. Note:: By default, a failed cmon will be restarted by a cron script automatically. This is installed by default, and gets enabled whenever user starts the service.
+
+.. _Administration - Migrating IP Address or Hostname:
 
 Migrating IP Address or Hostname
 --------------------------------
@@ -375,6 +427,8 @@ Restart CMON service to apply the changes:
 
 Examine the output of the CMON log file to verify the IP migration status. The CMON Controller should report errors and shut down if it could not connect to the specified database hosts or the CMON database. Once the CMON Controller is started, you can remove the old IP addresses or hostnames from the managed host list at *ClusterControl > Manage > Hosts*.
 
+.. _Administration - Standby ClusterControl Server for High Availability:
+
 Standby ClusterControl Server for High Availability
 ---------------------------------------------------
 
@@ -409,6 +463,8 @@ If you want to make the standby server runs in the active mode, just do as follo
 That's it. At this point, the standby server has taken over the primary role.
 
 .. Attention:: Do not let two or more ClusterControl instances perform automatic recovery to the same cluster at one time. 
+
+.. _Administration - Changing cmon or root Password:
 
 Changing 'cmon' or 'root' Password
 ----------------------------------
@@ -486,7 +542,7 @@ When updating the password, run the following statements on the correct node dep
 
 The following output show the post-edited value when filtering out the password variables:
 
-.. code-block:: mysql
+.. code-block:: bash
 
 	$ cat /etc/cmon.cnf | grep ^mysql_password
 	mysql_password='&5?2+SW9bGq'
@@ -554,7 +610,7 @@ When updating the password, run the following statements on the correct node dep
 
 2) Edit the value of ``monitored_mysql_root_password`` variable inside the respective CMON configuration for that particular cluster ID. For example, if we changed the root password for cluster ID 2, we would need to update the value inside ``/etc/cmon.d/cmon_2.cnf`` accordingly. The following output show the post-edited value when filtering out the password variables for all clusters (assuming we have changed the MySQL root password on all clusters to '&5?2+SW9bGq'):
 
-.. code-block:: mysql
+.. code-block:: bash
 
 	$ cat /etc/cmon.d/cmon_1.cnf | grep ^monitored_mysql_root_password
 	monitored_mysql_root_password='&5?2+SW9bGq'
@@ -570,6 +626,8 @@ When updating the password, run the following statements on the correct node dep
 	$ systemctl restart cmon # systemd
 	$ service cmon restart # sysvinit
 
+
+.. _Administration - Graceful Shutdown:
 
 Graceful Shutdown
 -----------------
@@ -673,6 +731,8 @@ Starting up:
 4. Start the application manually. This usually outside of ClusterControl domain.
 
 .. Note:: If the database server was being shutdown gracefully outside of ClusterControl knowledge (through command line init script, systemd or ``kill -15``), ClusterControl would still attempt to recover the database node if *Node AutoRecovery* is turned on. Unless, the node is marked as 'Under Maintenance'.
+
+.. _Administration - Uninstall:
 
 Uninstall
 ---------

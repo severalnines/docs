@@ -1,7 +1,11 @@
+.. _MySQL - Performance:
+
 Performance
 -----------
 
 Database performance monitoring and advisors.
+
+.. _MySQL - Performance - Overview:
 
 Overview
 ++++++++
@@ -20,10 +24,12 @@ For detailed explanation on status variables of your cluster, you can refer to t
 	- Galera Cluster: http://galeracluster.com/documentation-webpages/monitoringthecluster.html
 	- MySQL Cluster: https://dev.mysql.com/doc/refman/5.6/en/mysql-cluster.html
 
+.. _MySQL - Performance - Advisors:
+
 Advisors
 ++++++++
 
-Lists of scheduled advisors' results created in *ClusterControl > Manage > Developer Studio* using `ClusterControl DSL <../../dsl.html>`_. You can think of it like a 'scheduled mini-program' which executes a script created in Developer Studio and produces a result containing status, advice and justification. Each advisor can be expanded and collapsed by clicking on the dropdown icon at the top right corner. 
+Lists of scheduled advisors' results created in *ClusterControl > Manage > Developer Studio* using :ref:`ClusterControl DSL`. You can think of it like a 'scheduled mini-program' which executes a script created in Developer Studio and produces a result containing status, advice and justification. Each advisor can be expanded and collapsed by clicking on the dropdown icon at the top right corner. 
 
 * **Show Advisors**
 	- Filters the advisor result based on tag.
@@ -496,12 +502,16 @@ TABLE LOCK CONTENTION
 - Recommendation:
 	- You have queries or operations that are locking tables, thus preventing concurrency (look for ``LOCK TABLE`` etc). If you are using MyISAM, change the storage engine to InnoDB if possible.
 	
+.. _MySQL - Performance - DB Status:
+
 DB Status
 ++++++++++
 
 DB Status provides a quick overview of MySQL status across all your database nodes, similar to ``SHOW STATUS`` statement. You can use the *Search* text field to filter the result.
 
 .. Note:: You can check *Hide all zero values* to filter out any status that returned 0.
+
+.. _MySQL - Performance - DB Variables:
 
 DB Variables
 ++++++++++++
@@ -510,6 +520,8 @@ DB Variables provide a quick overview of MySQL variables that are set across all
 
 .. Note:: Red text means that the variable setting is different. In some cases that is acceptable (e.g., IP address of the node).
 
+.. _MySQL - Performance - DB Growth:
+
 DB Growth
 ++++++++++
 
@@ -517,10 +529,14 @@ Provides a summary of your database and table growth on daily basis for the last
 
 Click on a database listed for further details on growth summary per table.
 
+.. _MySQL - Performance - InnoDB Status:
+
 InnoDB Status
 +++++++++++++
 
 Fetches the current InnoDB monitor output for selected host, similar to ``SHOW ENGINE INNODB STATUS`` command.
+
+.. _MySQL - Performance - Schema Analyzer:
 
 Schema Analyzer
 +++++++++++++++
@@ -540,12 +556,20 @@ Analyzes your database schemas for missing primary keys, redundant indexes and t
 		- DML and even read queries can be slower because MySQL needs update and fetch more data to Buffer Pool for the same load.
 		- Data needs more disk space so the backups will be bigger and slower.
 
+.. _MySQL - Performance - Transaction Log:
+
 Transaction Log
 +++++++++++++++
 
-Lists of long-running transactions and deadlocks across database cluster where you can easily view what transactions are causing the deadlocks. The timeout is 10 seconds by default. This is configurable in CMON configuration file under ``db_long_query_time_alarm`` configuration option. 
+Lists out long-running transactions and deadlocks across database cluster where you can easily view what transactions are causing the deadlocks. The timeout is 10 seconds by default. This is configurable in CMON configuration file under ``db_long_query_time_alarm`` configuration option.
 
 Click on the listed query to see the output of InnoDB status for detailed debugging.
+
+* **Enable Transaction Log**
+	- Tick the checkbox to enable deadlock/long-running transaction logging.
+
+* **Interval**
+	- The long-running interval before ClusterControl captures the transaction.
 
 * **Db Instance**
 	- Database instance that process the transaction.

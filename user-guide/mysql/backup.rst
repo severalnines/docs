@@ -88,7 +88,7 @@ To create an instant backup, you have options to create a full backup using mysq
 	- Encrypts the generated backup. Backup is encrypted at rest using AES-256 CBC algorithm, where the encryption key will be created automatically and stored inside CMON configuration file for this cluster. See `Backup Encryption and Decryption`_.
 
 * **Retention**
-	- How long ClusterControl should keep this backup once successfully created. You can set a custom period in days or keep it forever. Otherwise, ClusterControl will use the default retention period.
+	- How long ClusterControl should keep this backup once successfully created. You can set a custom period in days or keep it forever. Otherwise, ClusterControl will use the default retention period. Take note that modifying retention period on existing schedule has no effect on already created backup.
 
 * **Desync node during backup**
 	- Exclusive for Galera and xtrabackup/mariabackup. De-syncing a node before performing backup, which disables Flow Control for the node. The node continues to receive write-sets and fall further behind the cluster. The cluster does not wait for desynced nodes to catch up, even if it reaches the ``fc_limit`` value.
@@ -210,7 +210,7 @@ Creates backup schedules of the database. You can choose to create a full or inc
 	- Encrypts the generated backup. Backup is encrypted at rest using AES-256 CBC algorithm, where the encryption key will be created automatically and stored inside CMON configuration file for this cluster. See `Backup Encryption and Decryption`_.
 
 * **Retention**
-	- How long ClusterControl should keep this backup once successfully created. You can set a custom period in days or keep it forever. Otherwise, ClusterControl will use the default retention period.
+	- How long ClusterControl should keep this backup once successfully created. You can set a custom period in days or keep it forever. Otherwise, ClusterControl will use the default retention period. Take note that modifying retention period on existing schedule has no effect on already created backup.
 
 * **Backup Locks**
 	- Exclusive for xtrabackup/mariabackup.
@@ -331,7 +331,7 @@ Performs backup verification job.
 	- Check the box to disable SELinux (RHEL/CentOS) or AppArmor (Ubuntu).
 
 * **Shutdown the server after the backup have been completed**
-	- Select "Yes" if you want ClusterControl to shutdown the server after restoration completes. Select "No" if you want to let it run after restoration completes and the node will be listed under `Nodes <nodes.html>`_. You are then responsible for removing the MySQL server.
+	- Select "Yes" if you want ClusterControl to shutdown the server after restoration completes. Select "No" if you want to let it run after restoration completes and the node will be listed under :ref:`MySQL - Nodes`. You are then responsible for removing the MySQL server.
 
 * **Verify the backup after N hours after completion**
 	- Performs the backup verification after the specified hours once the backup is completed.
@@ -341,10 +341,11 @@ Performs backup verification job.
 Restore Backup
 ++++++++++++++
 
-Restores mysqldump, Percona Xtrabackup or MariaDB Backup created by ClusterControl and listed in the `Backup List`_. ClusterControl supports two restoration options:
+Restores mysqldump, Percona Xtrabackup or MariaDB Backup created by ClusterControl and listed in the `Backup List`_. ClusterControl supports three restoration options:
 
 - `Restore on node`_.
 - `Restore and verify on standalone host`_.
+- `Create cluster from backup`_.
 
 .. _MySQL - Backup - Restore Backup - Point-in-Time Recovery:
 
@@ -415,7 +416,7 @@ For Percona Xtrabackup/MariaDB Backup (offline restore):
 Restore and verify on standalone host
 ``````````````````````````````````````
 
-Performs restoration on a standalone host and verify the backup. This requires a dedicated host which is not part of the cluster. ClusterControl will first deploy a MySQL instance on the target host, start the service, copy the backup from the backup repository and start performing the restoration. Once done, you can have an option either shutdown the server once restored or let it run so you can conduct investigation on the server.
+Performs restoration on a standalone host and verify the backup. This requires a dedicated host which is not part of the cluster. ClusterControl will first deploy a MySQL instance on the target host, start the service, stream the backup from the backup repository and start performing the restoration. Once done, you can have an option either to shutdown the server once restored or let it run so you can conduct further investigation on the server.
 
 You can monitor the job progress under *Activity > Jobs > Verify Backup* where ClusterControl will report the restoration status (based on the exit code) at the end of the job.
 
@@ -423,13 +424,33 @@ You can monitor the job progress under *Activity > Jobs > Verify Backup* where C
 	- Specify the FQDN, hostname or IP address of the standalone host. The host must not be part of the cluster.
 
 * **Install Software**
-	- A new MySQL server will be installed and setup if 'Install Software' has been enabled otherwise an existing running MySQL server on the target host will be used. If there is an existing MySQL server installed or running, it will be stopped and removed before ClusterControl performs the installation.
+	- A new MySQL server will be installed and setup if this is enabled. If there is an existing MySQL server installed or running, it will be stopped and removed before ClusterControl performs the installation. If unchecked, ClusterControl will not touch the existing installation and the existing MySQL server (must be running) on the target host will be used.
 	
 * **Disable Firewall**
 	- Check the box to disable firewall (recommended).
 
 * **Shutdown the server after the backup have been restored**
 	- Select "Yes" if you want ClusterControl to shutdown the server after restoration completes. Select "No" if you want to let it run after restoration completes and the node will be listed under :ref:`MySQL - Nodes`. You are then responsible for removing the MySQL server.
+
+Create cluster from backup
+````````````````````````````
+
+.. Note:: This feature is introduced in version 1.7.1, specifically for Galera Cluster and PostgreSQL clusters only.
+
+Creates a new cluster from the existing backup. A new MySQL Galera Cluster will be created from the selected backup. The selected backup must be accessible from the nodes in the new cluster. The root/admin user password for this cluster must the same as the MySQL admin/root password as included in the backup. For MySQL-based clusters, only Galera Cluster is supported at the moment.
+
+.. Attention:: Encrypted backup is not supported.
+
+Choosing this option will open a new dialog where the selected backup will be used as a base dataset for the new cluster. The same deployment wizard for MySQL Galera Cluster will be shown to configure a new cluster. See :ref:`Deploy - MySQL Galera` for reference.
+
+Basically, ClusterControl performs the deployment job based on the following order:
+
+1) Install necessary softwares and dependencies on all Galera nodes.
+2) Start the first node.
+3) Stream and restore backup on the first node (with auto-restart flag).
+4) Configure and add the rest of the nodes.
+
+A new Galera Cluster will be listed under ClusterControl cluster dashboard once the job completes.
 
 .. _MySQL - Backup - Restore External Backup:
 

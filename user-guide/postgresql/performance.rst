@@ -1,7 +1,11 @@
+.. _PostgreSQL - Performance:
+
 Performance
 -----------
 
 Database performance monitoring and advisors.
+
+.. _PostgreSQL - Performance - DB Variables:
 
 DB Variables
 ++++++++++++
@@ -10,10 +14,12 @@ DB Variables provide a quick overview of PostgreSQL variables that are set acros
 
 .. Note:: Red text means that the variable setting is different. In some cases that is acceptable (e.g., IP address of the node).
 
+.. _PostgreSQL - Performance - Advisors:
+
 Advisors
 ++++++++
 
-Lists of scheduled Advisors created in Developer Studio using `ClusterControl DSL <../../dsl.html>`_.
+Lists of scheduled Advisors created in Developer Studio using :ref:`ClusterControl DSL`.
 
 * **Expand all**
 	- Expands all advisors with detailed.

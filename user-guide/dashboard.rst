@@ -1,4 +1,4 @@
-.. _Dashboard:
+.. _UserGuide - Dashboard:
 
 Dashboard
 =========
@@ -22,7 +22,7 @@ ClusterControl's top menu.
 	- Opens the *Import Cluster* modal dialog. See :ref:`Import Existing Server Cluster`.
 
 * **Global Settings**
-	- ClusterControl global settings. See :ref:`Global Settings`.
+	- ClusterControl global settings. See `Global Settings`_.
 
 * **Logout**
 	- Logs out from ClusterControl and return to the login page.
@@ -41,6 +41,8 @@ Provides shortcuts to main cluster functionality. Every supported database clust
 	- :ref:`MySQL's Cluster Actions <MySQL - Overview - Actions>`
 	- :ref:`MongoDB's Cluster Actions <MongoDB - Overview - Actions>`
 	- :ref:`PostgreSQL's Cluster Actions <PostgreSQL - Overview - Actions>`
+
+.. _UserGuide - Activity:
 
 Activity
 --------
@@ -84,12 +86,14 @@ Logs
 
 Shows aggregated view of ClusterControl logs which require user's attention across clusters (logs with severity WARNING and ERROR). Each log entry has a message subject, severity level, component, the corresponding cluster name and also timestamp. All the logs listed here are also accessible directly under individual cluster at *Logs > CMON Logs*.
 
-.. _Global Settings:
+.. _UserGuide - Global Settings:
 
 Global Settings
 ---------------
 
 Provides interface to register clusters, repositories and subscriptions inside ClusterControl.
+
+.. _UserGuide - Global Settings - Repositories:
 
 Repositories
 +++++++++++++
@@ -125,36 +129,28 @@ For reference purpose, following is an example of yum definition if *Local Mirro
 	gpgcheck = 0
 	gpgkey = http://10.0.0.10/cmon-repos/percona-5.6-yum-el7/localrepo-gpg-pubkey.asc
 
-
-.. _Cluster Registrations:
+.. _UserGuide - Global Settings - Cluster Registrations:
 
 Cluster Registrations
 ++++++++++++++++++++++
 
-From a ClusterControl UI instance, this enables the user to register a database cluster managed by ClusterControl. For each cluster, you need to provide a ClusterControl API URL and token. This effectively establishes the communication between the UI and the controller. The ClusterControl UI can connect to multiple CMON Controller servers (via the CMON REST API) and provide a centralized view of all databases. Users need to register the CMONAPI token and URL for each cluster. 
+Registers a database cluster managed by ClusterControl Controller (CMON) to be viewed by ClusterControl UI. Each database cluster can be registered with the UI through this interface or you may skip doing this and use ClusterControl CLI instead. By default, all clusters deployed by and imported into ClusterControl through the web interface will be automatically registered with the UI. This effectively establishes the communication between the UI and the controller.
 
 .. Note:: The CMONAPI token is critical and hidden under asterisk values. This token provides authentication access for ClusterControl UI to communicate with the CMON backend services directly. Please keep this token in a safe place.
 
 You can retrieve the CMONAPI token manually at ``{wwwroot}/cmonapi/config/bootstrap.php`` on line containing ``CMON_TOKEN`` value, where ``{wwwroot}`` is location of Apache document root.
 
-.. _Subscriptions:
+.. _UserGuide - Global Settings - Subscriptions:
 
 Subscriptions
 ++++++++++++++
 
-For users with a valid subscription (Standalone, Pro, Advanced, Enterprise), enter your license information here to unlock additional features based on the subscription. 
+.. Attention:: ClusterControl introduces new license format on v1.7.1 (the new license key format contains only a long-encrypted string). If you are having the older format, contact the account manager or email our sales department at sales@severalnines.com to get a new license.
 
-Following screenshot shows example on filing up the license information:
+For users with a valid subscription (Standalone, Pro, Advanced, Enterprise), enter your license key here to unlock additional features based on the subscription. The license string contains information about the license type, company/affilication, email, expiration date and total number of licensed nodes.
 
-.. image:: img/subscription16.png
+When the license expires, ClusterControl defaults back to the Community Edition. For features comparison, please refer to `ClusterControl product page <http://www.severalnines.com/pricing>`_.
 
-.. Attention:: Make sure to copy the subscription information as they are, with no leading/trailing spaces.
-
-The license key is validated during runtime. Reload your web browser after registering a new license.
-
-.. Note:: When the license expires, ClusterControl defaults back to the Community Edition. For features comparison, please refer to `ClusterControl product page <http://www.severalnines.com/pricing>`_.
-
-.. _Configure Mail Server:
 
 Configure Mail Server
 +++++++++++++++++++++
@@ -232,7 +228,7 @@ Many of Linux distributions come with Sendmail as default MTA. To replace Sendma
 	$ chkconfig postfix on 
 	$ service postfix start
 
-.. _Runtime Configurations:
+.. _UserGuide - Global Settings - Runtime Configurations:
 
 Runtime Configurations
 +++++++++++++++++++++++
@@ -241,46 +237,48 @@ A shortcut to ClusterControl Controller runtime configurations per cluster. Runt
 
 Clicking on any of the list will redirect user to the *Runtime Configurations* page for that particular cluster.
 
+.. _UserGuide - Database Cluster List:
+
 Database Cluster List
 ---------------------
 
 Each row represents the summarized status of a database cluster:
 
-+----------------------+---------------------------------------------------------------------------------------------------------------------+
-| Field                | Description                                                                                                         |
-+======================+=====================================================================================================================+
-| Cluster Name         | The cluster name, configured under *ClusterControl > Settings > General Settings > Cluster Settings > Cluster Name* |
-+----------------------+---------------------------------------------------------------------------------------------------------------------+
-| ID                   | The cluster identifier number                                                                                       |
-+----------------------+---------------------------------------------------------------------------------------------------------------------+
-| Version              | Database server major version                                                                                       |
-+----------------------+---------------------------------------------------------------------------------------------------------------------+
-| Database Vendor      | Database vendor icon                                                                                                |
-+----------------------+---------------------------------------------------------------------------------------------------------------------+
-| Cluster Type         | The database cluster type:                                                                                          |
-|                      |                                                                                                                     |
-|                      | * MYSQL_SERVER - Standalone MySQL server                                                                            |
-|                      | * REPLICATION - MySQL Replication                                                                                   |
-|                      | * GALERA - MySQL Galera Cluster, Percona XtraDB Cluster, MariaDB Galera Cluster                                     |
-|                      | * GROUP REPLICATION - MySQL Group Replication                                                                       |
-|                      | * MYSQL CLUSTER - MySQL Cluster (NDB)                                                                               |
-|                      | * MONGODB - MongoDB ReplicaSet, MongoDB Sharded Cluster, MongoDB Replicated Sharded Cluster                         |
-|                      | * POSTGRESQL - PostgreSQL Standalone or Replication                                                                 |
-+----------------------+---------------------------------------------------------------------------------------------------------------------+
-| Cluster Status       | The cluster status:                                                                                                 |
-|                      |                                                                                                                     |
-|                      | * ACTIVE - The cluster is up and running. All cluster nodes are running normally.                                   |
-|                      | * DEGRADED - The full set of nodes in a cluster is not available. One or more nodes is down or unreachable.         |
-|                      | * FAILURE - The cluster is down. Probably that all or most of the nodes are down or unreachable, resulting the      |
-|                      |   cluster fails to operate as expected.                                                                             |
-+----------------------+---------------------------------------------------------------------------------------------------------------------+
-| Auto Recovery        | The auto recovery status of Galera Cluster:                                                                         |
-|                      |                                                                                                                     |
-|                      | * Cluster - If sets to ON, ClusterControl will perform automatic recovery if it detects cluster failure.            |
-|                      | * Node - If sets to ON, ClusterControl will perform automatic recovery if it detects node failure.                  |
-+----------------------+---------------------------------------------------------------------------------------------------------------------+
-| Node Type and Status | See table on node status indicators further down.                                                                   |
-+----------------------+---------------------------------------------------------------------------------------------------------------------+
++----------------------+------------------------------------------------------------------------------------------------------------------------+
+| Field                | Description                                                                                                            |
++======================+========================================================================================================================+
+| Cluster Name         | The cluster name, configured under *ClusterControl > Settings > CMON Settings > General Settings > Name*.              |
++----------------------+------------------------------------------------------------------------------------------------------------------------+
+| ID                   | The cluster identifier number.                                                                                         |
++----------------------+------------------------------------------------------------------------------------------------------------------------+
+| Version              | Database server major version.                                                                                         |
++----------------------+------------------------------------------------------------------------------------------------------------------------+
+| Database Vendor      | Database vendor icon.                                                                                                  |
++----------------------+------------------------------------------------------------------------------------------------------------------------+
+| Cluster Type         | The database cluster type:                                                                                             |
+|                      |                                                                                                                        |
+|                      | * MYSQL_SERVER - Standalone MySQL server.                                                                              |
+|                      | * REPLICATION - MySQL/MariaDB Replication.                                                                             |
+|                      | * GALERA - MySQL Galera Cluster, Percona XtraDB Cluster, MariaDB Galera Cluster.                                       |
+|                      | * GROUP_REPLICATION - MySQL Group Replication.                                                                         |
+|                      | * MYSQLCLUSTER - MySQL Cluster (NDB).                                                                                  |
+|                      | * MONGODB - MongoDB ReplicaSet, MongoDB Sharded Cluster, MongoDB Replicated Sharded Cluster.                           |
+|                      | * POSTGRESQL - PostgreSQL Standalone or Replication.                                                                   |
++----------------------+------------------------------------------------------------------------------------------------------------------------+
+| Cluster Status       | The cluster status:                                                                                                    |
+|                      |                                                                                                                        |
+|                      | * ACTIVE (green) - The cluster is up and running. All cluster nodes are running normally.                              |
+|                      | * DEGRADED (yellow) - The full set of nodes in a cluster is not available. One or more nodes is down or unreachable.   |
+|                      | * FAILURE (red) - The cluster is down. Probably that all or most of the nodes are down or unreachable, resulting the   |
+|                      |   cluster fails to operate as expected.                                                                                |
++----------------------+------------------------------------------------------------------------------------------------------------------------+
+| Auto Recovery        | The auto recovery status of Galera Cluster:                                                                            |
+|                      |                                                                                                                        |
+|                      | * Cluster - If sets to ON, ClusterControl will perform automatic recovery if it detects cluster failure.               |
+|                      | * Node - If sets to ON, ClusterControl will perform automatic recovery if it detects node failure.                     |
++----------------------+------------------------------------------------------------------------------------------------------------------------+
+| Node Type and Status | See table on node status indicators below.                                                                             |
++----------------------+------------------------------------------------------------------------------------------------------------------------+
 
 Node status indicator:
 

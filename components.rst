@@ -535,8 +535,6 @@ Agent-based Monitoring
 
 Starting from version 1.7.0, ClusterControl introduced an agent-based monitoring integration with :term:`Prometheus`. Other operations like management, scaling and deployment are still performed through agentless approach as described in the `Management and Deployment Operations`_. Agent-based monitoring can eliminate excessive SSH connections to the monitored hosts and offload the monitoring jobs to another dedicated monitoring system like Prometheus.
 
-.. Note:: Only MySQL-based and PostgreSQL-based clusters are supported at the moment.
-
 With agent-based configuration, you can use a set of new dashboards that use Prometheus as the data source and give access to its flexible query language and multi-dimensional data model with time series data identified by metric name and key/value pairs. Simply said, in this configuration, ClusterControl integrates with Prometheus to retrieve the collected monitoring data and visualize them in the ClusterControl UI, just like a GUI client for Prometheus. ClusterControl also connects to the exporter via HTTP GET and POST methods to determine the process state for process management purposes. For the list of Prometheus exporters, see `Monitoring Tools`_.
 
 One Prometheus data source can be shared among multiple clusters within ClusterControl. You have the options to deploy a new Prometheus server or import an existing Prometheus server, under *ClusterControl > Dashboards > Enable Agent Based Monitoring*. 
@@ -560,8 +558,10 @@ For agent-based monitoring mode, ClusterControl requires a :term:`Prometheus` se
 2) `Node/system metrics exporter <https://github.com/prometheus/node_exporter>`_ (port 9100)
 3) Database or application exporters:
 	* `MySQL exporter <https://github.com/prometheus/mysqld_exporter>`_ (port 9104)
+	* `MongoDB exporter <https://github.com/percona/mongodb_exporter>`_ (port 9216)
 	* `PostgreSQL exporter <https://github.com/wrouesnel/postgres_exporter>`_ (port 9187)
 	* `ProxySQL exporter <https://github.com/percona/proxysql_exporter>`_ (port 42004)
+	* `HAProxy exporter <https://github.com/prometheus/haproxy_exporter>`_ (port 9101)
 
 On every monitored host, ClusterControl will configure and daemonize exporter process using a program called :term:`daemon`. Thus, ClusterControl host must have an Internet connection to automate the Prometheus deployment. Apart from Prometheus scrape process, ClusterControl also connects to the process exporter via HTTP calls directly to determine the process state of the node. No sampling via SSH is involved in this process.
 
@@ -596,7 +596,7 @@ The collector flags are configured based on the node's role, as shown in the fol
 Database Client Libraries
 '''''''''''''''''''''''''
 
-When gathering the database stats and metrics, regardless of the monitoring operation method, ClusterControl Controller (CMON) connects to the database server directly via database client libraries - *libmysqlclient* (MySQL/MariaDB and ProxySQL), *libpq* (PostgreSQL) and *libmongocxx* (MongoDB). That is why it's crucial to setup proper privileges for ClusterControl server from database servers perspective. For MySQL-based clusters, ClusterControl requires database user "cmon" while for other databases, any username can be used for monitoring, as long as it is granted with super-user privileges. Most of the time, ClusterControl will setup the required privileges (or use the specified database user) automatically during the cluster import or cluster deployment stage.
+When gathering the database stats and metrics, regardless of the monitoring operation method, ClusterControl Controller (CMON) connects to the database server directly via database client libraries - *libmysqlclient* (MySQL/MariaDB and ProxySQL), *libpq* (PostgreSQL) and *libmongoc* (MongoDB). That is why it's crucial to setup proper privileges for ClusterControl server from database servers perspective. For MySQL-based clusters, ClusterControl requires database user "cmon" while for other databases, any username can be used for monitoring, as long as it is granted with super-user privileges. Most of the time, ClusterControl will setup the required privileges (or use the specified database user) automatically during the cluster import or cluster deployment stage.
 
 Load Balancers
 ''''''''''''''
@@ -612,12 +612,12 @@ Agentless vs Agent-based Architecture
 
 The following diagram summarizes both host and database monitoring processes executed by ClusterControl using *libssh* and database client libraries (agentless approach):
 
-.. image:: img/cc_monitoring_agentless.png
+.. image:: img/cc_monitoring_agentless_171.png
    :align: center
 
 The following diagram summarizes both host and database monitoring processes executed by ClusterControl using :term:`Prometheus` and database client libraries (agent-based approach):
 
-.. image:: img/cc_monitoring_agent_based.png
+.. image:: img/cc_monitoring_agent_based_171.png
    :align: center
 
 Timeouts and Intervals
@@ -717,7 +717,7 @@ ClusterControl UI page can be accessed through following URL:
 
 Similar to the CMONAPI, the ClusterControl UI is running on Apache and located under ``/var/www/html/clustercontrol`` (RedHat/CentOS/Ubuntu >14.04) or ``/var/www/clustercontrol`` (Debian <8/Ubuntu <14.04). The web server must support rule-based rewrite engine and must be able to follow symlinks. 
 
-Please refer to :ref:`User Guide` for the functionalities available in the ClusterControl UI.
+Please refer to :ref:`UserGuide` for the functionalities available in the ClusterControl UI.
 
 .. _Components - ClusterControl SSH:
 

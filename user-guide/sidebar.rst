@@ -3,16 +3,16 @@
 Sidebar
 =======
 
-Left-side navigation menu provides shortcuts to manage clusters, roles, users, notifications, integration, reporting, authentication, keys and certificates.
+Left-side navigation menu provides shortcuts to manage clusters, roles, users, notifications, integration, reporting, authentication, keys and certificates. The menu can be collapsed	to icon-only menu and expanded by using the `Close Menu`_ function.
 
-.. _Clusters:
+.. _Sidebar - Clusters:
 
 Clusters
 --------
 
 List of database clusters managed by ClusterControl with summarized status. Database cluster deployed by (or added into) ClusterControl will be listed in this page. See `Database Cluster List <dashboard.html#database-cluster-list>`_ section.
 
-.. _Operational Reports:
+.. _Sidebar - Operational Reports:
 	
 Operational Reports
 -------------------
@@ -126,7 +126,7 @@ This report gives a summary of packages available for upgrade by the repository 
 
 For an accurate reporting, ensure you always use stable and trusted repositories on every host. In some undesirable occasions, the monitored hosts could be configured with an outdated repository after an upgrade (e.g, every MariaDB major version uses different repository), incomplete internal repository (e.g, partial mirrored from the upstream) or bleeding edge repository (commonly for unstable nightly-build packages).
 
-.. _Email Notifications:
+.. _Sidebar - Email Notifications:
 
 Email Notifications
 -------------------
@@ -186,7 +186,7 @@ Configures global email notifications across clusters.
 	Digest  Send a summary of alarms raised everyday at *Send digests at*
 	======= ===========
 
-.. _Integrations:
+.. _Sidebar - Integrations:
 
 Integrations
 -------------
@@ -196,7 +196,7 @@ Manages ClusterControl integration modules. Starting from version 1.5.0, there a
 - 3rd Party Notifications via *clustercontrol-notifications* package.
 - Cloud Provider integration via *clustercontrol-cloud* and *clustercontrol-clud* packages.
 
-.. _Integrations - 3rd Party Notifications:
+.. _Sidebar - Integrations - 3rd Party Notifications:
 
 3rd Party Notifications
 +++++++++++++++++++++++++
@@ -362,7 +362,7 @@ Critical Events
 |               | ClusterLicenseExpire     | Critical   | License is expired.                                                                        |
 +---------------+--------------------------+------------+--------------------------------------------------------------------------------------------+
 
-.. _Integrations - Cloud Providers:
+.. _Sidebar - Integrations - Cloud Providers:
 
 Cloud Providers
 +++++++++++++++++
@@ -496,12 +496,12 @@ Read from JSON     The service account definition in JSON format.
 Comment (Optional) Description of the credential.
 ================== ============
 
-.. _Key Management:
+.. _Sidebar - Key Management:
 
 Key Management
 --------------
 
-Key Management allows you to manage a set of SSL certificates and keys that can be provisioned on your clusters. This feature allows you to create Certificate Authority (CA) and/or self-signed certificates and keys. Then, it can be easily enabled and disabled for MySQL and PostgreSQL client-server connections using SSL encryption feature. See `Enable SSL Encryption <mysql/overview.html#enable-ssl-encryption>`_ for details.
+Key Management allows you to manage a set of SSL certificates and keys that can be provisioned on your clusters. This feature allows you to create Certificate Authority (CA) and/or self-signed certificates and keys. Then, it can be easily enabled and disabled for MySQL and PostgreSQL client-server connections using SSL encryption feature.
 
 Manage
 ++++++
@@ -661,12 +661,12 @@ Import keys and certificates into ClusterControl's certificate repository. The i
 * **Import**
   - Start the import process.
 
-.. _User Management:
+.. _Sidebar - User Management:
 
 User Management
 ---------------
 
-.. _User Management - Teams: 
+.. _Sidebar - User Management - Teams: 
   
 Teams
 +++++
@@ -680,7 +680,7 @@ As a roundup, here is how the different entities relate to each other:
 
 .. Note:: ClusterControl creates 'Admin' team by default.
 
-.. _User Management - Users: 
+.. _Sidebar - User Management - Users: 
 
 Users
 +++++
@@ -699,7 +699,7 @@ Role            Description
 
 To create a custom role, see `Access Control`_.
 
-.. _User Management - Access Control: 
+.. _Sidebar - User Management - Access Control: 
 
 Access Control
 ++++++++++++++
@@ -756,7 +756,7 @@ Feature                      Description
 **SSL Key Management**       Key Management page - *ClusterControl > Settings (top-menu) > Key Management*
 ============================ ============
 
-.. _User Management - LDAP Settings: 
+.. _Sidebar - User Management - LDAP Settings: 
 
 LDAP Settings
 +++++++++++++
@@ -834,7 +834,7 @@ Thus, for FreeIPA, the user’s and group’s DN should use compatible schema, `
 
 For example on integrating ClusterControl with FreeIPA and Windows Active Directory, please refer to this blog post, `Integrating ClusterControl with FreeIPA and Windows Active Directory for Authentication <http://severalnines.com/blog/integrating-clustercontrol-freeipa-and-windows-active-directory-authentication>`_.
 
-.. _User Management - Clusters: 
+.. _Sidebar - User Management - Clusters: 
 
 Clusters
 ++++++++

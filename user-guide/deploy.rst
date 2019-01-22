@@ -23,6 +23,8 @@ There are prerequisites that need to be fulfilled prior to the deployment:
 
 ClusterControl will trigger a deployment job and the progress can be monitored under *ClusterControl > Activity > Jobs*.
 
+.. _Deploy - MySQL Replication:
+
 MySQL Replication
 +++++++++++++++++
 
@@ -88,7 +90,7 @@ Starting from version 1.4.0, it's possible to setup a master-master replication 
 	- MySQL server port. Default is 3306.
 
 * **my.cnf Template**
-	- MySQL configuration template file under ``/usr/share/cmon/templates``. Default is ``my.cnf.{version}``. Keep the default is recommended.
+	- MySQL configuration template file under ``/etc/cmon/templates`` or ``/usr/share/cmon/templates``. See :ref:`MySQL - Manage - Configurations - Base Template Files` for details.
 	
 * **Admin/Root Password**
 	- Specify MySQL root password. ClusterControl will configure the same MySQL root password for all instances in the cluster.
@@ -121,6 +123,7 @@ Starting from version 1.4.0, it's possible to setup a master-master replication 
 * **Deploy**
 	- Starts the MySQL Replication deployment.
 
+.. _Deploy - MySQL Galera:
 
 MySQL Galera 
 +++++++++++++
@@ -180,7 +183,7 @@ By default, ClusterControl deploys MySQL Galera with the following configuration
 	- MySQL server port. Default is 3306.
 
 * **my.cnf Template**
-	- MySQL configuration template file under ``/usr/share/cmon/templates``. Default is ``my.cnf.galera``. Keep it default is recommended.
+	- MySQL configuration template file under ``/etc/cmon/templates`` or ``/usr/share/cmon/templates``. See :ref:`MySQL - Manage - Configurations - Base Template Files` for details.
 	
 * **Admin/Root Password**
 	- Specify MySQL root password. ClusterControl will configure the same MySQL root password for all instances in the cluster.
@@ -191,11 +194,12 @@ By default, ClusterControl deploys MySQL Galera with the following configuration
 	- Use Mirrored Repositories - Create and mirror the current database vendor's repository and then deploy using the local mirrored repository. This is a preferred option when you have to scale the Galera Cluster in the future, to ensure the newly provisioned node will always have the same version as the rest of the members.
 	
 * **Add Node**
-	- Specify the IP address or hostname of the MySQL nodes. Press enter to add more nodes. Minimum of three nodes is recommended.
+	- Specify the IP address or hostname of the MySQL nodes. Press 'Enter' once specified so ClusterControl can verify the node reachability via passwordless SSH. Minimum of three nodes is recommended.
 
 * **Deploy**
 	- Starts the Galera Cluster deployment.
 
+.. _Deploy - MySQL Cluster:
 
 MySQL Cluster (NDB)
 ++++++++++++++++++++
@@ -264,7 +268,7 @@ Deploys a new MySQL Cluster (NDB) by Oracle. The cluster consists of management 
 ````````````````````````
 
 * **my.cnf Template**
-	- MySQL configuration template file under ``/usr/share/cmon/templates``. The default is ``my.cnf.mysqlcluster``. Keep it default is recommended.
+	- MySQL configuration template file under ``/etc/cmon/templates`` or ``/usr/share/cmon/templates``. See :ref:`MySQL - Manage - Configurations - Base Template Files` for details.
 
 * **Server Port**
 	- MySQL server port. Default to 3306.
@@ -280,6 +284,8 @@ Deploys a new MySQL Cluster (NDB) by Oracle. The cluster consists of management 
 
 * **Deploy**
 	- Starts the MySQL Cluster deployment.
+
+.. _Deploy - MySQL Group Replication:
 
 MySQL Group Replication (beta)
 ++++++++++++++++++++++++++++++
@@ -331,7 +337,7 @@ Deploys a new :term:`MySQL Group Replication` cluster by Oracle. This is a beta 
 	- MySQL server port. Default is 3306.
 
 * **my.cnf Template**
-	- MySQL configuration template file under ``/usr/share/cmon/templates``. Default is ``my.cnf.grouprepl``. Keep it default is recommended.
+	- MySQL configuration template file under ``/etc/cmon/templates`` or ``/usr/share/cmon/templates``. See :ref:`MySQL - Manage - Configurations - Base Template Files` for details.
 	
 * **Root Password**
 	- Specify MySQL root password. ClusterControl will configure the same MySQL root password for all instances in the cluster.
@@ -347,6 +353,7 @@ Deploys a new :term:`MySQL Group Replication` cluster by Oracle. This is a beta 
 * **Deploy**
 	- Starts the MySQL Group Replication deployment.
 
+.. _Deploy - MongoDB ReplicaSet:
 
 MongoDB ReplicaSet
 +++++++++++++++++++
@@ -392,7 +399,7 @@ Deploys a new MongoDB Replica Set. The database cluster will be automatically ad
 	- MongoDB - MongoDB Server by MongoDB Inc.
 
 * **Version**
-	- The supported MongoDB versions are 3.2, 3.4 and 3.6.
+	- The supported MongoDB versions are 3.2, 3.4, 3.6 and 4.0 (MongoDB only).
 
 * **Server Data Directory**
 	- Location of MongoDB data directory. Default is ``/var/lib/mongodb``.
@@ -407,7 +414,7 @@ Deploys a new MongoDB Replica Set. The database cluster will be automatically ad
 	- MongoDB server port. Default is 27017.
 
 * **mongodb.conf Template**
-	- MongoDB configuration template file under ``/usr/share/cmon/templates``. Default is ``mongodb.conf.[vendor]``. Keep it default is recommended.
+	- MongoDB configuration template file under ``/etc/cmon/templates`` or ``/usr/share/cmon/templates``. See :ref:`MongoDB - Manage - Configurations - Base Template Files` for details.
 	
 * **ReplicaSet Name**
 	- Specify the name of the replica set, similar to ``replication.replSetName`` option in MongoDB.
@@ -423,6 +430,7 @@ Deploys a new MongoDB Replica Set. The database cluster will be automatically ad
 * **Deploy**
 	- Starts the MongoDB ReplicaSet deployment.
 
+.. _Deploy - MongoDB Shards:
 
 MongoDB Shards
 ++++++++++++++
@@ -507,7 +515,7 @@ Deploys a new MongoDB Sharded Cluster. The database cluster will be automaticall
 	- MongoDB - MongoDB Server by MongoDB Inc
 
 * **Version**
-	- The supported MongoDB versions are 3.2, 3.4 and 3.6.
+	- The supported MongoDB versions are 3.2, 3.4, 3.6 and 4.0 (MongoDB only).
 
 * **Server Data Directory**
 	- Location of MongoDB data directory. Default is ``/var/lib/mongodb``.
@@ -522,7 +530,7 @@ Deploys a new MongoDB Sharded Cluster. The database cluster will be automaticall
 	- MongoDB server port. Default is 27017.
 
 * **mongodb.conf Template**
-	- MongoDB configuration template file under ``/usr/share/cmon/templates``. Default is ``mongodb.conf.[vendor]``. Keep it default is recommended.
+	- 	- MongoDB configuration template file under ``/etc/cmon/templates`` or ``/usr/share/cmon/templates``. See :ref:`MongoDB - Manage - Configurations - Base Template Files` for details.
 	
 * **Repository**
 	- Use Vendor Repositories - Provision software by setting up and using the database vendor's preferred software repository. ClusterControl will always install the latest version of what is provided by database vendor repository.
@@ -531,6 +539,8 @@ Deploys a new MongoDB Sharded Cluster. The database cluster will be automaticall
 
 * **Deploy**
 	- Starts the MongoDB Sharded Cluster deployment.
+
+.. _Deploy - PostgreSQL:
 
 PostgreSQL
 +++++++++++
@@ -590,7 +600,7 @@ Deploys a new PostgreSQL standalone or streaming replication cluster from Cluste
 ```````````````````
 
 * **Master A - IP/Hostname**
-	- Specify the IP address of the PostgreSQL master node. Press 'Enter' once specified so ClusterControl can verify the reachability via passwordless SSH.
+	- Specify the IP address of the PostgreSQL master node. Press 'Enter' once specified so ClusterControl can verify the node reachability via passwordless SSH.
 	
 * **Add slaves to master A**
 	- Add a slave node connected to master A. Press 'Enter' to add more slave.

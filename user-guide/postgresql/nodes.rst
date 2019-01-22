@@ -1,8 +1,11 @@
+.. _PostgreSQL - Nodes:
+
 Nodes
 -----
 
 Provides detailed information for each node in the cluster. On the left hand column, you can find a list of all nodes that are members of the cluster including ClusterControl node. If you added slaves to your cluster through ClusterControl, these will also be listed.
 
+.. _PostgreSQL - Nodes - Nodes Monitoring:
 
 Nodes Monitoring
 +++++++++++++++++
@@ -45,6 +48,8 @@ Database Nodes
 * **DB Variables**
 	- PostgreSQL variables, similar to ``SHOW ALL`` command.
 
+.. _PostgreSQL - Nodes - Nodes Actions:
+
 Nodes Actions
 +++++++++++++
 
@@ -63,6 +68,8 @@ Schedule Maintenance Mode
 Puts individual nodes into maintenance mode which prevents ClusterControl to raise alarms and notifications during the maintenance period. When toggling ON, you can set the maintenance period for a pre-defined time or schedule it accordingly. Specify the reason for auditing purpose. ClusterControl will not degrade the node, hence the node's state remains as what it is unless you perform any maintenance onto it. 
 
 Alarms and notifications for this node will be activated back once the maintenance period is exceeded, or you explicitly toggling it OFF.
+
+.. Attention::  If node autorecovery is enabled, ClusterControl will always recover a node regardless of the maintenance mode status. Don't forget to disable node autorecovery to avoid ClusterControl interfering your maintenance tasks.
 
 Reboot Host
 ````````````

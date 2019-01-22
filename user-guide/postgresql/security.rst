@@ -1,9 +1,11 @@
+.. _PostgreSQL - Security:
+
 Security
 ---------
 
 .. Note:: This feature is introduced in version 1.6.2.
 
-Consolidates cluster-wide security functionality on an easily accessible single page. In the previous versions, cluster-wide security configuration fell under `Cluster Actions <overview.html#actions>`_ menu. Supported security functionalities are:
+Consolidates cluster-wide security functionality on an easily accessible single page. In the previous versions, cluster-wide security configuration fell under :ref:`PostgreSQL's Cluster Actions <PostgreSQL - Overview - Actions>` menu. Supported security functionalities are:
 
 - Client/Server SSL encryption for PostgreSQL-based clusters.
 
@@ -28,7 +30,7 @@ Use Existing Certificate
 ''''''''''''''''''''''''
 
 * **Selected Certificate**
-	- Pick an exiting certificate, stored by `Key Management <../../user-guide/index.html#key-management>`_.
+	- Pick an exiting certificate, stored by :ref:`Sidebar - Key Management`.
 
 * **Restart Cluster**
 	- Restart Nodes - Automatically perform rolling restart of the nodes after setting up certificate and key.

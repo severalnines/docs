@@ -1,3 +1,5 @@
+.. _MongoDB - Manage:
+
 Manage
 -------
 
@@ -15,6 +17,8 @@ Lists of hosts being managed by ClusterControl for the specific cluster. This in
 To remove a host, just select the host and click on the *Remove* button. 
 
 .. Attention:: We strongly recommend user to avoid removing node from this page if it still hold a role inside ClusterControl.
+
+.. _MongoDB - Manage - Configurations:
 
 Configurations
 +++++++++++++++
@@ -35,41 +39,27 @@ Manage the configuration files of your MongoDB nodes. For MongoDB server, change
 * **Change Parameter**
 	- The selected parameter will be changed or created in the specified group option. ClusterControl will attempt to dynamically set the configuration value if the parameter is valid. Then, the change can be persisted in the configuration file.
 	
+.. _MongoDB - Manage - Configurations - Base Template Files:
+
 Base Template Files
 ````````````````````
 
-All services configured by ClusterControl use a base configuration template available under ``/usr/share/cmon/templates`` on the ClusterControl node. The following are template files provided by ClusterControl:
+All services configured by ClusterControl use a base configuration template available under ``/usr/share/cmon/templates`` on the ClusterControl node. You can directly modify the file to suit your deployment policy however, this directory will be replaced on every package upgrade. 
+
+To make sure your custom configuration template files persist across upgrade, store the files under ``/etc/cmon/templates`` directory. When ClusterControl loads up the template file for deployment, files under ``/etc/cmon/templates`` will always have higher priority over the files under ``/usr/share/cmon/templates``. If two files having identical name exist on both directories, the one located under ``/etc/cmon/templates`` will be used.
+
+The following are template files provided by ClusterControl, related to MongoDB:
 
 ======================== ===========
 Filename                 Description
 ======================== ===========
-config.ini.mc            MySQL Cluster configuration file (config.ini)
-garbd.cnf                Galera arbitrater daemon (garbd) configuration file.
-haproxy.cfg              HAProxy configuration template for Galera Cluster.
-haproxy_rw_split.cfg     HAProxy configuration template for read-write splitting.
-keepalived-1.2.7.conf    Legacy keepalived configuration file (pre 1.2.7). This is deprecated.
-keepalived.conf          Keepalived configuration file.
-keepalived.init          Keepalived init script.
-MaxScale_template.cnf    MaxScale configuration template.
 mongodb-2.6.conf.org     MongoDB 2.x configuration template.
 mongodb.conf.org         MongoDB 3.x configuration template.
 mongodb.conf.percona     MongoDB 3.x configuration template for Percona Server for MongoDB.
 mongos.conf.org          Mongo router (mongos) configuration template.
-my.cnf.galera            MySQL configuration template for Galera Cluster.
-my57.cnf.galera          MySQL configuration template for Galera Cluster on MySQL 5.7.
-my.cnf.grouprepl         MySQL configuration template for MySQL Group Replication.
-my.cnf.gtid_replication  MySQL configuration template for MySQL Replication with GTID.
-my.cnf.mysqlcluster      MySQL configuration template for MySQL Cluster.
-my.cnf.pxc55             MySQL configuration template for Percona XtraDB Cluster v5.5.
-my.cnf.repl57            MySQL configuration template for MySQL Replication v5.7.
-my.cnf.replication       MySQL configuration template for MySQL/MariaDB without MySQL’s GTID.
-mysqlchk.galera          MySQL health check script template for Galera Cluster.
-mysqlchk.mysql           MySQL health check script template for standalone MySQL server.
-mysqlchk_rw_split.mysql  MySQL health check script template for MySQL Replication (master-slave).
-mysqlchk_xinetd          Xinetd configuration template for MySQL health check.
-mysqld.service.override  Systemd unit file template for MySQL service.
-proxysql_template.cnf    ProxySQL configuration template.
 ======================== ===========
+
+.. _MongoDB - Manage - Configurations - Dynamic Variables:
 
 Dynamic Variables
 ``````````````````
@@ -119,7 +109,7 @@ To add a new process to be monitored by ClusterControl, click on *Add Custom Man
 Developer Studio
 ++++++++++++++++
 
-Provides functionality to create Advisors, Auto Tuners, or Mini Programs right within your web browser based on `ClusterControl DSL (Domain Specific Language) <../../dsl.html>`_. The DSL syntax is based on JavaScript, with extensions to provide access to ClusterControl's internal data structures and functions. The DSL allows you to execute SQL statements, run shell commands/programs across all your cluster hosts, and retrieve results to be processed for advisors/alerts or any other actions. Developer Studio is a development environment to quickly create, edit, compile, run, test, debug and schedule your JavaScript programs.
+Provides functionality to create Advisors, Auto Tuners, or Mini Programs right within your web browser based on :ref:`ClusterControl DSL`. The DSL syntax is based on JavaScript, with extensions to provide access to ClusterControl's internal data structures and functions. The DSL allows you to execute SQL statements, run shell commands/programs across all your cluster hosts, and retrieve results to be processed for advisors/alerts or any other actions. Developer Studio is a development environment to quickly create, edit, compile, run, test, debug and schedule your JavaScript programs.
 
 Advisors in ClusterControl are powerful constructs; they provide specific advice on how to address issues in areas such as performance, security, log management, configuration, storage space, etc. They can be anything from simple configuration advice, warning on thresholds or more complex rules for predictions, or even cluster-wide automation tasks based on the state of your servers or databases. 
 
@@ -139,7 +129,7 @@ ClusterControl comes with a set of basic advisors that include rules and alerts 
 	- Exports the advisor's directory to a ``.tar.gz`` format. The exported file can be imported to Developer Studio through *ClusterControl > Manage > Developer Studio > Import* function.
 
 * **Advisors**
-	- Opens the Advisor list page. See `Advisors <performance.html#advisors>`_.
+	- Opens the Advisor list page. See :ref:`MongoDB - Performance - Advisors`.
 
 * **Save**
 	- Saves the file.
@@ -162,4 +152,4 @@ ClusterControl comes with a set of basic advisors that include rules and alerts 
 
 .. seealso:: `Introducing ClusterControl Developer Studio and Creating your own Advisors in JavaScript <https://severalnines.com/blog/introducing-clustercontrol-developer-studio-and-creating-your-own-advisors-javascript>`_.
 
-For full documentation on ClusterControl Domain Specific Language, see `ClusterControl DSL <../../dsl.html>`_.
+For full documentation on ClusterControl Domain Specific Language, see :ref:`ClusterControl DSL`.

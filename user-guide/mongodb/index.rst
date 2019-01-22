@@ -6,8 +6,7 @@ This user guide covers ClusterControl with MongoDB-based clusters, namely:
 * MongoDB
 	* Replica Set
 	* Sharded Cluster
-	* Replicated Sharded Cluster
-
+	
 Contents:
 
 .. toctree::
@@ -17,6 +16,7 @@ Contents:
    
    mongodb/overview
    mongodb/nodes
+   mongodb/dashboards
    mongodb/topology
    mongodb/ops-monitor
    mongodb/performance

@@ -1,3 +1,5 @@
+.. _MySQL - Manage:
+
 Manage
 -------
 
@@ -24,6 +26,8 @@ To remove a host, just select the host and click on the *Remove* button.
 
 .. Attention:: We strongly recommend users to avoid removing node from this page if it still holds a role inside ClusterControl.
 
+.. _MySQL - Manage - Configurations:
+
 Configurations
 +++++++++++++++
 
@@ -46,41 +50,53 @@ Manages the configuration files of your database, HAProxy and Garbd nodes. For M
 
 .. Attention:: If you change a global system variable, the value is remembered and used ONLY for new connections.
 
+.. _MySQL - Manage - Configurations - Base Template Files:
+
 Base Template Files
 ````````````````````
 
-All services configured by ClusterControl use a base configuration template available under ``/usr/share/cmon/templates`` on the ClusterControl node. The following are template files provided by ClusterControl:
+All services configured by ClusterControl use a base configuration template available under ``/usr/share/cmon/templates`` on the ClusterControl node. You can directly modify the file to suit your deployment policy however, this directory will be replaced after a package upgrade.
 
-======================== ===========
-Filename                 Description
-======================== ===========
-config.ini.mc            MySQL Cluster configuration file (config.ini)
-garbd.cnf                Galera arbitrator daemon (garbd) configuration file.
-haproxy.cfg              HAProxy configuration template for Galera Cluster.
-haproxy_rw_split.cfg     HAProxy configuration template for read-write splitting.
-keepalived-1.2.7.conf    Legacy keepalived configuration file (pre 1.2.7). This is deprecated.
-keepalived.conf          Keepalived configuration file.
-keepalived.init          Keepalived init script.
-MaxScale_template.cnf    MaxScale configuration template.
-mongodb-2.6.conf.org     MongoDB 2.x configuration template.
-mongodb.conf.org         MongoDB 3.x configuration template.
-mongodb.conf.percona     MongoDB 3.x configuration template for Percona Server for MongoDB.
-mongos.conf.org          Mongo router (mongos) configuration template.
-my.cnf.galera            MySQL configuration template for Galera Cluster.
-my57.cnf.galera          MySQL configuration template for Galera Cluster on MySQL 5.7.
-my.cnf.grouprepl         MySQL configuration template for MySQL Group Replication.
-my.cnf.gtid_replication  MySQL configuration template for MySQL Replication with GTID.
-my.cnf.mysqlcluster      MySQL configuration template for MySQL Cluster.
-my.cnf.pxc55             MySQL configuration template for Percona XtraDB Cluster v5.5.
-my.cnf.repl57            MySQL configuration template for MySQL Replication v5.7.
-my.cnf.replication       MySQL configuration template for MySQL/MariaDB without MySQL’s GTID.
-mysqlchk.galera          MySQL health check script template for Galera Cluster.
-mysqlchk.mysql           MySQL health check script template for standalone MySQL server.
-mysqlchk_rw_split.mysql  MySQL health check script template for MySQL Replication (master-slave).
-mysqlchk_xinetd          Xinetd configuration template for MySQL health check.
-mysqld.service.override  Systemd unit file template for MySQL service.
-proxysql_template.cnf    ProxySQL configuration template.
-======================== ===========
+To make sure your custom configuration template files persist across upgrade, store your template files under ``/etc/cmon/templates`` directory (ClusterControl 1.6.2 and later). When ClusterControl loads up the template file for deployment, files under ``/etc/cmon/templates`` will always have higher priority over the files under ``/usr/share/cmon/templates``. If two files having identical name exist on both directories, the one located under ``/etc/cmon/templates`` will be used.
+
+The following are template files provided by ClusterControl related to MySQL/MariaDB:
+
+============================ ===========
+Filename.                    Description
+============================ ===========
+config.ini.mc                MySQL Cluster configuration file (config.ini)
+garbd.cnf                    Galera arbitrator daemon (garbd) configuration file.
+haproxy.cfg                  HAProxy configuration template for Galera Cluster.
+haproxy_rw_split.cfg         HAProxy configuration template for read-write splitting.
+keepalived-1.2.7.conf        Legacy keepalived configuration file (pre 1.2.7). This is deprecated.
+keepalived.conf              Keepalived configuration file.
+keepalived.init              Keepalived init script.
+MaxScale_template.cnf        MaxScale configuration template.
+my.cnf.galera                MySQL configuration template for Galera Cluster.
+my57.cnf.galera              MySQL configuration template for Galera Cluster on MySQL 5.7.
+my-cnf-backup-secrets.cnf    MySQL configuration template for generated backup user.
+my.cnf.grouprepl             MySQL configuration template for MySQL Group Replication.
+my.cnf.gtid_replication      MySQL configuration template for MySQL Replication with GTID.
+my.cnf.mdb10x-galera         MariaDB configuration template for MariaDB Galera 10 and later.
+my.cnf.mdb10x-replication    MariaDB configuration template for MariaDB Replication 10 and later.
+my.cnf.mysqlcluster          MySQL configuration template for MySQL Cluster.
+my.cnf.pxc55                 MySQL configuration template for Percona XtraDB Cluster v5.5.
+my.cnf.repl57                MySQL configuration template for MySQL Replication v5.7.
+my.cnf.repl80                MySQL configuration template for MySQL Replication v8.0.
+my.cnf.replication           MySQL configuration template for MySQL/MariaDB without MySQL’s GTID.
+my-root.cnf                  Config file used by mysql in order to perform log rotation.
+mysqlchk.galera              MySQL health check script template for Galera Cluster.
+mysqlchk.mysql               MySQL health check script template for standalone MySQL server.
+mysqlchk_rw_split.mysql      MySQL health check script template for MySQL Replication (master-slave).
+mysqlchk_xinetd              Xinetd configuration template for MySQL health check.
+mysqld.service.override      Systemd unit file template for MySQL service.
+mysql_logrotate              Log rotation configuration template for MySQL.
+proxysql_galera_checker.sh   ProxySQL health check script for Galera Cluster.
+proxysql_logrotate           Log rotation configuration template for ProxySQL.
+proxysql_template.cnf        ProxySQL configuration template.
+============================ ===========
+
+.. _MySQL - Manage - Configurations - Dynamic Variables:
 
 Dynamic Variables
 ``````````````````
@@ -249,14 +265,8 @@ This feature is idempotent, you can execute it as many times as you want and it 
 Deploy HAProxy
 '''''''''''''''
 
-* **HAProxy Address**
+* **Server Address**
 	- Select on which host to add the load balancer. If the host is not provisioned in ClusterControl (see `Hosts`_), type in the IP address. The required files will be installed on the new host. Note that ClusterControl will access the new host using passwordless SSH.
-
-* **Listen Port**
-	- Specify the HAProxy listening port. This will be used as the load balanced MySQL connection port.
-
-* **Max backend connections**
-	- Limit the number of connection that can be made from HAProxy to each MySQL Server. Connections exceeding this value will be queued by HAProxy. A best practice is to set it to less than the ``max_connections`` to prevent connections flooding.
 
 * **Policy**
 	- Choose one of these load balancing algorithms:
@@ -264,13 +274,15 @@ Deploy HAProxy
 		- roundrobin - Each server is used in turns, according to their weights.
 		- source - The same client IP address will always reach the same server as long as no server goes down.
 
-* **Install from Package Manager**
-	- Install HAProxy package through package manager.
+* **Listen Port (Read/Write)**
+	- Specify the HAProxy listening port. This will be used as the load balanced MySQL connection port for read/write connections.
+
+* **Install for read/write splitting (master-slave replication)**
+	- Toggled on if you want HAProxy to use another listener port for read-only. A new text box will appear right next to the *Listen Port (Read/Write)* text box. Default to 3308.
 	
 * **Build from Source**
 	- ClusterControl will compile the latest available source package downloaded from http://www.haproxy.org/#down. 
 	- This option is only required if you intend to use the latest version of HAProxy or if you are having problem with the package manager of your OS distribution. Some older OS versions do not have HAProxy in their package repositories.
-
 
 **Advanced Settings**
 	
@@ -302,7 +314,7 @@ Deploy HAProxy
 	- Sets the maximum per-process number of concurrent connections per backend instance. See `maxconn <http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#maxconn>`_.
 
 * **xinetd allow connections from**
-	- The specified subnet will be allowed to access the ``mysqlcheck`` via as xinetd service, which listens on port 9200 on each of the database nodes. To allow connections from all IP address, use the default value, 0.0.0.0/0.
+	- The specified subnet will be allowed to access the ``mysqlcheck`` (or ``mysqlcheck_rw_split`` for read/write splitting) via as xinetd service, which listens on port 9200 on each of the database nodes. To allow connections from all IP address, use the default value, 0.0.0.0/0.
 
 **Server instances in the load balancer**
 
@@ -313,6 +325,9 @@ Deploy HAProxy
 	- Supported roles:
 		- Active - The server is actively used in load balancing.
 		- Backup - The server is only used in load balancing when all other non-backup servers are unavailable.
+
+* **Connection Address**
+	- Pick the IP address where HAProxy should be listening to on the host.
 
 Import HAProxy
 ''''''''''''''
@@ -356,23 +371,23 @@ Keepalived
 Deploy Keepalived
 '''''''''''''''''
 
-* **Select type of loadbalancer**
+* **Load balancer type**
 	- Only two types of loadbalancers are supported to integrate with Keepalived, HAProxy and ProxySQL. For ProxySQL, you can deploy more than 2 Keepalived instances.
 
 * **Keepalived 1**
 	- Select the primary Keepalived node (installed or imported using `HAProxy`_ or `ProxySQL`_).
 	
-* **Keepalived 2**
-	- Select the secondary Keepalived node (installed or imported using `HAProxy`_ or `ProxySQL`_).
+* **Add Keepalived Instance**
+	- Shows additional input field for secondary Keepalived node.
+
+* **Remove Keepalived Instance**
+	- Hides additional input field for secondary Keepalived node.
 
 * **Virtual IP**
 	- Assigns a virtual IP address. The IP address should not exist in any node in the cluster to avoid conflict.
 
 * **Network Interface** 
 	- Specify a network interface to bind the virtual IP address. This interface must able to communicate with other Keepalived instances and support IP protocol 112 (VRRP) and unicasting.
-
-* **Install Keepalived**
-	- Starts installation of Keepalived.
 	
 Import Keepalived
 '''''''''''''''''
@@ -389,9 +404,6 @@ Import Keepalived
 * **Virtual IP**
 	- Assigns a virtual IP address. The IP address should not exist in any node in the cluster to avoid conflict.
 
-* **Deploy Keepalived**
-	- Starts the import of Keepalived job.
-
 Garbd
 ``````
 
@@ -400,14 +412,11 @@ Exclusive for Galera Cluster. Galera arbitrator daemon (:term:`garbd`) can be in
 Deploy Garbd
 ''''''''''''
 
-* **Garbd Address**
+* **Server Address**
 	- Manually specify the new garbd hostname or IP address or select a host from the list. That host cannot be an existing Galera node.
     
 * **CmdLine**
 	- Garbd command line to start garbd process on the target node.
-
-* **Deploy Garbd**
-	- Starts the garbd deployment.
     
 Import Garbd
 '''''''''''''
@@ -420,9 +429,6 @@ Import Garbd
 
 * **CmdLine**
 	- Garbd command line to start garbd process on the target node.
-
-* **Install Garbd**
-	- Starts the garbd import job.
 
 MaxScale
 ````````
@@ -439,9 +445,9 @@ To remove MaxScale, go to *ClusterControl > Nodes > MaxScale node* and click on 
 Deploy MaxScale 
 ''''''''''''''''
 
-Use this wizard to install MaxScale as MySQL load balancer.
+Use this wizard to install MariaDB MaxScale as MySQL/MariaDB load balancer.
 
-* **MaxScale Address**
+* **Server Address**
 	- IP address of the node where MaxScale will be installed. ClusterControl must be able to perform passwordless SSH to this host. 
 
 * **MaxScale Admin Username**
@@ -459,16 +465,16 @@ Use this wizard to install MaxScale as MySQL load balancer.
 * **Threads**
 	- How many threads MaxScale is allowed to use.
 
-* **CLI Port**
+* **CLI Port (Port for command line)**
 	- Port for MaxAdmin command line interface. Default is 6603
 
-* **RR Port**
+* **RR Port (Port for round robin listener)**
 	- Port for round-robin listener. Default is 4006.
 
-* **RW Port**
+* **RW Port (Port for read/write split listener)**
 	- Port for read-write split listener. Default is 4008.
 
-* **Debug Port**
+* **Debug Port (Port for debug information)**
 	- Port for MaxScale debug information. Default it 4442.
 
 * **Include**
@@ -482,16 +488,15 @@ If you already have MaxScale installed in your setup, you can easily import it i
 * **MaxScale Address**
 	- IP address of the existing MaxScale server.
 
-* **CLI Port**
+* **CLI Port (Port for the Command Line Interface)**
 	- Port for the MaxAdmin command line interface on the target server.
-	
+
+.. _MySQL - Manage - Processes:
 
 Processes
 ++++++++++
 
-Manages external processes that are not part of the cluster, e.g. a web server or an application server. ClusterControl will actively monitor these processes and make sure that they are always up and running by executing the check expression command.
-
-To add a new process to be monitored by ClusterControl, click on *Add Custom Managed Process*.
+Manages external processes that are not part of the database system, e.g. a load balancer or an application server. ClusterControl will actively monitor these processes and make sure that they are always up and running by executing the check expression command.
 
 * **Host/Group**
 	- Select the managed host.
@@ -513,6 +518,8 @@ To add a new process to be monitored by ClusterControl, click on *Add Custom Man
 
 * **Deactivate**
 	- Disables the selected process.
+
+.. _MySQL - Manage - Schemas and Users:
 
 Schemas and Users
 +++++++++++++++++
@@ -560,7 +567,7 @@ You can filter the list by username, hostname, database or table in the text box
 Inactive Users
 ````````````````
 
-Shows all accounts across clusters that are not been used since the last server restart. Server must have been running for at least 8 hours to check for inactive accounts.
+Shows all accounts across clusters that are not been used since the last server restart. Server must have been running for at least 1 hour to check for inactive accounts.
 
 You can drop particular accounts by clicking the *Drop User* button to initiate the action.
 
@@ -571,6 +578,7 @@ Upload the schema and the data files to the selected database node. Currently on
 
 * dumpfile.sql
 * dumpfile.sql.gz
+* dumpfile.sql.bz2
 
 * **Import dumpfile on**
 	- Perform import operation on the selected database node.
@@ -579,8 +587,7 @@ Upload the schema and the data files to the selected database node. Currently on
 	- Specify the target database.
 
 * **Specify path to dumpfile**
-	- The dumpfile must be located on the controller.
- 
+	- The dumpfile must be located on the ClusterControl server.
 
 Create Database
 ````````````````
@@ -593,12 +600,14 @@ Creates a database in the cluster:
 * **Create Database**
 	- Creates the database. ClusterControl will ensure the database exists on all nodes in the cluster.
 
+.. _MySQL - Manage - Upgrades:
+
 Upgrades
 ++++++++
 
 Performs minor software upgrade, for example from MySQL 5.7.x to MySQL 5.7.y in rolling upgrade fashion. The job will perform the software upgrade based on what is available on the package repository for the particular vendor.
 
-.. Attention:: MySQL major version upgrade is not supported by ClusterControl. This action has to be perform
+.. Attention:: MySQL major version upgrade is not supported by ClusterControl. Major version upgrade has to be performed manually as it involves some risks like database package removal, configuration compatibility concern, connectors compatibility, etc.
 
 * **Upgrade**
 	- Upgrades are online and are performed on one node at a time. The node will be stopped, then software will be updated, and then the node will be started again. If a node fails to upgrade, the upgrade process is aborted.
@@ -612,6 +621,8 @@ Performs minor software upgrade, for example from MySQL 5.7.x to MySQL 5.7.y in 
 	- If an online upgrade using rolling restart is not supported, e.g., if it is a major version upgrade with incompatible changes, you will need to perform an offline stop/start. This will let ClusterControl stop the cluster, perform the upgrade and then restart the cluster with the new version.
 
 For a step-by-step walkthrough of how to perform database software upgrades, please look at this blog post, `Patch Updates and New Version Upgrades of your Database Clusters <http://www.severalnines.com/blog/patch-updates-and-new-version-upgrades-your-database-clusters>`_.
+
+.. _MySQL - Manage - Custom Advisors:
 
 Custom Advisors
 +++++++++++++++
@@ -675,10 +686,12 @@ Variable          Description
 %WARNING_VALUE%   Warning Value
 ================= ============
 
+.. _MySQL - Manage - Developer Studio:
+
 Developer Studio
 ++++++++++++++++
 
-Provides functionality to create Advisors, Auto Tuners, or Mini Programs right within your web browser based on `ClusterControl DSL (Domain Specific Language) <../../dsl.html>`_. The DSL syntax is based on JavaScript, with extensions to provide access to ClusterControl's internal data structures and functions. The DSL allows you to execute SQL statements, run shell commands/programs across all your cluster hosts, and retrieve results to be processed for advisors/alerts or any other actions. Developer Studio is a development environment to quickly create, edit, compile, run, test, debug and schedule your JavaScript programs.
+Provides functionality to create Advisors, Auto Tuners, or Mini Programs right within your web browser based on :ref:`ClusterControl DSL`. The DSL syntax is based on JavaScript, with extensions to provide access to ClusterControl's internal data structures and functions. The DSL allows you to execute SQL statements, run shell commands/programs across all your cluster hosts, and retrieve results to be processed for advisors/alerts or any other actions. Developer Studio is a development environment to quickly create, edit, compile, run, test, debug and schedule your JavaScript programs.
 
 Advisors in ClusterControl are powerful constructs; they provide specific advice on how to address issues in areas such as performance, security, log management, configuration, storage space, etc. They can be anything from simple configuration advice, warning on thresholds or more complex rules for predictions, or even cluster-wide automation tasks based on the state of your servers or databases. 
 
@@ -698,7 +711,7 @@ ClusterControl comes with a set of basic advisors that include rules and alerts 
 	- Exports the advisor's directory to a ``.tar.gz`` format. The exported file can be imported to Developer Studio through *ClusterControl > Manage > Developer Studio > Import* function.
 
 * **Advisors**
-	- Opens the Advisor list page. See `Advisors <performance.html#advisors>`_.
+	- Opens the Advisor list page. See :ref:`MySQL - Performance - Advisors`.
 
 * **Save**
 	- Saves the file.
@@ -721,4 +734,4 @@ ClusterControl comes with a set of basic advisors that include rules and alerts 
 
 .. seealso:: `Introducing ClusterControl Developer Studio and Creating your own Advisors in JavaScript <https://severalnines.com/blog/introducing-clustercontrol-developer-studio-and-creating-your-own-advisors-javascript>`_.
 
-For full documentation on ClusterControl Domain Specific Language, see `ClusterControl DSL <../../dsl.html>`_.
+For full documentation on ClusterControl Domain Specific Language, see :ref:`ClusterControl DSL`.

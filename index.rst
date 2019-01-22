@@ -19,6 +19,7 @@ Contents:
    installation
    user-guide/index
    components
+   tutorials/index
    administration
    troubleshooting
    faq

@@ -1,3 +1,5 @@
+.. _PostgreSQL - Manage:
+
 Manage
 -------
 
@@ -14,6 +16,8 @@ Lists of hosts being managed by ClusterControl for the specific cluster. This in
 To remove a host, just select the host and click on the *Remove* button. 
 
 .. Attention:: We strongly recommend user to avoid removing nodes from this page if they still hold a role inside ClusterControl.
+
+.. _PostgreSQL - Manage - Configurations:
 
 Configurations
 ++++++++++++++
@@ -34,6 +38,72 @@ Manage the configuration files of your database nodes. From here you can edit an
 * **Create New Template**
 	- Create a new PostgreSQL configuration template file. This template can be used when adding a new node.
 
+.. _PostgreSQL - Manage - Configurations - Base Template Files:
+	
+Base Template Files
+````````````````````
+
+All services configured by ClusterControl use a base configuration template available under ``/usr/share/cmon/templates`` on the ClusterControl node. You can directly modify the file to suit your deployment policy however, this directory will be replaced on every package upgrade. 
+
+To make sure your custom configuration template files persist across upgrade, store the files under ``/etc/cmon/templates`` directory. When ClusterControl loads up the template file for deployment, files under ``/etc/cmon/templates`` will always have higher priority over the files under ``/usr/share/cmon/templates``. If two files having identical name exist on both directories, the one located under ``/etc/cmon/templates`` will be used.
+
+The following are template files provided by ClusterControl related to PostgreSQL:
+
+============================ ===========
+Filename                     Description
+============================ ===========
+postgreschk                  PostgreSQL health check script template for multi-master.
+postgreschk_rw_split         PostgreSQL health check script template for read-write splitting.
+postgreschk_xinetd           Xinetd configuration template for PostgreSQL health check.
+postgresql.service.override  Systemd unit file template for PostgreSQL service.
+haproxy.cfg                  HAProxy configuration template for Galera Cluster.
+haproxy_rw_split.cfg         HAProxy configuration template for read-write splitting.
+keepalived-1.2.7.conf        Legacy keepalived configuration file (pre 1.2.7). This is deprecated.
+keepalived.conf              Keepalived configuration file.
+keepalived.init              Keepalived init script, for 'Build from Source' installation option.
+============================ ===========
+
+.. _PostgreSQL - Manage - Configurations - Dynamic Variables:
+
+Dynamic Variables
+``````````````````
+
+There are a number of configuration variables which are configurable dynamically by ClusterControl. These variables are represented with a capital letter enclosed by at sign ‘@’, for example ``@DATADIR@``. The following shows the list of variables supported by ClusterControl for MySQL-based clusters:
+
+============================ ==============
+Variable                     Description
+============================ ==============
+``@BASEDIR@``                Default is ``/usr``. Value specified during cluster deployment takes precedence.
+``@DATADIR@``                Default is ``/var/lib/mysql``. Value specified during cluster deployment takes precedence.
+``@MYSQL_PORT@``             Default is 3306. Value specified during cluster deployment takes precedence.
+``@BUFFER_POOL_SIZE@``       Automatically configured based on host's RAM.
+``@LOG_FILE_SIZE@``          Automatically configured based on host's RAM.
+``@LOG_BUFFER_SIZE@``        Automatically configured based on host's RAM.
+``@BUFFER_POOL_INSTANCES@``  Automatically configured based on host's CPU.
+``@SERVER_ID@``              Automatically generated based on member's ``server-id``.
+``@SKIP_NAME_RESOLVE@``      Automatically configured based on MySQL variables.
+``@MAX_CONNECTIONS@``        Automatically configured based on host's RAM.
+``@ENABLE_PERF_SCHEMA@``     Default is disabled. Value specified during cluster deployment takes precedence.
+``@WSREP_PROVIDER@``         Automatically configured based on Galera vendor.
+``@HOST@``                   Automatically configured based on hostname/IP address.
+``@GCACHE_SIZE@``            Automatically configured based on disk space.
+``@SEGMENTID@``              Default is 0. Value specified during cluster deployment takes precedence.
+``@WSREP_CLUSTER_ADDRESS@``  Automatically configured based on members in the cluster.
+``@WSREP_SST_METHOD@``       Automatically configured based on Galera vendor.
+``@BACKUP_USER@``            Default is ``backupuser``.
+``@BACKUP_PASSWORD@``        Automatically generated and configured for ``backupuser``.
+``@GARBD_OPTIONS@``          Automatically configured based on garbd options.
+``@READ_ONLY@``              Automatically configured based on replication role.
+``@SEMISYNC@``               Default is disabled. Value specified during cluster deployment takes precedence.
+``@NDB_CONNECTION_POOL@``    Automatically configured based on host's CPU.
+``@NDB_CONNECTSTRING@``      Automatically configured based on members in the MySQL cluster.
+``@LOCAL_ADDRESS@``          Automatically configured based on host's address.
+``@GROUP_NAME@``             Default is ``grouprepl``. Value specified during cluster deployment takes precedence.
+``@PEERS@``                  Automatically configured based on members in the Group Replication cluster.
+============================ ==============
+
+.. _PostgreSQL - Manage - Load Balancer:
+
 Load Balancer
 ++++++++++++++
 
@@ -49,14 +119,8 @@ This feature is idempotent, you can execute it as many times as you want and it 
 Deploy HAProxy
 '''''''''''''''
 
-* **HAProxy Address**
+* **Server Address**
 	- Select on which host to add the load balancer. If the host is not provisioned in ClusterControl (see `Hosts`_), type in the IP address. The required files will be installed on the new host. Note that ClusterControl will access the new host using passwordless SSH.
-
-* **Listen Port**
-	- Specify the HAProxy listening port. This will be used as the load balanced PostgreSQL connection port.
-
-* **Max backend connections**
-	- Limit the number of connection that can be made from HAProxy to each PostgreSQL Server. Connections exceeding this value will be queued by HAProxy.
 
 * **Policy**
 	- Choose one of these load balancing algorithms:
@@ -64,8 +128,11 @@ Deploy HAProxy
 		- roundrobin - Each server is used in turns, according to their weights.
 		- source - The same client IP address will always reach the same server as long as no server goes down.
 
-* **Install from Package Manager**
-	- Install HAProxy package through package manager.
+* **Listen Port (Read/Write)**
+	- Specify the HAProxy listening port. This will be used as the load balanced PostgreSQL connection port for read/write connections.
+
+* **Install for read/write splitting (master-slave replication)**
+	- Toggled on if you want the HAProxy to use another listener port for read-only. A new text box will appear right next to the *Listen Port (Read/Write)* text box.
 	
 * **Build from Source**
 	- ClusterControl will compile the latest available source package downloaded from http://www.haproxy.org/#down. 
@@ -106,12 +173,15 @@ Deploy HAProxy
 **Server instances in the load balancer**
 
 * **Include**
-	- Select PosgreSQL servers in your cluster that will be included in the load balancing set.
+	- Select PostgreSQL servers in your cluster that will be included in the load balancing set.
 
 * **Role**
 	- Supported roles:
 		- Active - The server is actively used in load balancing.
 		- Backup - The server is only used in load balancing when all other non-backup servers are unavailable.
+		
+* **Connection Address**
+	- Pick the IP address where HAProxy should be listening to on the host.
 
 Import HAProxy
 ''''''''''''''
@@ -253,10 +323,12 @@ Variable          Description
 %WARNING_VALUE%   Warning Value
 ================= ============
 
+.. _PostgreSQL - Manage - Developer Studio:
+
 Developer Studio
 ++++++++++++++++
 
-Provides functionality to create Advisors, Auto Tuners, or Mini Programs right within your web browser based on `ClusterControl DSL (Domain Specific Language) <../../dsl.html>`_. The DSL syntax is based on JavaScript, with extensions to provide access to ClusterControl's internal data structures and functions. The DSL allows you to execute SQL statements, run shell commands/programs across all your cluster hosts, and retrieve results to be processed for advisors/alerts or any other actions. Developer Studio is a development environment to quickly create, edit, compile, run, test, debug and schedule your JavaScript programs.
+Provides functionality to create Advisors, Auto Tuners, or Mini Programs right within your web browser based on :ref:`ClusterControl DSL`. The DSL syntax is based on JavaScript, with extensions to provide access to ClusterControl's internal data structures and functions. The DSL allows you to execute SQL statements, run shell commands/programs across all your cluster hosts, and retrieve results to be processed for advisors/alerts or any other actions. Developer Studio is a development environment to quickly create, edit, compile, run, test, debug and schedule your JavaScript programs.
 
 Advisors in ClusterControl are powerful constructs; they provide specific advice on how to address issues in areas such as performance, security, log management, configuration, storage space, etc. They can be anything from simple configuration advice, warning on thresholds or more complex rules for predictions, or even cluster-wide automation tasks based on the state of your servers or databases. 
 
@@ -276,7 +348,7 @@ ClusterControl comes with a set of basic advisors that include rules and alerts 
 	- Exports the advisor's directory to a ``.tar.gz`` format. The exported file can be imported to Developer Studio through *ClusterControl > Manage > Developer Studio > Import* function.
 
 * **Advisors**
-	- Opens the Advisor list page. See `Advisors <performance.html#advisors>`_.
+	- Opens the Advisor list page. See :ref:`PostgreSQL - Performance - Advisors`.
 
 * **Save**
 	- Saves the file.
@@ -299,4 +371,4 @@ ClusterControl comes with a set of basic advisors that include rules and alerts 
 
 .. seealso:: `Introducing ClusterControl Developer Studio and Creating your own Advisors in JavaScript <https://severalnines.com/blog/introducing-clustercontrol-developer-studio-and-creating-your-own-advisors-javascript>`_.
 
-For full documentation on ClusterControl Domain Specific Language, see `ClusterControl DSL <../../dsl.html>`_.
+For full documentation on ClusterControl Domain Specific Language, see :ref:`ClusterControl DSL`.

@@ -56,7 +56,11 @@ Click on the Settings to configure the Query Monitor settings, as explained belo
 		- Yes - The local MySQL configuration settings inside ``my.cnf`` for ``long_query_time`` and ``log_queries_not_using_indexes`` will be used.
 		- No - ClusterControl uses *Long Query Time* and *Log queries not using indexes* will be used across all MySQL Servers.
 
-Take note that you can also review the same settings under the legacy page at *ClusterControl > Settings > Query Monitor*.
+* **Auto-Purge Queries**
+	- Automatically purge sampled queries hourly. If PERFORMANCE_SCHEMA is enabled, the table ``events_statements_summary_by_digest`` will be auto-purged (using ``TRUNCATE TABLE`` statement) every hour. By default this is disabled.
+	
+* **Purge Query Monitor**
+	- Wipes out the sampled queries. The sampling will be refreshed again after ``db_stats_collection_interval``.
 
 Top Queries Table
 ``````````````````

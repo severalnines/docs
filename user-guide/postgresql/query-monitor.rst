@@ -1,9 +1,11 @@
-.. _pgsql-query-monitor:
+.. _PostgreSQL - Query Monitor:
 
 Query Monitoring
 ----------------
 
 Provides summary of query processing across all nodes in the cluster.
+
+.. _PostgreSQL - Query Monitor - Top Queries:
 
 Top Queries
 +++++++++++
@@ -25,6 +27,7 @@ Configures the Query Monitor settings, as explained below:
 	- Configures ClusterControl behavior on sampling queries without indexes:
 		- Yes - Logs queries which are using indexes.
 		- No - Ignores queries that are not using indexes (will not be accounted for in *ClusterControl > Query Monitor > Query Outliers*).
+
 
 Top Queries Table
 ``````````````````
@@ -59,6 +62,8 @@ This page is auto-refresh every 30 seconds. You can change the refresh rate by c
 		- Absolute - Total execution time of the query.
 		- Relative - Percentage of the query execution time over total time.
 
+.. _PostgreSQL - Query Monitor - Running Queries:
+
 Running Queries
 ++++++++++++++++
 
@@ -90,12 +95,14 @@ This page is auto-refresh every 30 seconds. You can change the refresh rate by c
 		- fastpath function call: The backend is executing a fast-path function.
 		- disabled: This state is reported if track_activities is disabled in this backend.
 
+.. _PostgreSQL - Query Monitor - Query Outliers:
+
 Query Outliers
 +++++++++++++++
 
 Shows queries that are outliers. An outlier is a query taking longer time than the normal query of that type. Use this feature to filter out the outliers for a certain time period. After a number of samples and when ClusterControl has had enough stats, it can determine if latency is higher than normal (2 sigma + ``average_query_time``) then it is an outlier, and will be added into the *Query Outlier*.
 
-This feature is dependent on the Top Queries feature above. If *Query Monitoring* is enabled and *Top Queries* are captured and populated, the *Query Outliers* will summarize these and provide a filter based on timestamp. You can view the query history as old as one year ago.
+This feature is dependent on the *Top Queries* feature above. If *Query Monitoring* is enabled and *Top Queries* are captured and populated, the *Query Outliers* will summarize these and provide a filter based on timestamp. You can view the query history as old as one year ago.
 
 
 * **Time**
@@ -118,3 +125,28 @@ This feature is dependent on the Top Queries feature above. If *Query Monitoring
 
 * **Max Lock Time**
 	- Query's lock time in microseconds.
+	
+.. _PostgreSQL - Query Monitor - Query Statistics:
+	
+Query Statistics
+++++++++++++++++
+
+.. Note:: This feature is introduced in v1.7.1.
+
+Views advanced query statistics of individual PostgreSQL server. Some statistics are collected per database-level and some are server-wide, as explained in the following table:
+
+===================================== ==========
+Statistics                            Description
+===================================== ==========
+Access by sequential or index scans   Identify whether tables are being accessed by sequential scans or index scans.
+Table I/O statistics                  Table I/O statistics. Ratio of heap bloks read from memory vs Disk I/O for a given table.
+Index I/O statistics                  Disk I/O for every index on a table.
+Database wide statistics              Server-wide database statistics like Datname, Numbackends, Xact_commit, Xact_rollback, Blks_read, Blks_hit, Tup_returned, Tup_fetched, Tup_inserted, Tup_updated, Tup_deleted.
+Table bloat and index bloat           The estimated amount of bloat in your tables and indices.
+Top 10 largest tables                 The largest top 10 tables in the selected database.
+Database sizes                        Every database's size in MB.
+Last analyzed or vacuumed             The last time a table was last analyzed or vacuumed.
+Unused indexes                        Returns unused indexes.
+Duplicate indexes                     Returns duplicate indexes.
+Exclusive lock waits                  Returns exclusive lock waits.
+===================================== ==========

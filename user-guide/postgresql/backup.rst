@@ -1,7 +1,11 @@
+.. _PostgreSQL - Backup:
+
 Backup
 -------
 
 Provides interface for database backup and restore management, scheduling and reporting. Each backup will be assigned with a backup ID and ClusterControl creates a directory under *Storage Directory* to store the backups based on this ID. On top of the page, you can see 3 function tabs followed by the created backup list underneath it.
+
+.. _PostgreSQL - Backup - Create Backup:
 
 Create Backup
 +++++++++++++
@@ -40,7 +44,7 @@ You can choose to create a full backup using :term:`pg_dumpall` or :term:`pg_bas
 	i         The numerical ID of the cluster.
 	I         The numerical ID of the backup.
 	J         The numerical ID of the job that created the backup.
-	M         The backup method (e.g. "mysqldump").
+	M         The backup method (e.g. "pg_dumpall").
 	O         The name of the user who initiated the backup job.
 	S         The name of the storage host, the host that stores the backup files.
 	%         The percent sign itself. Use two percent signs, ``%%`` the same way the standard ``printf()`` function interprets it as one percent sign.
@@ -65,6 +69,7 @@ You can choose to create a full backup using :term:`pg_dumpall` or :term:`pg_bas
 * **Retention**
 	- How long ClusterControl should keep this backup once successfully created. You can set a custom period in days or keep it forever. Otherwise, ClusterControl will use the default retention period.
 
+.. _PostgreSQL - Backup - Schedule Backup:
 
 Schedule Backup
 ````````````````
@@ -102,7 +107,7 @@ Creates backup schedules of the database.
 	i         The numerical ID of the cluster.
 	I         The numerical ID of the backup.
 	J         The numerical ID of the job that created the backup.
-	M         The backup method (e.g. "mysqldump").
+	M         The backup method (e.g. "pg_dumpall").
 	O         The name of the user who initiated the backup job.
 	S         The name of the storage host, the host that stores the backup files.
 	%         The percent sign itself. Use two percent signs, ``%%`` the same way the standard ``printf()`` function interprets it as one percent sign.
@@ -128,6 +133,9 @@ Creates backup schedules of the database.
 * **Failover Host**
 	- List of database host to failover in case the target node is down during the scheduled backup.
 
+* **Verify Backup**
+	- Verify the backup once successfully created. See `Verify Backup`_.
+
 * **Enable Encryption**
 	- Encrypts the generated backup. Backup is encrypted at rest using AES-256 CBC algorithm, where the encryption key will be created automatically and stored inside CMON configuration file for this cluster. See `Backup Encryption and Decryption`_.
 
@@ -138,6 +146,8 @@ Scheduled Backups
 +++++++++++++++++
 
 List of scheduled backups. You can enable and disable the schedule by toggling it accordingly. The created schedule can be edited and deleted.
+
+.. _PostgreSQL - Backup - Backup Method:
 
 Backup Method
 +++++++++++++
@@ -183,10 +193,41 @@ Failed    Backup was failed.
 * **Upload**
 	- Manually upload the created backup to cloud storage. This will open "Upload Backup" wizard.
 
+.. _PostgreSQL - Backup - Verify Backup:
+
+Verify Backup
++++++++++++++
+
+Performs backup verification job.
+
+* **Restore backup on**
+	- Specify the FQDN, hostname or IP address of the standalone host. The host must not be part of the cluster.
+
+* **Install Database Software**
+	- A new PostgreSQL server will be installed and setup if this is enabled. If there is an existing PostgreSQL server installed or running, it will be stopped and removed before ClusterControl performs the installation. If unchecked, ClusterControl will not touch the existing installation and the existing PostgreSQL server (must be running) on the target host will be used.
+
+* **Disable Firewall?**
+	- Check the box to disable firewall (recommended).
+
+* **Disable SELinux/AppArmor?**
+	- Check the box to disable SELinux (RHEL/CentOS) or AppArmor (Ubuntu).
+
+* **Shutdown the server after the backup have been completed**
+	- Select "Yes" if you want ClusterControl to shutdown the server after restoration completes. Select "No" if you want to let it run after restoration completes and the node will be listed under :ref:`PostgreSQL - Nodes`. You are then responsible for removing the PostgreSQL server.
+
+* **Verify the backup after N hours after completion**
+	- Performs the backup verification after the specified hours once the backup is completed.
+
+.. _PostgreSQL - Backup - Restore Backup:
+
 Restore Backup
 ++++++++++++++
 
-Restores ``pg_dumpall`` or ``pg_basebackup`` backup file created by ClusterControl and listed in the `Backup List`_. 
+Restores ``pg_dumpall`` or ``pg_basebackup`` backup file created by ClusterControl and listed in the `Backup List`_. ClusterControl supports three restoration options:
+
+- `Restore on node`_.
+- `Restore and verify on standalone host`_.
+- `Create cluster from backup`_.
 
 Restore on node
 ````````````````
@@ -216,7 +257,49 @@ For pg_basebackup (offline restore):
 * **Tmp Dir**
 	- Temporary storage for ClusterControl to prepare the big. It must be as big as the expected PostgreSQL data directory.
 	
+* **Point In Time Recovery (PITR)**
+	- This option is only available if you want to restore a PITR-compatible backup (with WAL archiving enabled). If toggled, you will have to specify the time (folloing the server's timezone) to recover the data up to that point. The restoration time must be in 'YYYY-MM-DD HH:MM:SS' format. E.g: "2018-08-22 21:00:00".
+	
 .. Attention:: The data directory must have enough space to accommodate the restored backup.
+
+Restore and verify on standalone host
+``````````````````````````````````````
+
+Performs restoration on a standalone host and verify the backup. This requires a dedicated host which is not part of the cluster. ClusterControl will first deploy a PostgreSQL instance on the target host, start the service, stream the backup from the backup repository and start performing the restoration. Once done, you can have an option either to shutdown the server once restored or let it run so you can conduct further investigation on the server.
+
+You can monitor the job progress under *Activity > Jobs > Verify Backup* where ClusterControl will report the restoration status (based on the exit code) at the end of the job.
+
+* **Restore backup on**
+	- Specify the FQDN, hostname or IP address of the standalone host. The host must not be part of the cluster.
+
+* **Install Software**
+	- A new PostgreSQL server will be installed and setup if this is enabled. If there is an existing PostgreSQL server installed or running, it will be stopped and removed before ClusterControl performs the installation. If unchecked, ClusterControl will not touch the existing installation and the existing PostgreSQL server (must be running) on the target host will be used.
+	
+* **Disable Firewall**
+	- Check the box to disable firewall (recommended).
+
+* **Shutdown the server after the backup have been restored**
+	- Select "Yes" if you want ClusterControl to shutdown the server after restoration completes. Select "No" if you want to let it run after restoration completes and the node will be listed under :ref:`PostgreSQL - Nodes`. You are then responsible for removing the PostgreSQL server.
+
+Create cluster from backup
+````````````````````````````
+
+.. Note:: This feature is introduced in version 1.7.1, specifically for Galera Cluster and PostgreSQL clusters only.
+
+Creates a new cluster from the existing backup. A new PostgreSQL cluster will be created from the selected backup. The selected backup must be accessible from the nodes in the new cluster. The admin user password for this cluster must the same as the PostgreSQL admin password as included in the backup.
+
+.. Attention:: Encrypted backup is not supported.
+
+Choosing this option will open a new dialog where the selected backup will be used as a base dataset for the new cluster. The same deployment wizard for PostgreSQL will be shown to configure a new cluster. See :ref:`Deploy - PostgreSQL` for reference.
+
+Basically, ClusterControl performs the deployment job based on the following order:
+
+1) Install necessary softwares and dependencies on all PostgreSQL nodes.
+2) Start the first node.
+3) Stream and restore backup on the first node (with auto-restart flag).
+4) Configure and add the rest of the nodes.
+
+A new PostgreSQL cluster will be listed under ClusterControl cluster dashboard once the job completes.
 
 Backup Encryption and Decryption
 ++++++++++++++++++++++++++++++++
@@ -260,7 +343,7 @@ Manages the backup settings.
 	i         The numerical ID of the cluster.
 	I         The numerical ID of the backup.
 	J         The numerical ID of the job that created the backup.
-	M         The backup method (e.g. "mysqldump").
+	M         The backup method (e.g. "pg_dumpall").
 	O         The name of the user who initiated the backup job.
 	S         The name of the storage host, the host that stores the backup files.
 	%         The percent sign itself. Use two percent signs, ``%%`` the same way the standard ``printf()`` function interprets it as one percent sign.
@@ -271,6 +354,15 @@ Manages the backup settings.
 
 * **Backup cloud retention period (days)**
 	- The number of days ClusterControl keeps the uploaded backups in the cloud. Backups older than the value defined here will be deleted.
+
+* **Enable Point in time recovery (WAL Archiving)**
+	- Enables WAL archiving. If it is enabled and you click "Save", the following steps will be performed on the master node:
+	
+	1) Enable the WAL archiving on the master node.
+	2) Master node will be restarted.
+	
+* **Compress WAL Archive**
+	- Option to compress the WAL archives.
 	
 * **PITR Retention Hours**
 	- This setting specifies how long WAL files are kept. Default is 0 which means old WAL files will be kept forever.

@@ -108,11 +108,11 @@ The following table shows supported database clusters with recommended minimum n
 |                 +----------------------------+-------------------------------------+---------------------------------------------------------------------------------+
 |                 | Single instance            | 5.5/5.6/5.7                         | 2 hosts (1 MySQL node + 1 ClusterControl node)                                  |
 +-----------------+----------------------------+-------------------------------------+---------------------------------------------------------------------------------+
-| MongoDB/Percona | Sharded cluster            | 3.2/3.4/3.6                         | 4 hosts (3 config servers / 3 shard servers / 2 mongos + 1 ClusterControl node) |
+| MongoDB/Percona | Sharded cluster            | 3.2/3.4/3.6/4.0 (MongoDB only)      | 4 hosts (3 config servers / 3 shard servers / 2 mongos + 1 ClusterControl node) |
 | Server for      +----------------------------+                                     +---------------------------------------------------------------------------------+
 | MongoDB         | Replica set                |                                     | 4 hosts (3 replica servers + 1 ClusterControl node)                             |
 +-----------------+----------------------------+-------------------------------------+---------------------------------------------------------------------------------+
-| PostgreSQL      | Single instance            | >9.6/10.x                           | 2 hosts (1 PostgreSQL node + 1 ClusterControl node)                             |
+| PostgreSQL      | Single instance            | >9.6/10.x/11.x                      | 2 hosts (1 PostgreSQL node + 1 ClusterControl node)                             |
 |                 +----------------------------+                                     +---------------------------------------------------------------------------------+
 |                 | Streaming Replication      |                                     | 3 hosts (1 master node + 1 slave node + 1 ClusterControl node)                  |
 +-----------------+----------------------------+-------------------------------------+---------------------------------------------------------------------------------+
