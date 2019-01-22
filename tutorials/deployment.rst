@@ -79,24 +79,24 @@ Database Deployment
 
 5) Open ClusterControl deployment wizard at Deploy (top menu) and pick MySQL Galera. Specify the following details under "General & SSH Settings" section:
 
-* SSH User: root
-* SSH Key Path: /root/.ssh/id_rsa
-* SSH Port: 22
-* Cluster Name: Percona XtraDB Cluster 5.7
-* Install Software: True
-* Disable Firewall: True
-* Disable AppArmor/SELinux: True
+* SSH User: ``root``
+* SSH Key Path: ``/root/.ssh/id_rsa``
+* SSH Port: ``22``
+* Cluster Name: ``Percona XtraDB Cluster 5.7``
+* Install Software: ``True``
+* Disable Firewall: ``True``
+* Disable AppArmor/SELinux: ``True``
 
 6) Proceed to the next step under "Define MySQL Servers" section. Specify the following details:
 
-* Vendor: Percona XtraDB
-* Version: 5.7
-* Server Data Directory: /var/lib/mysql
-* Server Port: 3306
-* Configuration Template: 
-* Admin/Root Password: s3cr3tP455
-* Repository: Use Vendor Repositories
-* Add Node: 192.168.0.21 (press enter), 192.168.0.22 (press enter), 192.168.0.23 (press enter)
+* Vendor: ``Percona XtraDB``
+* Version: ``5.7``
+* Server Data Directory: ``/var/lib/mysql``
+* Server Port: ``3306``
+* Configuration Template: ``my57.cnf.galera``
+* Admin/Root Password: ``s3cr3tP455``
+* Repository: ``Use Vendor Repositories``
+* Add Node: ``192.168.0.21`` (press enter), ``192.168.0.22`` (press enter), ``192.168.0.23`` (press enter)
 
 7) Proceed with the deployment by clicking *Deploy* button. Monitor the job progress under *ClusterControl > Activity > Jobs > Create Cluster*. This may take a while depending on the hardware specs and internet connection. Once the deployment completes, ClusterControl will list it out in the cluster list. 
 
@@ -105,28 +105,28 @@ Load Balancer Deployment
 
 8) Next, deploy ProxySQL by clicking on the cluster, then go to *Manage > Load Balancers > ProxySQL > Deploy ProxySQL* (also accessible via *Cluster Actions* shortcut on the top right of the summary bar). You will be presented with a ProxySQL deployment wizard. Enter the following details:
 
-* Server Address: 192.168.0.11
-* Admin Port: 6032
-* Listenting POrt: 6033
-* Import Configuration: False
+* Server Address: ``192.168.0.11``
+* Admin Port: ``6032``
+* Listenting POrt: ``6033``
+* Import Configuration: ``False``
 
-* Administration User: proxysql-admin
-* Administration Password: s3cr3tP455
-* Monitor User: proxysql-monitor
-* Monitor Password: s3cr3tP455
+* Administration User: ``proxysql-admin``
+* Administration Password: ``s3cr3tP455``
+* Monitor User: ``proxysql-monitor``
+* Monitor Password: ``s3cr3tP455``
 
-* Create New DB User: True
-* DB User: sakila
-* DB Password: s3cr3tP455
-* DB Name: sakila.*
-* Type in MySQL Privileges(s): ALL PRIVILEGES
+* Create New DB User: ``True``
+* DB User: ``sakila``
+* DB Password: ``s3cr3tP455``
+* DB Name: ``sakila.*``
+* Type in MySQL Privileges(s): ``ALL PRIVILEGES``
 
-* Include: True (for all servers)
-* Max Replication Lag: 10 (for all servers)
-* Max Connection: 100 (for all servers)
-* Weight: 1 (for all servers)
+* Include: ``True`` (for all servers)
+* Max Replication Lag: ``10`` (for all servers)
+* Max Connection: ``100`` (for all servers)
+* Weight: ``1`` (for all servers)
 
-* Are you using implicit transactions: False (You use BEGIN or START TRANSACTION to create a transaction)
+* Are you using implicit transactions: ``False`` (You use BEGIN or START TRANSACTION to create a transaction)
 
 9) Proceed with ProxySQL deployment by clicking *Deploy ProxySQL* button. Monitor the job progress under *ClusterControl > Activity > Jobs > Installing ProxySQL*. This may take a while depending on the hardware specs and internet connection. Once the deployment completes, you will see the ProxySQL instance listed under *Nodes* tab. 
 
@@ -137,11 +137,11 @@ Virtual IP Deployment
 
 11) Next, deploy Keepalived by going to *Manage > Load Balancers > Keepalived > Deploy Keepalived*. You will be presented with a Keepalived deployment wizard. Enter the following details:
 
-* Load balancer type: ProxySQL
-* Keepalived 1: 192.168.0.11
-* Keepalived 2: 192.168.0.12
-* Virtual IP: 192.168.0.10
-* Network interface: eth1
+* Load balancer type: ``ProxySQL``
+* Keepalived 1: ``192.168.0.11``
+* Keepalived 2: ``192.168.0.12``
+* Virtual IP: ``192.168.0.10``
+* Network interface: ``eth1``
 
 12) Proceed with Keepalived deployment by clicking *Deploy Keepalived* button. Monitor the job progress under *ClusterControl > Activity > Jobs > Deploy Keepalived*. This may take a while depending on the hardware specs and internet connection. Once the deployment completes, you will see the Keepalived instance listed under *Nodes* tab.
 
@@ -173,9 +173,9 @@ However, there are multiple dump files in the ``sakila-db`` directory. ClusterCo
 
 16) To import the database into the cluster, go to *Manage > Schemas and Users > Import Database Dumpfile* and specify the following details:
 
-* Import dumpfile on: 192.168.0.21 (pxc1)
-* Import dumpfile to database: sakila
-* Specify path to dumpfile: /root/sakila-db/sakila-schema.sql
+* Import dumpfile on: ``192.168.0.21`` (pxc1)
+* Import dumpfile to database: ``sakila``
+* Specify path to dumpfile: ``/root/sakila-db/sakila-schema.sql``
 
 17) Click *Import* to start importing the database. The tarball will be extracted and the mysqldump files will be copied over to the selected node and applied with the mysql client.
 
