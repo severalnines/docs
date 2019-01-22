@@ -3,7 +3,7 @@
 Introduction
 ============
 
-This documentation covers ClusterControl version 1.7.0 which was released on September 24\ :sup:`th`\ , 2018. This release contains key new features along with performance improvements and bug fixes. Release change log is available at :ref:`Changelog`.
+This documentation covers ClusterControl version 1.7.1 which was released on December 21\ :sup:`st`\ , 2018. This release contains key new features along with performance improvements and bug fixes. Release change log is available at :ref:`Changelog`.
 
 What is ClusterControl? 
 -----------------------
@@ -130,6 +130,7 @@ ClusterControl is able to handle most of the administration tasks required to ma
 * Stage a replication slave from a master or an existing backup
 * Manage private keys and certificates for databases' SSL
 * Client-server encryption, replication encryption, backup encryption (at-rest or in-transit)
+* Create cluster from backup
 * and many more..
 
 For more details, please refer to `ClusterControl product page <http://severalnines.com/product/clustercontrol>`_. You might also want to look at the :ref:`ClusterControl changelog <Changelog>` for the latest development update.

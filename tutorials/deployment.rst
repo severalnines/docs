@@ -1,7 +1,5 @@
 .. _Tutorials - Deployment:
 
-This tutorial covers how to perform common tasks and deployments using ClusterControl. 
-
 MySQL
 =====
 
