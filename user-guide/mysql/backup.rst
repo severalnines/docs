@@ -439,8 +439,6 @@ Create cluster from backup
 
 Creates a new cluster from the existing backup. A new MySQL Galera Cluster will be created from the selected backup. The selected backup must be accessible from the nodes in the new cluster. The root/admin user password for this cluster must the same as the MySQL admin/root password as included in the backup. For MySQL-based clusters, only Galera Cluster is supported at the moment.
 
-.. Attention:: Encrypted backup is not supported.
-
 Choosing this option will open a new dialog where the selected backup will be used as a base dataset for the new cluster. The same deployment wizard for MySQL Galera Cluster will be shown to configure a new cluster. See :ref:`Deploy - MySQL Galera` for reference.
 
 Basically, ClusterControl performs the deployment job based on the following order:

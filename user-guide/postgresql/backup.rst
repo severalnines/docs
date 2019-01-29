@@ -288,8 +288,6 @@ Create cluster from backup
 
 Creates a new cluster from the existing backup. A new PostgreSQL cluster will be created from the selected backup. The selected backup must be accessible from the nodes in the new cluster. The admin user password for this cluster must the same as the PostgreSQL admin password as included in the backup.
 
-.. Attention:: Encrypted backup is not supported.
-
 Choosing this option will open a new dialog where the selected backup will be used as a base dataset for the new cluster. The same deployment wizard for PostgreSQL will be shown to configure a new cluster. See :ref:`Deploy - PostgreSQL` for reference.
 
 Basically, ClusterControl performs the deployment job based on the following order:
