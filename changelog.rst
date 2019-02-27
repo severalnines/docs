@@ -8,7 +8,84 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.7.1
 -----------------
 
-Maintenance Release: January 22\ :sup:`th`\ , 2019
+Maintenance Release: February 27\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-notifications-1.7.1-173
+
+* Notifications:
+	- Fix for cmon-events to prevent Avast to report it as a malware (Telegram API).
+	- Fix for cmon-events to start even if the MySQL server has not started first.
+
+
+Maintenance Release: February 20\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.1-5720
+
+* Frontend (UI):
+	- Keepalived: Fixed an issue importing Keepalived.
+	- HAProxy: Dashboard fixes (SCUMM).
+	- Nodes Page: Removed the tab 'Logs' as it is deprecated and found in *Logs > System Logs* instead.
+
+
+Maintenance Release: February 18\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+* Build: 
+	- clustercontrol-controller-1.7.1-3032
+
+* Controller:
+	- Maria Backup: Fixed an issue parsing LSN in mariabackup >= 10.2.22.
+	- Prometheus: Fixed an issue when restarting a failed exporter.
+
+Maintenance Release: February 13\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.1-3027 
+	- clustercontrol-1.7.1-5700
+
+* Frontend (UI):
+	- ProxySQL: Fixed an issue in the pagination structure in ProxySQL sync making it impossible to Import/Export/Sync ProxySQL Configurations
+	- Fixed an issue regarding REPLICATION LAG where the lag was presented as a derived value instead of an absolute when viewing the individual servers.
+	- Fixed an issue with rebuild replication slave from incremental backup dialog.
+
+* Controller:
+	- Fixed an issue regarding stats aggregation. This could manifests itself as spikes in particularly the REPLICATION_LAG.
+	- Keepalived:  Small update for registering keepalived; the service port must be corrected to 112.
+	- Process Management: A fix for a file descriptor leak when an internal object was reused.
+	- MongoDb 4.0: A fix for creating mongodb replica sets by checking executed mongodb commands for more error messages.
+	- Galera: A fix to the ``wsrep_cluster_address.js`` advisor to also check the internal/private hostname/IP-addresses.
+	- MySQL: skip missing grant alarms on backup-verification nodes.
+
+ 
+Maintenance Release: February 6\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.1-3016
+	- clustercontrol-1.7.1-5673
+
+* Frontend (UI):
+	- Deploy HAProxy on PostgreSQL: Fixed an issue where the dialog was stripped and did not load completely.
+	- Performance -> DB Variables: Variables with different values are not marked in red
+	- Dashboards: System Overview, improved the readability of the CPU Usage chart.
+	- PostgreSQL Query Monitor: Removed tuning advise and the option to purge queries as it is not possible at all.
+
+* Controller:
+	- Configuration Changes: Fixed an issue where the owner and privileges of a config file was not preserved.
+	- Deploy/Create Cluster From Backup: A fix to prevent the restore backup from running in another job.
+	- ProxySQL: Replaced old galera_checker script for proxysql to a new 2.0 version one
+	- ProxySQL: Improved s9s CLI and cmon such that making a proxysql configuration backup can be performed using the s9s CLI.
+	- Advisors: A new script to check prepared statement exec limits. The advisor script must be manually scheduled by the administrator.
+	- Alarm Notifications: The Memory Utilisation alarm was not showing all processes in the included 'top' view.
+
+
+Maintenance Release: January 22\ :sup:`nd`\ , 2019
 +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 * Build:
