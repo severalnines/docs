@@ -7,7 +7,6 @@ Opens a step-by-step modal dialog to deploy a new set of database cluster. The f
 
 * MySQL Replication
 * MySQL Galera
-	* MySQL Galera Cluster
 	* Percona XtraDB Cluster
 	* MariaDB Galera Cluster
 * MySQL Group Replication (beta)
@@ -18,8 +17,8 @@ Opens a step-by-step modal dialog to deploy a new set of database cluster. The f
 
 There are prerequisites that need to be fulfilled prior to the deployment:
 
-* Verify that sudo is working properly if you are using a non-root user. See :ref:`Requirements - Operating System User`.
 * Passwordless SSH is configured from ClusterControl node to all database nodes. See :ref:`Requirements - Passwordless SSH`.
+* Verify that sudo is working properly if you are using a non-root user. See :ref:`Requirements - Operating System User`.
 
 ClusterControl will trigger a deployment job and the progress can be monitored under *ClusterControl > Activity > Jobs*.
 
@@ -34,7 +33,8 @@ By default, ClusterControl deploys MySQL replication with the following configur
 
 * GTID enabled (MySQL and Percona only).
 * Start all database nodes with ``read_only=ON``. The chosen master will be promoted by disabling read-only dynamically.
-* PERFORMANCE_SCHEMA is disabled.
+* PERFORMANCE_SCHEMA disabled.
+* ClusterControl will create and grant necessary privileges for 2 MySQL users - ``cmon`` for monitoring and management and ``backupuser`` for backup and restore purposes.
 * Generated account credentials are stored inside ``/etc/mysql/secrets-backup.cnf``.
 
 If you would like to customize the above configurations, modify the template base file to suit your needs before proceed to the deployment. See :ref:`MySQL - Manage - Configurations - Base Template Files` for details.
@@ -132,10 +132,11 @@ Deploys a new MySQL Galera Cluster. The database cluster will be automatically a
 
 By default, ClusterControl deploys MySQL Galera with the following configurations:
 
-* Use xtrabackup-v2 or mariabackup for ``wsrep_sst_method``.
-* PERFORMANCE_SCHEMA is disabled.
+* Use xtrabackup-v2 or mariabackup (depending on the vendor chosen) for ``wsrep_sst_method``.
+* PERFORMANCE_SCHEMA disabled.
+* Binary logging disabled.
+* ClusterControl will create and grant necessary privileges for 2 MySQL users - ``cmon`` for monitoring and management and ``backupuser`` for backup and restore purposes.
 * Generated account credentials are stored inside ``/etc/mysql/secrets-backup.cnf``.
-* Binary logging is disabled.
 
 1) General & SSH Settings
 ``````````````````````````
