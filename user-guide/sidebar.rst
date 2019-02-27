@@ -381,7 +381,7 @@ To create a cloud profile, click on *Add Cloud Credentials* and follow the wizar
 
 - Amazon Web Service
 - Google Cloud Platform
-- Microsoft Azure.
+- Microsoft Azure
 
 Amazon Web Services Credential
 ``````````````````````````````
@@ -480,13 +480,55 @@ Comment (Optional) Description of the credential.
 Microsoft Azure Credentials
 ````````````````````````````
 
-To create a service account:
+In order to provide an access to Azure services you need to register an application and grant it access to your Azure resources.
 
-1. Open the "Service Accounts" page in the Cloud Platform Console.
-2. Select your project and click "Continue"".
-3. In the left nav, click "Service accounts".
-4. Look for the service account for which you wish to create a key, click on the vertical ellipses button in that row, and click "Create key".
-5. Select JSON as the "Key type" and click "Create".
+1. Create an application:
+	a) Login to *Microsoft Azure portal > Azure Active Directory > App registrations > New application registration*.
+	b) Provide a name and URL for the application. Select "Web app / API" for the type of application you want to create. 
+	c) After specify the values, click "Create".
+2. Get application ID and authentication key:
+	a) From App registrations in Azure Active Directory, select your application.
+	b) Copy the Application ID. You should pass that value as ``application_id``.
+	c) To generate an authentication key, select *Settings > Keys*.
+	d) Provide a description of the key, and a duration for the key. When done, select "Save".
+	e) After saving the key, the value of the key is displayed. Copy this value because you are not able to retrieve the key later. Pass this value as ``client_secret``.
+3. Get tenant ID:
+	a) Go to *Microsoft Azure portal > Azure Active Directory > Properties* for your Azure AD tenant.
+	b) Copy the "Directory ID". Pass this value as ``tenant_id``.
+4. Get subscription ID:
+	a) Go to *Microsoft Azure portal > Subscriptions*.
+	b) Select your subscription from the list. 
+	c) Copy the "Subscription ID". Pass this value as ``subscription_id``.
+5. Create a resource group:
+	a) Go to *Microsoft Azure portal > Resource groups > Add*.
+	b) Fill in the values and click "Create". 
+	c) Copy Resource group name and use it as ``resource_group`` in the credentials.
+	d) Wait until Resource group is created and click *Go to resource group > Access control (IAM) > Add > Add Role Assignment*.
+	e) Select "Contributor" as a Role then put your application's name into search input and select it from the list. 
+	f) Click "Save".
+7. Create a storage account (for *Upload Backup to Cloud* feature):
+	a) Go to *Microsoft Azure portal > Storage accounts > Add*.
+	b) Fill the "Name" and select "Blob storage" as Account kind. 
+	c) Copy the "Name" value and use it as ``storage_account`` in credentials.
+	d) Select "Enabled" for "Secure transfer required", select "Subscription" and "Resource group" (use the same Resource group as in the previous steps). 
+	e) Select the storage "Location" and then click "Create". 
+
+Finally, create a new text file on your workstation and copy all the required information retrieved from the previous steps in a JSON format. For example:
+
+.. code-block:: json
+
+	{
+	   "application_id":"7f649053-xxxx-xxxx-xxxx-2179c1fa83b8",
+	   "client_secret":"jbzW9tj4AyXHDkfO/KoTL9OP5EexpD6jeHROo2S4xxxx",
+	   "tenant_id":"ce6b8358-xxxx-xxxx-xxxx-49b8c7a5cbc2",
+	   "subscription_id":"6fafe95c-xxxx-xxxx-xxxx-1c33daa1c2c3",
+	   "resource_group":"cc",
+	   "storage_account":"mybackupazure"
+	}
+
+Then, when configuring the Azure credentials, load the above text file under "Read from JSON" field. Take note that `storage_account` value is optional.
+
+The uploaded backup will be available under BLOB CONTAINERS storage. You can verify its existence in the cloud by going to *Microsoft Azure portal > Storage Accounts > [your storage account] > Storage Explorer > BLOB CONTAINERS*.
 
 ================== ============
 Field              Description
