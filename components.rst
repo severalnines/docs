@@ -563,7 +563,9 @@ For agent-based monitoring mode, ClusterControl requires a :term:`Prometheus` se
 	* `ProxySQL exporter <https://github.com/percona/proxysql_exporter>`_ (port 42004)
 	* `HAProxy exporter <https://github.com/prometheus/haproxy_exporter>`_ (port 9101)
 
-On every monitored host, ClusterControl will configure and daemonize exporter process using a program called :term:`daemon`. Thus, ClusterControl host must have an Internet connection to automate the Prometheus deployment. Apart from Prometheus scrape process, ClusterControl also connects to the process exporter via HTTP calls directly to determine the process state of the node. No sampling via SSH is involved in this process.
+On every monitored host, ClusterControl will configure and daemonize exporter process using a program called :term:`daemon`. Thus, ClusterControl host is recommended to have an Internet connection to install necessary packages and automate the Prometheus deployment. For offline installation, the packages must be pre-downloaded into ``/var/cache/cmon/packages`` on ClusterControl node. For the list of required packages and links, please refer to ``/usr/share/cmon/templates/packages.conf``. Apart from Prometheus scrape process, ClusterControl also connects to the process exporter via HTTP calls directly to determine the process state of the node. No sampling via SSH is involved in this process.
+
+.. Note:: With agent-based monitoring, ClusterControl depends on a working Prometheus for accurate reporting on management and monitoring data. Therefore, Prometheus and exporter processes are managed by internal process manager thread. A non-working Prometheus will have a signficant impact on CMON process.
 
 The collector flags are configured based on the node's role, as shown in the following table (some exporters do not use collector flags):
 
