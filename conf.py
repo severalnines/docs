@@ -294,16 +294,16 @@ texinfo_documents = [
 rst_prolog = """
 .. |ClusterControl_UI_rpm| replace:: https://severalnines.com/downloads/cmon/clustercontrol-1.7.1-5622-x86_64.rpm
 .. |ClusterControl_CMONAPI_rpm| replace:: https://severalnines.com/downloads/cmon/clustercontrol-cmonapi-1.7.1-338-x86_64.rpm
-.. |ClusterControl_Controller_rpm| replace:: https://severalnines.com/downloads/cmon/clustercontrol-controller-1.7.1-2994-x86_64.rpm
-.. |ClusterControl_Notifications_rpm| replace:: https://severalnines.com/downloads/cmon/clustercontrol-notifications-1.7.1-168-x86_64.rpm
+.. |ClusterControl_Controller_rpm| replace:: https://severalnines.com/downloads/cmon/clustercontrol-controller-1.7.1-3085-x86_64.rpm
+.. |ClusterControl_Notifications_rpm| replace:: https://severalnines.com/downloads/cmon/clustercontrol-notifications-1.7.1-173-x86_64.rpm
 .. |ClusterControl_SSH_rpm| replace:: https://severalnines.com/downloads/cmon/clustercontrol-ssh-1.7.1-70-x86_64.rpm
 .. |ClusterControl_Cloud_rpm| replace:: https://severalnines.com/downloads/cmon/clustercontrol-cloud-1.7.1-180-x86_64.rpm
 .. |ClusterControl_CLUD_rpm| replace:: https://severalnines.com/downloads/cmon/clustercontrol-clud-1.7.1-180-x86_64.rpm
 .. |s9s_tools_rpm| replace:: http://repo.severalnines.com/s9s-tools/RHEL_7/x86_64/s9s-tools-1.7-51.1.x86_64.rpm
 .. |ClusterControl_UI_deb| replace:: https://severalnines.com/downloads/cmon/clustercontrol_1.7.1-5622_x86_64.deb
 .. |ClusterControl_CMONAPI_deb| replace:: https://severalnines.com/downloads/cmon/clustercontrol-cmonapi_1.7.1-338_x86_64.deb
-.. |ClusterControl_Controller_deb| replace:: https://severalnines.com/downloads/cmon/clustercontrol-controller-1.7.1-2994-x86_64.deb
-.. |ClusterControl_Notifications_deb| replace:: https://severalnines.com/downloads/cmon/clustercontrol-notifications_1.7.1-168_x86_64.deb
+.. |ClusterControl_Controller_deb| replace:: https://severalnines.com/downloads/cmon/clustercontrol-controller-1.7.1-3085-x86_64.deb
+.. |ClusterControl_Notifications_deb| replace:: https://severalnines.com/downloads/cmon/clustercontrol-notifications_1.7.1-173_x86_64.deb
 .. |ClusterControl_SSH_deb| replace:: https://severalnines.com/downloads/cmon/clustercontrol-ssh_1.7.1-70_x86_64.deb
 .. |ClusterControl_Cloud_deb| replace:: https://severalnines.com/downloads/cmon/clustercontrol-cloud_1.7.1-180_x86_64.deb
 .. |ClusterControl_CLUD_deb| replace:: https://severalnines.com/downloads/cmon/clustercontrol-clud_1.7.1-180_x86_64.deb
