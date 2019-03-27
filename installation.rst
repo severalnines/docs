@@ -143,6 +143,42 @@ On ClusterControl server, run the following commands:
   $ chmod +x install-cc
   $ sudo ./install-cc   # omit sudo if you run as root
 
+
+Basically, the installation script will attempt to automate the following tasks:
+
+1. Install and configure a MySQL server (used by ClusterControl to store monitoring data).
+2. Install and configure the ClusterControl controller package via package manager.
+3. Install ClusterControl dependencies via package manager.
+4. Configure Apache and SSL.
+5. Configure ClusterControl API URL and token.
+6. Configure ClusterControl Controller with minimal configuration options.
+7. Enable the CMON service on boot and start it up.
+
+After the installation completes, open your web browser to :samp:`http://{ClusterControl_host}/clustercontrol` and create the default admin user by specifying a valid email address and password in the welcome page.
+
+Environment Variables
+``````````````````````
+
+The installer script also understands a number of environment variables if defined. Supported environment variables are:
+
+============================ ===========
+Variables                    Description
+============================ ===========
+``S9S_CMON_PASSWORD``        MySQL cmon user password.
+``S9S_ROOT_PASSWORD``        MySQL root user password of the node.
+``S9S_DB_PORT``              MySQL port for cmon to connect.
+``HOST``                     Primary IP address or FQDN of the host. Useful if the host has multiple IP addresses.
+``INNODB_BUFFER_POOL_SIZE``  MySQL InnoDB buffer pool size to be configured on the host. Default is 50% of host's RAM.
+``CLUSTERCONTROL_BUILD``     ClusterControl builds (other than the controller). Separate each package with a space.
+``CONTROLLER_BUILD``         ClusterControl controller build.
+``S9S_TOOLS_BUILD``          ClusterControl CLI (a.k.a s9s) build.
+============================ ===========
+
+The environment variable can be set through ``export`` command or by prefixing the install command as shown in the `Example Use Cases`_ section.
+
+Example Use Cases
+``````````````````
+
 If you have multiple network interface cards, assign primary IP address for ``HOST`` variable as per example below:
 
 .. code-block:: bash
@@ -163,17 +199,18 @@ If you want to perform a non-interactive installation, you can assign each varia
 
   $ S9S_CMON_PASSWORD=cmonP4ss S9S_ROOT_PASSWORD=root123 S9S_DB_PORT=3306 HOST=10.10.10.10 ./install-cc
 
-Basically, the installation script will attempt to automate the following tasks:
+If you want to install specific version instead of the latest in the repository, you can use ``CLUSTERCONTROL_BUILD``, ``CONTROLLER_BUILD`` and ``S9S_TOOLS_BUILD`` environment variables. You can get the available package name and version from `ClusterControl download site <https://severalnines.com/downloads/cmon/>`_.
 
-1. Install and configure a MySQL server (used by ClusterControl to store monitoring data).
-2. Install and configure the ClusterControl controller package via package manager.
-3. Install ClusterControl dependencies via package manager.
-4. Configure Apache and SSL.
-5. Configure ClusterControl API URL and token.
-6. Configure ClusterControl Controller with minimal configuration options.
-7. Enable the CMON service on boot and start it up.
+Examples as follow:
 
-After the installation completes, open your web browser to :samp:`http://{ClusterControl_host}/clustercontrol` and create the default admin user by specifying a valid email address and password in the welcome page.
+.. code-block:: bash
+
+	# Debian/Ubuntu
+	$ CLUSTERCONTROL_BUILD="clustercontrol=1.7.1-5622 clustercontrol-cloud=1.7.1-163 clustercontrol-clud=1.7.1-163 clustercontrol-cmonapi=1.7.1-338 clustercontrol-notifications=1.7.1-159 clustercontrol-ssh=1.7.1-70" CONTROLLER_BUILD="clustercontrol-controller=1.7.1-2985" S9S_TOOLS_BUILD="s9s-tools=1.7.20190117-release1" ./install-cc
+	
+	# Centos/Redhat
+	$ CLUSTERCONTROL_BUILD="clustercontrol-1.7.1-5622 clustercontrol-cloud-1.7.1-163 clustercontrol-clud-1.7.1-163 clustercontrol-cmonapi-1.7.1-338 clustercontrol-notifications-1.7.1-159 clustercontrol-ssh-1.7.1-70" CONTROLLER_BUILD="clustercontrol-controller-1.7.1-2985" S9S_TOOLS_BUILD="s9s-tools-1.7-93.1" ./install-cc
+
 
 Puppet Module
 ++++++++++++++
