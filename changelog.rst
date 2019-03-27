@@ -8,6 +8,50 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.7.1
 -----------------
 
+Maintenance Release: March 25\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.1-3085
+
+* Controller:
+	- Resolve hostnames (to IPv4) when checking a host if it exists already in other clusters.
+	- MongoDB: adding missing sharding:clusterRole:shardsrv value in mongod.conf when add node job is used.
+	- MaxScale: connection not authorized after the deploy with CC. More fixes to improve 2.3 and later support.
+	- Backup: Do not fail backup if wsrep desync can't be turned off, and we must set the retention on backup report even if it was marked as failed.
+	- Monitoring/SCUMM: ``haproxy_exporter``: Don't append ``--haproxy.scrape-uri`` if it is already set.
+	- Replication: Can't add replication slave to an existing slave. Let's be stricter and do not tolerate >1 writable when setting up.
+	- s9s_error_reporter: make sure cmon is started, also print out the service status.
+	- PostgreSQL: Fixing an issue when a system file protection method denied the proxy-disable file removal
+	- Package handling/YUM: Fix for a situation when package update gets stuck on user input (to accept some GPG signature).
+	- SSH: A fix/workaround to handle the 'forced user password change' situation if user password expires (``passwd --expire USERNAME``) and is prompted to change upon a successful authentication.
+	- SSH: Limit the number of sent newline chars.
+	- Updated Oracle repository key due to expiration.
+	
+
+Maintenance Release: March 18\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.1-5812
+
+* Frontend:
+	- Allow empty SMTP username and SMTP password for the SMTP configuration.
+	- Fix an issue for failing to stop MySQL slave threads (IO and SQL).
+
+Maintenance Release: March 5\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.1-3056
+
+* Controller:
+	- Advisors: Fixed an issue with the ``wsrep_cluster_address.js`` where an ``internalHostName`` method was missing.
+	- MongoDb: Use the mongodb OS user depending on the OS and package when setting up ssl.
+	- PostgreSQL:  Fixed a PostgreSQL grant failure because of client locale setting.
+	- PostgreSQL: Workaround a PostgreSQL service initdb bug. Now we call directly the ``initdb`` binary. The relevant original bug report: https://www.postgresql.org/message-id/20171208104120.21687.74167@wrigleys.postgresql.org
+
+
 Maintenance Release: February 27\ :sup:`th`\ , 2019
 +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
