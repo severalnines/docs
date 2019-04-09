@@ -5,6 +5,64 @@ Change Logs
 
 This change logs list details about updates in each version of ClusterControl.
 
+Changes in 1.7.2
+----------------
+
+Initial Release: April 4th, 2019
++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.2-5926
+	- clustercontrol-controller-1.7.2-3117
+	- clustercontrol-cmonapi-1.7.2-342
+	- clustercontrol-notifications-1.7.2-176
+	- clustercontrol-ssh-1.7.2-73
+	- clustercontrol-cloud-1.7.2-196
+
+We are proud to announce an expansion of the databases we support to include `TimescaleDB <https://github.com/timescale/timescaledb>`_, a revolutionary new time-series that leverages the stability,
+maturity and power of PostgreSQL. TimescaleDB can ingest large amounts of data and then measure how it changes over time. This ability is crucial to analyzing any data-intensive, time-series data. 
+For ClusterControl, this marks the first time for supporting time-series data; strengthening our mission to provide complete life cycle support for the best open source databases and 
+expanding our ability to support applications like IoT, Fintech and smart technology. 
+
+In this release you can now deploy a TimescaleDB and also turn an existing PostgreSQL server to a TimescaleDB server. PostgreSQL clusters also support a new backup method `pgBackRest <https://pgbackrest.org>`_, 
+database growth charts and improvements to manage your configuration files. 
+
+MySQL users can start to deploy and import **MySQL 8.0** servers with Percona and Oracle MySQL and our new **Spotlight** search helps you navigate through pages, find nodes and perform actions faster. 
+
+Finally, we are also providing a beta version to setup CMON / Controller High Availability using several ClusterControl instances wired with a consensus protocol (raft) between them.
+
+**Feature Details**
+
+* TimescaleDB - optimized for time-series data using SQL -- **more documentation coming soon!**
+	- Deploy a TimescaleDB server with PostgreSQL (v9.6, v10.x and v11.x).
+	- Turn an existing PostgresQL server (v9.6, v10.x and v11.x) into a TimescaleDB server.
+
+* PostgreSQL
+	- Database growth graphs. Track the dataset growth on your databases.
+	- Support for pgBackRest as a backup tool:
+		- Create full, differential and incremental backups.
+		- Restore full, differential, incremental backups.
+		- PITR - Point In Time Recovery is supported.
+		- Enable compression and specify compression level.
+
+* MySQL 8.0 Support
+	- Cluster deployment and import of 'replication' type clusters available with:
+		- Percona Server for MySQL 8.0
+		- Oracle MySQL 8.0 Server
+	- Support for 'caching_sha2_password'.
+
+* CC Spotlight
+	- Use our new spotlight search to quickly open pages, find nodes/hosts and perform cluster and node actions.
+	- Click on the search icon or use the keyboard shortcut CTRL+SPACE to bring up the spotlight.
+
+* CMON / Controller High Availability (BETA)
+	- CMON HA is using a consensus protocol (raft) to provide a high availability setup with more than one cmon process.
+	- Setup a 'leader' CMON process and a set of 'followers' which share storage and state using a MySQL Galera cluster.
+* Misc
+	- Support the use of private IPs when you deploy a cluster to AWS.
+	- MaxScale - improved support for v 2.2 and later using maxctrl.
+	- Automatic vendor/version detection for importing MariaDb/MySQL based clusters.
+
 Changes in v1.7.1
 -----------------
 
