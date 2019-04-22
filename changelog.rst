@@ -5,10 +5,33 @@ Change Logs
 
 This change logs list details about updates in each version of ClusterControl.
 
-Changes in 1.7.2
-----------------
+Changes in v1.7.2
+-----------------
 
-Initial Release: April 4th, 2019
+
+Maintenance Release: April 19\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.2-5959
+	- clustercontrol-controller-1.7.2-3141
+
+* Frontend (UI):
+	- Query Monitor: Selecting/clicking on a query didn't show the query details. 
+	- Query Monitor: Top queries page were empty for a single node galera cluster.
+	- MongoDB:
+		- Restore backup menu item was missing.
+		- Restore backup dialog form was empty for single node replica sets.
+	- Spotlight: Performance improvements when you have several clusters/nodes.
+	- Cloud deployments now use the same package versions as the on-premise deployments.
+
+* Controller:
+	- MySQL Replication: Fixed an issue with slave promotion causing an errant transaction to appear.
+	- Security: Fixed permissions on all cmon generated config files to be 0600.
+	- Galera (MariaDb):  Increased start timeout for a longer SST in the mariadb.service override systemd file.
+
+
+Initial Release: April 4\ :sup:`th`\ , 2019
 +++++++++++++++++++++++++++++++++++++++++++++++++
 
 * Build:
@@ -19,13 +42,9 @@ Initial Release: April 4th, 2019
 	- clustercontrol-ssh-1.7.2-73
 	- clustercontrol-cloud-1.7.2-196
 
-We are proud to announce an expansion of the databases we support to include `TimescaleDB <https://github.com/timescale/timescaledb>`_, a revolutionary new time-series that leverages the stability,
-maturity and power of PostgreSQL. TimescaleDB can ingest large amounts of data and then measure how it changes over time. This ability is crucial to analyzing any data-intensive, time-series data. 
-For ClusterControl, this marks the first time for supporting time-series data; strengthening our mission to provide complete life cycle support for the best open source databases and 
-expanding our ability to support applications like IoT, Fintech and smart technology. 
+We are proud to announce an expansion of the databases we support to include `TimescaleDB <https://github.com/timescale/timescaledb>`_, a revolutionary new time-series that leverages the stability, maturity and power of PostgreSQL. TimescaleDB can ingest large amounts of data and then measure how it changes over time. This ability is crucial to analyzing any data-intensive, time-series data. For ClusterControl, this marks the first time for supporting time-series data; strengthening our mission to provide complete life cycle support for the best open source databases and expanding our ability to support applications like IoT, Fintech and smart technology. 
 
-In this release you can now deploy a TimescaleDB and also turn an existing PostgreSQL server to a TimescaleDB server. PostgreSQL clusters also support a new backup method `pgBackRest <https://pgbackrest.org>`_, 
-database growth charts and improvements to manage your configuration files. 
+In this release you can now deploy a TimescaleDB and also turn an existing PostgreSQL server to a TimescaleDB server. PostgreSQL clusters also support a new backup method `pgBackRest <https://pgbackrest.org>`_, database growth charts and improvements to manage your configuration files. 
 
 MySQL users can start to deploy and import **MySQL 8.0** servers with Percona and Oracle MySQL and our new **Spotlight** search helps you navigate through pages, find nodes and perform actions faster. 
 
@@ -49,7 +68,7 @@ Finally, we are also providing a beta version to setup CMON / Controller High Av
 	- Cluster deployment and import of 'replication' type clusters available with:
 		- Percona Server for MySQL 8.0
 		- Oracle MySQL 8.0 Server
-	- Support for 'caching_sha2_password'.
+	- Support for ``caching_sha2_password``.
 
 * CC Spotlight
 	- Use our new spotlight search to quickly open pages, find nodes/hosts and perform cluster and node actions.
