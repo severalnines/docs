@@ -7,13 +7,13 @@ Opens a wizard to import the existing database setup into ClusterControl. The fo
 
 * MySQL Replication
 * MySQL Galera
-	* MySQL Galera Cluster
 	* Percona XtraDB Cluster
 	* MariaDB Galera Cluster
 * MySQL Cluster (NDB)
 * MongoDB ReplicaSet
 * MongoDB Shards
 * PostgreSQL (standalone or streaming replication)
+* TimeScaleDB (standalone or streaming replication)
 
 There are some prerequisites that need to be fulfilled prior to adding the existing setup. The existing database cluster/server must:
 
@@ -62,9 +62,9 @@ When importing an existing MySQL Replication, ClusterControl will do the followi
 
 * **MySQL Version**
 	- Supported version:
-		- Percona Server (5.5, 5.6, 5.7)
+		- Percona Server (5.5, 5.6, 5.7, 8.0)
 		- MariaDB Server (10.1, 10.2, 10.3)
-		- Oracle MySQL Server (5.7)
+		- Oracle MySQL Server (5.7, 8.0)
 
 * **Basedir**
 	- MySQL base directory. Default is ``/usr``. ClusterControl assumes all MySQL nodes are using the same base directory.
@@ -122,7 +122,6 @@ Import Existing MySQL Galera
 * **Vendor**
 	- Percona XtraDB - Percona XtraDB Cluster by Percona
 	- MariaDB - MariaDB Galera Cluster by MariaDB
-	- Codership - MySQL Galera Cluster by Codership
 
 * **Version**
 	- Supported version:
@@ -235,7 +234,7 @@ ClusterControl is able to manage and monitor an existing production deployed MyS
 Import Existing MongoDB ReplicaSet
 +++++++++++++++++++++++++++++++++++
 
-ClusterControl is able to manage and monitor an existing MongoDB/Percona Server for MongoDB 3.x replica set.
+ClusterControl is able to manage and monitor an existing MongoDB/Percona Server for MongoDB 3.x and 4.0 replica set.
 
 1) General & SSH Settings
 ``````````````````````````
@@ -284,7 +283,7 @@ ClusterControl is able to manage and monitor an existing MongoDB/Percona Server 
 Import Existing MongoDB Shards
 +++++++++++++++++++++++++++++++
 
-ClusterControl is able to manage and monitor an existing MongoDB/Percona Server for MongoDB 3.x sharded cluster setup.
+ClusterControl is able to manage and monitor an existing MongoDB/Percona Server for MongoDB 3.x and 4.0 sharded cluster setup.
 
 1) General & SSH Settings
 ``````````````````````````
@@ -335,10 +334,10 @@ ClusterControl is able to manage and monitor an existing MongoDB/Percona Server 
 * **Import**
 	- Click the button to start the import. ClusterControl will connect to the specified MongoDB mongos, discover the configuration for the rest of the members and start managing/monitoring the cluster.
 
-Import Existing PostgreSQL
-++++++++++++++++++++++++++
+Import Existing PostgreSQL/TimeScaleDB
++++++++++++++++++++++++++++++++++++++++
 
-ClusterControl is able to manage/monitor an existing set of PostgreSQL 9.x servers. Individual hosts specified in the same list will be added to the same server group in the UI. ClusterControl assumes that you are using the same postgres password for all instances specified in the group.
+ClusterControl is able to manage/monitor an existing set of PostgreSQL/TimeScaleDB version 9.6 and later. Individual hosts specified in the same list will be added to the same server group in the UI. ClusterControl assumes that you are using the same database admin password for all instances specified in the group.
 
 1) General & SSH Settings
 ``````````````````````````
@@ -360,23 +359,23 @@ ClusterControl is able to manage/monitor an existing set of PostgreSQL 9.x serve
 ``````````````````````````````
 
 * **Server Port**
-	- PostgreSQL port on the target server/cluster. Default to 5432. ClusterControl assumes PostgreSQL is running on the same port on all nodes.
+	- PostgreSQL port on the target server/cluster. Default to 5432. ClusterControl assumes PostgreSQL/TimeScaleDB is running on the same port on all nodes.
 
 * **User**
-	- PostgreSQL user on the target server/cluster. Recommended to use PostgreSQL 'postgres' user.
+	- PostgreSQL user on the target server/cluster. Recommended to use PostgreSQL/TimeScaleDB 'postgres' user.
 
 * **Password**
-	- Password for *User*. ClusterControl assumes that you are using the same postgres password for all instances under this group.
+	- Password for *User*. ClusterControl assumes that you are using the same admin password for all instances under this group.
 	
 * **Version**
-	- PostgreSQL server version on the target server/cluster. Supported versions are 9.6 and 10.x.
+	- PostgreSQL/TimeScaleDB server version on the target server/cluster. Supported versions are 9.6, 10.x and 11.x.
 
 * **Basedir**
-	- PostgreSQL base directory. Default is ``/usr``. ClusterControl assumes all PostgreSQL nodes are using the same base directory.
+	- PostgreSQL/TimeScaleDB base directory. Default is ``/usr``. ClusterControl assumes all PostgreSQL/TimeScaleDB nodes are using the same base directory.
 
 * **Add Node**
-	- Specify all PostgreSQL instances that you want to group under this cluster.
+	- Specify all PostgreSQL/TimeScaleDB instances that you want to group under this cluster.
 
 * **Import**
-	- Click the button to start the import. ClusterControl will connect to the PostgreSQL instances, import configurations and start managing them.
+	- Click the button to start the import. ClusterControl will connect to the PostgreSQL/TimeScaleDB instances, import configurations and start managing them.
 

@@ -1,20 +1,20 @@
-.. _PostgreSQL - Performance:
+.. _TimeScaleDB - Performance:
 
 Performance
 -----------
 
 Database performance monitoring and advisors.
 
-.. _PostgreSQL - Performance - DB Variables:
+.. _TimeScaleDB - Performance - DB Variables:
 
 DB Variables
 ++++++++++++
 
-DB Variables provide a quick overview of PostgreSQL variables that are set across all your database nodes. You can use the *Search* text field to filter the result.
+DB Variables provide a quick overview of TimeScaleDB variables that are set across all your database nodes. You can use the *Search* text field to filter the result.
 
 .. Note:: Red text means that the variable setting is different. In some cases that is acceptable (e.g., IP address of the node).
 
-.. _PostgreSQL - Performance - Advisors:
+.. _TimeScaleDB - Performance - Advisors:
 
 Advisors
 ++++++++

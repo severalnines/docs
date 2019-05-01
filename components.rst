@@ -559,7 +559,7 @@ For agent-based monitoring mode, ClusterControl requires a :term:`Prometheus` se
 3) Database or application exporters:
 	* `MySQL exporter <https://github.com/prometheus/mysqld_exporter>`_ (port 9104)
 	* `MongoDB exporter <https://github.com/percona/mongodb_exporter>`_ (port 9216)
-	* `PostgreSQL exporter <https://github.com/wrouesnel/postgres_exporter>`_ (port 9187)
+	* `PostgreSQL/TimeScaleDB exporter <https://github.com/wrouesnel/postgres_exporter>`_ (port 9187)
 	* `ProxySQL exporter <https://github.com/percona/proxysql_exporter>`_ (port 42004)
 	* `HAProxy exporter <https://github.com/prometheus/haproxy_exporter>`_ (port 9101)
 

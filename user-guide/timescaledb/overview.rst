@@ -1,30 +1,27 @@
-.. _PostgreSQL - Overview:
+.. _TimeScaleDB - Overview:
 
 Overview
 --------
 
 Provides summary of all database nodes in the cluster. This page is accessible only if there is a cluster deployed by ClusterControl via :ref:`Deploy Database Cluster` or imported into ClusterControl via :ref:`Import Existing Server Cluster`.
 
-.. _PostgreSQL - Overview - Actions:
+.. _TimeScaleDB - Overview - Actions:
 
 Actions
 +++++++
 
-Provides shortcuts to the main cluster functionality. For PostgreSQL Streaming Replication, the action menu consists of:
+Provides shortcuts to the main cluster functionality. For TimeScaleDB Streaming Replication, the action menu consists of:
 
 * **Add Load Balancer**
-	- See :ref:`PostgreSQL - Manage - Load Balancer`.
+	- See :ref:`TimeScaleDB - Manage - Load Balancer`.
 
 * **Add Replication Slave**
-	- Deploys a replication slave attached to this cluster. Choose one of the PostgreSQL node to be a master. See `Add Replication Slave`_.
+	- Deploys a replication slave attached to this cluster. Choose one of the TimeScaleDB node to be a master. See `Add Replication Slave`_.
 
 * **Change RPC API Token**
 	- Serves as the authentication string by ClusterControl UI to connect to CMON RPC interface. Each cluster has its own unique token.
 	
 .. Note:: You can retrieve the RPC API Token value directly from respective ``/etc/cmon.d/cmon_{clusterID}.cnf``.
-
-* **Enable TimeScaleDB**
-	- Setups TimeScaleDB database extension on every PostgreSQL node. The installation will be performed on one database node at a time, followed by a database restart to apply the changes.
 
 * **Create SSL Encryption**
 	- See `Create SSL Encryption`_.
@@ -40,18 +37,18 @@ Provides shortcuts to the main cluster functionality. For PostgreSQL Streaming R
 Add Replication Slave
 ``````````````````````
 
-PostgreSQL replication slave requires at least a master node. The following must be true for the master:
+TimeScaleDB replication slave requires at least a master node. The following must be true for the master:
 
 * At least one master under the same cluster ID.
-* Only PostgreSQL 9.x, 10.x and 11.x is supported.
-* Master's PostgreSQL port is accessible by ClusterControl and slaves.
+* Only TimeScaleDB 9.x, 10.x and 11.x is supported.
+* Master's TimeScaleDB port is accessible by ClusterControl and slaves.
 
-For the slave, you would need a separate host or VM, with or without PostgreSQL installed. If you do not have a PostgreSQL installed, and choose ClusterControl to install the PostgreSQL on the slave, ClusterControl will perform the necessary actions to prepare the slave, for example, create a slave user, configure PostgreSQL, start the server and also start the replication. Prior to the deployment, you must perform the following actions:
+For the slave, you would need a separate host or VM, with or without TimeScaleDB installed. If you do not have a TimeScaleDB installed, and choose ClusterControl to install the TimeScaleDB on the slave, ClusterControl will perform the necessary actions to prepare the slave, for example, create a slave user, configure TimeScaleDB, start the server and also start the replication. Prior to the deployment, you must perform the following actions:
 
 * The slave node must be accessible using passwordless SSH from the ClusterControl server
-* PostgreSQL port (default 5432) on the slave is open for connections for at least ClusterControl server and the other members in the cluster.
+* TimeScaleDB port (default 5432) on the slave is open for connections for at least ClusterControl server and the other members in the cluster.
 
-To prepare the PostgreSQL configuration file for the slave, go to *ClusterControl > Manage > Configurations > Template Configuration files*. Later, specify this template file when adding a slave.
+To prepare the TimeScaleDB configuration file for the slave, go to *ClusterControl > Manage > Configurations > Template Configuration files*. Later, specify this template file when adding a slave.
 
 Add New Replication Slave
 ''''''''''''''''''''''''''
@@ -65,7 +62,7 @@ The slave will be setup from a streamed backup using ``pg_basebackup`` from the 
 	- Specify the IP address or :term:`FQDN` of the slave node. This node must be accessible from ClusterControl node via passwordless SSH.
 
 * **Do you want to install the Slave server**
-	- Yes - Install PostgreSQL Server packages. It will based on the repository and vendor used by the master. For example, if you are running on PostgreSQL 10.x, ClusterControl will use the same repository to setup the slave.
+	- Yes - Install TimeScaleDB Server packages. It will based on the repository and vendor used by the master. For example, if you are running on TimeScaleDB 10.x, ClusterControl will use the same repository to setup the slave.
 
 * **Disable firewall**
 	- Check the box to disable firewall (recommended).
@@ -73,7 +70,7 @@ The slave will be setup from a streamed backup using ``pg_basebackup`` from the 
 * **Disable SELinux/AppArmor**
 	- Check the box to let ClusterControl disable AppArmor (Ubuntu) or SELinux (RedHat/CentOS) if enabled (recommended).
 
-.. Note:: Existing PostgreSQL server packages will be uninstalled.
+.. Note:: Existing TimeScaleDB server packages will be uninstalled.
 
 Add Existing Replication Slave
 ''''''''''''''''''''''''''''''
@@ -84,7 +81,7 @@ Add an existing replication slave into ClusterControl. Use this feature if you h
 	- IP address or :term:`FQDN` of the target node. If you already have the host added under *ClusterControl > Manage > Hosts*, you can just choose the host from the dropdown menu.
 
 * **Port**
-	- PostgreSQL port. Default is 5432.
+	- TimeScaleDB port. Default is 5432.
 
 Create SSL Encryption
 ``````````````````````
@@ -140,7 +137,7 @@ The Server Load graph provides overview of aggregated load on your database serv
 Custom Dashboard
 ++++++++++++++++
 
-Customize your dashboard in the `Overview`_ page by selecting which metrics and graphs to display. For PostgreSQL nodes, 2 graphs are configured by default:
+Customize your dashboard in the `Overview`_ page by selecting which metrics and graphs to display. For TimeScaleDB nodes, 2 graphs are configured by default:
 
 ====================== ===========
 Dashboard Name         Description
@@ -174,10 +171,10 @@ Standalone Nodes Grid
 ``````````````````````
 
 * **Hostname**
-	- The PostgreSQL master hostname or IP address.
+	- The TimeScaleDB master hostname or IP address.
 	
 * **Version**
-	- PostgreSQL server version.
+	- TimeScaleDB server version.
 
 * **Refresh**
 	- Fetch the latest update.
@@ -185,13 +182,13 @@ Standalone Nodes Grid
 Master Nodes Grid
 ``````````````````
 
-This grid appears if ClusterControl detects master PostgreSQL node, where ``select pg_is_in_recovery()`` returns false.
+This grid appears if ClusterControl detects master TimeScaleDB node, where ``select pg_is_in_recovery()`` returns false.
 
 * **Hostname**
-	- The PostgreSQL master hostname or IP address.
+	- The TimeScaleDB master hostname or IP address.
 	
 * **Version**
-	- PostgreSQL server version.
+	- TimeScaleDB server version.
 
 * **Writable**
 	- Green tick - Node is writable.
@@ -203,13 +200,13 @@ This grid appears if ClusterControl detects master PostgreSQL node, where ``sele
 Slave Nodes Grid
 ``````````````````
 
-This grid appears if ClusterControl detects any standby PostgreSQL node, where ``select pg_is_in_recovery()`` returns true.
+This grid appears if ClusterControl detects any standby TimeScaleDB node, where ``select pg_is_in_recovery()`` returns true.
 
 * **Hostname**
-	- The PostgreSQL slave hostname or IP address.
+	- The TimeScaleDB slave hostname or IP address.
 
 * **Version**
-	- PostgreSQL server version.
+	- TimeScaleDB server version.
 
 * **Replication State**
 	- Current WAL sender state.

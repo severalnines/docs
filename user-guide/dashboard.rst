@@ -5,7 +5,7 @@ Dashboard
 
 This page is the landing page once you are logged in. It provides a summary of database clusters monitored by ClusterControl.
 
-.. image:: img/cc_cluster_list_160.png
+.. image:: img/cc_cluster_list_172.png
    :align: center
 
 **Top Menu**
@@ -41,6 +41,7 @@ Provides shortcuts to main cluster functionality. Every supported database clust
 	- :ref:`MySQL's Cluster Actions <MySQL - Overview - Actions>`
 	- :ref:`MongoDB's Cluster Actions <MongoDB - Overview - Actions>`
 	- :ref:`PostgreSQL's Cluster Actions <PostgreSQL - Overview - Actions>`
+	- :ref:`TimeScaleDB's Cluster Actions <TimeScaleDB - Overview - Actions>`
 
 .. _UserGuide - Activity:
 
@@ -147,10 +148,38 @@ Subscriptions
 
 .. Attention:: ClusterControl introduces new license format on v1.7.1 (the new license key format contains only a long-encrypted string). If you are having the older format, contact the account manager or email our sales department at sales@severalnines.com to get a new license.
 
-For users with a valid subscription (Standalone, Pro, Advanced, Enterprise), enter your license key here to unlock additional features based on the subscription. The license string contains information about the license type, company/affilication, email, expiration date and total number of licensed nodes.
+For users with a valid subscription (Advanced and Enterprise), enter your license key here to unlock additional features based on the subscription. The license string contains information about the license type, company/affilication, email, expiration date and total number of licensed nodes.
+
+The following example is the license information that one would get from us:
+
+.. code-block:: bash
+
+	Email: test@severalnines.com
+	Company: Severalnines AB
+	Expiration Date: 2019-04-23
+	Licensed Nodes: 1
+	License Key: ewogICAgImNvbXBhbnkiOiAiU2V2ZXJhbG5pbmPkIEFCIiwKICAgICJlbWFpbF9hZGRyZXNzIjog
+	InRlc3RAc2VRZXJhbG5pbmVzLmNvbSIsCiAgICAiZXhwaXJhdGlvbl9kYXRlIjogIjIwMTktMDQt
+	MjNUMDA6MDA6MDAuMDAxWiIsCiAgICAibGljZW5zZWRfbm9kZXMiOiAtMSwKICAgICJ0eXBlIjog
+	IkVudGVycHJpc2UiCn0Ke3M5cy1zaWduYXR1cmUtc2VwYXJhdG9yfQp0RUew5OZKV8SqmmwiQEzT
+	P+qTNnmCphirIVm7MriA/aCdlJYQcr1NJr4nvTNcSmgu4uFVf3Ufv4olHr4wrBq0/Js9Rm8bJWZo
+	BO8svHzQhCmIVEWcTYub362krjRyREnOGXaqWwUnvkZ0uUCT+WDaM1P9qn/HawoNd0e8E0+7WiZK
+	CpwjH+ESqSEppeu/Ewzf3p0C0e8WZbwHtZ9UmX2qJNQq9NDlByrO8FtbVjOOL4zTbc8jV0W2DWzY
+	1swzOgeyk+7N2eGVRWfdUSzudQSXkT3LA4cdV2HAsU5QLnmKxSCgg+jq+RQJiPwdPXEr3gzjzJzV
+	+qhmOZ5tTN+WABPy9l3kpztlCbkfzO84/4lM7Z3c4rQ8snMTu6RvD2M+oh/4lhvR8M9RrQQcl8JF
+	RX2Ak1ZAKxAXkJ97Z5U7nIzuyUGuMTCXdKGEtQkBXzpIcYFvXDeWu0MUks+EULpqG+OFnl+rSZa0
+	nNTSW3mR/f9B+4e2mK4y2OpJhh4rWPXR1DLpLVLk/2p0o64aEizA+IPe0TP+ox7bFzEfAXirVWfC
+	/Ol7m1k6arRbl8PSV1DRRcefM+UsABa6jypoiit+JXNPOajdjY1WBgEekCn/jeXBBoPM2k26274u
+	br0BuHULLkxGSpC8I2/nW6s84E653FO1Kpbvyx+2SKJxwUxLiuEZ2g==
+
+Only paste the license key string (starting after "License Key: " part) into the license text field. Once applied, restart CMON service to load the new license information:
+
+.. code-block:: bash
+
+	$ systemctl restart cmon # systemd
+	$ service cmon restart # SysVinit
 
 When the license expires, ClusterControl defaults back to the Community Edition. For features comparison, please refer to `ClusterControl product page <http://www.severalnines.com/pricing>`_.
-
 
 Configure Mail Server
 +++++++++++++++++++++

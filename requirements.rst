@@ -101,12 +101,12 @@ The following table shows supported database clusters with recommended minimum n
 +=================+============================+=====================================+=================================================================================+
 | MySQL/MariaDB   | MySQL Cluster (NDB)        | 7.1 and later                       | 5 hosts (2 data nodes + 2 API/mgmd nodes + 1 ClusterControl node)               |
 |                 +----------------------------+-------------------------------------+---------------------------------------------------------------------------------+
-|                 | MySQL replication          | 5.1/5.5/5.6/5.7                     | 3 hosts (1 master node + 1 standby master/slave + 1 ClusterControl node)        |
+|                 | MySQL replication          | 5.1/5.5/5.6/5.7/8.0                 | 3 hosts (1 master node + 1 standby master/slave + 1 ClusterControl node)        |
 |                 +----------------------------+-------------------------------------+---------------------------------------------------------------------------------+
 |                 | * Percona XtraDB Cluster   | * 5.5/5.6/5.7 (MySQL/Percona)       | 4 hosts (3 nodes + 1 ClusterControl node)                                       |
 |                 | * MariaDB Galera Cluster   | * 5.5/10.0/10.1/10.2/10.3 (MariaDB) |                                                                                 |
 |                 +----------------------------+-------------------------------------+---------------------------------------------------------------------------------+
-|                 | Single instance            | 5.5/5.6/5.7                         | 2 hosts (1 MySQL node + 1 ClusterControl node)                                  |
+|                 | Single instance            | 5.5/5.6/5.7/8.0                     | 2 hosts (1 MySQL node + 1 ClusterControl node)                                  |
 +-----------------+----------------------------+-------------------------------------+---------------------------------------------------------------------------------+
 | MongoDB/Percona | Sharded cluster            | 3.2/3.4/3.6/4.0 (MongoDB only)      | 4 hosts (3 config servers / 3 shard servers / 2 mongos + 1 ClusterControl node) |
 | Server for      +----------------------------+                                     +---------------------------------------------------------------------------------+
@@ -114,7 +114,11 @@ The following table shows supported database clusters with recommended minimum n
 +-----------------+----------------------------+-------------------------------------+---------------------------------------------------------------------------------+
 | PostgreSQL      | Single instance            | >9.6/10.x/11.x                      | 2 hosts (1 PostgreSQL node + 1 ClusterControl node)                             |
 |                 +----------------------------+                                     +---------------------------------------------------------------------------------+
-|                 | Streaming Replication      |                                     | 3 hosts (1 master node + 1 slave node + 1 ClusterControl node)                  |
+|                 | Streaming replication      |                                     | 3 hosts (1 master node + 1 slave node + 1 ClusterControl node)                  |
++-----------------+----------------------------+-------------------------------------+---------------------------------------------------------------------------------+
+| TimeScaleDB     | Single instance            | >9.6/10.x/11.x                      | 2 hosts (1 TimeScaleDB node + 1 ClusterControl node)                            |
+|                 +----------------------------+                                     +---------------------------------------------------------------------------------+
+|                 | Streaming replication      |                                     | 3 hosts (1 master node + 1 slave node + 1 ClusterControl node)                  |
 +-----------------+----------------------------+-------------------------------------+---------------------------------------------------------------------------------+
 
 .. _Requirements - Firewall and Security Groups:
@@ -140,68 +144,74 @@ ClusterControl requires ports used by the following services to be opened/enable
 
 ClusterControl supports various database and application vendors and each has its own set of standard ports that need to be reachable. Following ports and services need to be reachable by ClusterControl on the managed database nodes:
 
-+-------------------------------------------------+----------------------------------------+
-| Database Cluster (Vendor)                       | Port/Service                           |
-+=================================================+========================================+
-| MySQL/MariaDB (single instance and replication) | * 22 (SSH)                             |
-|                                                 | * ICMP (echo reply/request)            |
-|                                                 | * 3306 (MySQL)                         |
-+-------------------------------------------------+----------------------------------------+
-| * MariaDB Galera Cluster                        | * 22 (SSH)                             |
-| * Percona XtraDB Cluster                        | * ICMP (echo reply/request)            |
-|                                                 | * 3306 (MySQL)                         |
-|                                                 | * 4444 (SST)                           |
-|                                                 | * 4567 TCP/UDP (Galera)                |
-|                                                 | * 4568 (Galera IST)                    |
-|                                                 | * 9200 (HAProxy health check)          |
-+-------------------------------------------------+----------------------------------------+
-| MySQL Cluster (NDB)                             | * 22 (SSH)                             |
-|                                                 | * ICMP (echo reply/request)            |
-|                                                 | * 1186 (MySQL Cluster)                 |
-|                                                 | * 2200 (MySQL Cluster)                 |
-|                                                 | * 3306 (MySQL)                         |
-+-------------------------------------------------+----------------------------------------+
-| MongoDB replica set                             | * 22 (SSH)                             |
-|                                                 | * ICMP (echo reply/request)            |
-|                                                 | * 27017 (mongod)                       |
-+-------------------------------------------------+----------------------------------------+
-| MongoDB sharded cluster                         | * 22 (SSH)                             |
-|                                                 | * ICMP (echo reply/request)            |
-|                                                 | * 27018 (mongod)                       |
-|                                                 | * 27017 (mongos)                       |
-|                                                 | * 27019 (config server)                |
-+-------------------------------------------------+----------------------------------------+
-| PostgreSQL                                      | * 22 (SSH)                             |
-|                                                 | * ICMP (echo reply/request)            |
-|                                                 | * 5432 (postgres)                      |
-+-------------------------------------------------+----------------------------------------+
-| HAProxy                                         | * 22 (SSH)                             |
-|                                                 | * ICMP (echo reply/request)            |
-|                                                 | * 9600 (HAProxy stats)                 |
-|                                                 | * 3307 (MySQL load-balanced)           |
-|                                                 | * 3308 (MySQL load-balanced read-only) |
-+-------------------------------------------------+----------------------------------------+
-| MariaDB MaxScale                                | * 22 (SSH)                             |
-|                                                 | * ICMP (echo reply/request)            |
-|                                                 | * 6033 (MaxAdmin - CLI)                |
-|                                                 | * 4006 (Round robin listener)          |
-|                                                 | * 4008 (Read/Write split listener)     |
-|                                                 | * 4442 (Debug information)             |
-+-------------------------------------------------+----------------------------------------+
-| Keepalived                                      | * 22 (SSH)                             |
-|                                                 | * ICMP (echo reply/request)            |
-|                                                 | * 224.0.0.0/8 (multicast request)      |
-|                                                 | * IP protocol 112 (VRRP)               |
-+-------------------------------------------------+----------------------------------------+
-| Galera Arbitrator (garbd)                       | * 22 (SSH)                             |
-|                                                 | * ICMP (echo reply/request)            |
-|                                                 | * 4567 (Galera)                        |
-+-------------------------------------------------+----------------------------------------+
-| ProxySQL                                        | * 22 (SSH)                             |
-|                                                 | * ICMP (echo reply/request)            |
-|                                                 | * 6032 (ProxySQL Admin)                |
-|                                                 | * 6033 (MySQL load-balanced)           |
-+-------------------------------------------------+----------------------------------------+
++-------------------------------------------------+---------------------------------------------+
+| Database Cluster (Vendor)                       | Port/Service                                |
++=================================================+=============================================+
+| MySQL/MariaDB (single instance and replication) | * 22 (SSH)                                  |
+|                                                 | * ICMP (echo reply/request)                 |
+|                                                 | * 3306 (MySQL)                              |
++-------------------------------------------------+---------------------------------------------+
+| * MariaDB Galera Cluster                        | * 22 (SSH)                                  |
+| * Percona XtraDB Cluster                        | * ICMP (echo reply/request)                 |
+|                                                 | * 3306 (MySQL)                              |
+|                                                 | * 4444 (SST)                                |
+|                                                 | * 4567 TCP/UDP (Galera)                     |
+|                                                 | * 4568 (Galera IST)                         |
+|                                                 | * 9200 (HAProxy health check)               |
++-------------------------------------------------+---------------------------------------------+
+| MySQL Cluster (NDB)                             | * 22 (SSH)                                  |
+|                                                 | * ICMP (echo reply/request)                 |
+|                                                 | * 1186 (MySQL Cluster)                      |
+|                                                 | * 2200 (MySQL Cluster)                      |
+|                                                 | * 3306 (MySQL)                              |
++-------------------------------------------------+---------------------------------------------+
+| MongoDB replica set                             | * 22 (SSH)                                  |
+|                                                 | * ICMP (echo reply/request)                 |
+|                                                 | * 27017 (mongod)                            |
++-------------------------------------------------+---------------------------------------------+
+| MongoDB sharded cluster                         | * 22 (SSH)                                  |
+|                                                 | * ICMP (echo reply/request)                 |
+|                                                 | * 27018 (mongod)                            |
+|                                                 | * 27017 (mongos)                            |
+|                                                 | * 27019 (config server)                     |
++-------------------------------------------------+---------------------------------------------+
+| PostgreSQL                                      | * 22 (SSH)                                  |
+|                                                 | * ICMP (echo reply/request)                 |
+|                                                 | * 5432 (postgres)                           |
++-------------------------------------------------+---------------------------------------------+
+| TimeScaleDB                                     | * 22 (SSH)                                  |
+|                                                 | * ICMP (echo reply/request)                 |
+|                                                 | * 5432 (postgres)                           |
++-------------------------------------------------+---------------------------------------------+
+| HAProxy                                         | * 22 (SSH)                                  |
+|                                                 | * ICMP (echo reply/request)                 |
+|                                                 | * 9600 (HAProxy stats)                      |
+|                                                 | * 3307 (MySQL load-balanced)                |
+|                                                 | * 3308 (MySQL load-balanced read-only)      |
+|                                                 | * 5433 (PostgreSQL load-balanced)           |
+|                                                 | * 5434 (PostgreSQL load-balanced read-only) |
++-------------------------------------------------+---------------------------------------------+
+| MariaDB MaxScale                                | * 22 (SSH)                                  |
+|                                                 | * ICMP (echo reply/request)                 |
+|                                                 | * 6603 (MaxCtrl - CLI)                      |
+|                                                 | * 4006 (Round robin listener)               |
+|                                                 | * 4008 (Read/Write split listener)          |
+|                                                 | * 4442 (Debug information)                  |
++-------------------------------------------------+---------------------------------------------+
+| Keepalived                                      | * 22 (SSH)                                  |
+|                                                 | * ICMP (echo reply/request)                 |
+|                                                 | * 224.0.0.0/8 (multicast request)           |
+|                                                 | * IP protocol 112 (VRRP)                    |
++-------------------------------------------------+---------------------------------------------+
+| Galera Arbitrator (garbd)                       | * 22 (SSH)                                  |
+|                                                 | * ICMP (echo reply/request)                 |
+|                                                 | * 4567 (Galera)                             |
++-------------------------------------------------+---------------------------------------------+
+| ProxySQL                                        | * 22 (SSH)                                  |
+|                                                 | * ICMP (echo reply/request)                 |
+|                                                 | * 6032 (ProxySQL Admin)                     |
+|                                                 | * 6033 (MySQL load-balanced)                |
++-------------------------------------------------+---------------------------------------------+
 
 .. _Requirements - Hostnames and IP Addresses:
 
@@ -418,6 +428,6 @@ UTC is however recommended. Configure NTP client for each host with a working ti
 License
 -------
 
-ClusterControl comes in 4 versions - Community, Standalone, Advanced and Enterprise editions, within the same binary. Please review the `ClusterControl product page <http://www.severalnines.com/pricing>`_ for features comparison between these editions. To upgrade from Community to Standalone, Advanced or Enterprise, you would need a valid software license. When the license expires, ClusterControl defaults back to the Community Edition.
+ClusterControl comes in 3 versions - Community, Advanced and Enterprise editions, within the same binary. Please review the `ClusterControl product page <http://www.severalnines.com/pricing>`_ for features comparison between these editions. To upgrade from Community to Advanced or Enterprise, you would need a valid software license. When the license expires, ClusterControl defaults back to the Community Edition.
 
 All installation methods automatically configures ClusterControl with a 30-day fully functional trial license. For commercial information, please `contact us <http://www.severalnines.com/contact>`_.

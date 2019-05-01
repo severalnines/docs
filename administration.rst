@@ -49,7 +49,7 @@ For systemd:
 	$ systemctl daemon-reload
 	$ systemctl restart cmon cmon-ssh cmon-events cmon-cloud
 
-Upgrade is now complete. Verify the new version at *ClusterControl UI > Settings > CMON Settings > Version* or by using command ``cmon -v``. You should re-login if your ClusterControl UI session is active.
+Upgrade is now complete. Verify the new version at *ClusterControl UI > Settings > Runtime Configuration* or by using command ``cmon -v``. You should re-login if your ClusterControl UI session is active.
 
 Debian/Ubuntu
 ``````````````
@@ -81,7 +81,7 @@ For systemd:
 	$ systemctl daemon-reload
 	$ systemctl restart cmon cmon-ssh cmon-events cmon-cloud
 
-Upgrade is now complete. Verify the new version at *ClusterControl UI > Settings > CMON Settings > Version* or by using command ``cmon -v``. You should re-login if your ClusterControl UI session is active.
+Upgrade is now complete. Verify the new version at *ClusterControl UI > Settings > Runtime Configuration* or by using command ``cmon -v``. You should re-login if your ClusterControl UI session is active.
 
 .. _Administration - Upgrading ClusterControl - Offline Upgrade:
 
@@ -129,7 +129,7 @@ For systemd:
 	$ systemctl daemon-reload
 	$ systemctl restart cmon cmon-ssh cmon-events cmon-cloud
 
-Upgrade is now complete. Verify the new version at *ClusterControl UI > Settings > CMON Settings > Version*. You should re-login if your ClusterControl UI session is active.
+Upgrade is now complete. Verify the new version at *ClusterControl UI > Settings > Runtime Configuration*. You should re-login if your ClusterControl UI session is active.
 
 Debian/Ubuntu
 ``````````````
@@ -172,7 +172,7 @@ For systemd:
 	$ systemctl daemon-reload
 	$ systemctl restart cmon cmon-ssh cmon-events cmon-cloud
 
-Upgrade is now complete. Verify the new version at *ClusterControl UI > Settings > CMON Settings > Version*. You should re-login if your ClusterControl UI session is active.
+Upgrade is now complete. Verify the new version at *ClusterControl UI > Settings > Runtime Configuration*. You should re-login if your ClusterControl UI session is active.
 
 .. _Administration - Backup Up ClusterControl:
 
@@ -715,8 +715,8 @@ Starting up:
 3. Once the primary is started, start the remaining secondaries. 
 4. Start the application manually. This usually outside of ClusterControl domain.
 
-PostgreSQL Replication
-++++++++++++++++++++++++
+PostgreSQL/TimeScaleDB Replication
++++++++++++++++++++++++++++++++++++
 
 1. Shutdown the application manually. This usually outside of ClusterControl domain.
 2. Shutdown the slaves by using *ClusterControl > Nodes > pick the server > Shutdown Node > Execute*.

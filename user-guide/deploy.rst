@@ -9,11 +9,11 @@ Opens a step-by-step modal dialog to deploy a new set of database cluster. The f
 * MySQL Galera
 	* Percona XtraDB Cluster
 	* MariaDB Galera Cluster
-* MySQL Group Replication (beta)
 * MySQL Cluster (NDB)
+* TimeScaleDB (standalone or streaming replication)
+* PostgreSQL (standalone or streaming replication)
 * MongoDB ReplicaSet
 * MongoDB Sharded Cluster
-* PostgreSQL Replication
 
 There are prerequisites that need to be fulfilled prior to the deployment:
 
@@ -27,15 +27,16 @@ ClusterControl will trigger a deployment job and the progress can be monitored u
 MySQL Replication
 +++++++++++++++++
 
-Deploys a new MySQL Replication. The database cluster will be automatically added into ClusterControl once deployed. Minimum of two nodes is required. If only one MySQL IP address or hostname is defined, ClusterControl will deploy it as a standalone MySQL server.
+Deploys a new MySQL Replication or a standalone MySQL server. The database cluster will be automatically added into ClusterControl once deployed. Minimum of two nodes is required for MySQL replication. If only one MySQL IP address or hostname is defined, ClusterControl will deploy it as a standalone MySQL server with binary log enabled.
 
 By default, ClusterControl deploys MySQL replication with the following configurations:
 
-* GTID enabled (MySQL and Percona only).
-* Start all database nodes with ``read_only=ON``. The chosen master will be promoted by disabling read-only dynamically.
+* GTID with ``log_slave_updates`` enabled (MySQL and Percona only).
+* Start all database nodes with ``read_only=ON`` and ``super_read_only=ON`` (if supported). The chosen master will be promoted by disabling read-only dynamically.
 * PERFORMANCE_SCHEMA disabled.
 * ClusterControl will create and grant necessary privileges for 2 MySQL users - ``cmon`` for monitoring and management and ``backupuser`` for backup and restore purposes.
 * Generated account credentials are stored inside ``/etc/mysql/secrets-backup.cnf``.
+* ClusterControl will configure semi-synchronous replication.
 
 If you would like to customize the above configurations, modify the template base file to suit your needs before proceed to the deployment. See :ref:`MySQL - Manage - Configurations - Base Template Files` for details.
 
@@ -81,7 +82,7 @@ Starting from version 1.4.0, it's possible to setup a master-master replication 
 	- Oracle - MySQL Server by Oracle
 
 * **Version**
-	- Select the MySQL version for new deployment. For Oracle, only 5.7 is supported. For Percona, 5.6 and 5.7 while MariaDB, 10.1, 10.2 and 10.3 are supported.
+	- Select the MySQL version for new deployment. For Oracle, only 5.7 and 8.0 are supported. For Percona, 5.6, 5.7 and 8.0 while MariaDB, 10.1, 10.2 and 10.3 are supported.
 
 * **Server Data Directory**
 	- Location of MySQL data directory. Default is ``/var/lib/mysql``.
@@ -286,12 +287,12 @@ Deploys a new MySQL Cluster (NDB) by Oracle. The cluster consists of management 
 * **Deploy**
 	- Starts the MySQL Cluster deployment.
 
-.. _Deploy - MySQL Group Replication:
+.. _Deploy - TimeScaleDB:
 
-MySQL Group Replication (beta)
-++++++++++++++++++++++++++++++
+TimeScaleDB
++++++++++++
 
-Deploys a new :term:`MySQL Group Replication` cluster by Oracle. This is a beta feature introduced in version 1.4.0. The database cluster will be added into ClusterControl automatically once deployed. A minimum of three nodes is required.
+Deploys a new TimeScaleDB standalone or streaming replication cluster. Only TimeScaleDB 9.6 and later are supported. Minimum of two nodes 
 
 1) General & SSH Settings
 ``````````````````````````
@@ -302,18 +303,18 @@ Deploys a new :term:`MySQL Group Replication` cluster by Oracle. This is a beta 
 	
 * **SSH Key Path**
 	- Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See :ref:`Requirements - Passwordless SSH`.
-
+	
 * **Sudo Password**
 	- If you use sudo with password, specify it here. Ignore this if *SSH User* is root or sudoer does not need a sudo password.
 
 * **SSH Port**
 	- Specify the SSH port for target nodes. ClusterControl assumes SSH is running on the same port on all nodes.
-	
+
 * **Cluster Name**
-	- Specify a name for the cluster.
+	- Specify a name for the database.
 
 * **Install Software**
-  - Check the box if you use clean and minimal VMs. Existing MySQL dependencies will be removed. New packages will be installed and existing packages will be uninstalled when provisioning the node with required software.
+  - Check the box if you use clean and minimal VMs. Existing PostgreSQL dependencies will be removed. New packages will be installed and existing packages will be uninstalled when provisioning the node with required software.
   - If unchecked, existing packages will not be uninstalled, and nothing will be installed. This requires that the instances have already provisioned the necessary software.
 
 * **Disable Firewall**
@@ -322,37 +323,118 @@ Deploys a new :term:`MySQL Group Replication` cluster by Oracle. This is a beta 
 * **Disable AppArmor/SELinux**
 	- Check the box to let ClusterControl disable AppArmor (Ubuntu) or SELinux (RedHat/CentOS) if enabled (recommended).
 
-2) Define MySQL Servers
-````````````````````````
-    
-* **Vendor**
-	- Oracle - MySQL Group Replication by Oracle.
-
-* **Version**
-	- Select the MySQL version. Group Replication is only available on MySQL 5.7+.
-
-* **Server Data Directory**
-	- Location of MySQL data directory. Default is ``/var/lib/mysql``.
+2) Define PostgreSQL Servers
+````````````````````````````
 
 * **Server Port**
-	- MySQL server port. Default is 3306.
+	- PostgreSQL server port. Default is 5432.
 
-* **my.cnf Template**
-	- MySQL configuration template file under ``/etc/cmon/templates`` or ``/usr/share/cmon/templates``. See :ref:`MySQL - Manage - Configurations - Base Template Files` for details.
-	
-* **Root Password**
-	- Specify MySQL root password. ClusterControl will configure the same MySQL root password for all instances in the cluster.
+* **User**
+	- Specify the PostgreSQL super user for example, postgres.
+
+* **Password**
+	- Specify the password for *User*.
+
+* **Version**
+	- Supported versions are 9.6 and 10.
 	
 * **Repository**
 	- Use Vendor Repositories - Provision software by setting up and using the database vendor's preferred software repository. ClusterControl will always install the latest version of what is provided by database vendor repository.
 	- Do Not Setup Vendor Repositories - Provision software by using repositories already setup on the nodes. The User has to set up the software repository manually on each database node and ClusterControl will use this repository for deployment. This is good if the database nodes are running without internet connections.
-	- Use Mirrored Repositories - Create and mirror the current database vendor's repository and then deploy using the local mirrored repository. This is a preferred option when you have to scale the cluster in the future, to ensure the newly provisioned node will always have the same version as the rest of the members.
+	- Create New Repositories - Create and mirror the current database vendor's repository and then deploy using the local mirrored repository. This is a preferred option when you have to scale the PostgreSQL in the future, to ensure the newly provisioned node will always have the same version as the rest of the members.
 	
-* **Add Nodes**
-	- Specify the IP address or hostname of the MySQL nodes. Minimum of three nodes is recommended.
+3) Define Topology
+```````````````````
+
+* **Master A - IP/Hostname**
+	- Specify the IP address of the TimeScaleDB master node. Press 'Enter' once specified so ClusterControl can verify the node reachability via passwordless SSH.
+	
+* **Add slaves to master A**
+	- Add a slave node connected to master A. Press 'Enter' to add more slave.
+	
+4) Deployment Summary
+`````````````````````
+
+* **Synchronous Replication**
+	- Toggle on if you would like to use synchronous streaming replication between the master and the chosen slave. Synchronous replication can be enabled per individual slave node with considerable performance overhead.
 
 * **Deploy**
-	- Starts the MySQL Group Replication deployment.
+	- Starts the TimeScaleDB standalone or replication deployment.
+
+
+.. _Deploy - PostgreSQL:
+
+PostgreSQL
++++++++++++
+
+Deploys a new PostgreSQL standalone or streaming replication cluster from ClusterControl. Only PostgreSQL 9.6 and later are supported.
+
+1) General & SSH Settings
+``````````````````````````
+
+* **SSH User**
+	- Specify root if you have root credentials.
+	- If you use 'sudo' to execute system commands, specify the name that you wish to use here. The user must exists on all nodes. See :ref:`Requirements - Operating System User`.
+	
+* **SSH Key Path**
+	- Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See :ref:`Requirements - Passwordless SSH`.
+	
+* **Sudo Password**
+	- If you use sudo with password, specify it here. Ignore this if *SSH User* is root or sudoer does not need a sudo password.
+
+* **SSH Port**
+	- Specify the SSH port for target nodes. ClusterControl assumes SSH is running on the same port on all nodes.
+
+* **Cluster Name**
+	- Specify a name for the database.
+
+* **Install Software**
+  - Check the box if you use clean and minimal VMs. Existing PostgreSQL dependencies will be removed. New packages will be installed and existing packages will be uninstalled when provisioning the node with required software.
+  - If unchecked, existing packages will not be uninstalled, and nothing will be installed. This requires that the instances have already provisioned the necessary software.
+
+* **Disable Firewall**
+	- Check the box to disable firewall (recommended).
+
+* **Disable AppArmor/SELinux**
+	- Check the box to let ClusterControl disable AppArmor (Ubuntu) or SELinux (RedHat/CentOS) if enabled (recommended).
+
+2) Define PostgreSQL Servers
+````````````````````````````
+
+* **Server Port**
+	- PostgreSQL server port. Default is 5432.
+
+* **User**
+	- Specify the PostgreSQL super user for example, postgres.
+
+* **Password**
+	- Specify the password for *User*.
+
+* **Version**
+	- Supported versions are 9.6 and 10.
+	
+* **Repository**
+	- Use Vendor Repositories - Provision software by setting up and using the database vendor's preferred software repository. ClusterControl will always install the latest version of what is provided by database vendor repository.
+	- Do Not Setup Vendor Repositories - Provision software by using repositories already setup on the nodes. The User has to set up the software repository manually on each database node and ClusterControl will use this repository for deployment. This is good if the database nodes are running without internet connections.
+	- Create New Repositories - Create and mirror the current database vendor's repository and then deploy using the local mirrored repository. This is a preferred option when you have to scale the PostgreSQL in the future, to ensure the newly provisioned node will always have the same version as the rest of the members.
+	
+3) Define Topology
+```````````````````
+
+* **Master A - IP/Hostname**
+	- Specify the IP address of the PostgreSQL master node. Press 'Enter' once specified so ClusterControl can verify the node reachability via passwordless SSH.
+	
+* **Add slaves to master A**
+	- Add a slave node connected to master A. Press 'Enter' to add more slave.
+	
+4) Deployment Summary
+`````````````````````
+
+* **Synchronous Replication**
+	- Toggle on if you would like to use synchronous streaming replication between the master and the chosen slave. Synchronous replication can be enabled per individual slave node with considerable performance overhead.
+
+* **Deploy**
+	- Starts the PostgreSQL standalone or replication deployment.
 
 .. _Deploy - MongoDB ReplicaSet:
 
@@ -540,77 +622,3 @@ Deploys a new MongoDB Sharded Cluster. The database cluster will be automaticall
 
 * **Deploy**
 	- Starts the MongoDB Sharded Cluster deployment.
-
-.. _Deploy - PostgreSQL:
-
-PostgreSQL
-+++++++++++
-
-Deploys a new PostgreSQL standalone or streaming replication cluster from ClusterControl. Only PostgreSQL 9.x and 10 is supported.
-
-1) General & SSH Settings
-``````````````````````````
-
-* **SSH User**
-	- Specify root if you have root credentials.
-	- If you use 'sudo' to execute system commands, specify the name that you wish to use here. The user must exists on all nodes. See :ref:`Requirements - Operating System User`.
-	
-* **SSH Key Path**
-	- Specify the full path of SSH key (the key must exist in ClusterControl node) that will be used by *SSH User* to perform passwordless SSH. See :ref:`Requirements - Passwordless SSH`.
-	
-* **Sudo Password**
-	- If you use sudo with password, specify it here. Ignore this if *SSH User* is root or sudoer does not need a sudo password.
-
-* **SSH Port**
-	- Specify the SSH port for target nodes. ClusterControl assumes SSH is running on the same port on all nodes.
-
-* **Cluster Name**
-	- Specify a name for the database.
-
-* **Install Software**
-  - Check the box if you use clean and minimal VMs. Existing PostgreSQL dependencies will be removed. New packages will be installed and existing packages will be uninstalled when provisioning the node with required software.
-  - If unchecked, existing packages will not be uninstalled, and nothing will be installed. This requires that the instances have already provisioned the necessary software.
-
-* **Disable Firewall**
-	- Check the box to disable firewall (recommended).
-
-* **Disable AppArmor/SELinux**
-	- Check the box to let ClusterControl disable AppArmor (Ubuntu) or SELinux (RedHat/CentOS) if enabled (recommended).
-
-2) Define PostgreSQL Servers
-````````````````````````````
-
-* **Server Port**
-	- PostgreSQL server port. Default is 5432.
-
-* **User**
-	- Specify the PostgreSQL super user for example, postgres.
-
-* **Password**
-	- Specify the password for *User*.
-
-* **Version**
-	- Supported versions are 9.6 and 10.
-	
-* **Repository**
-	- Use Vendor Repositories - Provision software by setting up and using the database vendor's preferred software repository. ClusterControl will always install the latest version of what is provided by database vendor repository.
-	- Do Not Setup Vendor Repositories - Provision software by using repositories already setup on the nodes. The User has to set up the software repository manually on each database node and ClusterControl will use this repository for deployment. This is good if the database nodes are running without internet connections.
-	- Create New Repositories - Create and mirror the current database vendor's repository and then deploy using the local mirrored repository. This is a preferred option when you have to scale the PostgreSQL in the future, to ensure the newly provisioned node will always have the same version as the rest of the members.
-	
-3) Define Topology
-```````````````````
-
-* **Master A - IP/Hostname**
-	- Specify the IP address of the PostgreSQL master node. Press 'Enter' once specified so ClusterControl can verify the node reachability via passwordless SSH.
-	
-* **Add slaves to master A**
-	- Add a slave node connected to master A. Press 'Enter' to add more slave.
-	
-4) Deployment Summary
-`````````````````````
-
-* **Synchronous Replication**
-	- Toggle on if you would like to use synchronous streaming replication between the master and the chosen slave. Synchronous replication can be enabled per individual slave node with considerable performance overhead.
-
-* **Deploy**
-	- Starts the PostgreSQL standalone or replication deployment.

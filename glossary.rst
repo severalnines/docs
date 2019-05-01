@@ -166,6 +166,11 @@ Glossary
 		
 		.. seealso:: http://www.postgresql.org/docs/9.2/static/app-pg-dumpall.html
 
+	pgBackRest
+		A reliable backup and restore solution that can seamlessly scale up to the largest databases and workloads by utilizing algorithms that are optimized for database-specific requirements.
+		
+		.. seealso:: https://pgbackrest.org/
+
 	php.ini
 		PHP configuration file where you declare changes to your PHP settings.
 		

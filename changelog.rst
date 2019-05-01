@@ -8,6 +8,23 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.7.2
 -----------------
 
+Maintenance Release: April 30\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.2-5989
+	- clustercontrol-controller-1.7.2-3155
+
+* Frontend (UI):
+	- Query Monitor > Query Outliers: Fixed an issue related to date range.
+	- Performance > Innodb  Status: Fixed an issue when the InnoDB Status was not always shown.
+
+* Controller:
+	- ProxySQL: Fixed an issue with importing users on MariaDB 10.2 and later.
+	- Galera: Fixed an issue when the recovery job was closed prematurely. This had the effect that *Create Cluster* could fail.
+	- SCUMM: Preserve the exporters of other clusters in Prometheus configuration during (re)deployment. (Note: Users with multiple clusters and wrong Prometheus configuration may need to re-deploy the promethus on the affected [No data point] clusters).
+	- Query Monitor: Fixed an issue where queries were dropped following a schema update when upgrading clustercontrol-controller.
+
 
 Maintenance Release: April 19\ :sup:`th`\ , 2019
 +++++++++++++++++++++++++++++++++++++++++++++++++++++

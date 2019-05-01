@@ -3,7 +3,7 @@
 Introduction
 ============
 
-This documentation covers ClusterControl version 1.7.1 which was released on December 21\ :sup:`st`\ , 2018. This release contains key new features along with performance improvements and bug fixes. Release change log is available at :ref:`Changelog`.
+This documentation covers ClusterControl version 1.7.2 which was released on April 4\ :sup:`th`\ , 2019. This release contains key new features along with performance improvements and bug fixes. Release change log is available at :ref:`Changelog`.
 
 What is ClusterControl? 
 -----------------------
@@ -52,13 +52,15 @@ ClusterControl supports the following database servers/clusters:
 	- MariaDB Galera Cluster (MariaDB)
 - MySQL Cluster (NDB)
 - MySQL/MariaDB Replication (master-master and master-slave)
-- MySQL Group Replication (beta)
 - MySQL/MariaDB Standalone
 - MongoDB/Percona Server for MongoDB
 	- Replica set
 	- Sharded cluster
 	- Replicated sharded cluster
 - PostgreSQL
+	- Single instance
+	- Streaming replication
+- TimeScaleDB
 	- Single instance
 	- Streaming replication
 	
@@ -110,7 +112,7 @@ ClusterControl is able to handle most of the administration tasks required to ma
 * Database configuration management
 * Database cluster/node recovery
 * Trigger alarm and send notifications
-* Schedule and perform database backup (mysqldump, Xtrabackup, pgdump, pg_basebackup, mongodump, mongodb-consistent-backup)
+* Schedule and perform database backup (mysqldump, Percona Xtrabackup, MariaDB Backup, pg_dumpall, pg_basebackup, pgBackRest, mongodump, mongodb-consistent-backup)
 * Database backup status
 * Restore backups
 * Verify backup restoration on a standalone host
@@ -125,7 +127,7 @@ ClusterControl is able to handle most of the administration tasks required to ma
 * Monitor HAProxy/MaxScale/ProxySQL statistics
 * Manage MySQL user privileges
 * Upgrade MySQL servers
-* Promote MySQL/PostgreSQL slave to master
+* Promote MySQL/PostgreSQL/TimeScaleDB slave to master
 * Set up a delayed slave
 * Stage a replication slave from a master or an existing backup
 * Manage private keys and certificates for databases' SSL

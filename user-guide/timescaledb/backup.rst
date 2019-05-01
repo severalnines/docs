@@ -1,16 +1,16 @@
-.. _PostgreSQL - Backup:
+.. _TimeScaleDB - Backup:
 
 Backup
 -------
 
 Provides interface for database backup and restore management, scheduling and reporting. Each backup will be assigned with a backup ID and ClusterControl creates a directory under *Storage Directory* to store the backups based on this ID. On top of the page, you can see 3 function tabs followed by the created backup list underneath it.
 
-.. _PostgreSQL - Backup - Create Backup:
+.. _TimeScaleDB - Backup - Create Backup:
 
 Create Backup
 +++++++++++++
 
-Creates or schedules a PostgreSQL backup. 
+Creates or schedules a TimeScaleDB backup. 
 
 Create Backup
 ``````````````
@@ -18,8 +18,8 @@ Create Backup
 You can choose to create a full backup using :term:`pg_dumpall` or :term:`pg_basebackup`. Backups can be stored on the database host that is performing the backup, or the files can be streamed to the ClusterControl host. The backup created by this feature will be a full backup.
 
 * **Backup Method**
-	- pg_dumpall - Full logical backup using ``pg_dumpall``. See `pg_dumpall`_ section.
-	- pg_basebackup - Full physical backup using ``pg_basebackup``. See `pg_basebackup`_ section.
+	- pgdump - Full compressed backup using ``pg_dumpall``. See `pg_dumpall`_ section.
+	- pg_basebackup - Full compressed backup using ``pg_basebackup``. See `pg_basebackup`_ section.
 	- pgbackrestfull - Full physical backup using ``pgBackRest``. See `pgBackRest`_ section.
 	- pgbackrestdiff - Differential physical backup using ``pgBackRest``. See `pgBackRest`_ section.
 	- pgbackrestincr - Incremental physical backup using ``pgBackRest``. See `pgBackRest`_ section.
@@ -70,7 +70,7 @@ You can choose to create a full backup using :term:`pg_dumpall` or :term:`pg_bas
 * **Retention**
 	- How long ClusterControl should keep this backup once successfully created. You can set a custom period in days or keep it forever. Otherwise, ClusterControl will use the default retention period.
 
-.. _PostgreSQL - Backup - Schedule Backup:
+.. _TimeScaleDB - Backup - Schedule Backup:
 
 Schedule Backup
 ````````````````
@@ -84,8 +84,8 @@ Creates backup schedules of the database.
 .. Note:: The backup time is in UTC time zone of the ClusterControl node.
 
 * **Backup Method**
-	- pg_dumpall - Full logical backup using ``pg_dumpall``. See `pg_dumpall`_ section.
-	- pg_basebackup - Full physical backup using ``pg_basebackup``. See `pg_basebackup`_ section.
+	- pgdump - Full compressed backup using ``pg_dumpall``. See `pg_dumpall`_ section.
+	- pg_basebackup - Full compressed backup using ``pg_basebackup``. See `pg_basebackup`_ section.
 	- pgbackrestfull - Full physical backup using ``pgBackRest``. See `pgBackRest`_ section.
 	- pgbackrestdiff - Differential physical backup using ``pgBackRest``. See `pgBackRest`_ section.
 	- pgbackrestincr - Incremental physical backup using ``pgBackRest``. See `pgBackRest`_ section.
@@ -151,7 +151,7 @@ Scheduled Backups
 
 List of scheduled backups. You can enable and disable the schedule by toggling it accordingly. The created schedule can be edited and deleted.
 
-.. _PostgreSQL - Backup - Backup Method:
+.. _TimeScaleDB - Backup - Backup Method:
 
 Backup Method
 +++++++++++++
@@ -168,7 +168,7 @@ ClusterControl performs :term:`pg_dumpall` against all databases together with `
 pg_basebackup
 ``````````````
 
-:term:`pg_basebackup` is used to take base backups of a running PostgreSQL database cluster. These are taken without affecting other clients to the database, and can be used both for point-in-time recovery and as the starting point for a log shipping or streaming replication standby servers. It makes a binary copy of the database cluster files, while making sure the system is put in and out of backup mode automatically. Backups are always taken of the entire database cluster; it is not possible to back up individual databases or database objects.
+:term:`pg_basebackup` is used to take base backups of a running TimeScaleDB database cluster. These are taken without affecting other clients to the database, and can be used both for point-in-time recovery and as the starting point for a log shipping or streaming replication standby servers. It makes a binary copy of the database cluster files, while making sure the system is put in and out of backup mode automatically. Backups are always taken of the entire database cluster; it is not possible to back up individual databases or database objects.
 
 ClusterControl connects to the replication stream using the replication user (default is ``cmon_replication``) with ``--wal-method=fetch`` option when creating the backup. The output will be ``base.tar.gz`` inside the backup directory.
 
@@ -213,6 +213,7 @@ For example, if a full backup is taken on Sunday and the following daily increme
 * Wednesday - data from Tuesday to Wednesday
 * Thursday - data from Wednesday to Thursday
 
+
 Backup List
 +++++++++++
 
@@ -238,7 +239,7 @@ Failed    Backup was failed.
 * **Upload**
 	- Manually upload the created backup to cloud storage. This will open "Upload Backup" wizard.
 
-.. _PostgreSQL - Backup - Verify Backup:
+.. _TimeScaleDB - Backup - Verify Backup:
 
 Verify Backup
 +++++++++++++
@@ -249,7 +250,7 @@ Performs backup verification job.
 	- Specify the FQDN, hostname or IP address of the standalone host. The host must not be part of the cluster.
 
 * **Install Database Software**
-	- A new PostgreSQL server will be installed and setup if this is enabled. If there is an existing PostgreSQL server installed or running, it will be stopped and removed before ClusterControl performs the installation. If unchecked, ClusterControl will not touch the existing installation and the existing PostgreSQL server (must be running) on the target host will be used.
+	- A new TimeScaleDB server will be installed and setup if this is enabled. If there is an existing TimeScaleDB server installed or running, it will be stopped and removed before ClusterControl performs the installation. If unchecked, ClusterControl will not touch the existing installation and the existing TimeScaleDB server (must be running) on the target host will be used.
 
 * **Disable Firewall?**
 	- Check the box to disable firewall (recommended).
@@ -258,17 +259,17 @@ Performs backup verification job.
 	- Check the box to disable SELinux (RHEL/CentOS) or AppArmor (Ubuntu).
 
 * **Shutdown the server after the backup have been completed**
-	- Select "Yes" if you want ClusterControl to shutdown the server after restoration completes. Select "No" if you want to let it run after restoration completes and the node will be listed under :ref:`PostgreSQL - Nodes`. You are then responsible for removing the PostgreSQL server.
+	- Select "Yes" if you want ClusterControl to shutdown the server after restoration completes. Select "No" if you want to let it run after restoration completes and the node will be listed under :ref:`TimeScaleDB - Nodes`. You are then responsible for removing the TimeScaleDB server.
 
 * **Verify the backup after N hours after completion**
 	- Performs the backup verification after the specified hours once the backup is completed.
 
-.. _PostgreSQL - Backup - Restore Backup:
+.. _TimeScaleDB - Backup - Restore Backup:
 
 Restore Backup
 ++++++++++++++
 
-Restores ``pg_dumpall`` or ``pg_basebackup`` backup file created by ClusterControl and listed in the `Backup List`_. ClusterControl supports three restoration options:
+Restores ``pg_dumpall``, ``pg_basebackup`` or ``pgBackRest`` backup file created by ClusterControl and listed in the `Backup List`_. ClusterControl supports three restoration options:
 
 - `Restore on node`_.
 - `Restore and verify on standalone host`_.
@@ -289,7 +290,7 @@ For pgdump (online restore):
 For pg_basebackup (offline restore):
 
 1. Stop the target node.
-2. Backup the current PostgreSQL data directory.
+2. Backup the current TimeScaleDB data directory.
 3. Copy backup files to the target server.
 4. Checking disk space on the target server.
 5. Prepare and restore the backup.
@@ -300,7 +301,7 @@ For pg_basebackup (offline restore):
 	- The backup will be restored to the selected server.
 	
 * **Tmp Dir**
-	- Temporary storage for ClusterControl to prepare the big. It must be as big as the expected PostgreSQL data directory.
+	- Temporary storage for ClusterControl to prepare the big. It must be as big as the expected TimeScaleDB data directory.
 	
 * **Point In Time Recovery (PITR)**
 	- This option is only available if you want to restore a PITR-compatible backup (with WAL archiving enabled). If toggled, you will have to specify the time (folloing the server's timezone) to recover the data up to that point. The restoration time must be in 'YYYY-MM-DD HH:MM:SS' format. E.g: "2018-08-22 21:00:00".
@@ -310,7 +311,7 @@ For pg_basebackup (offline restore):
 Restore and verify on standalone host
 ``````````````````````````````````````
 
-Performs restoration on a standalone host and verify the backup. This requires a dedicated host which is not part of the cluster. ClusterControl will first deploy a PostgreSQL instance on the target host, start the service, stream the backup from the backup repository and start performing the restoration. Once done, you can have an option either to shutdown the server once restored or let it run so you can conduct further investigation on the server.
+Performs restoration on a standalone host and verify the backup. This requires a dedicated host which is not part of the cluster. ClusterControl will first deploy a TimeScaleDB instance on the target host, start the service, stream the backup from the backup repository and start performing the restoration. Once done, you can have an option either to shutdown the server once restored or let it run so you can conduct further investigation on the server.
 
 You can monitor the job progress under *Activity > Jobs > Verify Backup* where ClusterControl will report the restoration status (based on the exit code) at the end of the job.
 
@@ -318,31 +319,31 @@ You can monitor the job progress under *Activity > Jobs > Verify Backup* where C
 	- Specify the FQDN, hostname or IP address of the standalone host. The host must not be part of the cluster.
 
 * **Install Software**
-	- A new PostgreSQL server will be installed and setup if this is enabled. If there is an existing PostgreSQL server installed or running, it will be stopped and removed before ClusterControl performs the installation. If unchecked, ClusterControl will not touch the existing installation and the existing PostgreSQL server (must be running) on the target host will be used.
+	- A new TimeScaleDB server will be installed and setup if this is enabled. If there is an existing TimeScaleDB server installed or running, it will be stopped and removed before ClusterControl performs the installation. If unchecked, ClusterControl will not touch the existing installation and the existing TimeScaleDB server (must be running) on the target host will be used.
 	
 * **Disable Firewall**
 	- Check the box to disable firewall (recommended).
 
 * **Shutdown the server after the backup have been restored**
-	- Select "Yes" if you want ClusterControl to shutdown the server after restoration completes. Select "No" if you want to let it run after restoration completes and the node will be listed under :ref:`PostgreSQL - Nodes`. You are then responsible for removing the PostgreSQL server.
+	- Select "Yes" if you want ClusterControl to shutdown the server after restoration completes. Select "No" if you want to let it run after restoration completes and the node will be listed under :ref:`TimeScaleDB - Nodes`. You are then responsible for removing the TimeScaleDB server.
 
 Create cluster from backup
 ````````````````````````````
 
-.. Note:: This feature is introduced in version 1.7.1, specifically for Galera Cluster and PostgreSQL clusters only.
+.. Note:: This feature is introduced in version 1.7.1, specifically for Galera Cluster and TimeScaleDB clusters only.
 
-Creates a new cluster from the existing backup. A new PostgreSQL cluster will be created from the selected backup. The selected backup must be accessible from the nodes in the new cluster. The admin user password for this cluster must the same as the PostgreSQL admin password as included in the backup.
+Creates a new cluster from the existing backup. A new TimeScaleDB cluster will be created from the selected backup. The selected backup must be accessible from the nodes in the new cluster. The admin user password for this cluster must the same as the TimeScaleDB admin password as included in the backup.TimeScaleDB
 
-Choosing this option will open a new dialog where the selected backup will be used as a base dataset for the new cluster. The same deployment wizard for PostgreSQL will be shown to configure a new cluster. See :ref:`Deploy - PostgreSQL` for reference.
+Choosing this option will open a new dialog where the selected backup will be used as a base dataset for the new cluster. The same deployment wizard for TimeScaleDB will be shown to configure a new cluster. See :ref:`Deploy - TimeScaleDB` for reference.
 
 Basically, ClusterControl performs the deployment job based on the following order:
 
-1) Install necessary softwares and dependencies on all PostgreSQL nodes.
+1) Install necessary softwares and dependencies on all TimeScaleDB nodes.
 2) Start the first node.
 3) Stream and restore backup on the first node (with auto-restart flag).
 4) Configure and add the rest of the nodes.
 
-A new PostgreSQL cluster will be listed under ClusterControl cluster dashboard once the job completes.
+A new TimeScaleDB cluster will be listed under ClusterControl cluster dashboard once the job completes.
 
 Backup Encryption and Decryption
 ++++++++++++++++++++++++++++++++

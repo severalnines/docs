@@ -5,6 +5,15 @@ Sidebar
 
 Left-side navigation menu provides shortcuts to manage clusters, roles, users, notifications, integration, reporting, authentication, keys and certificates. The menu can be collapsed	to icon-only menu and expanded by using the `Close Menu`_ function.
 
+.. _Sidebar - Spotlight Search:
+
+Spotlight Search
+----------------
+
+Helps users navigate through pages, find nodes and perform actions faster by typing the elements in the cluster. The supported elements are hostname, IP address, cluster name, cluster actions, node actions and ClusterControl's navigation menu. The search result is automatically filtered based on the input from text field.
+
+.. Note:: This feature has a keyboard shortcut: ``CTRL + Space``.
+
 .. _Sidebar - Clusters:
 
 Clusters
@@ -105,7 +114,8 @@ Restart CMON service to load the change:
 
 .. code-block:: bash
 
-	$ systemctl restart cmon
+	$ systemctl restart cmon # systemd
+	$ service cmon restart # SysVinit
 
 Take note only new tables or changed tables are printed in the report. The first report is only for metadata collection for comparison in the subsequent rounds, thus we have to run it for at least twice to see the difference. For the first and foremost report, ClusterControl only returns the result of metadata collection. With the first report as the baseline, the subsequent reports will return the output that we are expecting for.
 

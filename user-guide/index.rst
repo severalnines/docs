@@ -14,3 +14,4 @@ This documentation provides a detailed user guide for ClusterControl UI.
 .. include:: mysql/index.rst
 .. include:: mongodb/index.rst
 .. include:: postgresql/index.rst
+.. include:: timescaledb/index.rst
