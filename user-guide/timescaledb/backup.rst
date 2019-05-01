@@ -197,6 +197,7 @@ Differential Backup
 pgBackRest copies only those database cluster files that have changed since the last full backup. pgBackRest restores a differential backup by copying all of the files in the chosen differential backup and the appropriate unchanged files from the previous full backup. The advantage of a differential backup is that it requires less disk space than a full backup, however, the differential backup and the full backup must both be valid to restore the differential backup.
 
 For example, if a full backup is taken on Sunday and the following daily differential backups are scheduled, the data that being backed up will be:
+
 * Monday - data from Sunday to Monday
 * Tuesday - data from Sunday to Tuesday
 * Wednesday - data from Sunday to Wednesday
@@ -208,6 +209,7 @@ Incremental Backup
 pgBackRest copies only those database cluster files that have changed since the last backup (which can be another incremental backup, a differential backup, or a full backup). As an incremental backup only includes those files changed since the prior backup, they are generally much smaller than full or differential backups. As with the differential backup, the incremental backup depends on other backups to be valid to restore the incremental backup. Since the incremental backup includes only those files since the last backup, all prior incremental backups back to the prior differential, the prior differential backup, and the prior full backup must all be valid to perform a restore of the incremental backup. If no differential backup exists then all prior incremental backups back to the prior full backup, which must exist, and the full backup itself must be valid to restore the incremental backup.
 
 For example, if a full backup is taken on Sunday and the following daily incremental backups are scheduled, the data that being backed up will be:
+
 * Monday - data from Sunday to Monday
 * Tuesday - data from Monday to Tuesday
 * Wednesday - data from Tuesday to Wednesday
