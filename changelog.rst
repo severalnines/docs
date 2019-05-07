@@ -8,6 +8,21 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.7.2
 -----------------
 
+Maintenance Release: May 6\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.2-5997
+	- clustercontrol-controller-1.7.2-3163
+
+* Frontend (UI):
+	- Filtering out incomplete/failed backups from restore backup dialogs.
+	- MySQL Single (standalone servers): Fixed filtration logic to show the Master Nodes for MySQL Single clusters.
+
+* Controller:
+	- MySQL 8.0: Fixed an issue preventing db users from being created on MySQL 8.0.
+	- Config file handling fix for docker (we mount ``/etc/cmon.d`` there and ``/etc/cmon.d/cmon.cnf`` is the main config)
+
 Maintenance Release: April 30\ :sup:`th`\ , 2019
 +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
