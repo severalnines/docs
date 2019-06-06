@@ -8,6 +8,58 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.7.2
 -----------------
 
+Maintenance Release: May 24\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.2-6069
+	- clustercontrol-controller-1.7.2-3199
+
+* Frontend (UI):
+	- Deployments: Custom configuration templates can now be selected at deployment.
+	- Cluster Overview:
+		- 'Server Load' graphs were not properly displayed (PostgreSQL).
+		- Changing the 'Server Load' graph would not accurately show only one metric (PostgreSQL).
+		- Disk Reads/Writes and Uptime were set to 0 (PostgreSQL).
+		- Disk bytes read/written were not calculated with correct sector value of 512 bytes.
+		- Switching between dashboards with a specific set of steps could cause the overview page to render an empty page.
+
+* Controller:
+	- Deadlock detection temporarily disabled for MySQL/Percona 8.0. It will be supported in the next major release.
+	- mysqldump failed with MySQL/Percona 8.0 because of missing ``show_compatibility_56=ON`` setting. It is now on for versions >= 5.7.6.
+	- Agent Based Monitoring (Prometheus):
+		- Uptime were set to 0.
+		- Disk stats for the controller is now also available.
+		- ``node_disk_written_bytes_total`` | ``node_disk_read_bytes_total`` are now also collected.
+	- Reverting to nc instead of socat on Ubuntu 16.04 due to a bug with socat's server name resolve when it starts with a number.
+	- Manual failover with MariaDB 10.1 for MySQL Replication cluster is now correctly flushing logs before switchover.
+	- Restore backup on Mongos (routers) failed to copy the data dir.
+
+Maintenance Release: May 16\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.2-3185
+	- clustercontrol-1.7.2-6032
+
+* Frontend (UI):
+	- Nodes Page: Fixed an issue with y-axis scaling on the Disk Utilization chart.
+	- Nodes Page: Selecting the menu 'Add Replication Slave' and start adding slave was impossible when a Node recovery job was running
+	- MongoDB: Fixed an issue where the Restore backup dialog would not close after pressing "Finish".
+
+* Controller:
+	- Monitoring/SCUMM: PostgreSQL exporter and MySQL exporter URL password encoding fix which could cause a "No data points" in *Dashboards -> Postgres Overview*.
+	- Monitoring/SCUMM: A fix for disk stats to be properly shown when using LVM volumes in the *Nodes -> Disk* charts.
+
+Maintenance Release: May 7\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.2-3167
+
+* Controller:
+	- MySQL 8.0: Updated imperative language files to support the previous release build issue: "Fixed an issue preventing db users from being created on MySQL 8.0".
+
 Maintenance Release: May 6\ :sup:`th`\ , 2019
 +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
