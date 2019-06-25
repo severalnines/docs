@@ -8,6 +8,29 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.7.2
 -----------------
 
+Maintenance Release: June 12\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.2-3142
+
+* Controller:
+	- Fixed a CmonDb schema issue on older MySQL server versions manifesting itself as ' Specified key was too long; max key length is 767 bytes'.
+	- MaxScale: A fix for imported MaxScale. When importing MaxScale, the utility maxctrl is used and works currently only with socket communication on the MaxScale host itself.
+	- Jobs: Log files contain job spec with sensitive data.
+	- MariaDB: Fixed and issue with deployment of MariaDB 10.0 on CentOS 6 failed.
+	- PostgreSQL: Fixed a bug that could crash cmon in case wal log retention was disabled and fixed a printout in PITR job output.
+
+Maintenance Release: June 11\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.2-6137
+
+* Frontend (UI):
+	- Memory leak fixes when leaving the web application open for extended periods of time (days).
+	- Fixes to the database software upgrades form to show correct versions supported. Note: Only upgrades within minor versions are supported.
+
 Maintenance Release: May 24\ :sup:`th`\ , 2019
 +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
