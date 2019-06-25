@@ -29,12 +29,6 @@ YUM Repository
 
   $ wget http://www.severalnines.com/downloads/cmon/s9s-repo.repo -P /etc/yum.repos.d/
 
-For nightly build (development release):
-
-.. code-block:: bash
-
-  $ wget http://www.severalnines.com/downloads/cmon/s9s-repo-nightly.repo -P /etc/yum.repos.d/
-
 2 (b). Or, you can create the repository definition manually:
 
 .. code-block:: bash
@@ -47,19 +41,6 @@ For nightly build (development release):
 	gpgkey = http://repo.severalnines.com/severalnines-repos.asc
 	gpgcheck = 1
 	REPOEND
-
-For nightly build (development release):
-
-.. code-block:: bash
-
-  $ cat - > /etc/yum.repos.d/s9s-repo-nightly.repo <<REPOEND
-  [s9s-repo-nightly]
-  name = Severalnines Nightly Repository
-  baseurl = http://repo.severalnines.com/repos-nightly/rpm/os/x86_64
-  enabled = 1
-  gpgkey = http://repo.severalnines.com/repos-nightly/severalnines-repos.asc
-  gpgcheck = 1
-  REPOEND
 
 3. Look for ClusterControl packages:
 
@@ -84,23 +65,11 @@ APT Repository
 
   $ sudo wget http://www.severalnines.com/downloads/cmon/s9s-repo.list -P /etc/apt/sources.list.d/
 
-For nightly build (development release):
-
-.. code-block:: bash
-
-  $ sudo wget http://www.severalnines.com/downloads/cmon/s9s-repo-nightly.list -P /etc/apt/sources.list.d/
-
 2 (b). Or, add the Severalnines APT source list manually:
 
 .. code-block:: bash
 
   $ echo 'deb [arch=amd64] http://repo.severalnines.com/deb ubuntu main' | sudo tee /etc/apt/sources.list.d/s9s-repo.list
-
-For nightly build (development release):
-
-.. code-block:: bash
-
-  $ echo 'deb [arch=amd64] http://repo.severalnines.com/repos-nightly/deb ubuntu main' | sudo tee /etc/apt/sources.list.d/s9s-repo-nightly.list
 
 3. Update package list:
 
