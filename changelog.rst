@@ -5,6 +5,49 @@ Change Logs
 
 This change logs list details about updates in each version of ClusterControl.
 
+Changes in v1.7.3
+-----------------
+
+Initial Release: July 2\ :sup:`nd`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build: 
+	- clustercontrol-1.7.3-6209
+	- clustercontrol-controller-1.7.3-3293
+	- clustercontrol-cloud-1.7.3-217
+	- clustercontrol-ssh-1.7.3-79
+	- clustercontrol-notifications-1.7.3-182
+
+In this release we have added support for running multiple PostgreSQL instances on the same server with improvements to PgBackRest to support those environments. 
+We have also added additional cluster types to our cloud deployment and support for scaling out cloud deployed clusters with automated instance creation. Deploy MySQL Replication, PostgreSQL, and TimeScaleDB clusters on AWS, GCE, and Azure. 
+
+**Feature Details**
+
+* PostgreSQL
+	- Manage multiple PostgreSQL instances on the same host.
+	- Improvements to pgBackRest with non-standard instance ports and custom stanzas.
+	- New Configuration Management page to manage your database configuration files.
+	- Added metrics to monitor Logical Replication clusters.
+	
+* Cloud Integration
+	- Automatically launch a cloud instance and scale out your database cluster by adding a new DB node (Galera) or replication slave (Replication).
+	- Deploy following new replication database clusters:
+		- Oracle MySQL Server 8.0
+		- Percona Server 8.0
+		- MariaDB Server 10.3
+		- PostgreSQL 11.0 (Streaming Replication).
+		- TimescaleDB 11.0 (Streaming Replication).
+
+* Misc
+	- Backup verification jobs with xtrabackup can use the ``--use-memory`` parameter to limit the memory usage.
+	- A running backup verification server will show up in the Topology view as well.
+	- MongoDB sharded clusters can add/register an existing MongoDB configuration node.
+	- The clustercontrol-cmonapi (CMON API) package is deprecated from now on and no longer required.
+	- A few more legacy ExtJS pages have been migrated to AngularJS:
+		- Configuration Management for MySQL, MongoDB, and MySQL NDB Cluster.
+		- Email Notifications Settings.
+		- Performance -> Transaction Logs.
+
 Changes in v1.7.2
 -----------------
 
@@ -15,13 +58,13 @@ Maintenance Release: June 12\ :sup:`th`\ , 2019
 	- clustercontrol-controller-1.7.2-3142
 
 * Controller:
-	- Fixed a CmonDb schema issue on older MySQL server versions manifesting itself as ' Specified key was too long; max key length is 767 bytes'.
-	- MaxScale: A fix for imported MaxScale. When importing MaxScale, the utility maxctrl is used and works currently only with socket communication on the MaxScale host itself.
+	- Fixed a CmonDB schema issue on older MySQL server versions manifesting itself as ``Specified key was too long; max key length is 767 bytes``.
+	- MaxScale: A fix for imported MaxScale. When importing MaxScale, the utility ``maxctrl`` is used and works currently only with socket communication on the MaxScale host itself.
 	- Jobs: Log files contain job spec with sensitive data.
-	- MariaDB: Fixed and issue with deployment of MariaDB 10.0 on CentOS 6 failed.
-	- PostgreSQL: Fixed a bug that could crash cmon in case wal log retention was disabled and fixed a printout in PITR job output.
+	- MariaDB: Fixed and issue with deployment of MariaDB 10.0 on Centos 6 failed.
+	- Postgres: Fixed a bug that could crash cmon in case wal log retention was disabled and fixed a printout in PITR job output.
 
-Maintenance Release: June 11\ :sup:`th`\ , 2019
+Maintenance Release: May 24\ :sup:`th`\ , 2019
 +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 * Build:
@@ -29,7 +72,8 @@ Maintenance Release: June 11\ :sup:`th`\ , 2019
 
 * Frontend (UI):
 	- Memory leak fixes when leaving the web application open for extended periods of time (days).
-	- Fixes to the database software upgrades form to show correct versions supported. Note: Only upgrades within minor versions are supported.
+	- Fixes to the database software upgrades form to show correct versions supported. 
+	- Note: Only upgrades within minor versions are supported.
 
 Maintenance Release: May 24\ :sup:`th`\ , 2019
 +++++++++++++++++++++++++++++++++++++++++++++++++++++
