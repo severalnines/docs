@@ -3,7 +3,7 @@
 Troubleshooting
 ===============
 
-This troubleshooting guide provides detailed information on how to troubleshoot ClusterControl and all of its components namely controller, CMON database, UI, notifications, clouds, web-based SSH and also CMONAPI. The document provides instructions on what data to collect when creating error reports to be submitted to `Severalnines Support <https://support.severalnines.com>`_.
+This troubleshooting guide provides detailed information on how to troubleshoot ClusterControl and all of its components namely controller, CMON database, UI, notifications, cloud and web-based SSH. The document provides instructions on what data to collect when creating error reports to be submitted to `Severalnines Support <https://support.severalnines.com>`_.
 
 Note that this troubleshooting guide only covers the latest version of ClusterControl. We highly advise you to upgrade to the latest version before troubleshooting any kind of issues related to ClusterControl due to the following reasons:
 
@@ -416,17 +416,16 @@ Additionally, ClusterControl UI shows a toaster notification (on the top right o
 
 **Troubleshooting steps:**
 
-Retrieve the value of global token inside ``/etc/cmon.cnf``, ``/var/www/html/clustercontrol/bootstrap.php`` and ``/var/www/html/cmonapi/config/bootstrap.php``:
+Retrieve the value of global token inside ``/etc/cmon.cnf``, ``/var/www/html/clustercontrol/bootstrap.php``:
 
 .. code-block:: bash
 
 	$ grep rpc_key /etc/cmon.cnf
 	$ grep RPC_TOKEN /var/www/html/clustercontrol/bootstrap.php
-	$ grep CMON_TOKEN /var/www/html/cmonapi/config/bootstrap.php
 
 **Solutions:**
 
-Verify that the ``RPC_TOKEN`` value in ``/var/www/html/clustercontrol/bootstrap.php`` and ``CMON_TOKEN`` value in ``/var/www/html/cmonapi/config/bootstrap.php`` match the token defined as ``rpc_key`` in ``/etc/cmon.cnf``. If you manipulate ``/etc/cmon.cnf`` directly, you must restart cmon for the change to take effect.
+Verify that the ``RPC_TOKEN`` value in ``/var/www/html/clustercontrol/bootstrap.php`` match the token defined as ``rpc_key`` in ``/etc/cmon.cnf``. If you manipulate ``/etc/cmon.cnf`` directly, you must restart cmon for the change to take effect.
 
 Database connection "Mysql" is missing, or could not be created
 ````````````````````````````````````````````````````````````````
@@ -513,14 +512,3 @@ Unable to login to ClusterControl using the LDAP user after *LDAP Settings* is c
 **Solutions:**
 
 ClusterControl supports Active Directory, FreeIPA and OpenLDAP authentication, see :ref:`Sidebar - User Management - LDAP Settings` for details. If the above troubleshooting steps do not help you solve the issue, please contact us via our support channel for further assistance.
-
-
-Known Issues and Limitations
-----------------------------
-
-ClusterControl is not fully tested in OS-level virtualization platform (containers) like OpenVZ. This may cause some issues in reporting of host statistics since it does not use the conventional device naming and mapping. 
-
-Known issues in ClusterControl:
-
-* Running two simultaneous backups (storage on Controller) on two different clusters. One will most likely fail (due to netcat port conflict)
-* Running two simultaneous HAProxy install on two different clusters (different load balancer hosts), one will most likely fail.

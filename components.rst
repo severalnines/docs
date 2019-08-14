@@ -13,8 +13,6 @@ ClusterControl consists of a number of components:
 |                                    |                              | monitoring and scheduling tasks. All the collected data will be stored directly    |
 |                                    |                              | inside CMON database.                                                              |
 +------------------------------------+------------------------------+------------------------------------------------------------------------------------+
-| ClusterControl REST API [#f1]_     | clustercontrol-cmonapi       | Interprets request and response data between ClusterControl UI and CMON database.  |
-+------------------------------------+------------------------------+------------------------------------------------------------------------------------+
 | ClusterControl UI                  | clustercontrol               | A modern web user interface to visualize and manage the cluster. It interacts with | 
 |                                    |                              | CMON controller via remote procedure call (RPC) or REST API interface.             |
 +------------------------------------+------------------------------+------------------------------------------------------------------------------------+
@@ -34,6 +32,14 @@ ClusterControl consists of a number of components:
 |                                    |                              | ClusterControl.                                                                    |
 +------------------------------------+------------------------------+------------------------------------------------------------------------------------+
 
+ClusterControl controller exposes all functionality through remote procedure calls (RPC) on port 9500 (authenticated by a RPC token), port 9501 (RPC with TLS) and integrates with a number of modules like notifications (9510), cloud (9518) and web SSH (9511). The client components, ClusterControl UI or ClusterControl CLI interact with those interfaces to retrieve monitoring data (cluster load, host status, alarms, backup status etc.) or to send management commands (add/remove nodes, run backups, upgrade a cluster, etc.). 
+
+The following diagram illustrates the architecture of ClusterControl:
+
+.. image:: img/cc_arch2.png
+   :alt: ClusterControl architecture
+   :align: center
+
 
 .. _Components - ClusterControl Controller:
 
@@ -47,7 +53,7 @@ ClusterControl Controller builds are available at :ref:`Installation - Severalni
 * RPM package (RedHat-based systems): ``clustercontrol-controller-[version]-[build number]-[architecture].rpm``
 * DEB package (Debian-based systems): ``clustercontrol-controller-[version]-[build number]-[architecture].deb``
 
-A configuration file ``/etc/cmon.cnf`` is required to initially setup the CMON Controller. It is possible to have several configuration files each for multiple clusters as described in the `Configuration File`_ section.
+A configuration file ``/etc/cmon.cnf`` is required to initially run CMON Controller. It is possible to have several configuration files each for multiple clusters as described in the `Configuration File`_.
 
 .. _Components - ClusterControl Controller - Command Line Arguments:
 
@@ -61,24 +67,21 @@ Shorthand, Option                         Description
 ========================================= ===========
 ``-h``, ``--help``                        Print the help.
 ``--help-config``                         Print the manual for configuration parameters. See `Configuration Options`_.
+``--help-init``                           Shows the special options for ``--init``.
 ``-v``, ``--version``                     Prints out the version number and build info.
 ``--logfile=[filepath]``                  The path of the log file to be used.
 ``-s``, ``--syslog``                      Also log to syslog.
+``-b``, ``--bind-addr='ip1,ip2..'``       Bind Remote Procedure Call (RPC) to IP addresses (default is 127.0.0.1,::1). By default cmon binds to '127.0.0.1' and '::1'. If another bind-address is needed, then it is possible to define the bind addresses in the file ``/etc/default/cmon``. See `Startup File`_.
+``-c``, ``--cloud-service=URL``           A custom clustercontrol-cloud service URL.
+``-d``, ``--nodaemon``                    Run in foreground. Ctrl + C to exit.
+``-e``, ``--events-client=URL``           Additional RPC URL where backend sends events.
 ``-g``, ``--grant``                       Create grants.
 ``-i``, ``--init``                        Creates configuration file and database.
-``--help-init``                           Shows the special options for ``--init``.
-``-d``, ``--nodaemon``                    Run in foreground. Ctrl + C to exit.
-``-r``, ``--directory=[directory]``       Running directory.
+``--log-rpc``                             Log every RPC call (very verbose).
+``--no-safety-checks``                    Do not check if other cmon is connected.
 ``-p``, ``--rpc-port=[integer]``          Listen on RPC port. Default is 9500.
-``-t``, ``--rpc-tls=<bool>``              Enable TLS on RPC port. Default is false.
-``-b``, ``--bind-addr='ip1,ip2..'``       Bind Remote Procedure Call (RPC) to IP addresses (default is 127.0.0.1,::1). By default cmon binds to '127.0.0.1' and '::1'. If another bind-address is needed, then it is possible to define the bind addresses in the file ``/etc/default/cmon``. See `Startup File`_.
+``-r``, ``--directory=[directory]``       Running directory.
 ``-u``, ``--upgrade-schema``              Try to upgrade the CMON schema (Supported from CMON version 1.2.12 and later).
-``-U``, ``--cmondb-user=USERNAME``        Sets the user name to access the CMON database.
-``-P``, ``--cmondb-password=PASSWORD``    Uses the password to access the CMON database.
-``-H``, ``--cmondb-host=HOSTNAME``        Access the CMON database on the given host.
-``-D``, ``--cmondb-name=DATABASE``        Sets the CMON database name.
-``-e``, ``--events-client=URL``           Additional RPC URL where backend sends events.
-``-c``, ``--cloud-service=URL``           A custom clustercontrol-cloud service URL.
 ========================================= ===========
 
 .. _Components - ClusterControl Controller - Startup File:
@@ -86,7 +89,7 @@ Shorthand, Option                         Description
 Startup File
 ++++++++++++
 
-To customize the cmon startup process, you can define the `Command Line Arguments`_ in a custom file, instead of hacking up the init script directly. The CMON init script (or systemd) will append all configuration options defined inside ``/etc/default/cmon`` when starting up the cmon and translates those options into command line arguments. For example:
+To customize the cmon startup process, you can define the `Command Line Arguments`_ in a custom file, instead of hacking up the init script directly. The CMON init script (or systemd) will append all configuration options defined inside ``/etc/default/cmon`` when starting up the cmon process and translates those options into command line arguments. For example:
 
 .. code-block:: bash
 
@@ -96,7 +99,7 @@ To customize the cmon startup process, you can define the `Command Line Argument
 	EVENTS_CLIENT=http://127.0.0.1:9510
 	CLOUD_SERVICE=http://127.0.0.1:9518
 
-In the example above, cmon will bind into those IP addresses and listen to port 9500 once started. If you filter out the ps output from the server, you should get the following:
+In the example above, cmon will bind into those IP addresses and listen to port 9500 once started. If you filter out the ``ps`` output from the server, you should get the following:
 
 .. code-block:: bash
 
@@ -107,7 +110,7 @@ In the example above, cmon will bind into those IP addresses and listen to port 
 Configuration File
 +++++++++++++++++++
 
-A single CMON Controller process is able to monitor one or more clusters. Each of the cluster requires one exclusive configuration file residing in the ``/etc/cmon.d/`` directory. For instance, the default CMON configuration file is located at ``/etc/cmon.cnf``, and commonly used to store the default (minimal) configuration for CMON process to run. 
+A single CMON Controller process is able to monitor one or more database clusters. Each of the cluster requires one exclusive configuration file residing in the ``/etc/cmon.d/`` directory. For instance, the default CMON configuration file is located at ``/etc/cmon.cnf``, and commonly used to store the default (minimal) configuration for CMON process to run. 
 
 Example of the CMON main configuration file located at ``/etc/cmon.cnf``:
 
@@ -122,28 +125,28 @@ Example of the CMON main configuration file located at ``/etc/cmon.cnf``:
 	rpc_key=390faeffb8166277a4f25336a69efa50915635a7
 
 
-For the first cluster (cluster_id=1), the configuration options should be stored inside ``/etc/cmon.d/cmon_1.cnf``. For the second cluster, it would be ``/etc/cmon.d/cmon_2.cnf`` with ``cluster_id=2`` respectively, and so on. The following shows example content of CMON cluster's configuration file located at ``/etc/cmon.d/cmon_1.cnf``:
+For the first cluster (cluster_id=1), the configuration options should be stored inside ``/etc/cmon.d/cmon_1.cnf``. For the second cluster, it would be ``/etc/cmon.d/cmon_2.cnf`` with ``cluster_id=2`` respectively, and so on. The following shows example content of CMON cluster's configuration file located at ``/etc/cmon.d/cmon_4.cnf``:
 
 .. code-block:: bash
 	
-	cluster_id=1
+	cluster_id=4
 	cmon_user=cmon
 	created_by_job=1
 	db_stats_collection_interval=30
 	enable_query_monitor=1
-	galera_vendor=codership
+	galera_vendor=percona
 	galera_version=3.x
 	group_owner=1
 	host_stats_collection_interval=60
 	hostname=10.0.0.196
-	logfile=/var/log/cmon_1.log
+	logfile=/var/log/cmon_4.log
 	mode=controller
 	monitored_mountpoints=/var/lib/mysql/
 	monitored_mysql_port=3306
-	monitored_mysql_root_password=7XU@Wy4nqL9
+	monitored_mysql_root_password='7XU@Wy4nqL9'
 	mysql_bindir=/usr/bin/
 	mysql_hostname=127.0.0.1
-	mysql_password=cm0nP4ss
+	mysql_password='cm0nP4ss'
 	mysql_port=3306
 	mysql_server_addresses=10.0.0.99:3306,10.0.0.253:3306,10.0.0.181:3306
 	mysql_version=5.6
@@ -153,13 +156,13 @@ For the first cluster (cluster_id=1), the configuration options should be stored
 	owner=1
 	pidfile=/var/run
 	basedir=/usr
-	repl_password=9hHRgQLSsZz3Vd4a
+	repl_password='9hHRgQLSsZz3Vd4a'
 	repl_user=rpl_user
 	rpc_key=3V0RaV6dE8KSyClE
-	ssh_identity=/root/mykey.pem
+	ssh_identity=/root/.ssh/id_rsa
 	ssh_port=22
 	type=galera
-	vendor=codership
+	vendor=percona
 
 An example of CMON configuration file hierarchy is as follows:
 
@@ -565,7 +568,7 @@ For agent-based monitoring mode, ClusterControl requires a :term:`Prometheus` se
 
 On every monitored host, ClusterControl will configure and daemonize exporter process using a program called :term:`daemon`. Thus, ClusterControl host is recommended to have an Internet connection to install necessary packages and automate the Prometheus deployment. For offline installation, the packages must be pre-downloaded into ``/var/cache/cmon/packages`` on ClusterControl node. For the list of required packages and links, please refer to ``/usr/share/cmon/templates/packages.conf``. Apart from Prometheus scrape process, ClusterControl also connects to the process exporter via HTTP calls directly to determine the process state of the node. No sampling via SSH is involved in this process.
 
-.. Note:: With agent-based monitoring, ClusterControl depends on a working Prometheus for accurate reporting on management and monitoring data. Therefore, Prometheus and exporter processes are managed by internal process manager thread. A non-working Prometheus will have a signficant impact on CMON process.
+.. Note:: With agent-based monitoring, ClusterControl depends on a working Prometheus for accurate reporting on management and monitoring data. Therefore, Prometheus and exporter processes are managed by internal process manager thread. A non-working Prometheus will have a significant impact on CMON process.
 
 The collector flags are configured based on the node's role, as shown in the following table (some exporters do not use collector flags):
 
@@ -649,7 +652,7 @@ The Advisors (imperative scripts), which can be created, compiled, tested and sc
 * 10 seconds of default time limit for database connection, configurable via ``net_read_timeout``, ``net_write_timeout``, ``connect_timeout`` in CMON configuration file,
 * 60 seconds of total script execution time limit before CMON ungracefully aborts it.
 
-For short-interval monitoring data like MySQL queries and status, data are stored directly into CMON database. While for long-interval monitoring data like weekly/monthly/yearly data points are aggregated every 60 seconds and stored in memory for 10 minutes. These behaviors are not configurable due to the architecture design.
+For short-interval monitoring data like MySQL queries and status, data are stored directly into CMON database. While for long-interval monitoring data like weekly/monthly/yearly data points are aggregated every 60 seconds and stored in memory for 10 minutes. These behaviours are not configurable due to the architecture design.
 
 
 .. _Components - ClusterControl Controller - CMON Database:
@@ -657,9 +660,7 @@ For short-interval monitoring data like MySQL queries and status, data are store
 CMON Database
 ++++++++++++++
 
-The CMON database is the persistent store for all monitoring data collected from the managed nodes, as well as all ClusterControl meta data (e.g. what jobs there are in the queue, backup schedules, backup statuses, etc.). ClusterControl CMONAPI contains logic to query the CMON DB, e.g. for cluster statistics that is presented in the ClusterControl UI.
-
-The CMON Controller requires a MySQL database running on ``mysql_hostname`` as defined in CMON configuration file. The database name and user is 'cmon' and is immutable. The CMON database dump files are shipped together with the CMON Controller package and can be found under ``/usr/share/cmon`` once it is installed. 
+The CMON database is the persistent store for all monitoring data collected from the managed nodes, as well as all ClusterControl meta data (e.g. what jobs there are in the queue, backup schedules, backup statuses, etc.). The CMON Controller requires a MySQL database running on ``mysql_hostname`` as defined in CMON configuration file. The database name and user is 'cmon' and is immutable. The CMON database dump files are shipped together with the CMON Controller package and can be found under ``/usr/share/cmon`` once it is installed. 
 
 MySQL user 'cmon' needs to have proper access to CMON database by performing following grant:
 
@@ -675,7 +676,7 @@ Grant all privileges for 'cmon' at 127.0.0.1 on ClusterControl host:
 
 	GRANT ALL PRIVILEGES ON *.* TO 'cmon'@'127.0.0.1' IDENTIFIED BY '{mysql_password}' WITH GRANT OPTION;
 
-For each managed database server, on the managed database server, grant all privileges to cmon at controller's ``hostname`` value (as defined in CMON configuration file) on each of the managed database host:
+On every managed database server, grant all privileges to cmon at controller's ``hostname`` value (as defined in CMON configuration file) on each of the managed database host:
 
 .. code-block:: mysql
 
@@ -683,41 +684,18 @@ For each managed database server, on the managed database server, grant all priv
 
 If one deploys a cluster using ClusterControl deployment wizard, the above GRANTs will be configured automatically.
 
-.. _Components - ClusterControl CMONAPI:
-
-ClusterControl REST API (CMONAPI)
----------------------------------
-
-The CMONAPI is a RESTful interface, and exposes all ClusterControl functionality as well as monitoring data stored in the `CMON database`_. Each CMONAPI connects to one CMON database instance. Several instances of the ClusterControl UI can connect to one CMONAPI as long as they utilize the correct CMONAPI token and URL. The CMON token is automatically generated during installation and is stored inside ``config/bootstrap.php``.
-
-You can generate the CMONAPI token manually by using following command:
-
-.. code-block:: bash
-
-	python -c 'import uuid; print uuid.uuid4()' | sha1sum | cut -f1 -d' '
-
-By default, the CMONAPI is running on Apache and located under ``/var/www/html/cmonapi`` (RedHat/CentOS/Ubuntu >14.04) or ``/var/www/cmonapi`` (Debian/Ubuntu <14.04). The value is relative to ``wwwroot`` value defined in CMON configuration file. The web server must support rule-based rewrite engine and able to follow symlinks.
-
-The CMONAPI page can be accessed through following URL:
-
-:samp:`https://{ClusterControl IP address or hostname}/cmonapi`
-
-Both ClusterControl CMONAPI and UI must be running on the same version to avoid misinterpretation of request and response data. For instance, ClusterControl UI version 1.4.1 needs to connect to the CMONAPI version 1.4.1.
-
-.. Attention:: We are gradually in the process of migrating all functionalities in REST API to RPC interface. Kindly expect the REST API to be obsolete in the near future.
-
 .. _Components - ClusterControl UI:
 
 ClusterControl UI
 -----------------
 
-ClusterControl UI provides a modern web user interface to visualize the cluster and perform tasks like backup scheduling, configuration changes, adding nodes, rolling upgrades, etc. It requires a MySQL database called 'dcps', to store cluster information, users, roles and settings. It interacts with CMON controller via remote procedure call (RPC) or REST API interface.
+ClusterControl UI provides a modern web user interface to visualize the cluster and perform tasks like backup scheduling, configuration changes, adding nodes, rolling upgrades, etc. It requires a MySQL database called 'dcps', to store cluster information, users, roles and settings. It interacts with CMON controller via remote procedure call (RPC) on port 9500 and 9501 for TLS (default).
 
 ClusterControl UI page can be accessed through following URL: 
 
 :samp:`https://{ClusterControl IP address or hostname}/clustercontrol`
 
-Similar to the CMONAPI, the ClusterControl UI is running on Apache and located under ``/var/www/html/clustercontrol`` (RedHat/CentOS/Ubuntu >14.04) or ``/var/www/clustercontrol`` (Debian <8/Ubuntu <14.04). The web server must support rule-based rewrite engine and must be able to follow symlinks. 
+The ClusterControl UI is running on Apache and located under ``/var/www/html/clustercontrol`` (RedHat/CentOS/Ubuntu >14.04) or ``/var/www/clustercontrol`` (Debian <8/Ubuntu <14.04). The web server must support rule-based rewrite engine and must be able to follow symlinks. 
 
 Please refer to :ref:`UserGuide` for the functionalities available in the ClusterControl UI.
 
@@ -888,6 +866,8 @@ Package Manager (yum/apt)
 
 The package list is available at `s9s-tools repository page <http://repo.severalnines.com/s9s-tools/>`_. 
 
+.. _Components - ClusterControl CLI - Installation - YUM:
+
 RHEL/CentOS
 '''''''''''
 
@@ -903,10 +883,11 @@ Installation steps are straight-forward:
 .. code-block:: bash
 	
 	# CentOS 7
-	$ cd /etc/yum.repos.d
-	$ wget http://repo.severalnines.com/s9s-tools/CentOS_7/s9s-tools.repo
+	$ wget http://repo.severalnines.com/s9s-tools/CentOS_7/s9s-tools.repo -P /etc/yum.repos.d
 	$ yum install s9s-tools
 	$ s9s --help
+
+.. _Components - ClusterControl CLI - Installation - APT:
 
 Debian/Ubuntu DEB Repositories
 '''''''''''''''''''''''''''''''
@@ -915,20 +896,21 @@ The repository file for each distribution can be downloaded directly from:
 
 * Debian 7 (Wheezy): http://repo.severalnines.com/s9s-tools/wheezy/
 * Debian 8 (Jessie): http://repo.severalnines.com/s9s-tools/jessie/
-* Ubuntu 12.04 (Precise): http://repo.severalnines.com/s9s-tools/precise/
+* Debian 9 (Stretch): http://repo.severalnines.com/s9s-tools/stretch/
 * Ubuntu 14.04 (Trusty): http://repo.severalnines.com/s9s-tools/trusty/
 * Ubuntu 16.04 (Xenial): http://repo.severalnines.com/s9s-tools/xenial/
 * Ubuntu 16.10 (Yakkety): http://repo.severalnines.com/s9s-tools/yakkety/
 * Ubuntu 17.04 (Zesty): http://repo.severalnines.com/s9s-tools/zesty/
+* Ubuntu 18.04 (Bionic): http://repo.severalnines.com/s9s-tools/bionic/
+* Ubuntu 18.10 (Cosmic): http://repo.severalnines.com/s9s-tools/cosmic/
+* Ubuntu 19.04 (Disco): http://repo.severalnines.com/s9s-tools/disco/
 
 To install, one would do:
 
 .. code-block:: bash
 
-	# Available distros: wheezy, jessie, precise, trusty, xenial, yakkety, zesty
-	$ DISTRO=jessie
-	$ wget -qO - http://repo.severalnines.com/s9s-tools/${DISTRO}/Release.key | sudo apt-key add -
-	$ echo "deb http://repo.severalnines.com/s9s-tools/${DISTRO}/ ./" | sudo tee /etc/apt/sources.list.d/s9s-tools.list
+	$ wget -qO - http://repo.severalnines.com/s9s-tools/$(lsb_release -sc)/Release.key | sudo apt-key add -
+	$ echo "deb http://repo.severalnines.com/s9s-tools/$(lsb_release -sc)/ ./" | sudo tee /etc/apt/sources.list.d/s9s-tools.list
 	$ sudo apt-get update
 	$ sudo apt-get install s9s-tools
 	$ s9s --help
@@ -2656,9 +2638,3 @@ Reporting Issues
 ++++++++++++++++++
 
 If you encounter issues, have questions, or have any features you would like to see included, please create an issue on https://github.com/severalnines/s9s-tools/issues .
-
-.. rubric:: Footnotes
-
-.. [#f1]
-
-    We are gradually in the process of migrating all functionalities in REST API to RPC interface. Kindly expect the REST API to be obsolete in the near future.

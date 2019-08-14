@@ -26,7 +26,8 @@ Following is the expected system environment for the ClusterControl host:
 		* Docker
 * Tested cloud platform:
 	* AWS EC2
-	* RackSpace Cloud
+	* Google Cloud
+	* Microsoft Azure
 	* Digital Ocean
 * Internet connection (for selected cluster deployment)
 

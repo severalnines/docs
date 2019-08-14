@@ -3,7 +3,7 @@
 Introduction
 ============
 
-This documentation covers ClusterControl version 1.7.2 which was released on April 4\ :sup:`th`\ , 2019. This release contains key new features along with performance improvements and bug fixes. Release change log is available at :ref:`Changelog`.
+This documentation covers ClusterControl version 1.7.3 which was released on July 2\ :sup:`nd`\ , 2019. This release contains key new features along with performance improvements and bug fixes. Release change log is available at :ref:`Changelog`.
 
 What is ClusterControl? 
 -----------------------
@@ -18,8 +18,6 @@ ClusterControl consists of a number of components:
 | ClusterControl Controller (cmon)   | clustercontrol-controller    | The brain of ClusterControl. A backend service performing automation, management,  |
 |                                    |                              | monitoring and scheduling tasks. All the collected data will be stored directly    |
 |                                    |                              | inside CMON database.                                                              |
-+------------------------------------+------------------------------+------------------------------------------------------------------------------------+
-| ClusterControl REST API [#f1]_     | clustercontrol-cmonapi       | Interprets request and response data between ClusterControl UI and CMON database.  |
 +------------------------------------+------------------------------+------------------------------------------------------------------------------------+
 | ClusterControl UI                  | clustercontrol               | A modern web user interface to visualize and manage the cluster. It interacts with | 
 |                                    |                              | CMON controller via remote procedure call (RPC) or REST API interface.             |
@@ -89,13 +87,15 @@ ClusterControl connects to all managed nodes as ``os_user`` using SSH key define
 
 What user really needs to do is to access ClusterControl UI located at :samp:`http://{ClusterControl_host}/clustercontrol` and start managing your database infrastructure from there. You can begin by importing an existing database cluster, or create a new database server or cluster, on-premises or in the cloud. ClusterControl supports monitoring multiple clusters and cluster types under a single ClusterControl server as shown in the following figure:
 
-.. image:: img/cc_deploy_multiple.png
+.. image:: img/cc_deploy_multiple2.png
    :alt: Example multiple cluster deployment
    :align: center
 
-ClusterControl exposes all functionality through remote procedure calls (RPC) on port 9500 (authenticated by a RPC token), port 9501 (RPC with TLS) and REST API accessible at :samp:`http://{ClusterControl_host}/cmonapi` (authenticated by an API token). The ClusterControl UI interacts with those interfaces to retrieve monitoring data (cluster load, host status, alarms, backup status etc.) or to send management commands (add/remove nodes, run backups, upgrade a cluster, etc.). The following diagram illustrates the architecture of ClusterControl:
+ClusterControl controller exposes all functionality through remote procedure calls (RPC) on port 9500 (authenticated by a RPC token), port 9501 (RPC with TLS) and integrates with a number of modules like notifications (9510), cloud (9518) and web SSH (9511). The client components, ClusterControl UI or ClusterControl CLI interact with those interfaces to retrieve monitoring data (cluster load, host status, alarms, backup status etc.) or to send management commands (add/remove nodes, run backups, upgrade a cluster, etc.). 
 
-.. image:: img/cc_arch.png
+The following diagram illustrates the architecture of ClusterControl:
+
+.. image:: img/cc_arch2.png
    :alt: ClusterControl architecture
    :align: center
 
@@ -116,11 +116,11 @@ ClusterControl is able to handle most of the administration tasks required to ma
 * Database backup status
 * Restore backups
 * Verify backup restoration on a standalone host
-* MySQL point-in-time recovery
+* MySQL/PostgreSQL/TimeScaleDB point-in-time recovery
 * Upload backups to AWS S3/Google Cloud Storage/Azure Storage
 * Stop/Start/Bootstrap database service
 * Rebuild a database node from a backup to avoid SST
-* Deploy a new database server/cluster on-premises or on cloud
+* Deploy a new database server/cluster on-premises or on cloud (AWS, Google Cloud, MS Azure)
 * Add existing MySQL/MariaDB server/cluster, MongoDB replica set and PostgreSQL server
 * Scale your database cluster (add/remove Galera node, garbd and replication slave)
 * Deploy database load balancers (HAProxy, MaxScale, ProxySQL) and virtual IP address (Keepalived)
@@ -136,9 +136,3 @@ ClusterControl is able to handle most of the administration tasks required to ma
 * and many more..
 
 For more details, please refer to `ClusterControl product page <http://severalnines.com/product/clustercontrol>`_. You might also want to look at the :ref:`ClusterControl changelog <Changelog>` for the latest development update.
-
-.. rubric:: Footnotes
-
-.. [#f1]
-
-    We are gradually in the process of migrating all functionalities in REST API to RPC interface. Kindly expect the REST API to obsolete in the near future.

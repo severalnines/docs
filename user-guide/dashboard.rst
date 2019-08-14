@@ -137,10 +137,6 @@ Cluster Registrations
 
 Registers a database cluster managed by ClusterControl Controller (CMON) to be viewed by ClusterControl UI. Each database cluster can be registered with the UI through this interface or you may skip doing this and use ClusterControl CLI instead. By default, all clusters deployed by and imported into ClusterControl through the web interface will be automatically registered with the UI. This effectively establishes the communication between the UI and the controller.
 
-.. Note:: The CMONAPI token is critical and hidden under asterisk values. This token provides authentication access for ClusterControl UI to communicate with the CMON backend services directly. Please keep this token in a safe place.
-
-You can retrieve the CMONAPI token manually at ``{wwwroot}/cmonapi/config/bootstrap.php`` on line containing ``CMON_TOKEN`` value, where ``{wwwroot}`` is location of Apache document root.
-
 .. _UserGuide - Global Settings - Subscriptions:
 
 Subscriptions

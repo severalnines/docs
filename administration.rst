@@ -1,4 +1,5 @@
 .. _Administration:
+.. include:: <isotech.txt>
 
 Administration
 ===============
@@ -29,9 +30,15 @@ RedHat/CentOS
 .. code-block:: bash
 
 	$ yum clean all
-	$ yum install clustercontrol clustercontrol-cmonapi clustercontrol-controller clustercontrol-ssh clustercontrol-notifications clustercontrol-cloud clustercontrol-clud s9s-tools
+	$ yum install clustercontrol clustercontrol-controller clustercontrol-ssh clustercontrol-notifications clustercontrol-cloud clustercontrol-clud s9s-tools
 
-3) Restart the ClusterControl services:
+3) Optionally, it's recommended to remove the deprecated CMONAPI component:
+
+.. code-block:: bash
+
+	$ yum remove clustercontrol-cmonapi
+
+4) Restart the ClusterControl services:
 
 For sysvinit and upstart:
 
@@ -61,9 +68,15 @@ Debian/Ubuntu
 .. code-block:: bash
 
 	$ sudo apt-get update
-	$ sudo apt-get install clustercontrol clustercontrol-cmonapi clustercontrol-controller clustercontrol-ssh clustercontrol-notifications clustercontrol-cloud clustercontrol-clud s9s-tools
+	$ sudo apt-get install clustercontrol clustercontrol-controller clustercontrol-ssh clustercontrol-notifications clustercontrol-cloud clustercontrol-clud s9s-tools
 
-3) Restart the ClusterControl services:
+3) Optionally, it's recommended to remove the deprecated CMONAPI component:
+
+.. code-block:: bash
+
+	$ sudo apt-get remove clustercontrol-cmonapi
+
+4) Restart the ClusterControl services:
 
 For sysvinit and upstart:
 
@@ -96,7 +109,6 @@ RedHat/CentOS
 1) Download the latest version of ClusterControl related RPM packages from `Severalnines download site <https://severalnines.com/downloads/cmon/>`_ and `Severalnines Repository <http://repo.severalnines.com>`_. There are a number of packages you need to download as explained below:
 
 - *clustercontrol* - ClusterControl UI - |ClusterControl_UI_rpm|
-- *clustercontrol-cmonapi* - ClusterControl CMONAPI - |ClusterControl_CMONAPI_rpm|
 - *clustercontrol-controller* - ClusterControl Controller (CMON) - |ClusterControl_Controller_rpm|
 - *clustercontrol-notifications* - ClusterControl event module - |ClusterControl_Notifications_rpm|
 - *clustercontrol-ssh* - ClusterControl web-ssh module - |ClusterControl_SSH_rpm|
@@ -108,7 +120,7 @@ RedHat/CentOS
 
 .. code-block:: bash
 
-	$ yum localinstall clustercontrol-*
+	$ yum localinstall clustercontro*
 	$ yum localinstall s9s-tools*
 
 3) Restart the ClusterControl services:
@@ -137,7 +149,6 @@ Debian/Ubuntu
 1) Download the latest version of ClusterControl related DEB packages from `Severalnines download site <https://severalnines.com/downloads/cmon/>`_ and `Severalnines Repository <http://repo.severalnines.com>`_. There are a number of packages you need to download as explained below:
 
 - *clustercontrol* - ClusterControl UI - |ClusterControl_UI_deb|
-- *clustercontrol-cmonapi* - ClusterControl CMONAPI - |ClusterControl_CMONAPI_deb|
 - *clustercontrol-controller* - ClusterControl Controller (CMON) - |ClusterControl_Controller_deb|
 - *clustercontrol-notifications* - ClusterControl event module - |ClusterControl_Notifications_deb|
 - *clustercontrol-ssh* - ClusterControl web-ssh module - |ClusterControl_SSH_deb|
@@ -146,7 +157,7 @@ Debian/Ubuntu
 - *s9s-tools* - ClusterControl CLI (s9s) - |s9s_tools_deb| (for Xenial)
 - *s9s-tools-lib* - ClusterControl CLI (s9s) library - |s9s_tools_lib_deb| (for Xenial)
 
-2) Upload the packages to the server and install them using dpkg coxmmand:
+2) Upload the packages to the server and install them using dpkg command:
 
 .. code-block:: bash
 
@@ -176,50 +187,28 @@ Upgrade is now complete. Verify the new version at *ClusterControl UI > Settings
 
 .. _Administration - Backup Up ClusterControl:
 
-Backing Up ClusterControl
--------------------------
+Backing Up and Restoring ClusterControl
+---------------------------------------
 
 To backup ClusterControl manually, you can use your own method to copy or export following files:
 
 ClusterControl CMON Controller
 ++++++++++++++++++++++++++++++
 
-* CMON binary: ``/usr/sbin/cmon``
-* CMON SSH binary: ``/usr/sbin/cmon-ssh``
-* CMON Events binary: ``/usr/sbin/cmon-events``
-* CMON Cloud binary: ``/usr/sbin/cmon-cloud`` and ``/usr/sbin/clud``
-* CMON main configuration file: ``/etc/cmon.cnf``
-* CMON configuration directory and all its content: ``/etc/cmon.d/*``
-* CMON cron file: ``/etc/cron.d/cmon``
-* CMON init.d file: ``/etc/init.d/cmon``
-* CMON logfile: ``/var/log/cmon.log`` or ``/var/log/cmon*``
-* CMON helper scripts: ``/usr/bin/s9s_*``
-* CMON database dump file:
+Starting from ClusterControl 1.7.1, you can backup the ClusterControl server and restore it (together with metadata about your managed databases) onto another server using :ref:`Components - ClusterControl CLI`. It backs up the ClusterControl application as well as all of its configuration data.
 
-.. code-block:: bash
+There are basically 4 options introduced under ``s9s backup`` command:
 
-	mysqldump -ucmon -p{mysql_password} -h{mysql_hostname} -P{mysql_port} cmon > cmon_dump.sql
+====================================== ===========
+Flag	                                 Description
+====================================== ===========
+|minus|\ |minus|\ save-controller	     Saves the state of the controller into a tarball.
+|minus|\ |minus|\ restore-controller	 Restores the entire controller from a previously created tarball (created by using the ``--save-controller``)
+|minus|\ |minus|\ save-cluster-info	   Saves the information the controller has about one cluster.
+|minus|\ |minus|\ restore-cluster-info Restores the information the controller has about a cluster from a previously created archive file.
+====================================== ===========
 
-ClusterControl UI
-+++++++++++++++++
-
-* ClusterControl upload directory: ``{wwwroot}/cmon*``
-* ClusterControl CMONAPI: ``{wwwroot}/cmonapi*``
-* ClusterControl UI: ``{wwwroot}/clustercontrol*``
-* ClusterControl UI database dump file:
-
-.. code-block:: bash
-
-	mysqldump -ucmon -p{mysql_password} -h{mysql_hostname} -P{mysql_port} dcps > dcps_dump.sql
-
-Where, ``{wwwroot}`` is equal to the Apache document root and ``{mysql_password}``, ``{mysql_hostname}``, ``{mysql_port}`` are values defined in CMON configuration file.
-
-.. _Administration - Restoring ClusterControl:
-
-Restoring ClusterControl
-------------------------
-
-Manual restoration can be performed by reverting the backup action and copying everything back to its original location. Restoration may require you to re-grant the 'cmon' user since the backup will not import the grant table of it. Please review the :ref:`Components - ClusterControl Controller - CMON Database` on how to grant the 'cmon' user cmon.
+For examples and instructions check out this blog post, `How to Backup and Restore ClusterControl <https://severalnines.com/blog/how-backup-and-restore-clustercontrol>`_.
 
 .. _Administration - Resetting ClusterControl Admin Login:
 
@@ -271,6 +260,7 @@ ClusterControl requires ports used by the following services to be opened/enable
 * CMON RPC-TLS (default is 9501)
 * CMON Events (default is 9510)
 * CMON SSH (default is 9511)
+* CMON Cloud (default is 9518)
 * Streaming port for database backup through netcat (default is 9999)
 
 .. _Administration - Securing ClusterControl - SSH:
@@ -298,44 +288,6 @@ HTTPS
 
 By default, the installation script installs and configures a self-signed certificate for ClusterControl UI. You can access it by pointing your browser to :samp:`https://{ClusterControl_host}/clustercontrol`. If you would like to use your own SSL certificate (e.g :samp:`https://secure.domain.com/clustercontrol`), just replace the key and certificate path inside Apache’s SSL configuration file and restart Apache daemon. Make sure the server's hostname matches with the SSL domain name that you would like to use.
 
-.. _Administration - Running on Custom Port:
-
-Running on Custom Port
-----------------------
-
-ClusterControl is configurable to support non-default port for selected services:
-
-SSH
-++++
-
-ClusterControl requires same custom SSH port across all nodes in the cluster. Make sure the custom port number is defined correctly in ``ssh_port`` option at CMON configuration file, for example:
-
-.. code-block:: bash
-
-	ssh_port=55055
-
-HTTP or HTTPS
-+++++++++++++
-
-Running HTTP or HTTPS on custom port will change the ClusterControl UI and the CMONAPI URL e.g :samp:`http://{ClusterControl_host}:8080/clustercontrol` and :samp:`https://{ClusterControl_host}:4433/cmonapi`. Thus, you may need to re-register the new CMONAPI URL for managed cluster at ClusterControl UI :ref:`UserGuide - Global Settings - Cluster Registrations` page.
-
-MySQL
-++++++
-
-If you are running MySQL for CMON database on different ports, several areas need to be updated:
-
-+-----------------------------------------+--------------------------------------------------+-----------------------------------------+
-| Area                                    | File                                             | Example                                 |
-+=========================================+==================================================+=========================================+
-| CMON configuration files                | ``/etc/cmon.cnf`` and ``/etc/cmon.d/cmon_N.cnf`` | ``mysql_port={custom_port}``            |
-+-----------------------------------------+--------------------------------------------------+-----------------------------------------+
-| ClusterControl CMONAPI database setting | ``{wwwroot}/cmonapi/config/database.php``        | ``define('DB_PORT', '{custom_port}');`` |
-+-----------------------------------------+--------------------------------------------------+-----------------------------------------+
-| ClusterControl UI database setting      | ``{wwwroot}/clustercontrol/bootstrap.php``       | ``define('DB_PORT', '{custom_port}');`` |
-+-----------------------------------------+--------------------------------------------------+-----------------------------------------+
-
-.. Note:: Where ``{wwwroot}`` is the Apache document root and ``{custom_port}`` is the MySQL custom port.
-
 .. _Administration - Housekeeping:
 
 Housekeeping
@@ -360,7 +312,7 @@ If you intend to manually purge the monitoring data, you can truncate following 
 
 The CMON process has internal log rotation scheduling where it will log up to 5 MB in size before archiving ``/var/log/cmon.log`` and ``/var/log/cmon_{cluster ID}.log``. The archived log will be named as ``cmon.log.1`` (or ``cmon_{cluster ID}.log.1``) sequentially, with up to 9 archived log files (total of 10 log files rotation).
 
-If you have configured very short interval recurring jobs like backup job running every hour, it would produce lots of job activities. We would suggest you to lower the controller job history retention period, to like 1 or 2 days. It can be done using the ``save_history_days=1`` configuration option, set it into ``/etc/cmon.d/cmon_{clustre ID}.cnf``, and restart CMON to apply the changes. The controller only keep the last two days job history. The default value is 7. For more details see :ref:`Components - ClusterControl Controller - Configuration Options` or ``cmon --help-config`` output.
+If you have configured a very short interval recurring jobs like backup job running every hour, it would produce lots of job activities. We would suggest you to lower the controller job history retention period, to like 1 or 2 days. It can be done using the ``save_history_days=1`` configuration option, set it into ``/etc/cmon.d/cmon_{clustre ID}.cnf``, and restart CMON to apply the changes. The controller only keep the last two days job history. The default value is 7. For more details see :ref:`Components - ClusterControl Controller - Configuration Options` or ``cmon --help-config`` output.
 
 .. _Administration - Health Checks:
 
@@ -376,7 +328,6 @@ Components                     Health Checks
 ============================== =================
 CMON (controller)              ``systemctl status cmon`` or ``service cmon status``
 ClusterControl UI              ``curl -sSf http://localhost/clustercontrol/ > /dev/null``
-ClusterControl CMONAPI         ``curl -sSf http://localhost/cmonapi/ > /dev/null``
 ClusterControl Web-SSH         ``systemctl status cmon-ssh`` or ``service cmon-ssh status``
 ClusterControl Cloud           ``systemctl status cmon-cloud`` or ``service cmon-cloud status``
 ClusterControl Notifications   ``systemctl status cmon-events`` or ``service cmon-events status``
@@ -394,7 +345,6 @@ Migrating IP Address or Hostname
 ClusterControl relies on proper IP address or hostname configuration. To migrate to a new set of IP address or hostname, please update the old IP address/hostname occurrences in the following files:
 
 * CMON configuration file: ``/etc/cmon.cnf`` and ``/etc/cmon.d/cmon_N.cnf`` (``hostname`` and ``mysql_hostname`` values)
-* ClusterControl CMONAPI configuration file: ``{wwwroot}/cmonapi/config/bootstrap.php``
 * HAProxy configuration file (if installed): ``/etc/haproxy/haproxy.cfg``
 
 .. Note:: This section does not cover IP address migration of your database nodes. The easiest solution would be to remove the database cluster from ClusterControl UI using *Delete Cluster* and import it again by using *Import Existing Server/Cluster* in the deployment dialog.
@@ -538,7 +488,6 @@ When updating the password, run the following statements on the correct node dep
 * CMON main configuration file: ``/etc/cmon.cnf`` under ``mysql_password`` variable.
 * Cluster configuration file: ``/etc/cmon.d/cmon_*.cnf`` under ``mysql_password`` variable.
 * ClusterControl UI configuration file: ``/var/www/html/clustercontrol/bootstrap.php`` under ``DB_PASS`` constant.
-* ClusterControl CMONAPI configuration file: ``/var/www/html/cmonapi/config/database.php`` under ``DB_PASS`` constant.
 
 The following output show the post-edited value when filtering out the password variables:
 
@@ -551,8 +500,6 @@ The following output show the post-edited value when filtering out the password 
 	$ cat /etc/cmon.d/cmon_2.cnf | grep ^mysql_password # MySQL Replication
 	mysql_password='&5?2+SW9bGq'
 	$ cat /var/www/html/clustercontrol/bootstrap.php | grep DB_PASS
-	define('DB_PASS', '&5?2+SW9bGq');
-	$ cat /var/www/html/cmonapi/config/database.php | grep DB_PASS
 	define('DB_PASS', '&5?2+SW9bGq');
 
 .. Note:: If you don't like repetition, you can use Linux replace tool like ``sed`` to do the job in one shot.
@@ -775,26 +722,6 @@ On Debian/Ubuntu:
 
 	$ sudo apt-get remove -y clustercontrol*
 
-Else, to uninstall ClusterControl Controller manually so you can re-use the host for other purpose, kill the CMON process and remove all ClusterControl related files and databases:
-
-.. code-block:: bash
-
-	$ killall -9 cmon
-	$ rm -rf /usr/sbin/cmon*
-	$ rm -rf /usr/bin/cmon*
-	$ rm -rf /usr/bin/s9s_*
-	$ rm -rf /usr/share/cmon*
-	$ rm -rf /etc/init.d/cmon
-	$ rm -rf /etc/cron.d/cmon
-	$ rm -rf /var/log/cmon*
-	$ rm -rf /var/lib/cmon*
-	$ rm -rf /etc/cmon*
-	$ rm -rf {wwwroot}/cmon*
-	$ rm -rf {wwwroot}/clustercontrol*
-	$ rm -rf {wwwroot}/cc-*
-
-.. Note:: Replace ``{wwwroot}`` with value defined in CMON configuration file.
-
 For CMON and ClusterControl UI databases and privileges:
 
 .. code-block:: mysql
@@ -803,4 +730,3 @@ For CMON and ClusterControl UI databases and privileges:
 	mysql> DROP SCHEMA dcps;
 	mysql> DELETE FROM mysql.user WHERE user = 'cmon';
 	mysql> FLUSH PRIVILEGES;
-

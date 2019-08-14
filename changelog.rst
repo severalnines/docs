@@ -8,6 +8,81 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.7.3
 -----------------
 
+
+Maintenance Release: July 29\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.3-6279
+	- clustercontrol-controller-1.7.3-3336
+
+* Controller:
+	- Added support for openntpd as an alternative to the ntp dependency.
+	- MySQL 8.0: Fixed an issue where the keyword 'groups' was used in a query.
+	- Improved error reporting in case of SSH errors when trying to determine the MySQL connect string.
+	- PostgreSQL: Create a symlink to custom log file during add existing cluster as well, not only during add exisitng node.
+	- PostgreSQL: When adding an existing cluster, a custom specified log file will be be used  if ``logging_collector`` is off.
+	- PostgreSQL: Fixed an issue detecting log files.
+	- MySQL: A password could be visible in the ``ps`` output of a node when the cmon database was updated at controller startup.
+	- Create/register cluster: Handle 'company_id' if provided, otherwise we try to query it up by ``user_id`` as a fallback.
+
+* Frontend (UI):
+	- Fixed an issue where a cluster could not be registered due to a missing company id/team id.
+
+Maintenance Release: July 24\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.3-6270
+
+* Frontend (UI):
+	- Fix an issue saving and pushing out edited configuration files (Configuration Management).
+	- Fix an issue with the *Overview* page not being properly shown after switching between tabs (PostgreSQL).
+
+Maintenance Release: July 18\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.3-6255
+	- clustercontrol-controller-1.7.3-3319
+
+* Controller:
+	- PostgreSQL: Fixes in log file handling to check if the log collector is enabled already. This could result in e.g the wrong log file was used.
+	- PostgreSQL: A fix in multi-node support when adding nodes that could lead to nodes not being part of the replication topology.
+	- PostgreSQL: Fixed an issue when the logfile was not owned by the postgres user.
+	- PostgreSQL: Updated the repository signature.
+	- TimeScaleDB: Fixed an issue adding a replication slave due to a version mismatch.
+	- TimeScaleDB: Fixed an issue when rebooting TimeScaleDB and PostgreSQL master results in two master nodes.
+	- MariaDB/Replication: Fixed an issue with *Promote Slave* (switch-over).
+	- MariaDB/Galera: Fixed a check for the ``wsrep_sst_method`` to check whether xtrabackup vs. mariabackup is used.
+	- MySQL/MariaDB: Importing a cluster could fail as it assumed ``bind_address`` existed as a server system variable.
+
+* Frontend (UI):
+	- Add a workaround to sort the cluster list by name, status, type with a new ``bootstrap.php`` variable (instead of using ``cluster_id`` by the default)
+	``define('CLUSTER_LIST_SORT_BY', 'name');   # sort by cluster name``
+	- Add additional information on how to use the 'Stanza Name' with PgBackRest backups
+	- Add missing confirmation dialog for MongoDB restore backup
+
+Maintenance Release: July 16\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.3-6242
+
+* Frontend (UI):
+	- Fix a HTML formatting issue when trying to change non-dynamic parameters in Configuration Management (MySQL).
+	- Fix an issue with the *Nodes->DB Performance* chart which requested unfiltered datasets.  
+
+Maintenance Release: July 12\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.3-6226
+
+* Frontend (UI):
+	- Fix missing mysqldump backups (PITR) for 'Add Replication Slave' when rebuilding with a backup.
+	- Fix incompatible array notation with PHP v5.3.
+
 Initial Release: July 2\ :sup:`nd`\ , 2019
 +++++++++++++++++++++++++++++++++++++++++++++++++
 
