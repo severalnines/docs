@@ -58,8 +58,8 @@ Maintenance Release: July 18\ :sup:`th`\ , 2019
 	- MySQL/MariaDB: Importing a cluster could fail as it assumed ``bind_address`` existed as a server system variable.
 
 * Frontend (UI):
-	- Add a workaround to sort the cluster list by name, status, type with a new ``bootstrap.php`` variable (instead of using ``cluster_id`` by the default)
-	``define('CLUSTER_LIST_SORT_BY', 'name');   # sort by cluster name``
+	- Add a workaround to sort the cluster list by name, status, type with a new ``bootstrap.php`` variable (instead of using ``cluster_id`` by the default):
+		- ``define('CLUSTER_LIST_SORT_BY', 'name');   # sort by cluster name``
 	- Add additional information on how to use the 'Stanza Name' with PgBackRest backups
 	- Add missing confirmation dialog for MongoDB restore backup
 
