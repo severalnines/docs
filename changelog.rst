@@ -8,6 +8,50 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.7.3
 -----------------
 
+Maintenance Release: August 24\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.3-6322
+	- clustercontrol-controller-1.7.3-3388
+
+* Frontend (UI):
+	- PostgreSQL: Add Slave: help text next to "logfile" text box.
+
+* Controller:
+	- Import/Add Cluster: Specified sudo password was not respected.
+	- MongoDB: Importing a cluster failed even if the CAFile is specified following an error where it was not specified, because existing cert data was not updated in cmon's certificate storage.
+	- Controller: Must keep trying to connect to the MySQL server even if the MySQL server is not started, instead giving up and exit.
+	- PostgreSQL: Whitelist is not working as documented.
+	- SCUMM/Prometheus: General small improvements with disk device detection and mapping.
+
+Maintenance Release: August 17\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.3-3374
+
+* Controller:
+	- PostgreSQL: a crashing bug was fixed that was caused by assuming that ``cluster_name`` always have a value.
+	- PostgreSQL/pgbackrest: Fixed an issue when the backup.manifest is encrypted the backup appeared as failed. Please note that the backup.manifest record is not decrypted so some meta data information may not be updated (pending feature request).
+	- Controller backup/save controller: Fixed an issue saving the controller with a non-quoted password causing mysqldump to fail.
+	- ProxySQL: Fixed an issue where an error message was repeated due to trying to connect from a remote node using the 'admin' user, which is forbidden in ProxySQL.
+	- Error Reporting: Fixed a user handling issue, causing the error report to fail.
+	- MySQL: Database Growth, adding more verbose logging in case of issue.
+
+Maintenance Release: August 15\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.3-6298
+	- clustercontrol-controller-1.7.3-3370
+
+* Controller
+	- *Performance -> Transaction Log*: Fixed an issue with pagination.
+
+* Frontend
+	- *Performance -> Transaction Log*: Fixed an issue with pagination.
+	- Fixed an issue with JS code generation for older browsers by upgrading corejs.
 
 Maintenance Release: July 29\ :sup:`th`\ , 2019
 +++++++++++++++++++++++++++++++++++++++++++++++++++++
