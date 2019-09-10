@@ -8,6 +8,26 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.7.3
 -----------------
 
+Maintenance Release: September 8\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.3-6340
+	- clustercontrol-controller-1.7.3-3407
+
+* Frontend (UI):
+	- Backup: Fixed an issue with scheduling a backup. If using cron settings, then due to TZs and conversions to UTC then a specified hour could be converted to an hour belonging to another day.
+	- LDAP: Wrong LDAP status was shown in the UI
+	- Email Notifications: Adding a recipient without having any clusters installed failed
+
+* Controller:
+	- ProxySQL: Inserting a query rule with a duplicate query rule id caused the query rule ids smaller than the duplicate to become negative.
+	- Prometheus version bump to v2.12
+	- PostgreSQL: On RedHat systems the default datadir was set to ``main`` instead of ``data``.
+	- MongoDB: Retention fails because all mongo backups were recognised as partial, and partial can only be removed if there are more than one "full" backups.
+	- A fix for an infinite amount of 'Job query is working again.' log messages in the cmon log.
+	- Removing storage of log messages in a deprecated table called ``collected_logs``.
+
 Maintenance Release: August 24\ :sup:`th`\ , 2019
 +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
