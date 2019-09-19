@@ -20,23 +20,24 @@ To remove a host, just select the host and click on the *Remove* button.
 .. _TimeScaleDB - Manage - Configurations:
 
 Configurations
-++++++++++++++
++++++++++++++++
 
-Manage the configuration files of your database nodes. From here you can edit and/or detect whether your database configuration files are in sync and do not diverge. Any changes will not take effect until the database server/process is restarted.
+Manages the configuration files of your database and HAProxy nodes. For TimeScaleDB database, within the ``postgresql.conf`` file, some parameters contain comments that indicate ``# (change requires restart)``. Note that ClusterControl will neither perform the reload nor restart operation after modifying the configuration file. One has to schedule server reload/restart operation to load the changes into the server runtime.
 
-* **Edit/View**
-	- Edit and view your database configuration files. Any changes will not take effect until the database server/processes is restarted.
+.. Note:: ClusterControl does not store configuration changes history so there is no versioning at the moment. Only one version exists at one time. It imports the latest configuration files every 30 minutes and overwrites it in CMON database. This limitation will be improved in the upcoming release where ClusterControl shall support configuration versioning with dynamic import interval.
 
-* **Restart**
-	- This button will only appear under *Action* when ClusterControl detects configuration changes. Click to restart the database service for selected node.
+* **Save**
+	- Save the changes that you have made and push them to the corresponding node.
 
-* **Reimport Configuration**
+* **Import**
 	- Re-import configuration if you have:
-		- Performed local configuration changes directly on the configuration files
-		- Restarted the TimeScaleDB servers/performed a rolling restart after a configuration change
+		- Performed local configuration changes directly on the configuration files.
+		- Restarted the PostgreSQL servers/performed a rolling restart after a configuration change.
+	- ClusterControl will trigger a job to fetch the latest modification from each PostgreSQL and/or HAProxy node.
 
-* **Create New Template**
-	- Create a new TimeScaleDB configuration template file. This template can be used when adding a new node.
+* **Change/Set Parameter**
+	- ClusterControl will attempt to modify the configuration value if the parameter is valid in the respective PostgreSQL configuration file.
+
 
 .. _TimeScaleDB - Manage - Configurations - Base Template Files:
 	

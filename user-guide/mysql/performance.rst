@@ -561,12 +561,9 @@ Analyzes your database schemas for missing primary keys, redundant indexes and t
 Transaction Log
 +++++++++++++++
 
-Lists out long-running transactions and deadlocks across database cluster where you can easily view what transactions are causing the deadlocks. The timeout is 10 seconds by default. This is configurable in CMON configuration file under ``db_long_query_time_alarm`` configuration option.
+Lists out long-running transactions and deadlocks across database cluster where you can easily view what transactions are causing the deadlocks. The default query time threshold is 30 seconds. This is configurable in CMON configuration file under ``db_long_query_time_alarm`` configuration option.
 
 Click on the listed query to see the output of InnoDB status for detailed debugging.
-
-* **Enable Transaction Log**
-	- Tick the checkbox to enable deadlock/long-running transaction logging.
 
 * **Interval**
 	- The long-running interval before ClusterControl captures the transaction.

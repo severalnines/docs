@@ -38,7 +38,13 @@ Creates a backup of the database immediately. You can choose to create a full ba
 	========= ===================
 
 * **Upload Backup to the cloud**
-	- Upload the backup to the cloud storage. The upload process happens right after the backup is successfully created. This feature requires you to set up the cloud credentials first. See `Cloud Providers <../index.html#cloud-providers>`_.
+	- Upload the backup to the cloud storage. The upload process happens right after the backup is successfully created. This feature requires you to set up the cloud credentials first. See :ref:`Sidebar - Integrations - Cloud Providers`.
+	
+* **Enable Encryption**
+	- Encrypts the generated backup. Backup is encrypted at rest using AES-256 CBC algorithm, where the encryption key will be created automatically and stored inside CMON configuration file for this cluster. See `Backup Encryption and Decryption`_.
+
+* **Retention**
+	- How long ClusterControl should keep this backup once successfully created. You can set a custom period in days or keep it forever. Otherwise, ClusterControl will use the default retention period. Take note that modifying retention period on existing schedule has no effect on already created backup.
 
 Schedule Backup
 ```````````````
@@ -75,7 +81,13 @@ Creates backup schedules of the database. You can choose to create a full backup
 	========= ===================
 
 * **Upload Backup to the cloud**
-	- Upload the backup to the cloud storage. The upload process happens right after the backup is successfully created. This feature requires you to set up the cloud credentials first. See `Cloud Providers <../index.html#cloud-providers>`_.
+	- Upload the backup to the cloud storage. The upload process happens right after the backup is successfully created. This feature requires you to set up the cloud credentials first. See :ref:`Sidebar - Integrations - Cloud Providers`.
+
+* **Enable Encryption**
+	- Encrypts the generated backup. Backup is encrypted at rest using AES-256 CBC algorithm, where the encryption key will be created automatically and stored inside CMON configuration file for this cluster. See `Backup Encryption and Decryption`_.
+
+* **Retention**
+	- How long ClusterControl should keep this backup once successfully created. You can set a custom period in days or keep it forever. Otherwise, ClusterControl will use the default retention period. Take note that modifying retention period on existing schedule has no effect on already created backup.
 
 * **Failover backup if node is down**
 	- Yes - Backup will be run on any available node (or selected node based on the *Backup Failover Host*) if the target database node is down. If failover is enabled and the selected node is not online, the backup job elects an online node to create the backup. This ensures that a backup will be created even if the selected node is not available. If the scheduled backup is an incremental backup and a full backup does not exist on the new elected node, then a full backup will be created.

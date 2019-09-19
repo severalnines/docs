@@ -177,6 +177,16 @@ Only paste the license key string (starting after "License Key: " part) into the
 
 When the license expires, ClusterControl defaults back to the Community Edition. For features comparison, please refer to `ClusterControl product page <http://www.severalnines.com/pricing>`_.
 
+If you would like to force the existing enteprise edition to community edition (commonly to test out and compare different editions during trial), you can truncate the license table on the ClusterControl host manually. On ClusterControl server, run:
+
+.. code-block:: bash
+
+	$ mysql -uroot -p cmon
+	mysql> truncate table cmon.license
+	$ systemctl restart cmon
+
+.. Warning:: Once a trial license is truncated and cmon is restarted, there is no way you can re-activate a trial licence anymore. Only a working enterprise license will be working as trial license can't be applied more than once.
+
 Configure Mail Server
 +++++++++++++++++++++
 

@@ -423,6 +423,9 @@ Connecting to the Database
 * 192.168.0.11 port 6033 (ProxySQL)
 * 192.168.0.12 port 6033 (ProxySQL)
 * 192.168.0.31 port 3306 (MySQL master)
+* 192.168.0.32 port 3306 (MySQL slave - read-only queries)
+* 192.168.0.33 port 3306 (MySQL slave - read-only queries)
+* 192.168.0.34 port 3306 (MySQL slave - read-only queries)
 
 In the following example, we use the MySQL client to connect to the database via virtual IP address, 192.168.0.10:
 

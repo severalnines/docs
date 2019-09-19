@@ -940,7 +940,7 @@ The following steps should be performed on the ClusterControl node, unless speci
 .. code-block:: bash
 
 	$ uuidgen | tr -d '-'
-	25a97471a01f4ed295e39e471f3466ab
+	6856d96a19d049aa8a7f4a5ba57a34740b3faf57
 
 And create the ClusterControl Controller (cmon) configuration file at ``/etc/cmon.cnf`` with the following configuration options:
 

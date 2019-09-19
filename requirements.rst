@@ -245,11 +245,10 @@ ClusterControl controller (cmon) process requires a dedicated operating system u
 You are recommended to install ClusterControl as 'root', and running as root is the easiest option. If you perform the installation using another user other than 'root', the following must be true:
 
 * The OS user must exist on all nodes
+* The OS user must not be 'mysql'
 * 'sudo' program must be installed on all hosts
 * The OS user must be allowed to do 'sudo', i.e, it must be in sudoers
 * The OS user must be configured with proper PATH environment variable. The following PATH are expected for user ``myuser``: ``PATH=/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/myuser/.local/bin:/home/myuser/bin``
-
-We do not recommend to use system/OS users used by your system/OS daemons such as database users like 'mysql', 'mongod', 'postgres', for example, as the users would need a homedir and also used for SSH. We suggest that you create or use a separate user not used by any system processes for security and stability purposes.
 
 .. Attention:: ClusterControl requires full access of sudo (all commands) for full functionality. Restricting the commands would cause some of the operations to fail (cluster recovery, failover, backup restoration, service control and cluster deployment).
 

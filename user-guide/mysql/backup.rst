@@ -79,7 +79,7 @@ To create an instant backup, you have options to create a full backup using mysq
 	- Exclusive for mysqldump and if binary log is enabled. A mysqldump PITR-compatible backup contains one single dump file, with GTID info, binlog file and position. Thus, only the database node that produces binary log will have the "PITR Compatible" option available. See `Point-in-Time Recovery`_.
 
 * **Upload Backup to the cloud**
-	- Upload the backup to the cloud storage. The upload process happens right after the backup is successfully created. This feature requires you to set up the cloud credentials first. See `Cloud Providers <../index.html#cloud-providers>`_.
+	- Upload the backup to the cloud storage. The upload process happens right after the backup is successfully created. This feature requires you to set up the cloud credentials first. See :ref:`Sidebar - Integrations - Cloud Providers`.
 
 * **Backup Individual Schema**
 	- Exclusive for mysqldump. Each selected databases is backed up individually, in its own directory in the storage directory.
@@ -204,7 +204,7 @@ Creates backup schedules of the database. You can choose to create a full or inc
 	- Exclusive for mysqldump and if binary log is enabled. A mysqldump PITR-compatible backup contains one single dump file, with GTID info, binlog file and position. Thus, only the database node that produces binary log will have the "PITR Compatible" option available. See `Point-in-Time Recovery`_.
 
 * **Upload Backup to the cloud**
-	- Upload the backup to the cloud storage. The upload process happens right after the backup is successfully created. This feature requires you to set up the cloud credentials first. See `Cloud Providers <../index.html#cloud-providers>`_.
+	- Upload the backup to the cloud storage. The upload process happens right after the backup is successfully created. This feature requires you to set up the cloud credentials first. See :ref:`Sidebar - Integrations - Cloud Providers`.
 
 * **Enable Encryption**
 	- Encrypts the generated backup. Backup is encrypted at rest using AES-256 CBC algorithm, where the encryption key will be created automatically and stored inside CMON configuration file for this cluster. See `Backup Encryption and Decryption`_.
@@ -400,7 +400,7 @@ For Percona Xtrabackup/MariaDB Backup (offline restore):
 	- Temporary storage for ClusterControl to prepare the big. It must be as big as the expected MySQL data directory.
 
 * **xtrabackup --use-memory**
-	- This option affects how much memory is allocated for preparing the backup using the ``--prepare`` flag. The default value is 100MB, and if you have enough memory available memory, 1024 MB to 2048 MB is a good recommended value.
+	- This option affects how much memory is allocated for preparing the backup using the ``--prepare`` flag. The default value is 100MB, and if you have enough memory available memory, 1024MB to 2048MB is a good recommended value.
 
 * **Bootstrap cluster from the restored node**
 	- Toggle to ON if you want ClusterControl to automatically re-bootstrap the cluster on the restored node.
@@ -425,6 +425,9 @@ You can monitor the job progress under *Activity > Jobs > Verify Backup* where C
 
 * **Install Software**
 	- A new MySQL server will be installed and setup if this is enabled. If there is an existing MySQL server installed or running, it will be stopped and removed before ClusterControl performs the installation. If unchecked, ClusterControl will not touch the existing installation and the existing MySQL server (must be running) on the target host will be used.
+
+* **xtrabackup --use-memory**
+	- This option affects how much memory is allocated for preparing the backup using the ``--prepare`` flag. The default value is 100MB, and if you have enough memory available memory, 1024MB to 2048MB is a good recommended value.
 	
 * **Disable Firewall**
 	- Check the box to disable firewall (recommended).

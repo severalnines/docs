@@ -44,7 +44,7 @@ Manages the configuration files of your database, HAProxy and Garbd nodes. For M
 		- Restarted the mysql servers/performed a rolling restart after a configuration change.
 	- ClusterControl will trigger a job to fetch the latest modification from each MySQL, HAProxy and Garbd node.
 
-* **Change Parameter**
+* **Change/Set Parameter**
 	- The selected parameter will be changed or created in the specified group option. ClusterControl will attempt to dynamically set the configuration value if the parameter is valid. Then, the change can be persisted in the configuration file.
 	- For example, if you want to turn off ``read_only`` which is a dynamic variable, choose it from the parameter list and specify a new value 0. ClusterControl will then perform the change using 'SET GLOBAL' statement and make it persisted in the config file accordingly.
 

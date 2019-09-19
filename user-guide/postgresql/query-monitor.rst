@@ -149,4 +149,8 @@ Last analyzed or vacuumed             The last time a table was last analyzed or
 Unused indexes                        Returns unused indexes.
 Duplicate indexes                     Returns duplicate indexes.
 Exclusive lock waits                  Returns exclusive lock waits.
+Logical Replication Latency           Since PostgreSQL 9.4, this view contains replication statitics for each slave the master connects to for sending data. Details at `pg_stat_replication View <https://www.postgresql.org/docs/10/monitoring-stats.html#PG-STAT-REPLICATION-VIEW>`_.
+Logical Replication Slot              Since PostgreSQL 9.4 this view lists all replication slots (and their stats) existing on the database node. Details at `pg_stat_replication <https://www.postgresql.org/docs/10/view-pg-replication-slots.html>`_.
+Logical Publication                   Since PostgreSQL 10 ``pg_publication`` lists all logical replication publications for the database. Details at `pg_publication <https://www.postgresql.org/docs/10/catalog-pg-publication.html>`_.
+Logical Subscription                  Since PostgreSQL 10 ``pg_subscription`` lists all logical replication subscriptions. Details at `pg_subscription <https://www.postgresql.org/docs/10/catalog-pg-subscription.html>`_.
 ===================================== ==========

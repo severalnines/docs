@@ -141,30 +141,15 @@ For an accurate reporting, ensure you always use stable and trusted repositories
 Email Notifications
 -------------------
 
-Configures global email notifications across clusters.
+Configures global email notifications across clusters. Any modification made on this page will be directly saved into the CMON database.
 
-* **Add Recipient**
-	- Creates a new recipient by specifying an email address. A newly created recipient will be listed under 'External' organization.
-	
-* **Delete Recipient**
-	- Removes an existing recipient. 
-
-* **Save**
-	- Saves the settings to individual cluster.
-	
-* **Remove**
-	- Unassigns the settings for the individual cluster to the selected recipient.
-
-* **Save to all Clusters**
-	- Save the settings to all clusters.
+* **Add External User**
+	- Creates a new recipient by specifying an email address. A newly created recipient will be listed under 'External' organization. If you want to create a new recipient under a specific team, use :ref:`Sidebar - User Management - Teams`.
 
 * **Send digests at**
 	- Send a digested (summary) email at this time every day to the selected recipient.
 
-* **Time-zone**
-	- Timezone for the selected recipient.
-
-* **Daily limit for non-digest email as**
+* **Set daily email limit**
 	- The maximum number of non-digest email notification should be sent per day for the selected recipient. -1 for unlimited.
 
 * **Alarm/Event Category**

@@ -62,7 +62,7 @@ You can choose to create a full backup using :term:`pg_dumpall` or :term:`pg_bas
 	- Specify the compression level for the backup. This is according to :term:`gzip` compression level. 1 is the fastest compression (least compression) and 9 indicates the slowest compression (best compression).
 
 * **Upload Backup to the cloud**
-	- Uploads the backup to the cloud storage. The upload process happens right after the backup is successfully created. This feature requires you to set up the cloud credentials first. See `Cloud Providers <../index.html#cloud-providers>`_.
+	- Uploads the backup to the cloud storage. The upload process happens right after the backup is successfully created. This feature requires you to set up the cloud credentials first. See :ref:`Sidebar - Integrations - Cloud Providers`.
 
 * **Enable Encryption**
 	- Encrypts the generated backup. Backup is encrypted at rest using AES-256 CBC algorithm, where the encryption key will be created automatically and stored inside CMON configuration file for this cluster. See `Backup Encryption and Decryption`_.
@@ -118,7 +118,7 @@ Creates backup schedules of the database.
 	========= ===================
 
 * **Upload Backup to the cloud**
-	- Upload the backup to the cloud storage. The upload process happens right after the backup is successfully created. This feature requires you to set up the cloud credentials first. See `Cloud Providers <../index.html#cloud-providers>`_.
+	- Upload the backup to the cloud storage. The upload process happens right after the backup is successfully created. This feature requires you to set up the cloud credentials first. See :ref:`Sidebar - Integrations - Cloud Providers`.
 
 * **Netcat Port**
 	- Specify the port number that will be used by ClusterControl to stream backup created on the database node. This port must be opened on both source and destination hosts. Only available if you choose *Store on Controller* in *Storage Location*.

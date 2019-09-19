@@ -23,9 +23,9 @@ To remove a host, just select the host and click on the *Remove* button.
 Configurations
 +++++++++++++++
 
-Manage the configuration files of your MongoDB nodes. For MongoDB server, changes can be persisted to database variables across one node or a group of nodes at once, dynamic variables are changed directly without a restart.
+Manages the configuration files of your database hosts. Note that ClusterControl will not perform any restart operation after modifying the configuration file. One has to schedule server reload/restart operation to load the changes into the server runtime.
 
-.. Attention:: ClusterControl does not store configuration changes history so there is no versioning at the moment. Only one version is exist at one time. It always import the latest configuration files every 30 minutes and overwrite it in cmon DB. This limitation will be improved in the upcoming release where ClusterControl shall support configuration versioning with dynamic import interval.
+.. Note:: ClusterControl does not store configuration changes history so there is no versioning at the moment. Only one version exists at one time. It imports the latest configuration files every 30 minutes and overwrites it in CMON database. This limitation will be improved in the upcoming release where ClusterControl shall support configuration versioning with dynamic import interval.
 
 * **Save**
 	- Save the changes that you have made and push them to the corresponding node.
@@ -33,11 +33,8 @@ Manage the configuration files of your MongoDB nodes. For MongoDB server, change
 * **Import**
 	- Re-import configuration if you have:
 		- Performed local configuration changes directly on the configuration files.
-		- Restarted the mysql servers/performed a rolling restart after a configuration change.
-	- ClusterControl will trigger a job to fetch the latest modification from each MySQL, HAProxy and Garbd node.
-
-* **Change Parameter**
-	- The selected parameter will be changed or created in the specified group option. ClusterControl will attempt to dynamically set the configuration value if the parameter is valid. Then, the change can be persisted in the configuration file.
+		- Restarted the MongoDB servers/performed a rolling restart after a configuration change.
+	- ClusterControl will trigger a job to fetch the latest modification from each MongoDB node.
 	
 .. _MongoDB - Manage - Configurations - Base Template Files:
 

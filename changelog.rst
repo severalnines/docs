@@ -8,6 +8,26 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.7.3
 -----------------
 
+
+Maintenance Release: September 17\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.3-3428
+
+* Controller:
+	- MySQL Replication: A fix to update the status of the failed server in ProxySQL. The old master will now be marked as ``OFFLINE_SOFT``. Any node that is not part of the replication topology is marked as ``OFFLINE_SOFT``.
+	- Added a fix that could cause a crash if a database connection could not be established.
+
+Maintenance Release: September 10\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.3-3413
+
+* Controller:
+	- MariaDB: Setting ``innodb_thread_concurrency=0`` due to https://jira.mariadb.org/browse/MDEV-20247
+
 Maintenance Release: September 8\ :sup:`th`\ , 2019
 +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
