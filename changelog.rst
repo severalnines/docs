@@ -8,6 +8,15 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.7.3
 -----------------
 
+Maintenance Release: September 24\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build: 
+	- clustercontrol-controller-1.7.3-3440
+
+* Controller:
+	- MySQL based systems: Fixed and issue with excessive logging of long running queries.
+	- SSH Communication: A number of improvements which fixes intermittent errors like 'test sudo failed' and 'SUDO failed'.
 
 Maintenance Release: September 17\ :sup:`th`\ , 2019
 +++++++++++++++++++++++++++++++++++++++++++++++++++++
