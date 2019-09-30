@@ -8,6 +8,24 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.7.3
 -----------------
 
+Maintenance Release: September 29\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build: 
+	- clustercontrol-controller-1.7.3-3450
+	- clustercontrol-1.7.3-6368
+
+* Frontend (UI):
+	- MySQL: *Performance -> Transaction Log* uses timestamp and not epoch.
+	- Fixes usability issues with Runtime Configuration making it easier to read
+	- PostgreSQL: Fixes in *Import/Add Replication Slave* dialogs with respect to Port and Logfile fields.
+
+* Controller:
+	- MySQL: *Performance -> Transaction Log* uses timestamp and not epoch.
+	- MySQL: Fixed an issue with excessive logging of long running queries.
+	- HAProxy: Fix of parsing errors during ``collect_configs`` cronjob (in case of HAProxy and ProxySQL nodes).
+	- error-reporter: Include complete cmon log files and not only the last rows.
+
 Maintenance Release: September 24\ :sup:`th`\ , 2019
 +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
