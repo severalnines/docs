@@ -8,6 +8,43 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.7.3
 -----------------
 
+Maintenance Release: October 20\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.3-3494
+	- clustercontrol-1.7.3-6429
+
+* Frontend (UI):
+	- PostgreSQL: Fixed an issue with the charts on the *Cluster Overview* page.
+
+* Controller:
+	- PostgreSQL: *Query Monitor -> Query Statistics*, Exclusive Lock Waits was not working correctly and did not display all data.
+	- Dashboard/SCUMM: Fixed an issue recoverying Prometheus exporters in case of co-located cluster nodes by multiple-clusters.
+	- MongoDB: Importing a single node will now fail if the node is not set up as a replica set member. Thus, it is the user's responsibility to convert the node to a member before importing it.
+
+Maintenance Release: October 13\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.3-3482
+	- clustercontrol-1.7.3-6403
+
+* Frontend (UI):
+	- Dashboards/PostgreSQL: Fixed an issue with *Idle* and *Active Connections*.
+	- Backup: Can't use backup verification server due to a bug in Host discovery.
+	- Email Notifications: Improvements to email validation of 'External' users and Adding/Removing of these 'External' users.
+
+* Controller:
+	- Dashboards/PostgreSQL: *Active* and *Idle* connection dashboards aren't working for PostgreSQL. A redeploy of the ``postgres_exporter`` is needed.
+	- Dashboards/PostgreSQL: Reverted back to ``postgres_exporter`` 0.4 as 0.5 was buggy.
+	- Node Charts: Node CPU chart was incorrect on Centos6/RHEL6 because it had one less column (no ``guest-low`` counter value).
+	- Notification: Fix daily limit handling of e-mail message recipients where "-1" was not handled correctly.
+	- Error-reporting: There was a problem with file listing when multiple files was specified since we bash-escape the paths for safety.
+	- HAProxy: Fixed an issue parsing the HAProxy config file.
+	- HAProxy: While setting up haproxy for PostgreSQL reading old password from checker script fails.
+	- PostgreSQL: Importing a node/cluster: If ``logging_collector=OFF`` and user has not specified a custom log file then the job will be aborted and the user must specify it.
+
 Maintenance Release: September 29\ :sup:`th`\ , 2019
 +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
