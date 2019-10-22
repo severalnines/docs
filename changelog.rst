@@ -8,6 +8,15 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.7.3
 -----------------
 
+Maintenance Release: October 21\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.3-3496
+
+* Controller:
+	- HAProxy: Added ``tcp-check connect`` to configuration templates.
+
 Maintenance Release: October 20\ :sup:`th`\ , 2019
 +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
