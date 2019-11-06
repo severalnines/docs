@@ -3,7 +3,7 @@
 Introduction
 ============
 
-This documentation covers ClusterControl version 1.7.3 which was released on July 2\ :sup:`nd`\ , 2019. This release contains key new features along with performance improvements and bug fixes. Release change log is available at :ref:`Changelog`.
+This documentation covers ClusterControl version 1.7.4 which was released on October 24\ :sup:`th`\ , 2019. This release contains key new features along with performance improvements and bug fixes. Release change log is available at :ref:`Changelog`.
 
 What is ClusterControl? 
 -----------------------
@@ -55,10 +55,7 @@ ClusterControl supports the following database servers/clusters:
 	- Replica set
 	- Sharded cluster
 	- Replicated sharded cluster
-- PostgreSQL
-	- Single instance
-	- Streaming replication
-- TimeScaleDB
+- PostgreSQL/TimescaleDB
 	- Single instance
 	- Streaming replication
 	
@@ -133,6 +130,7 @@ ClusterControl is able to handle most of the administration tasks required to ma
 * Manage private keys and certificates for databases' SSL
 * Client-server encryption, replication encryption, backup encryption (at-rest or in-transit)
 * Create cluster from backup
+* Cluster-cluster replication
 * and many more..
 
 For more details, please refer to `ClusterControl product page <http://severalnines.com/product/clustercontrol>`_. You might also want to look at the :ref:`ClusterControl changelog <Changelog>` for the latest development update.

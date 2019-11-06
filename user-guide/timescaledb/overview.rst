@@ -23,6 +23,9 @@ Provides shortcuts to the main cluster functionality. For TimeScaleDB Streaming 
 	
 .. Note:: You can retrieve the RPC API Token value directly from respective ``/etc/cmon.d/cmon_{clusterID}.cnf``.
 
+* **Create Slave Cluster**
+	- Create a new cluster that replicates from this cluster. See `Cluster-Cluster Replication`_.
+	
 * **Create SSL Encryption**
 	- See `Create SSL Encryption`_.
 
@@ -101,6 +104,24 @@ Enable encrypted SSL client-server connections for the database node(s). The sam
     - Restart Nodes - Automatically perform rolling restart of the nodes after setting up certificate and key.
     - Do Not Restart Nodes - Do nothing after setting up certificate and key. User has to perform the server restart manually.
 
+Cluster-Cluster Replication
+````````````````````````````
+
+This feature allows you to create a new cluster that will be replicating from this cluster. One primary use case is for disaster recovery by having a hot standby site/cluster which can take over when the main site/cluster has failed. Clusters can be rebuilt with an existing backup or by streaming from a master on the source cluster.
+
+For PostgreSQL-based clusters, ClusterControl will configure asynchronous streaming replication between a master cluster to a slave cluster.
+
+* **Cluster Provisioning Data**
+	- Choose one method to provision the slave's cluster data:
+		- *Streaming from the master*: Stream the data from a master using hot backup tool e.g, ``pg_basebackup``.
+		- *Stage cluster from backup*: Choose an existing full backup from the dropdown list. If none is listed, take full backup of one of the nodes in your cluster which have binary logging enabled.
+
+* **Replication Master**
+	- A node of the source cluster to replicate from. For PostgreSQL/TimescaleDB, pick the master node from the source cluster.
+
+Once the above options have been selected, the cluster deployment wizard will appear similar to deploying a new cluster. See :ref:`Deploy Database Cluster`.
+
+A slave cluster will appear in the database cluster list after deployment finishes. You will notice the slave cluster entry is a bit indented in the list, with a pointed arrow coming from the source cluster, indicating the cluster-cluster replication is now active.
 
 Server Load
 ++++++++++++

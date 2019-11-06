@@ -32,6 +32,12 @@ Galera Cluster
 * **Clone Cluster** 
 	- See `Clone Cluster`_.
 
+* **Create Slave Cluster**
+	- Create a new cluster that replicates from this cluster. See `Cluster-Cluster Replication`_.
+
+* **Enable ReadOnly**
+	- Enable cluster-wide read-only. ClusterControl will set ``read_only=ON`` on all database nodes in the cluster. This is very useful in cluster-to-cluster replication setup. See `Cluster-Cluster Replication`_.
+
 * **Find Most Advanced Node**
 	- Finds which is the most advanced node in the cluster. This is very useful to determine which node to be bootstrapped if the cluster doesn't have any primary component or when ClusterControl automatic recovery is disabled.
 
@@ -304,6 +310,28 @@ A clone will be created of this cluster. The following procedure applies:
 
 * **DB Node (1-9)**
 	- The database node IP address or hostname. The enable fields is depending on the Cloned Cluster Size.
+	
+Cluster-Cluster Replication
+````````````````````````````
+
+Exclusive for Galera Cluster. This feature allows you to create a new cluster that will be replicating from this cluster. One primary use case is for disaster recovery by having a hot standby site/cluster which can take over when the main site/cluster has failed. Clusters can be rebuilt with an existing backup or by streaming from a master on the source cluster.
+
+For MySQL-based clusters, ClusterControl will configure asynchronous MySQL replication from a master cluster to a slave cluster.
+
+* **Cluster Provisioning Data**
+	- Choose one method to provision the slave's cluster data:
+		- *Streaming from the master*: Stream the data from a master using hot backup tools e.g, Percona Xtrabackup and MariaDB Backup.
+		- *Stage cluster from backup*: Choose an existing full backup from the dropdown list. If none is listed, take full backup of one of the nodes in your cluster which have binary logging enabled.
+
+* **Replication Master**
+	- A node of the source cluster to replicate from. For MySQL, the chosen node must have binary logs enabled. To do this, go to *Nodes > pick the corresponding node > Node Actions >  Enable Binary Logging*.
+
+Once the above options have been selected, the cluster deployment wizard will appear similar to deploying a new cluster. See :ref:`Deploy Database Cluster`.
+
+A slave cluster will appear in the database cluster list after deployment finishes. You will notice the slave cluster entry is a bit indented in the list, with a pointed arrow coming from the source cluster, indicating the cluster-cluster replication is now active.
+
+.. Note:: We highly recommend users to enable cluster-wide read-only on the slave cluster. Disable read-only only when promoting the slave cluster as the new master cluster.
+
 
 .. _MySQL - Overview - Cluster Load:
 

@@ -169,6 +169,7 @@ Manages the backup settings.
 * **Backup retention period**
 	- The number of days ClusterControl keeps the existing backups. Backups older than the value defined here will be deleted. You can also customize the retention period per backup (default, custom or keep forever) under *Backup Retention* when creating or scheduling the backup.
 	- The purging is based on the following conditions:
+	
 	  - When a new backup is successfully created, and if no verify backup is requested, the older backups will be checked and removed. 
 	  - When the verify backup is successfully created, the older backups will be checked and removed.
 	  - The backup housekeeping job remain executed every 24 hour. Thus, if no backups are created and no backups are verified, the backup retention still will be done in every 24 hours.

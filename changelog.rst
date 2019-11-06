@@ -5,10 +5,56 @@ Change Logs
 
 This change logs list details about updates in each version of ClusterControl.
 
-Changes in v1.7.3
+Changes in v1.7.4
 -----------------
 
 .. Attention:: We have encountered a severe bug in a library clustercontrol 1.7.3 relies on for SSH communication and may cause severe side effects. If you are using ClusterControl 1.7.3 then you must upgrade the ``clustercontrol-controller`` package to version 1.7.3-3440 (release date September 24th, 2019) or later.
+
+Maintenance Release: November 1\ :sup:`st`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.4-3512
+	- clustercontrol-1.7.4-6483
+
+* Frontend (UI):
+	- MySQL: Added an option to ``RESET SLAVE`` / ``RESET SLAVE ALL``.
+	- MongoDB: Removed MongoDB 3.2 as an option on Ubuntu 18.04.
+	- Dashboard: Added Dashboards to the ACL list.
+	- *Query Monitor -> Running Queries*: Refresh button and fixed an issue limiting the result set to 200 records.
+	
+* Controller:
+	- ProxySQL 2.0: The ``proxysql_galera_checker`` script is not needed any longer and instead ClusterControl uses the ``mysql_galera_hostgroups`` table.
+	- PostgreSQL: Copy some mandatory values from master's config into slave's config when configuring replication (as per https://www.postgresql.org/docs/9.6/hot-standby.html#HOT-STANDBY-ADMIN ).
+	- PostgreSQL: Database growth had an issue when detecting disk space.
+
+Initial Release: October 28\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.4-6459
+	- clustercontrol-controller-1.7.4-3503
+	- clustercontrol-cloud-1.7.4-220
+	- clustercontrol-ssh-1.7.4-84
+	- clustercontrol-notifications-1.7.4-190
+
+In this release we now support cluster to cluster replication for MySQL Galera and PostgreSQL clusters. One primary use case is for disaster recovery by having a hot standby site/cluster which can take over when the main site/cluster has failed. We also added support for MariaDB 10.4/Galera 4.x, ProxySQL 2.0 and managing database users for PostgreSQL clusters.
+
+**Feature Details**
+
+* Cluster to Cluster Replication
+	- Asynchronous MySQL replication between MySQL Galera clusters.
+	- Streaming replication between PostgreSQL clusters.
+	- Clusters can be rebuilt with a backup or by streaming from a master cluster.
+
+* Misc
+	- MariaDB 10.4/Galera 4.x support.
+	- ProxySQL 2.0 support.
+	- Database User Management for PostgreSQL clusters.
+
+
+Changes in v1.7.3
+-----------------
 
 Maintenance Release: October 21\ :sup:`th`\ , 2019
 +++++++++++++++++++++++++++++++++++++++++++++++++++++
