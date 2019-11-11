@@ -10,20 +10,12 @@ This section provides detailed information on ClusterControl requirement on hard
 Hardware
 --------
 
-Following is the expected system environment for the ClusterControl host:
+Following is the minimal system requirment for the ClusterControl host:
 
 * Architecture: x86_64 only
 * RAM: >2 GB
 * CPU: >2 cores
 * Disk space: >20 GB
-* Network: conventional network interface (eth, en, em)
-* Hardware platform:
-	* Bare-metal
-	* Virtualization
-		* VMware
-		* VirtualBox
-		* Xen
-		* Docker
 * Tested cloud platform:
 	* AWS EC2
 	* Google Cloud
@@ -97,30 +89,30 @@ Supported Databases
 
 The following table shows supported database clusters with recommended minimum nodes:
 
-+-----------------+----------------------------+-------------------------------------+---------------------------------------------------------------------------------+
-| Database type   | Cluster type               | Version                             | Minimum recommended nodes                                                       |
-+=================+============================+=====================================+=================================================================================+
-| MySQL/MariaDB   | MySQL Cluster (NDB)        | 7.1 and later                       | 5 hosts (2 data nodes + 2 API/mgmd nodes + 1 ClusterControl node)               |
-|                 +----------------------------+-------------------------------------+---------------------------------------------------------------------------------+
-|                 | MySQL replication          | 5.1/5.5/5.6/5.7/8.0                 | 3 hosts (1 master node + 1 standby master/slave + 1 ClusterControl node)        |
-|                 +----------------------------+-------------------------------------+---------------------------------------------------------------------------------+
-|                 | * Percona XtraDB Cluster   | * 5.5/5.6/5.7 (MySQL/Percona)       | 4 hosts (3 nodes + 1 ClusterControl node)                                       |
-|                 | * MariaDB Galera Cluster   | * 5.5/10.0/10.1/10.2/10.3 (MariaDB) |                                                                                 |
-|                 +----------------------------+-------------------------------------+---------------------------------------------------------------------------------+
-|                 | Single instance            | 5.5/5.6/5.7/8.0                     | 2 hosts (1 MySQL node + 1 ClusterControl node)                                  |
-+-----------------+----------------------------+-------------------------------------+---------------------------------------------------------------------------------+
-| MongoDB/Percona | Sharded cluster            | 3.2/3.4/3.6/4.0 (MongoDB only)      | 4 hosts (3 config servers / 3 shard servers / 2 mongos + 1 ClusterControl node) |
-| Server for      +----------------------------+                                     +---------------------------------------------------------------------------------+
-| MongoDB         | Replica set                |                                     | 4 hosts (3 replica servers + 1 ClusterControl node)                             |
-+-----------------+----------------------------+-------------------------------------+---------------------------------------------------------------------------------+
-| PostgreSQL      | Single instance            | >9.6/10.x/11.x                      | 2 hosts (1 PostgreSQL node + 1 ClusterControl node)                             |
-|                 +----------------------------+                                     +---------------------------------------------------------------------------------+
-|                 | Streaming replication      |                                     | 3 hosts (1 master node + 1 slave node + 1 ClusterControl node)                  |
-+-----------------+----------------------------+-------------------------------------+---------------------------------------------------------------------------------+
-| TimeScaleDB     | Single instance            | >9.6/10.x/11.x                      | 2 hosts (1 TimeScaleDB node + 1 ClusterControl node)                            |
-|                 +----------------------------+                                     +---------------------------------------------------------------------------------+
-|                 | Streaming replication      |                                     | 3 hosts (1 master node + 1 slave node + 1 ClusterControl node)                  |
-+-----------------+----------------------------+-------------------------------------+---------------------------------------------------------------------------------+
++-----------------+----------------------------+------------------------------------------+---------------------------------------------------------------------------------+
+| Database type   | Cluster type               | Version                                  | Minimum recommended nodes                                                       |
++=================+============================+==========================================+=================================================================================+
+| MySQL/MariaDB   | MySQL Cluster (NDB)        | 7.1 and later                            | 5 hosts (2 data nodes + 2 API/mgmd nodes + 1 ClusterControl node)               |
+|                 +----------------------------+------------------------------------------+---------------------------------------------------------------------------------+
+|                 | MySQL replication          | 5.1/5.5/5.6/5.7/8.0                      | 3 hosts (1 master node + 1 standby master/slave + 1 ClusterControl node)        |
+|                 +----------------------------+------------------------------------------+---------------------------------------------------------------------------------+
+|                 | * Percona XtraDB Cluster   | * 5.5/5.6/5.7 (MySQL/Percona)            | 4 hosts (3 nodes + 1 ClusterControl node)                                       |
+|                 | * MariaDB Galera Cluster   | * 5.5/10.0/10.1/10.2/10.3/10.4 (MariaDB) |                                                                                 |
+|                 +----------------------------+------------------------------------------+---------------------------------------------------------------------------------+
+|                 | Single instance            | 5.5/5.6/5.7/8.0                          | 2 hosts (1 MySQL node + 1 ClusterControl node)                                  |
++-----------------+----------------------------+------------------------------------------+---------------------------------------------------------------------------------+
+| MongoDB/Percona | Sharded cluster            | 3.2/3.4/3.6/4.0 (MongoDB only)           | 4 hosts (3 config servers / 3 shard servers / 2 mongos + 1 ClusterControl node) |
+| Server for      +----------------------------+                                          +---------------------------------------------------------------------------------+
+| MongoDB         | Replica set                |                                          | 4 hosts (3 replica servers + 1 ClusterControl node)                             |
++-----------------+----------------------------+------------------------------------------+---------------------------------------------------------------------------------+
+| PostgreSQL      | Single instance            | >9.6/10.x/11.x                           | 2 hosts (1 PostgreSQL node + 1 ClusterControl node)                             |
+|                 +----------------------------+                                          +---------------------------------------------------------------------------------+
+|                 | Streaming replication      |                                          | 3 hosts (1 master node + 1 slave node + 1 ClusterControl node)                  |
++-----------------+----------------------------+------------------------------------------+---------------------------------------------------------------------------------+
+| TimeScaleDB     | Single instance            | >9.6/10.x/11.x                           | 2 hosts (1 TimeScaleDB node + 1 ClusterControl node)                            |
+|                 +----------------------------+                                          +---------------------------------------------------------------------------------+
+|                 | Streaming replication      |                                          | 3 hosts (1 master node + 1 slave node + 1 ClusterControl node)                  |
++-----------------+----------------------------+------------------------------------------+---------------------------------------------------------------------------------+
 
 .. _Requirements - Firewall and Security Groups:
 

@@ -298,28 +298,34 @@ MySQL Replication
 
 These are specific options available for MySQL replication nodes:
 
-* **Disable Read Only**
+* **Disable Readonly**
   - Disable read-only by setting up ``SET GLOBAL read_only = OFF``. This option is only available if read-only is on.
 
-* **Enable Read Only**
+* **Enable Readonly**
   - Enable read-only by setting up ``SET GLOBAL read_only = ON``. This option is only available if read-only is off.
 
-* **Change Replication Master**
-	- Exclusive for slave nodes. This option will tell ClusterControl to change the replication master to the other available master. All slaves will then be configured to replicate from the new master.
+* **Promote Slave**
+	- Exclusive for slave node. Promotes the selected slave to become the new master. If the master is currently functioning correctly, then stop application queries prior to promoting another slave to safe guard from data loss. Connections on the current running master will be killed after a 10 second grace period.
+	
+* **Start Slave**
+	- Exclusive for slave node and only if the slave is stopped. It starts the slave thread.
+
+* **Stop Slave**
+	- Exclusive for slave node and only if the slave is started. Stops the slave IO and SQL threads.
 
 * **Rebuild Replication Slave**
 	- Exclusive for slave nodes. Rebuilds replication slave on this node from another master. It can use an existing backup (PITR compatible) or use Percona Xtrabackup to stage the replication data from a master.
 	
 .. caution:: *Rebuilding Replication Slave* will wipe out the selected node's MySQL datadir.
 
-* **Start Slave**
-	- Exclusive for slave node and only if the slave is stopped. It starts the slave thread.
+* **Change Replication Master**
+	- Exclusive for slave nodes. This option will tell ClusterControl to change the replication master to the other available master. All slaves will then be configured to replicate from the new master.
 
-* **Stop Slave**
-	- Exclusive for slave node and only if the slave is started. Stops the slave IO and SQL threads.
-    
-* **Promote Slave**
-	- Exclusive for slave node. Promotes the selected slave to become the new master. If the master is currently functioning correctly, then stop application queries prior to promoting another slave to safe guard from data loss. Connections on the current running master will be killed after a 10 second grace period.
+* **Reset Slave**
+	- Exclusive for slave node. Make the slave forget its replication position in the master's binary log. This is similar to running a ``RESET SLAVE`` command on the slave. The slave must be stopped in order for this feature to work.
+
+* **Reset Slave All**
+	- Exclusive for slave node. Make the slave forget its replication position in the master's binary log, as well as any replication connection parameters such as master host, master port, master user, or master password. This is similar to running a ``RESET SLAVE ALL`` command on the slave. The slave must be stopped in order for this feature to work.
 
 MySQL Standalone
 ``````````````````

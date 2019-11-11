@@ -162,6 +162,9 @@ Specify the host that you want to install ProxySQL. You can use an existing data
 * **Port**
 	- ProxySQL load-balanced port. Default is 6033.
 
+* **Select Version**
+	- Pick a ProxySQL major version to be installed by ClusterControl. Default is 2.x.
+
 * **Add a new address**
 	- Specify the hostname or IP address of the host. This host must be accessible via passwordless SSH from ClusterControl node.
 
