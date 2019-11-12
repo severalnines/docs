@@ -10,6 +10,31 @@ Changes in v1.7.4
 
 .. Attention:: We have encountered a severe bug in a library clustercontrol 1.7.3 relies on for SSH communication and may cause severe side effects. If you are using ClusterControl 1.7.3 then you must upgrade the ``clustercontrol-controller`` package to version 1.7.3-3440 (release date September 24th, 2019) or later.
 
+Maintenance Release: November 9\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.4-3527
+	- clustercontrol-1.7.4-6483
+
+* Frontend:
+	- *Query Monitor -> Running Queries*: Refresh button and fixed an issue limiting the result set to 200 records.
+	- Alarms: Fixed a bug with Ignore alarms.
+
+* Controller:
+	- ProxySQL: Failed deploy with import configuration option.
+	- Cluster-to-Cluster Replication: Failed to locate master when creating slave cluster from backup.
+	- Replication: Percona Server 8.0 replication cluster creation failed during ``repl_user`` user creation.
+
+Maintenance Release: November 6\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.4-3519
+
+* Controller:
+	- Cluster to cluster replication: Check the master exists in the parent cluster before attempting to stage the cluster.
+
 Maintenance Release: November 1\ :sup:`st`\ , 2019
 +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
