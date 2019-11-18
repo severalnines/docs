@@ -10,6 +10,22 @@ Changes in v1.7.4
 
 .. Attention:: We have encountered a severe bug in a library clustercontrol 1.7.3 relies on for SSH communication and may cause severe side effects. If you are using ClusterControl 1.7.3 then you must upgrade the ``clustercontrol-controller`` package to version 1.7.3-3440 (release date September 24th, 2019) or later.
 
+Maintenance Release: November 17\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.4-6513 
+	- clustercontrol-controller-1.7.4-3541
+
+* Frontend (UI):
+	- Rebuild Replication Slave: Wrong cluster id was sent in the job.
+
+* Controller:
+	- Email/digest: Fixed an issue sending too many digest messages sent in certain cases.
+	- Email/digest: Fixed and issue sending blank digest emails.
+	- Host Discovery: Fixed a deadlock issue.
+	- PostgreSQL: Rebuilding a slave failed as the master could not be found.
+
 Maintenance Release: November 9\ :sup:`th`\ , 2019
 +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
