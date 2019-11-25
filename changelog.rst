@@ -10,6 +10,32 @@ Changes in v1.7.4
 
 .. Attention:: We have encountered a severe bug in a library clustercontrol 1.7.3 relies on for SSH communication and may cause severe side effects. If you are using ClusterControl 1.7.3 then you must upgrade the ``clustercontrol-controller`` package to version 1.7.3-3440 (release date September 24th, 2019) or later.
 
+Maintenance Release: November 23\ :sup:`rd`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.4-6537
+	- clustercontrol-controller-1.7.4-3556
+
+* Frontend (UI):
+	- Topology View: Show link to remote cluster.
+	- Rebuild Replication Slave: Wrong cluster id was sent in the job.
+
+* Controller:
+	- ProxySQL 2.x:  Setting ``writer_is_also_reader=2`` in ``mysql_galera_hostgroups``.
+	- ProxySQL 1.x: "Sync Instances" fails with no such table: ``mysql_galera_hostgroups``.
+	- HAProxy: Fixed HAProxy parser (extended string with the following chars: ``|[]``).
+	- MySQL: Backups can't be taken with xtrabackup 2.4.12.
+
+Maintenance Release: November 18\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.4-3543
+
+* Controller:
+	- Crashing bug.
+
 Maintenance Release: November 17\ :sup:`th`\ , 2019
 +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
