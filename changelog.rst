@@ -10,6 +10,16 @@ Changes in v1.7.4
 
 .. Attention:: We have encountered a severe bug in a library clustercontrol 1.7.3 relies on for SSH communication and may cause severe side effects. If you are using ClusterControl 1.7.3 then you must upgrade the ``clustercontrol-controller`` package to version 1.7.3-3440 (release date September 24th, 2019) or later.
 
+Maintenance Release: December 1\ :sup:`st`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.4-3565
+
+* Controller:
+	- Replication: Removing BVS server failed.
+	- Deploy: Dropped ntp package dependency during deployment.
+
 Maintenance Release: November 23\ :sup:`rd`\ , 2019
 +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
