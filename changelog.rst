@@ -10,6 +10,20 @@ Changes in v1.7.4
 
 .. Attention:: We have encountered a severe bug in a library clustercontrol 1.7.3 relies on for SSH communication and may cause severe side effects. If you are using ClusterControl 1.7.3 then you must upgrade the ``clustercontrol-controller`` package to version 1.7.3-3440 (release date September 24th, 2019) or later.
 
+Maintenance Release: December 16\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.4-6594
+	- clustercontrol-controller-1.7.4-3596
+
+* Frontend (UI):
+	- AWS: Updated region dropdown list.
+
+* Controller:
+	- PostgreSQL: Failed to start PostgreSQL after VM halt and reboot because of a missing socket directory.
+	- HAProxy: Fixed a parser issue and add ``'^'`` also to supported string/regexp characters list.
+
 Maintenance Release: December 1\ :sup:`st`\ , 2019
 +++++++++++++++++++++++++++++++++++++++++++++++++++++
 

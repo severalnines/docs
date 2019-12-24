@@ -292,21 +292,21 @@ texinfo_documents = [
 #texinfo_no_detailmenu = False
 
 rst_prolog = """
-.. |ClusterControl_UI_rpm| replace:: https://severalnines.com/downloads/cmon/clustercontrol-1.7.3-6244-x86_64.rpm
-.. |ClusterControl_Controller_rpm| replace:: https://severalnines.com/downloads/cmon/clustercontrol-controller-1.7.3-3372-x86_64.rpm
-.. |ClusterControl_Notifications_rpm| replace:: https://severalnines.com/downloads/cmon/clustercontrol-notifications-1.7.3-182-x86_64.rpm
-.. |ClusterControl_SSH_rpm| replace:: https://severalnines.com/downloads/cmon/clustercontrol-ssh-1.7.3-79-x86_64.rpm
-.. |ClusterControl_Cloud_rpm| replace:: https://severalnines.com/downloads/cmon/clustercontrol-cloud-1.7.3-217-x86_64.rpm
-.. |ClusterControl_CLUD_rpm| replace:: https://severalnines.com/downloads/cmon/clustercontrol-clud-1.7.3-217-x86_64.rpm
-.. |s9s_tools_rpm| replace:: http://repo.severalnines.com/s9s-tools/RHEL_7/x86_64/s9s-tools-1.7-138.1.x86_64.rpm
-.. |ClusterControl_UI_deb| replace:: https://severalnines.com/downloads/cmon/clustercontrol_1.7.3-6244_x86_64.deb
-.. |ClusterControl_Controller_deb| replace:: https://severalnines.com/downloads/cmon/clustercontrol-controller-1.7.3-3372-x86_64.deb
-.. |ClusterControl_Notifications_deb| replace:: https://severalnines.com/downloads/cmon/clustercontrol-notifications_1.7.3-182_x86_64.deb
-.. |ClusterControl_SSH_deb| replace:: https://severalnines.com/downloads/cmon/clustercontrol-ssh_1.7.3-79_x86_64.deb
-.. |ClusterControl_Cloud_deb| replace:: https://severalnines.com/downloads/cmon/clustercontrol-cloud_1.7.3-217_x86_64.deb
-.. |ClusterControl_CLUD_deb| replace:: https://severalnines.com/downloads/cmon/clustercontrol-clud_1.7.3-217_x86_64.deb
-.. |s9s_tools_deb| replace:: http://repo.severalnines.com/s9s-tools/xenial/amd64/s9s-tools_1.7.20190712-release1_amd64.deb
-.. |s9s_tools_lib_deb| replace:: http://repo.severalnines.com/s9s-tools/xenial/amd64/libs9s0_1.7.20190712-release1_amd64.deb
+.. |ClusterControl_UI_rpm| replace:: https://severalnines.com/downloads/cmon/clustercontrol-1.7.4-6594-x86_64.rpm
+.. |ClusterControl_Controller_rpm| replace:: https://severalnines.com/downloads/cmon/clustercontrol-controller-1.7.4-3596-x86_64.rpm
+.. |ClusterControl_Notifications_rpm| replace:: https://severalnines.com/downloads/cmon/clustercontrol-notifications-1.7.4-190-x86_64.rpm
+.. |ClusterControl_SSH_rpm| replace:: https://severalnines.com/downloads/cmon/clustercontrol-ssh-1.7.4-84-x86_64.rpm
+.. |ClusterControl_Cloud_rpm| replace:: https://severalnines.com/downloads/cmon/clustercontrol-cloud-1.7.4-224-x86_64.rpm
+.. |ClusterControl_CLUD_rpm| replace:: https://severalnines.com/downloads/cmon/clustercontrol-clud-1.7.4-224-x86_64.rpm
+.. |s9s_tools_rpm| replace:: http://repo.severalnines.com/s9s-tools/CentOS_7/x86_64/s9s-tools-1.7-145.1.x86_64.rpm
+.. |ClusterControl_UI_deb| replace:: https://severalnines.com/downloads/cmon/clustercontrol_1.7.4-6594_x86_64.deb
+.. |ClusterControl_Controller_deb| replace:: https://severalnines.com/downloads/cmon/clustercontrol-controller-1.7.4-3596-x86_64.deb
+.. |ClusterControl_Notifications_deb| replace:: https://severalnines.com/downloads/cmon/clustercontrol-notifications_1.7.4-190_x86_64.deb
+.. |ClusterControl_SSH_deb| replace:: https://severalnines.com/downloads/cmon/clustercontrol-ssh_1.7.4-84_x86_64.deb
+.. |ClusterControl_Cloud_deb| replace:: https://severalnines.com/downloads/cmon/clustercontrol-cloud_1.7.4-224_x86_64.deb
+.. |ClusterControl_CLUD_deb| replace:: https://severalnines.com/downloads/cmon/clustercontrol-clud_1.7.4-224_x86_64.deb
+.. |s9s_tools_deb| replace:: http://repo.severalnines.com/s9s-tools/xenial/amd64/s9s-tools_1.7.20191213-release1_amd64.deb
+.. |s9s_tools_lib_deb| replace:: http://repo.severalnines.com/s9s-tools/xenial/amd64/libs9s0_1.7.20191213-release1_amd64.deb
 """
 
 math_output = 'MathJax'
