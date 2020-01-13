@@ -5,6 +5,63 @@ Change Logs
 
 This change logs list details about updates in each version of ClusterControl.
 
+Changes in v1.7.5
+-----------------
+
+Maintenance Release: January 7\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.5-3616
+	- clustercontrol-1.7.5-6604  
+
+* Frontend (UI):
+	- Cluster Overview (MySQL based clusters): Fixed an issue with the Query Outliers which relied on deprecated code.
+	- Node Actions: The *Stop Node* action is always visible so it is always possible to stop a node.
+
+* Controller:
+	- Notifications: Fixed an error with certain SMTP servers, ``550 5.6.11 SMTPSEND.BareLinefeedsAreIllegal``.
+	- PostgreSQL 9.7 with TimescaleDB: Add node fails on CentOS 7 and CentOS 8
+
+Initial Release: December 18\ :sup:`th`\ , 2019
++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.5-6599
+	- clustercontrol-controller-1.7.5-3601
+	- clustercontrol-notifications-1.7.5-201
+	- clustercontrol-ssh-1.7.5-88 
+	- clustercontrol-cloud-1.7.5-225
+
+In this release we are introducing cluster-wide maintenance mode, taking snapshots of the MySQL database status and processlist before a cluster failure, and support for new versions of PostgreSQL, MongoDB, CentOS and Debian.
+
+We have previously supported maintenance mode for one node at a time, however more often than not you want to put all cluster nodes into maintenance. Cluster-wide maintenance mode enables you to set a maintenance period for all the database nodes/cluster at once.
+
+To assist in finding the root cause of failed database nodes we are now taking snapshots of the MySQL status and processlist which will show you the state of the database node around the time where it failed. Cluster incidents can then be inspected in an operational report or from the s9s command line tool.
+
+Finally, we have worked on adding support for Centos 8, Debian 10, and deploying/importing MongoDB v4.2 and Percona MongoDB v4.0.
+
+**Feature Details**
+
+* Cluster Wide Maintenance
+	- Enable/disable cluster-wide maintenace mode with cron based schedule.
+	- Enable/disable recurring jobs such as cluster or node recovery with automatic maintenance mode.
+* MySQL Freeze Frame (BETA)
+	- Snapshot MySQL status before cluster failure.
+	- Snapshot MySQL process list before cluster failure (coming soon).
+	- Inspect cluster incidents in operational reports or from the s9s command line tool.
+* Updated Version Support
+	- Centos 8 and Debian 10 support.
+	- PostgreSQL 12 support.
+	- MongoDB 4.2 and Percona MongoDB v4.0 support.
+* Misc
+	- Synchronize time range selection between the Overview and Node pages.
+	- Improvements to the nodes status updates to be more accurate and with less delay.
+	- Enable/disable Cluster and Node recovery are now regular CMON jobs.
+	- Topology view with cluster to cluster replication.
+	
+
+
 Changes in v1.7.4
 -----------------
 
