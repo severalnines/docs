@@ -5,6 +5,8 @@ Change Logs
 
 This change logs list details about updates in each version of ClusterControl.
 
+.. Attention:: We have encountered a severe bug in a library clustercontrol 1.7.3 relies on for SSH communication and may cause severe side effects. If you are using ClusterControl 1.7.3 then you must upgrade the ``clustercontrol-controller`` package to at least version 1.7.3-3440 (release date September 24th, 2019) or later.
+
 Changes in v1.7.5
 -----------------
 
@@ -64,8 +66,6 @@ Finally, we have worked on adding support for Centos 8, Debian 10, and deploying
 
 Changes in v1.7.4
 -----------------
-
-.. Attention:: We have encountered a severe bug in a library clustercontrol 1.7.3 relies on for SSH communication and may cause severe side effects. If you are using ClusterControl 1.7.3 then you must upgrade the ``clustercontrol-controller`` package to version 1.7.3-3440 (release date September 24th, 2019) or later.
 
 Maintenance Release: December 16\ :sup:`th`\ , 2019
 +++++++++++++++++++++++++++++++++++++++++++++++++++++
