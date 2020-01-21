@@ -12,7 +12,7 @@ Spotlight Search
 
 Helps users navigate through pages, find nodes and perform actions faster by typing the elements in the cluster. The supported elements are hostname, IP address, cluster name, cluster actions, node actions and ClusterControl's navigation menu. The search result is automatically filtered based on the input from text field.
 
-.. Note:: This feature has a keyboard shortcut: ``CTRL + Space``.
+.. Note:: This feature has a keyboard shortcut: ``Ctrl + Space``.
 
 .. _Sidebar - Clusters:
 
@@ -26,9 +26,14 @@ List of database clusters managed by ClusterControl with summarized status. Data
 Operational Reports
 -------------------
 
-Generates or schedules operational reports. Operational report is a comprehensive way to understand the state of your database cluster along the time. The reports can be generated in-place or can be delivered to you via email, which make things conveniently easy if you have a reporting silo.
+Generates or schedules operational reports, as well as incident reports. Operational report is a comprehensive way to understand the state of your database cluster along the time. The reports can be generated in-place or can be delivered to you via email, which make things conveniently easy if you have a reporting silo. For incident reports, ClusterControl will auto generate an incident report via a feature called MySQL Freeze Frame when these two states are triggered:
 
-There are 5 types of reports available:
+* CLUSTER_DEGRADED
+* CLUSTER_FAILURE
+
+.. Note:: Further reading on ClusterControl's MySQL Freeze Frame feature in this blog post, `Why Did My MySQL Database Crash? Get Insights with the New MySQL Freeze Frame <https://severalnines.com/database-blog/why-did-my-mysql-database-crash-get-insights-new-mysql-freeze-frame>`_.
+
+For operational reports, there are 5 types of reports available:
 
 * Availability report - All clusters.
 * Backup report - All clusters.
@@ -56,7 +61,7 @@ Provides list of generated operational reports. Click on any of the entries will
 Schedules
 ++++++++++
 
-List of scheduled operational report.
+List of scheduled operational report and incident reports (if any).
 
 * **Schedule**
 	- Schedules an operational report at an interval. You can schedule it daily, weekly and monthly. Optionally, you can click on 'Add Email' button to add recipients into the list.
@@ -98,7 +103,7 @@ This report compares the selected MySQL/MariaDB database changes in table struct
 
 In order for ClusterControl to produce an accurate report, special options must be configured inside CMON configuration file for the respective cluster:
 
-* ``schema_change_detection_address`` - Checks will be executed using SHOW TABLES/SHOW CREATE TABLE to determine if the schema has changed. The checks are executed on the address specified and is of the format HOSTNAME:PORT. The ``schema_change_detection_databases`` must also be set. A differential of a changed table is created (using diff).
+* ``schema_change_detection_address`` - Checks will be executed using ``SHOW TABLES`` or ``SHOW CREATE TABLE`` to determine if the schema has changed. The checks are executed on the address specified and is of the format ``{HOSTNAME}:{PORT}.`` The ``schema_change_detection_databases`` must also be set. A differential of a changed table is created (using diff).
 * ``schema_change_detection_databases`` - Comma separated list of databases to monitor for schema changes. If empty, no checks are made.
 
 .. Note:: Only ``CREATE TABLE`` and ``ALTER TABLE`` are detected. ``DROP TABLE`` is not supported yet.
@@ -325,7 +330,7 @@ Critical Events
 +               +--------------------------+------------+--------------------------------------------------------------------------------------------+
 |               | HostRamUsage             | Critical   | >90% RAM used.                                                                             |
 +               +--------------------------+------------+--------------------------------------------------------------------------------------------+
-|               | HostDiskUsage            | Critical   | >90% disk space used on a monitored_mountpoint.                                            |
+|               | HostDiskUsage            | Critical   | >90% disk space used on a ``monitored_mountpoint``.                                        |
 +               +--------------------------+------------+--------------------------------------------------------------------------------------------+
 |               | ProcessCpuUsage          | Critical   | >99 % CPU used in average by a process for 15 minutes.                                     |
 +---------------+--------------------------+------------+--------------------------------------------------------------------------------------------+
@@ -481,19 +486,23 @@ In order to provide an access to Azure services you need to register an applicat
 	a) Login to *Microsoft Azure portal > Azure Active Directory > App registrations > New application registration*.
 	b) Provide a name and URL for the application. Select "Web app / API" for the type of application you want to create. 
 	c) After specify the values, click "Create".
+
 2. Get application ID and authentication key:
 	a) From App registrations in Azure Active Directory, select your application.
 	b) Copy the Application ID. You should pass that value as ``application_id``.
 	c) To generate an authentication key, select *Settings > Keys*.
 	d) Provide a description of the key, and a duration for the key. When done, select "Save".
 	e) After saving the key, the value of the key is displayed. Copy this value because you are not able to retrieve the key later. Pass this value as ``client_secret``.
+
 3. Get tenant ID:
 	a) Go to *Microsoft Azure portal > Azure Active Directory > Properties* for your Azure AD tenant.
 	b) Copy the "Directory ID". Pass this value as ``tenant_id``.
+
 4. Get subscription ID:
 	a) Go to *Microsoft Azure portal > Subscriptions*.
 	b) Select your subscription from the list. 
 	c) Copy the "Subscription ID". Pass this value as ``subscription_id``.
+
 5. Create a resource group:
 	a) Go to *Microsoft Azure portal > Resource groups > Add*.
 	b) Fill in the values and click "Create". 
@@ -501,7 +510,8 @@ In order to provide an access to Azure services you need to register an applicat
 	d) Wait until Resource group is created and click *Go to resource group > Access control (IAM) > Add > Add Role Assignment*.
 	e) Select "Contributor" as a Role then put your application's name into search input and select it from the list. 
 	f) Click "Save".
-7. Create a storage account (for *Upload Backup to Cloud* feature):
+	
+6. Create a storage account (for *Upload Backup to Cloud* feature):
 	a) Go to *Microsoft Azure portal > Storage accounts > Add*.
 	b) Fill the "Name" and select "Blob storage" as Account kind. 
 	c) Copy the "Name" value and use it as ``storage_account`` in credentials.

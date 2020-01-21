@@ -295,24 +295,11 @@ Housekeeping
 
 ClusterControl monitoring data will be purged based on the value set at *ClusterControl > Settings > General Settings > History* (default is 7 days). Some users might find this value to be too low for auditing purposes. You can increase the value accordingly however, the longer collected data exist in CMON database, the bigger space it needs. It is recommended to lower the disk space threshold under *ClusterControl > Settings > Thresholds > Disk Space Utilization* so you will get early warning in case CMON database grows significantly.
 
-If you intend to manually purge the monitoring data, you can truncate following tables (it is highly recommended to truncate based on the following order):
-
-.. code-block:: mysql
-
-	mysql> TRUNCATE TABLE mysql_advisor_history;
-	mysql> TRUNCATE TABLE mysql_statistics_tm;
-	mysql> TRUNCATE TABLE ram_stats_history;
-	mysql> TRUNCATE TABLE cpu_stats_history;
-	mysql> TRUNCATE TABLE disk_stats_history;
-	mysql> TRUNCATE TABLE net_stats_history;
-	mysql> TRUNCATE TABLE mysql_global_statistics_history;
-	mysql> TRUNCATE TABLE mysql_statistics_history;
-	mysql> TRUNCATE TABLE cmon_log_entries;
-	mysql> TRUNCATE TABLE collected_logs;
+There's an option to define how long the data should be kept. In cmon configuration file (``/etc/cmon.d/cmon_X.cnf`` where X is the cluster id) you can use ``save_history_days`` and pass how many days of the history you would like to keep. Please keep in mind you have to restart cmon (service cmon restart​) to apply the change. If you need to take immediate action, you can truncate ``cmon_job``, ``cmon_job_message`` and ``cmon_log_entries`` tables. 
 
 The CMON process has internal log rotation scheduling where it will log up to 5 MB in size before archiving ``/var/log/cmon.log`` and ``/var/log/cmon_{cluster ID}.log``. The archived log will be named as ``cmon.log.1`` (or ``cmon_{cluster ID}.log.1``) sequentially, with up to 9 archived log files (total of 10 log files rotation).
 
-If you have configured a very short interval recurring jobs like backup job running every hour, it would produce lots of job activities. We would suggest you to lower the controller job history retention period, to like 1 or 2 days. It can be done using the ``save_history_days=1`` configuration option, set it into ``/etc/cmon.d/cmon_{clustre ID}.cnf``, and restart CMON to apply the changes. The controller only keep the last two days job history. The default value is 7. For more details see :ref:`Components - ClusterControl Controller - Configuration Options` or ``cmon --help-config`` output.
+If you have configured a very short interval recurring jobs like backup job running every hour, it would produce lots of job activities. We suggest you to lower the controller job history retention period, to like 1 or 2 days. It can be done using the ``save_history_days=1`` configuration option, set it into ``/etc/cmon.d/cmon_{clustre ID}.cnf``, and restart CMON to apply the changes. The controller only keep the last two days job history. The default value is 7. For more details see :ref:`Components - ClusterControl Controller - Configuration Options` or ``cmon --help-config`` output.
 
 .. _Administration - Health Checks:
 

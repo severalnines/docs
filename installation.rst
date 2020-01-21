@@ -53,10 +53,12 @@ YUM Repository
 APT Repository
 ++++++++++++++
 
+
 1. Manually add Severalnines repository public key into your APT keyring:
 
 .. code-block:: bash
 
+	$ apt-get -y install gnupg2
 	$ wget http://repo.severalnines.com/severalnines-repos.asc -O- | sudo apt-key add -
 
 2 (a). You can download the repository definition from `Severalnines download page <http://www.severalnines.com/downloads/cmon/>`_:

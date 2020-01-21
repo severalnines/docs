@@ -10,7 +10,7 @@ Opens a step-by-step modal dialog to deploy a new set of database cluster. The f
 	* Percona XtraDB Cluster
 	* MariaDB Galera Cluster
 * MySQL Cluster (NDB)
-* TimeScaleDB (standalone or streaming replication)
+* TimescaleDB (standalone or streaming replication)
 * PostgreSQL (standalone or streaming replication)
 * MongoDB ReplicaSet
 * MongoDB Sharded Cluster
@@ -82,7 +82,7 @@ Starting from version 1.4.0, it's possible to setup a master-master replication 
 	- Oracle - MySQL Server by Oracle
 
 * **Version**
-	- Select the MySQL version for new deployment. For Oracle, only 5.7 and 8.0 are supported. For Percona, 5.6, 5.7 and 8.0 while MariaDB, 10.1, 10.2 and 10.3 are supported.
+	- Select the MySQL version for new deployment. For Oracle, only 5.7 and 8.0 are supported. For Percona, 5.6, 5.7 and 8.0 while MariaDB, 10.1, 10.2, 10.3 and 10.4 are supported.
 
 * **Server Data Directory**
 	- Location of MySQL data directory. Default is ``/var/lib/mysql``.
@@ -176,7 +176,7 @@ By default, ClusterControl deploys MySQL Galera with the following configuration
 	- MariaDB - MariaDB Server (Galera embedded) by MariaDB
 
 * **Version**
-	- Select the MySQL version for new deployment. For Percona, 5.6 and 5.7 are supported while MariaDB, 10.1, 10.2 and 10.3 are supported.
+	- Select the MySQL version for new deployment. For Percona, 5.6 and 5.7 are supported while MariaDB, 10.1, 10.2, 10.3 and 10.4 are supported.
 
 * **Server Data Directory**
 	- Location of MySQL data directory. Default is ``/var/lib/mysql``.
@@ -336,7 +336,7 @@ Deploys a new TimeScaleDB standalone or streaming replication cluster. Only Time
 	- Specify the password for *User*.
 
 * **Version**
-	- Supported versions are 9.6 and 10.
+	- Supported versions are 9.6, 10, 11 and 12.
 	
 * **Repository**
 	- Use Vendor Repositories - Provision software by setting up and using the database vendor's preferred software repository. ClusterControl will always install the latest version of what is provided by database vendor repository.
@@ -411,7 +411,7 @@ Deploys a new PostgreSQL standalone or streaming replication cluster from Cluste
 	- Specify the password for *User*.
 
 * **Version**
-	- Supported versions are 9.6 and 10.
+	- Supported versions are 9.6, 10, 11 and 12.
 	
 * **Repository**
 	- Use Vendor Repositories - Provision software by setting up and using the database vendor's preferred software repository. ClusterControl will always install the latest version of what is provided by database vendor repository.
@@ -482,7 +482,7 @@ Deploys a new MongoDB Replica Set. The database cluster will be automatically ad
 	- MongoDB - MongoDB Server by MongoDB Inc.
 
 * **Version**
-	- The supported MongoDB versions are 3.2, 3.4, 3.6 and 4.0 (MongoDB only).
+	- The supported MongoDB versions are 3.4, 3.6, 4.0 and 4.2.
 
 * **Server Data Directory**
 	- Location of MongoDB data directory. Default is ``/var/lib/mongodb``.
@@ -598,7 +598,7 @@ Deploys a new MongoDB Sharded Cluster. The database cluster will be automaticall
 	- MongoDB - MongoDB Server by MongoDB Inc
 
 * **Version**
-	- The supported MongoDB versions are 3.2, 3.4, 3.6 and 4.0 (MongoDB only).
+	- The supported MongoDB versions are 3.4, 3.6, 4.0 and 4.2.
 
 * **Server Data Directory**
 	- Location of MongoDB data directory. Default is ``/var/lib/mongodb``.

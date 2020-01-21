@@ -26,11 +26,20 @@ Provides shortcuts to the main cluster functionality. For PostgreSQL Streaming R
 * **Create Slave Cluster**
 	- Create a new cluster that replicates from this cluster. See `Cluster-Cluster Replication`_.
 
+* **Disable/Enable Cluster Recovery**
+	- Disable or enable cluster recovery. 
+	- This feature works similarly with the automatic recovery (cluster) toggle button in the summary bar. However, it applies the modification permanently into CMON configuration file for persistency.
+
+* **Disable/Enable Node Recovery**
+	- Disable or enable node recovery. This feature works similarly with with the automatic recovery toggle buttons in the summary bar.
+	- This feature works similarly with the automatic recovery (node) toggle button in the summary bar. However, it applies the modification permanently into CMON configuration file for persistency.
+
 * **Enable TimeScaleDB**
 	- Setups TimeScaleDB database extension on every PostgreSQL node. The installation will be performed on one database node at a time, followed by a database restart to apply the changes.
 
-* **Create SSL Encryption**
-	- See `Create SSL Encryption`_.
+* **Schedule Maintenance Mode**
+	- Schedules a cluster-wide maintenance mode, where ClusterControl will skip raising up alarms and notifications while the mode is active. 
+	- All nodes in the cluster (regardless of the role) will be marked under maintenance. A global banner will appear if there is an upcoming maintenance for the corresponding cluster.
 
 * **Delete Cluster**
 	- This action will remove the corresponding cluster from ClusterControl supervision and will NOT uninstall the actual database cluster.

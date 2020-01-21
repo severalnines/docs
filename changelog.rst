@@ -5,10 +5,36 @@ Change Logs
 
 This change logs list details about updates in each version of ClusterControl.
 
-.. Attention:: We have encountered a severe bug in a library clustercontrol 1.7.3 relies on for SSH communication and may cause severe side effects. If you are using ClusterControl 1.7.3 then you must upgrade the ``clustercontrol-controller`` package to at least version 1.7.3-3440 (release date September 24th, 2019) or later.
+.. Attention:: We have encountered a severe bug in a library ClusterControl 1.7.3 relies on for SSH communication and may cause severe side effects. If you are using ClusterControl 1.7.3 then you must upgrade the ``clustercontrol-controller`` package to at least version 1.7.3-3440 (release date September 24th, 2019) or later.
 
 Changes in v1.7.5
 -----------------
+
+Maintenance Release: January 20\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.5-3638
+	- clustercontrol-1.7.5-6619  
+
+* Frontend:
+	- MongoDB: Added 4.0 and 4.2 versions for both mongodb.org and percona vendor in the UI.
+	- MySQL/Backup: Added 'qpress' compression option.
+	- Backups: Netcat/socat port is now specified in *Global Settings*.
+	- Backups:  Added check on Failover host so it cannot be set to the same value as the primary backup host.
+	- Cluster List: Fixed a sorting order issue.
+
+* Controller:
+	- MySQL/Backup: Auto-install 'qpress' during restore/verify when required.
+	- MySQL/Replication A segfault when failover master could happen in MySQL 8.0.
+	- MySQL: Disable unsupported variables for 5.5.
+	- ProxySQL: Avoid executing SQL init commands on the connection (crashing bug in ProxySQL 1.4.10, fixed in ProxySQL 1.4.13).
+	- MongoDB 4.2: Fixed an issue Importing a Cluster due to new lines in the keyfile.
+	- MongoDB: Fixed a missing cloud badge on mongo clusters created in the cloud
+	- PostgreSQL: Improve the free disk space detection before rebuild slave.
+	- PostgreSQL: Create cluster in the cloud failed because no PostgreSQL version was specified.
+	- PostgreSQL: Auto-rebuilding failed replication slaves now resorts to use the full node rebuild strategy instead of ``pg_rewind`` as it knows to fail in a number of scenarios.
+	- Dashboards/Prometheus exporters: New configuration option: ``db_exporter_use_nonlocal_address``.
 
 Maintenance Release: January 7\ :sup:`th`\ , 2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++

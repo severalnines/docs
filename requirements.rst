@@ -30,15 +30,17 @@ Operating system
 
 ClusterControl has been tested on the following operating systems:
 
-* RedHat/CentOS 6.x/7.x
+* Red Hat Enterprise Linux 6.x/7.x/8.x
+* CentOS 6.x/7.x/8.x
 * Ubuntu 12.04/14.04/16.04/18.04 LTS
-* Debian 7.x/8.x/9.x
+* Debian 7.x/8.x/9.x/10.x
 
-For the managed nodes, the deployment feature has been tested on the following operating systems:
+For the monitored nodes, the deployment feature has been tested on the following operating systems:
 
-* RedHat/CentOS 6.x/7.x
+* Red Hat Enterprise Linux 6.x/7.x
+* CentOS 6.x/7.x/8.x
 * Ubuntu 12.04/14.04/16.04/18.04 LTS
-* Debian 7.x/8.x/9.x
+* Debian 7.x/8.x/9.x/10.x
 
 The following do not work:
 
@@ -94,22 +96,24 @@ The following table shows supported database clusters with recommended minimum n
 +=================+============================+==========================================+=================================================================================+
 | MySQL/MariaDB   | MySQL Cluster (NDB)        | 7.1 and later                            | 5 hosts (2 data nodes + 2 API/mgmd nodes + 1 ClusterControl node)               |
 |                 +----------------------------+------------------------------------------+---------------------------------------------------------------------------------+
-|                 | MySQL replication          | 5.1/5.5/5.6/5.7/8.0                      | 3 hosts (1 master node + 1 standby master/slave + 1 ClusterControl node)        |
+|                 | MySQL/MariaDB replication  | * 5.1/5.5/5.6/5.7/8.0 (MySQL/Percona)    | 3 hosts (1 master node + 1 standby master/slave + 1 ClusterControl node)        |
+|                 |                            | * 5.5/10.0/10.1/10.2/10.3/10.4 (MariaDB) |                                                                                 |
 |                 +----------------------------+------------------------------------------+---------------------------------------------------------------------------------+
-|                 | * Percona XtraDB Cluster   | * 5.5/5.6/5.7 (MySQL/Percona)            | 4 hosts (3 nodes + 1 ClusterControl node)                                       |
+|                 | * Percona XtraDB Cluster   | * 5.5/5.6/5.7 (MySQL/Percona)            | 4 hosts (3 Galera nodes + 1 ClusterControl node)                                |
 |                 | * MariaDB Galera Cluster   | * 5.5/10.0/10.1/10.2/10.3/10.4 (MariaDB) |                                                                                 |
 |                 +----------------------------+------------------------------------------+---------------------------------------------------------------------------------+
-|                 | Single instance            | 5.5/5.6/5.7/8.0                          | 2 hosts (1 MySQL node + 1 ClusterControl node)                                  |
+|                 | Single instance            | * 5.5/5.6/5.7/8.0 (MySQL/Percona)        | 2 hosts (1 database node + 1 ClusterControl node)                               |
+|                 |                            | * 5.5/10.0/10.1/10.2/10.3/10.4 (MariaDB) |                                                                                 |
 +-----------------+----------------------------+------------------------------------------+---------------------------------------------------------------------------------+
-| MongoDB/Percona | Sharded cluster            | 3.2/3.4/3.6/4.0 (MongoDB only)           | 4 hosts (3 config servers / 3 shard servers / 2 mongos + 1 ClusterControl node) |
+| MongoDB/Percona | Sharded cluster            | 3.4/3.6/4.0/4.2                          | 4 hosts (3 config servers / 3 shard servers / 2 mongos + 1 ClusterControl node) |
 | Server for      +----------------------------+                                          +---------------------------------------------------------------------------------+
 | MongoDB         | Replica set                |                                          | 4 hosts (3 replica servers + 1 ClusterControl node)                             |
 +-----------------+----------------------------+------------------------------------------+---------------------------------------------------------------------------------+
-| PostgreSQL      | Single instance            | >9.6/10.x/11.x                           | 2 hosts (1 PostgreSQL node + 1 ClusterControl node)                             |
+| PostgreSQL      | Single instance            | >9.6/10.x/11.x/12.x                      | 2 hosts (1 PostgreSQL node + 1 ClusterControl node)                             |
 |                 +----------------------------+                                          +---------------------------------------------------------------------------------+
 |                 | Streaming replication      |                                          | 3 hosts (1 master node + 1 slave node + 1 ClusterControl node)                  |
 +-----------------+----------------------------+------------------------------------------+---------------------------------------------------------------------------------+
-| TimeScaleDB     | Single instance            | >9.6/10.x/11.x                           | 2 hosts (1 TimeScaleDB node + 1 ClusterControl node)                            |
+| TimeScaleDB     | Single instance            | >9.6/10.x/11.x/12.x                      | 2 hosts (1 TimeScaleDB node + 1 ClusterControl node)                            |
 |                 +----------------------------+                                          +---------------------------------------------------------------------------------+
 |                 | Streaming replication      |                                          | 3 hosts (1 master node + 1 slave node + 1 ClusterControl node)                  |
 +-----------------+----------------------------+------------------------------------------+---------------------------------------------------------------------------------+
@@ -204,6 +208,10 @@ ClusterControl supports various database and application vendors and each has it
 |                                                 | * ICMP (echo reply/request)                 |
 |                                                 | * 6032 (ProxySQL Admin)                     |
 |                                                 | * 6033 (MySQL load-balanced)                |
++-------------------------------------------------+---------------------------------------------+
+| Prometheus                                      | * 22 (SSH)                                  |
+|                                                 | * ICMP (echo reply/request)                 |
+|                                                 | * 9090 (Prometheus)                         |
 +-------------------------------------------------+---------------------------------------------+
 
 .. _Requirements - Hostnames and IP Addresses:

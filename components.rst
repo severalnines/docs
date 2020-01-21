@@ -174,7 +174,7 @@ An example of CMON configuration file hierarchy is as follows:
 +----------------------------+------------------------+--------------+-----------------------------+
 | Cluster #1 (Galera)        | /etc/cmon.d/cmon_1.cnf | cluster_id=1 | logfile=/var/log/cmon_1.log |
 +----------------------------+------------------------+--------------+-----------------------------+
-| Cluster #2 (MySQL Cluster) | /etc/cmon.d/cmon_2.cnf | cluster_id=2 | logfile=/var/log/cmon_2.log |
+| Cluster #2 (MongoDB)       | /etc/cmon.d/cmon_2.cnf | cluster_id=2 | logfile=/var/log/cmon_2.log |
 +----------------------------+------------------------+--------------+-----------------------------+
 | Cluster #N (cluster type)  | /etc/cmon.d/cmon_N.cnf | cluster_id=N | logfile=/var/log/cmon_N.log |
 +----------------------------+------------------------+--------------+-----------------------------+
@@ -200,7 +200,7 @@ Values that consists of special characters must be enclosed with single-quote. A
 8. `Backup`_
 9. `MySQL/MariaDB Nodes`_
 10. `MongoDB Nodes`_
-11. `PostgreSQL Nodes`_
+11. `PostgreSQL/TimescaleDB Nodes`_
 
 Following is the list of configuration options inside CMON configuration file. You can also see them by using ``--help-config`` parameter in the terminal:
 
@@ -224,6 +224,7 @@ Option                                    Description
 ``enable_html_emails=<boolean integer>``  Enables sending of HTML e-mails. Default is 1 (true).
 ``cmon_mail_sender=<email>``              The sender email address when sending out emails.
 ``frontend_url=<url>``                    The ClusterControl URL to be embedded inside e-mail notifications. Example ``frontend_url='https://monitor.domain.com/clustercontrol'``
+``acl=<string>``                          The Access Control List as a string controlling the access to the cluster object.
 ========================================= ===========
 
 CMON
@@ -315,54 +316,57 @@ Option                                              Description
 Monitoring and Thresholds
 ``````````````````````````
 
-=================================================== ===========
-Option                                              Description
-=================================================== ===========
-``monitored_mountpoints=<paths>``                   The MySQL/MongoDB/PostgreSQL data directory used by database nodes for disk performance in comma separated list. Example: ``monitored_mountpoints=/var/lib/mysql,/mnt/data/mysql``. Other alias: ``monitored_mount_points``.
-``monitored_nics=<string>``                         List of network interface name to be monitored for network performance in comma separated list. Example: ``monitored_nics=eth1,eth2``.
-``db_stats_collection_interval=<integer>``          Database metrics sampling interval in seconds. The lowest value is 1. Default is 30 seconds. Example: ``db_stats_collection_interval=30``.
-``host_stats_collection_interval=<integer>``        Host metrics sampling interval in seconds. The lowest value is 1. Default is 30 seconds. Example: ``host_stats_collection_interval=30``.
-``lb_stats_collection_interval=<integer>``          Load balancer stats collection interval. Default is 15. Example: ``lb_stats_collection_interval=30``.
-``db_schema_stats_collection_interval=<integer>``   How often database growth and table checks are performed in seconds. This translates to information_schema queries. Default is 10800 seconds (3 hours). 0 means disabled. Example: ``db_schema_stats_collection_interval=10800``.
-``db_proc_stats_collection_interval=<integer>``     Setting for database process stats collection interval. Default is 3 seconds. Minimum allowed value is 1 second. Example: ``db_proc_stats_collection_interval=5``.
-``db_log_collection_interval=<integer>``            Database log files collection interval. Default is 600. Example: ``db_log_collection_interval=600``.
-``db_deadlock_check_interval=<integer>``            How often to check for deadlocks in seconds. Deadlock detection will affect CPU usage on database nodes. Default is 0, means disabled. Example: ``db_deadlock_check_interval=600``.
-``db_schema_max_objects=<integer>``                 Maximum number of database objects that ClusterControl will pull from monitored database nodes. If the number of schema objects (tables, triggers, views) are greater than this then no schema analysis will be done. Example: ``db_schema_max_objects=500``.
-``db_hourly_stats_collection_interval=<integer>``   Database statistic collections interval in seconds. Default is 5. Example: ``db_hourly_stats_collection_interval=5``.
-``enable_mysql_timemachine=<boolean integer>``      This determine whether ClusterControl should enable MySQL time machine status and variable collections. The status time machine allows you to select status variable for a time range and compare the values at the start and end of that range from ClusterControl UI. Default is 0, meaning it is disabled. Example: ``enable_mysql_timemachine=1``.
-``swap_warning=<integer>``                          Warning alarm threshold for swap usage. Default is 5. Also configurable at *ClusterControl > {cluster_id} > Settings > Thresholds*. Example: ``swap_warning=20``.
-``swap_critical=<integer>``                         Critical alarm threshold for swap usage. Default is 20. Also configurable at *ClusterControl > {cluster_id} > Settings > Thresholds*. Example: ``swap_critical=40``.
-``swap_inout_period=<integer>``                     The interval for swap I/O alarms in seconds. 0 means disabled. Default is 600 (10 minutes). Example: ``swap_inout_period=120``.
-``swap_inout_warning=<integer>``                    The number of pages swapped I/O for warning in the specified ``swap_inout_period``. Default is 10240. To determine the page size for the host, use ``getconf PAGESIZE``. Example: ``swap_inout_warning=51200``.
-``swap_inout_critical=<integer>``                   The number of pages swapped I/O for critical in the specified ``swap_inout_period``. Default is 102400. To determine the page size for the host, use ``getconf PAGESIZE``. Example: ``swap_inout_critical=102400``.
-``save_history_days=<integer>``                     How many days controller shall keep data. Default is 7. 0 means disabled.
-``mysqlmemory_warning=<integer>``                   Warning alarm threshold for MySQL memory. Default is 80.
-``mysqlmemory_critical=<integer>``                  Critical alarm threshold for MySQL memory. Default is 90.
-``ram_warning=<integer>``                           Warning alarm threshold for RAM usage. Default is 80.
-``ram_critical=<integer>``                          Critical alarm threshold for RAM usage. Default is 90.
-``diskspace_warning=<integer>``                     Warning alarm threshold for disk usage. Default is 80.
-``diskspace_critical=<integer>``                    Critical alarm threshold for disk usage. Default is 90.
-``cpu_warning=<integer>``                           Warning alarm threshold for CPU usage. Default is 80.
-``cpu_critical=<integer>``                          Critical alarm threshold for CPU usage. Default is 90.
-``cpu_steal_warning=<integer>``                     Warning alarm threshold for CPU steal. Default is 10.
-``cpu_steal_critical=<integer>``                    Critical alarm threshold for CPU steal. Default is 20.
-``cpu_iowait_warning=<integer>``                    Warning alarm threshold for CPU IO Wait. Default is 50.
-``cpu_iowait_critical=<integer>``                   Critical alarm threshold for CPU IO Wait. Default is 60.
-``monitor_cpu_temperature=<boolean integer>``       Whether to monitor CPU temperature. Default is 0 (false).
-``redobuffer_warning=<integer>``                    Warning alarm threshold for redo buffer usage. Default is 80.
-``redobuffer_critical=<integer>``                   Critical alarm threshold for redo buffer usage. Default is 90.
-``indexmemory_warning=<integer>``                   Warning alarm threshold for index memory usage. Default is 80.
-``indexmemory_critical=<integer>``                  Critical alarm threshold for index memory usage. Default is 90.
-``datamemory_warning=<integer>``                    Warning alarm threshold for data memory usage. Default is 80.
-``datamemory_critical=<integer>``                   Critical alarm threshold for data memory usage. Default is 90.
-``tablespace_warning=<integer>``                    Warning alarm threshold for table space buffer memory usage. Default is 80.
-``tablespace_critical=<integer>``                   Critical alarm threshold for table space buffer memory usage. Default is 90.
-``redolog_warning=<integer>``                       Warning alarm threshold for redo log usage. Default is 80.
-``redolog_critical=<integer>``                      Critical alarm threshold for redo log usage. Default is 90.
-``enable_is_queries=<boolean integer>``             Specifies whether queries to the *information_schema* will be executed or not. Queries to the information_schema may not be suitable when having many schema objects (100s of databases, 100s of tables in each database, triggers, users, events, sprocs). If disabled, the query that would be executed will be logged so it can be determined if the query is suitable in your environment. Default is 1 (enabled). Disable with 0.
-``max_replication_lag=<integer>``                   Max allowed replication lag in seconds before sending an Alarm. Default is 10.
-``enable_icmp_ping=<boolean integer>``              Toggles if controller shall measure the ICMP ping times to the host. Default is 1 (true).
-=================================================== ===========
+======================================================= ===========
+Option                                                  Description
+======================================================= ===========
+``monitored_mountpoints=<paths>``                       The MySQL/MongoDB/PostgreSQL data directory used by database nodes for disk performance in comma separated list. Example: ``monitored_mountpoints=/var/lib/mysql,/mnt/data/mysql``. Other alias: ``monitored_mount_points``.
+``monitored_nics=<string>``                             List of network interface name to be monitored for network performance in comma separated list. Example: ``monitored_nics=eth1,eth2``.
+``db_stats_collection_interval=<integer>``              Database metrics sampling interval in seconds. The lowest value is 1. Default is 30 seconds. Example: ``db_stats_collection_interval=30``.
+``host_stats_collection_interval=<integer>``            Host metrics sampling interval in seconds. The lowest value is 1. Default is 30 seconds. Example: ``host_stats_collection_interval=30``.
+``lb_stats_collection_interval=<integer>``              Load balancer stats collection interval. Default is 15. Example: ``lb_stats_collection_interval=30``.
+``db_schema_stats_collection_interval=<integer>``       How often database growth and table checks are performed in seconds. This translates to information_schema queries. Default is 10800 seconds (3 hours). 0 means disabled. Example: ``db_schema_stats_collection_interval=10800``.
+``db_proc_stats_collection_interval=<integer>``         Setting for database process stats collection interval. Default is 3 seconds. Minimum allowed value is 1 second. Example: ``db_proc_stats_collection_interval=5``.
+``db_log_collection_interval=<integer>``                Database log files collection interval. Default is 600. Example: ``db_log_collection_interval=600``.
+``db_deadlock_check_interval=<integer>``                How often to check for deadlocks in seconds. Deadlock detection will affect CPU usage on database nodes. Default is 0, means disabled. Example: ``db_deadlock_check_interval=600``.
+``db_schema_max_objects=<integer>``                     Maximum number of database objects that ClusterControl will pull from monitored database nodes. If the number of schema objects (tables, triggers, views) are greater than this then no schema analysis will be done. Example: ``db_schema_max_objects=500``.
+``db_exporter_user=<string>``                           Database user for Prometheus exporter. Default is ``db_exporter_user=cmonexporter``.
+``db_exporter_password=<string>``                       Password for ``db_exporter_user``. Example: ``db_exporter_password=myS3cret``.
+``db_exporter_use_nonlocal_address=<boolean integer>``  Specifies if Prometheus exporter should connect to the non-local address of the DB services, instead of 127.0.0.1. Default is 0 (false). Example: ``db_exporter_use_nonlocal_address=1``.
+``db_hourly_stats_collection_interval=<integer>``       Database statistic collections interval in seconds. Default is 5. Example: ``db_hourly_stats_collection_interval=5``.
+``enable_mysql_timemachine=<boolean integer>``          This determine whether ClusterControl should enable MySQL time machine status and variable collections. The status time machine allows you to select status variable for a time range and compare the values at the start and end of that range from ClusterControl UI. Default is 0, meaning it is disabled. Example: ``enable_mysql_timemachine=1``.
+``swap_warning=<integer>``                              Warning alarm threshold for swap usage. Default is 5. Also configurable at *ClusterControl > {cluster_id} > Settings > Thresholds*. Example: ``swap_warning=20``.
+``swap_critical=<integer>``                             Critical alarm threshold for swap usage. Default is 20. Also configurable at *ClusterControl > {cluster_id} > Settings > Thresholds*. Example: ``swap_critical=40``.
+``swap_inout_period=<integer>``                         The interval for swap I/O alarms in seconds. 0 means disabled. Default is 600 (10 minutes). Example: ``swap_inout_period=120``.
+``swap_inout_warning=<integer>``                        The number of pages swapped I/O for warning in the specified ``swap_inout_period``. Default is 10240. To determine the page size for the host, use ``getconf PAGESIZE``. Example: ``swap_inout_warning=51200``.
+``swap_inout_critical=<integer>``                       The number of pages swapped I/O for critical in the specified ``swap_inout_period``. Default is 102400. To determine the page size for the host, use ``getconf PAGESIZE``. Example: ``swap_inout_critical=102400``.
+``save_history_days=<integer>``                         How many days controller shall keep data. Default is 7. 0 means disabled.
+``mysqlmemory_warning=<integer>``                       Warning alarm threshold for MySQL memory. Default is 80.
+``mysqlmemory_critical=<integer>``                      Critical alarm threshold for MySQL memory. Default is 90.
+``ram_warning=<integer>``                               Warning alarm threshold for RAM usage. Default is 80.
+``ram_critical=<integer>``                              Critical alarm threshold for RAM usage. Default is 90.
+``diskspace_warning=<integer>``                         Warning alarm threshold for disk usage. Default is 80.
+``diskspace_critical=<integer>``                        Critical alarm threshold for disk usage. Default is 90.
+``cpu_warning=<integer>``                               Warning alarm threshold for CPU usage. Default is 80.
+``cpu_critical=<integer>``                              Critical alarm threshold for CPU usage. Default is 90.
+``cpu_steal_warning=<integer>``                         Warning alarm threshold for CPU steal. Default is 10.
+``cpu_steal_critical=<integer>``                        Critical alarm threshold for CPU steal. Default is 20.
+``cpu_iowait_warning=<integer>``                        Warning alarm threshold for CPU IO Wait. Default is 50.
+``cpu_iowait_critical=<integer>``                       Critical alarm threshold for CPU IO Wait. Default is 60.
+``monitor_cpu_temperature=<boolean integer>``           Whether to monitor CPU temperature. Default is 0 (false).
+``redobuffer_warning=<integer>``                        Warning alarm threshold for redo buffer usage. Default is 80.
+``redobuffer_critical=<integer>``                       Critical alarm threshold for redo buffer usage. Default is 90.
+``indexmemory_warning=<integer>``                       Warning alarm threshold for index memory usage. Default is 80.
+``indexmemory_critical=<integer>``                      Critical alarm threshold for index memory usage. Default is 90.
+``datamemory_warning=<integer>``                        Warning alarm threshold for data memory usage. Default is 80.
+``datamemory_critical=<integer>``                       Critical alarm threshold for data memory usage. Default is 90.
+``tablespace_warning=<integer>``                        Warning alarm threshold for table space buffer memory usage. Default is 80.
+``tablespace_critical=<integer>``                       Critical alarm threshold for table space buffer memory usage. Default is 90.
+``redolog_warning=<integer>``                           Warning alarm threshold for redo log usage. Default is 80.
+``redolog_critical=<integer>``                          Critical alarm threshold for redo log usage. Default is 90.
+``enable_is_queries=<boolean integer>``                 Specifies whether queries to the *information_schema* will be executed or not. Queries to the information_schema may not be suitable when having many schema objects (100s of databases, 100s of tables in each database, triggers, users, events, sprocs). If disabled, the query that would be executed will be logged so it can be determined if the query is suitable in your environment. Default is 1 (enabled). Disable with 0.
+``max_replication_lag=<integer>``                       Max allowed replication lag in seconds before sending an Alarm. Default is 10.
+``enable_icmp_ping=<boolean integer>``                  Toggles if controller shall measure the ICMP ping times to the host. Default is 1 (true).
+======================================================= ===========
 
 Query Monitor
 ``````````````
@@ -392,8 +396,9 @@ Backup
 ============================================ ===========
 Option                                       Description
 ============================================ ===========
-``netcat_port=<integer>``                    The netcat port used to stream backups. Default is 9999. Example: ``netcat_port=9999``.
+``netcat_port=<string>``                     List of netcat/socat ports and port ranges used to stream backups. The first value before a comma is the preferred port. The next value is a port range where ClusterControl should pick on. Defaults to '9999,9990-9998' which means port 9999 will be preferred if available, otherwise pick the next available port in the defined range. Example: ``netcat_port=9999,9990-9998``.
 ``backup_user=<string>``                     The database username for backups. Example ``backup_user=backupuser``.
+``backup_user_password=<string>``            The database password for backup user. Example ``backup_user_password=MyS3cret``.
 ``backup_encryption_key=<string>``           The AES encryption key used for backups in base64. See :ref:`MySQL - Backup - Backup Encryption and Decryption` for details.
 ``backupdir=<path>``                         The default backup directory, to be pre-filled in ClusterControl UI. Example: ``backupdir=/storage/backup``.
 ``backup_subdir=<string>``                   Set the name of the backup subdirectory. For more details on the formatting, see `Backup Subdirectory Variables`_. Default is "BACKUP-%I". Example: ``backup_subdir=BACKUP-%I-%D``.
@@ -468,17 +473,23 @@ Option                                              Description
 ``mongodb_cluster_key=<path>``                      The cluster's nodes authenticating to each other using this key. Example: ``mongodb_cluster_key=/etc/repl.key``.
 =================================================== ===========
 
-PostgreSQL Nodes
-````````````````
+PostgreSQL/TimescaleDB Nodes
+````````````````````````````
 
-=================================================== ===========
-Option                                              Description
-=================================================== ===========
-``postgresql_server_addresses=<string>``            Comma separated list of PostgreSQL instances with port. Example: ``postgresql_server_addresses=192.168.10.100:5432,192.168.10.101:5432``. Other alias: ``postgre_server_addresses``.
-``postgresql_user=<string>``                        The PostgreSQL admin user name. Default is postgres. Example: ``postgresql_user=postgres``. Other alias: ``postgre_user``.
-``postgresql_password=<string>``                    The PostgreSQL admin password. Example: ``postgresql_password='p4s$^#0rd123'``. Other alias: ``postgre_password``.
-``wal_retention_hours=<boolean integer>``           Retention hours to erase old WAL archive logs for PITR. Default is 0, means WAL archive logs are kept forever. Other alias: ``pitr_retention_hours``.
-=================================================== ===========
+===================================================== ===========
+Option                                                Description
+===================================================== ===========
+``postgresql_server_addresses=<string>``              Comma separated list of PostgreSQL instances with port. Example: ``postgresql_server_addresses=192.168.10.100:5432,192.168.10.101:5432``. Other alias: ``postgre_server_addresses``.
+``postgresql_user=<string>``                          The PostgreSQL admin user name. Default is postgres. Example: ``postgresql_user=postgres``. Other alias: ``postgre_user``.
+``postgresql_password=<string>``                      The PostgreSQL admin password. Example: ``postgresql_password='p4s$^#0rd123'``. Other alias: ``postgre_password``.
+``wal_retention_hours=<boolean integer>``             Retention hours to erase old WAL archive logs for PITR. Default is 0, means WAL archive logs are kept forever. Other alias: ``pitr_retention_hours``.
+``auto_manage_readonly=<boolean integer>``            Enable/Disable automatic management of the PostgreSQL server ``transaction_read_only`` variable. Default is 1 (true), which means ClusterControl will set the ``transaction_read_only=ON`` if the PostgreSQL replication role is slave. Default is 1 (enabled). Example: ``auto_manage_readonly=0``.
+``replication_auto_rebuild_slave=<boolean integer>``  If the SQL THREAD is stopped and error code is non-zero then the slave will be automatically rebuilt. 1 means enable, default is 0 (false). Example: ``replication_auto_rebuild_slave=1``.
+``repl_user=<string>``                                The PostgreSQL replication user. Example: ``repl_user=repluser``.
+``repl_password=<string>``                            Password for ``repl_user``. Example: ``repl_password='ZG04Z2Jnk0MUWAZK'``.
+``replication_failover_whitelist=<string>``           Comma separated list of PostgreSQL slaves which should be used as potential master candidates. If no server on the whitelist is available (up/connected) the failover will fail. If this variable is set, only those hosts will be considered. This parameter takes precedence over ``replication_failover_blacklist``. Example: ``replication_failover_whitelist=192.168.1.11,192.168.1.12``.
+``replication_failover_blacklist=<string>``           Comma separated list of PostgreSQL slaves which will never be considered a master candidate. You can use it to list slaves that are used for backups or analytical queries. If the hardware varies between slaves, you may want to put here the slaves which use slower hardware. ``replication_failover_whitelist`` takes precedence over this parameter if it is set. Example: ``replication_failover_blacklist=192.168.1.101,192.168.1.102``.
+===================================================== ===========
 
 .. _Components - ClusterControl Controller - Management and Deployment Operations:
 
@@ -562,13 +573,15 @@ For agent-based monitoring mode, ClusterControl requires a :term:`Prometheus` se
 3) Database or application exporters:
 	* `MySQL exporter <https://github.com/prometheus/mysqld_exporter>`_ (port 9104)
 	* `MongoDB exporter <https://github.com/percona/mongodb_exporter>`_ (port 9216)
-	* `PostgreSQL/TimeScaleDB exporter <https://github.com/wrouesnel/postgres_exporter>`_ (port 9187)
+	* `PostgreSQL/TimescaleDB exporter <https://github.com/wrouesnel/postgres_exporter>`_ (port 9187)
 	* `ProxySQL exporter <https://github.com/percona/proxysql_exporter>`_ (port 42004)
 	* `HAProxy exporter <https://github.com/prometheus/haproxy_exporter>`_ (port 9101)
 
 On every monitored host, ClusterControl will configure and daemonize exporter process using a program called :term:`daemon`. Thus, ClusterControl host is recommended to have an Internet connection to install necessary packages and automate the Prometheus deployment. For offline installation, the packages must be pre-downloaded into ``/var/cache/cmon/packages`` on ClusterControl node. For the list of required packages and links, please refer to ``/usr/share/cmon/templates/packages.conf``. Apart from Prometheus scrape process, ClusterControl also connects to the process exporter via HTTP calls directly to determine the process state of the node. No sampling via SSH is involved in this process.
 
 .. Note:: With agent-based monitoring, ClusterControl depends on a working Prometheus for accurate reporting on management and monitoring data. Therefore, Prometheus and exporter processes are managed by internal process manager thread. A non-working Prometheus will have a significant impact on CMON process.
+
+Since ClusterControl 1.7.3 allows multi-instance per single host, it will automatically configure a different exporter port if there are more than one same processes to monitor to avoid port conflict by incrementing the port number for every instance. Supposed you have two ProxySQL instances deployed by ClusterControl, and you would like to monitor them both via Prometheus. ClusterControl will configure the first ProxySQL's exporter to be running on the default port, 42004 while the second ProxySQL's exporter port will be configured with port 42005, incremented by 1.
 
 The collector flags are configured based on the node's role, as shown in the following table (some exporters do not use collector flags):
 

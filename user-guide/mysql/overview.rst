@@ -35,11 +35,23 @@ Galera Cluster
 * **Create Slave Cluster**
 	- Create a new cluster that replicates from this cluster. See `Cluster-Cluster Replication`_.
 
+* **Disable/Enable Cluster Recovery**
+	- Disable or enable cluster recovery. 
+	- This feature works similarly with the automatic recovery (cluster) toggle button in the summary bar. However, it applies the modification permanently into CMON configuration file for persistency.
+
+* **Disable/Enable Node Recovery**
+	- Disable or enable node recovery. This feature works similarly with with the automatic recovery toggle buttons in the summary bar.
+	- This feature works similarly with the automatic recovery (node) toggle button in the summary bar. However, it applies the modification permanently into CMON configuration file for persistency.
+
 * **Enable ReadOnly**
 	- Enable cluster-wide read-only. ClusterControl will set ``read_only=ON`` on all database nodes in the cluster. This is very useful in cluster-to-cluster replication setup. See `Cluster-Cluster Replication`_.
 
 * **Find Most Advanced Node**
 	- Finds which is the most advanced node in the cluster. This is very useful to determine which node to be bootstrapped if the cluster doesn't have any primary component or when ClusterControl automatic recovery is disabled.
+
+* **Schedule Maintenance Mode**
+	- Schedules a cluster-wide maintenance mode, where ClusterControl will skip raising up alarms and notifications while the mode is active. 
+	- All nodes in the cluster (regardless of the role) will be marked under maintenance. A global banner will appear if there is an upcoming maintenance for the corresponding cluster.
 
 * **Bootstrap Cluster**
 	- Launches the bootstrap cluster window. ClusterControl will stop all running nodes before bootstrapping the cluster from the selected Galera node.
@@ -51,9 +63,6 @@ Galera Cluster
 * **Deregister Cluster from UI**
 	- Unregister a database cluster from the ClusterControl UI. 
 	- You can still re-register your cluster to ClusterControl at a later stage by using :ref:`UserGuide - Global Settings - Cluster Registrations`.
-	
-* **Remove Node**
-	- Remove a managed node from the cluster.
 
 * **Stop Cluster**
 	- Stop all nodes in the cluster.
@@ -70,19 +79,25 @@ MySQL Replication
 * **Change RPC API Token**
 	- Serves as the authentication string by ClusterControl UI to connect to CMON RPC interface. Each cluster has its own unique token.
 
-* **Find Most Advanced Node**
-    - Finds which is the most advanced node in the replication setup. This is very useful to determine which slaves has the most updated data before being promoted to a new master.
+* **Disable/Enable Cluster Recovery**
+	- Disable or enable cluster recovery. 
+	- This feature works similarly with the automatic recovery (cluster) toggle button in the summary bar. However, it applies the modification permanently into CMON configuration file for persistency.
+
+* **Disable/Enable Node Recovery**
+	- Disable or enable node recovery. This feature works similarly with with the automatic recovery toggle buttons in the summary bar.
+	- This feature works similarly with the automatic recovery (node) toggle button in the summary bar. However, it applies the modification permanently into CMON configuration file for persistency.
+
+* **Schedule Maintenance Mode**
+	- Schedules a cluster-wide maintenance mode, where ClusterControl will skip raising up alarms and notifications while the mode is active. 
+	- All nodes in the cluster (regardless of the role) will be marked under maintenance. A global banner will appear if there is an upcoming maintenance for the corresponding cluster.
 
 * **Delete Cluster**
-	- This action will remove the corresponding cluster from ClusterControl supervision and will NOT uninstall the actual database cluster.
+	- Removes the corresponding cluster from ClusterControl supervision and will NOT uninstall the actual database cluster.
 	- If you want to re-add the cluster, you have to use :ref:`Import Existing Server Cluster`.
 
 * **Deregister Cluster from UI**
 	- Unregister a database cluster from the ClusterControl UI. 
 	- You can still re-register your cluster to ClusterControl at a later stage by using :ref:`UserGuide - Global Settings - Cluster Registrations`.
-	
-* **Remove Node**
-	- Remove a managed node from the cluster.
 
 MySQL Standalone
 ````````````````
@@ -96,28 +111,17 @@ MySQL Standalone
 * **Change RPC API Token**
 	- Serves as the authentication string by ClusterControl UI to connect to CMON RPC interface. Each cluster has its own unique token.
 
-* **Delete Cluster**
-	- This action will remove the corresponding cluster from ClusterControl supervision and will NOT uninstall the actual database cluster.
-	- If you want to re-add the cluster, you have to use :ref:`Import Existing Server Cluster`.
+* **Disable/Enable Cluster Recovery**
+	- Disable or enable cluster recovery. 
+	- This feature works similarly with the automatic recovery (cluster) toggle button in the summary bar. However, it applies the modification permanently into CMON configuration file for persistency.
 
-* **Deregister Cluster from UI**
-	- Unregister a database cluster from the ClusterControl UI. 
-	- You can still re-register your cluster to ClusterControl at a later stage by using :ref:`UserGuide - Global Settings - Cluster Registrations`.
+* **Disable/Enable Node Recovery**
+	- Disable or enable node recovery. This feature works similarly with with the automatic recovery toggle buttons in the summary bar.
+	- This feature works similarly with the automatic recovery (node) toggle button in the summary bar. However, it applies the modification permanently into CMON configuration file for persistency.
 
-MySQL Group Replication
-````````````````````````
-
-* **Add Replication Slave**
-	- Deploys a replication slave attached to this cluster. Choose one of the Group Replication node to be a master. See `Add Replication Slave`_.
-
-* **Change RPC API Token**
-	- Serves as the authentication string by ClusterControl UI to connect to CMON RPC interface. Each cluster has its own unique token.
-
-* **Bootstrap Cluster**
-	- Launches the bootstrap cluster window. Similar to *ClusterControl > Actions > Bootstrap Cluster*. ClusterControl will stop all running nodes before bootstrapping the cluster from the selected Galera node.
-
-* **Stop Cluster**
-	- Stop all nodes in the cluster.
+* **Schedule Maintenance Mode**
+	- Schedules a cluster-wide maintenance mode, where ClusterControl will skip raising up alarms and notifications while the mode is active. 
+	- All nodes in the cluster (regardless of the role) will be marked under maintenance. A global banner will appear if there is an upcoming maintenance for the corresponding cluster.
 
 * **Delete Cluster**
 	- This action will remove the corresponding cluster from ClusterControl supervision and will NOT uninstall the actual database cluster.
@@ -126,9 +130,7 @@ MySQL Group Replication
 * **Deregister Cluster from UI**
 	- Unregister a database cluster from the ClusterControl UI. 
 	- You can still re-register your cluster to ClusterControl at a later stage by using :ref:`UserGuide - Global Settings - Cluster Registrations`.
-	
-* **Remove Node**
-	- Remove a managed node from the cluster.
+
 
 MySQL Cluster
 ``````````````
@@ -141,6 +143,18 @@ MySQL Cluster
 	
 * **Change RPC API Token**
 	- Serves as the authentication string by ClusterControl UI to connect to CMON RPC interface. Each cluster has its own unique token.
+
+* **Disable/Enable Cluster Recovery**
+	- Disable or enable cluster recovery. 
+	- This feature works similarly with the automatic recovery (cluster) toggle button in the summary bar. However, it applies the modification permanently into CMON configuration file for persistency.
+
+* **Disable/Enable Node Recovery**
+	- Disable or enable node recovery. This feature works similarly with with the automatic recovery toggle buttons in the summary bar.
+	- This feature works similarly with the automatic recovery (node) toggle button in the summary bar. However, it applies the modification permanently into CMON configuration file for persistency.
+
+* **Schedule Maintenance Mode**
+	- Schedules a cluster-wide maintenance mode, where ClusterControl will skip raising up alarms and notifications while the mode is active. 
+	- All nodes in the cluster (regardless of the role) will be marked under maintenance. A global banner will appear if there is an upcoming maintenance for the corresponding cluster.
 
 * **Delete Cluster**
 	- This action will remove the corresponding cluster from ClusterControl supervision and will NOT uninstall the actual database cluster.

@@ -83,7 +83,7 @@ This page is auto-refresh every 30 seconds. You can change the refresh rate by c
 	- TimeScaleDB user.
 
 * **Client**
-	- IP address of the client connected to this backend. If this field is null, it indicates either that the client is connected via a Unix socket on the server machine or that this is an internal process such as autovacuum.
+	- IP address of the client connected to this backend. If this field is null, it indicates either that the client is connected via a Unix socket on the server machine or that this is an internal process such as auto-vacuum.
 
 * **Query**
 	- Text of this backend's most recent query. If state is active this field shows the currently executing query. In all other states, it shows the last query that was executed.

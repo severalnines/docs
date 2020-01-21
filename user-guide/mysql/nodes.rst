@@ -169,6 +169,11 @@ Node Performance
 
 Provides a summary of host information and statistic histogram including CPU, disk, network and memory usage.
 
+Process List
+''''''''''''''''
+
+Lists out ProxySQL process list, similar to the output of ``select * from stats_mysql_processlist``. This can be useful for troubleshooting process and make sure the query is routed properly to the respective hostgroup in real time.
+
 Prometheus
 ``````````
 
@@ -267,14 +272,6 @@ These are specific options available for Galera nodes:
 	
 * **Enable Binary Logging**
 	- Updates the related configurations on this host to enable binary logging. A replication slave can then be added to the node, or it may be possible to use the binary log for point-in-time recovery (PITR). See :ref:`MySQL - Backup - Restore Backup - Point-in-Time Recovery` for details. A server restart is needed to finalize the configuration update.
-	
-MySQL Group Replication
-````````````````````````
-
-* **Rebuild Node**
-	- Rebuilds the node by streaming backup from a master node using Percona Xtrabackup. ClusterControl will automatically start the Group Replication once the rebuild job succeeds.
-	
-.. caution:: *Rebuild Node* will wipe out the node's MySQL datadir.
 
 MySQL Cluster
 ``````````````

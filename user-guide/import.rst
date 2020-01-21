@@ -320,7 +320,7 @@ ClusterControl is able to manage and monitor an existing MongoDB/Percona Server 
 	- MongoDB - MongoDB Server by MongoDB Inc
 
 * **Version**
-	- The supported MongoDB version are 3.2, 3.4 and 3.6.
+	- The supported MongoDB version are 3.4, 3.6, 4.0 and 4.2.
 
 * **Admin User**
 	- MongoDB admin user.
@@ -368,7 +368,7 @@ ClusterControl is able to manage/monitor an existing set of PostgreSQL/TimeScale
 	- Password for *User*. ClusterControl assumes that you are using the same admin password for all instances under this group.
 	
 * **Version**
-	- PostgreSQL/TimeScaleDB server version on the target server/cluster. Supported versions are 9.6, 10.x and 11.x.
+	- PostgreSQL/TimeScaleDB server version on the target server/cluster. Supported versions are 9.6, 10.x, 11.x and 12.x.
 
 * **Basedir**
 	- PostgreSQL/TimeScaleDB base directory. Default is ``/usr``. ClusterControl assumes all PostgreSQL/TimeScaleDB nodes are using the same base directory.

@@ -201,6 +201,11 @@ Glossary
 		
 		.. seealso:: https://linux.die.net/man/1/pv
 
+	qpress
+		qpress is a portable file archiver using QuickLZ and designed to utilize fast storage systems to their max. It's often faster than file copy because the destination is smaller than the source.
+		
+		.. seealso:: http://www.quicklz.com/
+
 	socat
 		Socat is a command line based utility that establishes two bidirectional byte streams and transfers data between them.
 		

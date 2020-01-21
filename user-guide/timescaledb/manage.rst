@@ -64,45 +64,6 @@ keepalived.conf              Keepalived configuration file.
 keepalived.init              Keepalived init script, for 'Build from Source' installation option.
 ============================ ===========
 
-.. _TimeScaleDB - Manage - Configurations - Dynamic Variables:
-
-Dynamic Variables
-``````````````````
-
-There are a number of configuration variables which are configurable dynamically by ClusterControl. These variables are represented with a capital letter enclosed by at sign ‘@’, for example ``@DATADIR@``. The following shows the list of variables supported by ClusterControl for MySQL-based clusters:
-
-============================ ==============
-Variable                     Description
-============================ ==============
-``@BASEDIR@``                Default is ``/usr``. Value specified during cluster deployment takes precedence.
-``@DATADIR@``                Default is ``/var/lib/mysql``. Value specified during cluster deployment takes precedence.
-``@MYSQL_PORT@``             Default is 3306. Value specified during cluster deployment takes precedence.
-``@BUFFER_POOL_SIZE@``       Automatically configured based on host's RAM.
-``@LOG_FILE_SIZE@``          Automatically configured based on host's RAM.
-``@LOG_BUFFER_SIZE@``        Automatically configured based on host's RAM.
-``@BUFFER_POOL_INSTANCES@``  Automatically configured based on host's CPU.
-``@SERVER_ID@``              Automatically generated based on member's ``server-id``.
-``@SKIP_NAME_RESOLVE@``      Automatically configured based on MySQL variables.
-``@MAX_CONNECTIONS@``        Automatically configured based on host's RAM.
-``@ENABLE_PERF_SCHEMA@``     Default is disabled. Value specified during cluster deployment takes precedence.
-``@WSREP_PROVIDER@``         Automatically configured based on Galera vendor.
-``@HOST@``                   Automatically configured based on hostname/IP address.
-``@GCACHE_SIZE@``            Automatically configured based on disk space.
-``@SEGMENTID@``              Default is 0. Value specified during cluster deployment takes precedence.
-``@WSREP_CLUSTER_ADDRESS@``  Automatically configured based on members in the cluster.
-``@WSREP_SST_METHOD@``       Automatically configured based on Galera vendor.
-``@BACKUP_USER@``            Default is ``backupuser``.
-``@BACKUP_PASSWORD@``        Automatically generated and configured for ``backupuser``.
-``@GARBD_OPTIONS@``          Automatically configured based on garbd options.
-``@READ_ONLY@``              Automatically configured based on replication role.
-``@SEMISYNC@``               Default is disabled. Value specified during cluster deployment takes precedence.
-``@NDB_CONNECTION_POOL@``    Automatically configured based on host's CPU.
-``@NDB_CONNECTSTRING@``      Automatically configured based on members in the MySQL cluster.
-``@LOCAL_ADDRESS@``          Automatically configured based on host's address.
-``@GROUP_NAME@``             Default is ``grouprepl``. Value specified during cluster deployment takes precedence.
-``@PEERS@``                  Automatically configured based on members in the Group Replication cluster.
-============================ ==============
-
 .. _TimeScaleDB - Manage - Load Balancer:
 
 Load Balancer
@@ -261,6 +222,32 @@ Import Keepalived
 
 * **Deploy Keepalived**
 	- Starts the import of Keepalived job.
+
+Users Management
++++++++++++++++++
+
+Users
+``````
+
+Shows a summary of PostgreSQL users and privileges for the cluster. All of the changes are automatically synced to all database nodes in the cluster.
+
+You can filter the list by username, hostname, database or table in the text box. Click on *Edit* to update the existing user or *Drop User* to remove the existing user. Click on *Create New User* to open the user creation wizard:
+
+* **Username**
+	- PostgreSQL username.
+
+* **Password**
+	- Password for *Username*. Minimum requirement is 4 characters.
+
+* **Hostname**
+	- Hostname or IP address range of the user or client. For IP address range, use the IP address/subnet format, e.g, 192.168.100.0/24.
+
+* **Privileges**
+	- Specify the privilege for this user. If the *Privileges* text box is active, it will list out all possible privileges of the server.
+	- Specify the database or table name. It can be in ``*.*``, ``{database_name}``, ``{database_name}.*`` or ``{database_name}.{table_name}`` format.
+
+* **Add Statement**
+	- Add another *Privileges* statement builder entry for this user.
 
 Custom Advisors
 +++++++++++++++

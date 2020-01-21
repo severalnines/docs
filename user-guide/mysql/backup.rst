@@ -66,11 +66,13 @@ To create an instant backup, you have options to create a full backup using mysq
 	- Specify the port number that will be used by ClusterControl to stream backup created on the database node. This port must be opened on both source and destination hosts. Only available if you choose *Store on Controller* in *Storage Location*.
 	
 * **Use Compression**
-	- Yes - Tells the chosen backup method to compress all output data, including the transaction log file and meta data files.
-	- No - Do not use compression for the backup.
+	- Tells the chosen backup method to compress all output data, including the transaction log file and meta data files.
+
+* **Use QPress Compression**
+	- Exclusive for xtrabackup/mariabackup. If selected, use :term:`qpress` for compression. Otherwise, use :term:`gzip`.
 
 * **Compression Level**
-	- Specify the compression level for the backup. This is according to :term:`gzip` compression level. 1 is the fastest compression (least compression) and 9 indicates the slowest compression (best compression).
+	- Specify the compression level for the backup. 1 is the fastest compression (least compression) and 9 indicates the slowest compression (best compression).
 
 * **Use Extended Insert**
 	- Exclusive for mysqldump only. The default is ON where ClusterControl will create the dump with with ``--extended-insert``. This results in a smaller dump file and speeds up inserts when the file is reloaded. If toggled OFF, ClusterControl will use ``--skip-extended-insert`` and ``--set-gtid-purged=OFF`` flags in the mysqldump command.
@@ -99,7 +101,7 @@ To create an instant backup, you have options to create a full backup using mysq
 	- No - Sets ``--no-backup-locks`` which use ``FLUSH NO_WRITE_TO_BINLOG TABLES`` and ``FLUSH TABLES WITH READ LOCK`` when making backup.
 
 * **Lock DDL per Table**
-	- Sets ``--lock-ddl-per-table``. Enable this flag if you have backup errors like '[FATAL] InnoDB: An optimized(without redo logging) DDLoperation has been performed'. This only applies to Percona Xtrabackup v2.4.8 and later version. Setting this flag may cause blocked updates to tables for highly loaded servers under some circumstances. Please see `Avoiding the "An optimized (without redo logging) DDL operation has been performed" Error with Percona XtraBackup <https://www.percona.com/blog/2017/08/08/avoiding-the-an-optimized-without-redo-logging-ddloperation-has-been-performed-error-with-percona-xtrabackup/>`_, `Concurrent DDL can break xtrabackup-v2 SST in 10.2 <https://jira.mariadb.org/browse/MDEV-14095>`_ and `Implement LOCK TABLES FOR BACKUP from Percona Server <https://jira.mariadb.org/browse/MDEV-5336>`_.
+	- Sets ``--lock-ddl-per-table``. Enable this flag if you have backup errors like ``[FATAL] InnoDB: An optimized(without redo logging) DDLoperation has been performed``. This only applies to Percona Xtrabackup v2.4.8 and later version. Setting this flag may cause blocked updates to tables for highly loaded servers under some circumstances. Please see `Avoiding the "An optimized (without redo logging) DDL operation has been performed" Error with Percona XtraBackup <https://www.percona.com/blog/2017/08/08/avoiding-the-an-optimized-without-redo-logging-ddloperation-has-been-performed-error-with-percona-xtrabackup/>`_, `Concurrent DDL can break xtrabackup-v2 SST in 10.2 <https://jira.mariadb.org/browse/MDEV-14095>`_ and `Implement LOCK TABLES FOR BACKUP from Percona Server <https://jira.mariadb.org/browse/MDEV-5336>`_.
 
 * **Xtrabackup Parallel Copy Threads**
 	- Exclusive for xtrabackup/mariabackup. This option specifies the number of threads to use to copy multiple data files concurrently when creating a backup. The default value is 1 (i.e., no concurrent transfer).
@@ -181,11 +183,13 @@ Creates backup schedules of the database. You can choose to create a full or inc
 	- Specify the port number that will be used by ClusterControl to stream backup created on the database node. This port must be opened on both source and destination hosts. Only available if you choose *Store on Controller* in *Storage Location*.
 
 * **Use Compression**
-	- Yes - Use compression for the backup. Compression happens on the backup node.
-	- No - Do not use compression for the backup.
+	- Tells the chosen backup method to compress all output data, including the transaction log file and meta data files.
+
+* **Use QPress Compression**
+	- Exclusive for xtrabackup/mariabackup. If selected, use :term:`qpress` for compression. Otherwise, use :term:`gzip`.
 
 * **Compression Level**
-	- Specify the compression level for the backup. This is according to :term:`gzip` compression level. 1 is the fastest compression (least compression) and 9 is the slowest compression (best compression).
+	- Specify the compression level for the backup. 1 is the fastest compression (least compression) and 9 indicates the slowest compression (best compression).
 
 * **Failover backup if node is down**
 	- Yes - Backup will be run on any available node (or selected node based on the *Backup Failover Host*) if the target database node is down. If failover is enabled and the selected node is not online, the backup job elects an online node to create the backup. This ensures that a backup will be created even if the selected node is not available. If the scheduled backup is an incremental backup and a full backup does not exist on the new elected node, then a full backup will be created.
