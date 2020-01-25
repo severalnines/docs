@@ -1751,17 +1751,23 @@ By default, the backups will be stored on the controller node. If you wish to st
 
 **Command**
 
-====================================== ===========
-Name, shorthand                        Description
-====================================== ===========
-|minus|\ |minus|\ list                 List the backups.
-|minus|\ |minus|\ create               Create a new backup.
-|minus|\ |minus|\ restore              Restore an existing backup.
-|minus|\ |minus|\ delete               Delete an existing backup.
-|minus|\ |minus|\ list-databases       List the backups in database view format. This format is designed to show the archived databases in the backups.
-|minus|\ |minus|\ list-files           List the backups in file view format. This format is designed to show the archive files of the backups.
-|minus|\ |minus|\ verify               Creates a job to verify a backup. When this main option is used the ``--backup-id``  option  has  to  be  used to identify a backup and the ``--test-server`` is also necessary to provide a server where the backup will be tested.
-====================================== ===========
+======================================== ===========
+Name, shorthand                          Description
+======================================== ===========
+|minus|\ |minus|\ list                   List the backups.
+|minus|\ |minus|\ create                 Create a new backup.
+|minus|\ |minus|\ delete                 Delete a previously created backup.
+|minus|\ |minus|\ delete-old             Delete old backups.
+|minus|\ |minus|\ restore                Restore an existing backup.
+|minus|\ |minus|\ delete                 Delete an existing backup.
+|minus|\ |minus|\ list-databases         List the backups in database view format. This format is designed to show the archived databases in the backups.
+|minus|\ |minus|\ list-files             List the backups in file view format. This format is designed to show the archive files of the backups.
+|minus|\ |minus|\ save-cluster-info      Saves the information about one cluster.
+|minus|\ |minus|\ save-controller        Saves the entire controller into a file.
+|minus|\ |minus|\ restore-cluster-info   Restores a saved cluster object.
+|minus|\ |minus|\ restore-controller     Restores the controller from a file.
+|minus|\ |minus|\ verify                 Creates a job to verify a backup. When this main option is used the ``--backup-id``  option  has  to  be  used to identify a backup and the ``--test-server`` is also necessary to provide a server where the backup will be tested.
+======================================== ===========
 
 **Options**
 
@@ -1779,7 +1785,7 @@ Name, shorthand                               Description
 |minus|\ |minus|\ subdirectory=MARKUPSTRING   Sets  the  name of the subdirectory that holds the newly created backup files.  The command line option argument is considered to be a subpath that may contain the field specifiers using the usual "%X" format. See `Backup Subdirectory Variables`_.
 |minus|\ |minus|\ backup-user=USERNAME        The username for the SQL account that will create the backup.
 |minus|\ |minus|\ backup-password=PASSWORD    The password for the SQL account that will create the backup. This command line option is not mandatory.
---backup-retention=DAYS                       Controls a custom retention period for the backup, otherwise the default global setting will be used. Specifying a positive number value here can control how long (in days) the taken backups will be preserved, -1 has a special meaning, it means the backup will be kept forever, while value 0 is the default, means prefer the global setting (configurable on UI).
+|minus|\ |minus|\ backup-retention=DAYS       Controls a custom retention period for the backup, otherwise the default global setting will be used. Specifying a positive number value here can control how long (in days) the taken backups will be preserved, -1 has a special meaning, it means the backup will be kept forever, while value 0 is the default, means prefer the global setting (configurable on UI).
 |minus|\ |minus|\ recurrence=STRING           Schedule time and frequency in cron format.
 |minus|\ |minus|\ parallelism=N               Controls how many threads are used while creating backup. Please note that not all the backup methods support multi-thread operations.
 |minus|\ |minus|\ no-compression              Do not compress the archive file.
@@ -1790,6 +1796,10 @@ Name, shorthand                               Description
 |minus|\ |minus|\ encrypt-backup              When this option is specified ClusterControl will attempt to encrypt the backup files using AES-256 encryption (the key will be auto-generated if not exists yet and stored in cluster configuration file).
 |minus|\ |minus|\ test-server=HOSTNAME        Use the given server to verify the backup. If this option is provided while creating a new backup after the backup is created a new job is going to be created to verify the backup. During the verification the SQL software will be installed on the test server and the backup will be restored on this server. The verification job will be successful if the backup is successfully restored.
 |minus|\ |minus|\ to-individual-files         Archive every database into individual files. Currently only the mysqldump backup method supports this option.
+|minus|\ |minus|\ backup-retention=DAYS       How many days before the backup is removed.
+|minus|\ |minus|\ cloud-retention=DAYS        Retention used when the backup is on a cloud.
+|minus|\ |minus|\ pitr-compatible             Creates PITR-compatible backup.
+|minus|\ |minus|\ safety-copies=N             How many copies kept even when they are old.
 ============================================= ===========
 
 Backup Subdirectory Variables
@@ -1884,6 +1894,17 @@ Create a job to verify the given backup identified by the backup ID. The job wil
 		--backup-id=1 \
 		--test-server=192.168.0.55 \
 		--cluster-id=1
+		
+Delete old backups for cluster ID 1 that are longer than 7 days, but do not delete at least 3 of the latest backups:
+
+.. code-block:: bash
+
+	$ s9s backup \
+		--delete-old \
+		--cluster-id=1 \
+		--backup-retention=7 \
+		--safety-copies=3 \
+		--log
 
 s9s job
 ````````
