@@ -10,6 +10,24 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.7.5
 -----------------
 
+Maintenance Release: February 9\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.5-3679
+	- clustercontrol-1.7.5-6646  
+
+* Frontend (U):
+	- Create Slave Cluster action not working immediately after deploying a cluster.
+	- MaxScale: Make MaxScale available for Keepalived.
+	- Load balancers: Added options to avoid disabling SELinux and firewall.
+	- Cluster List: Sorting Clusters.
+
+* Controller:
+	- ProxySQL: Fixed a bug deploying ProxySQL on a separate node in a Percona Server 8.0 Cluster.
+	- Prometheus/Dashboards: Fixed an issue DNS resolve so that the ``mysqld_exporter`` with the property ``db_exporter_use_nonlocal_address``, properly handles the ``skip_name_resolve`` flag.
+	- PostgreSQL: Fixed an issue when the controller always tried to connect to a 'postgres' DB even if no database was specified.
+
 Maintenance Release: January 20\ :sup:`th`\ , 2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
