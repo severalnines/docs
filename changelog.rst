@@ -85,7 +85,7 @@ We have previously supported maintenance mode for one node at a time, however mo
 
 To assist in finding the root cause of failed database nodes we are now taking snapshots of the MySQL status and processlist which will show you the state of the database node around the time where it failed. Cluster incidents can then be inspected in an operational report or from the s9s command line tool.
 
-Finally, we have worked on adding support for Centos 8, Debian 10, and deploying/importing MongoDB v4.2 and Percona MongoDB v4.0.
+Finally, we have worked on adding support for Centos/RedHat 8, Debian 10, and deploying/importing MongoDB v4.2 and Percona MongoDB v4.0.
 
 **Feature Details**
 
