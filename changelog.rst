@@ -10,6 +10,68 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.7.5
 -----------------
 
+Maintenance Release: March 23\ :sup:`rd`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.5-3797
+	- clustercontrol-1.7.5-6757  
+
+* Frontend (UI):
+	- Verify Backup: Specifying the temporary directory field is mandatory, but it is not used at all. 
+	- Prometheus: Graph for disk usage is incomplete.
+	- Prometheus: Not possible to change Prometheus deployment options when deployment failed.
+	- PostgreSQL: Point in time recovery (PITR) depends on PostgreSQL ``archive_command``. An archive command suitable for PgBackRest is not working for pg_basebackup. Now, PITR options are only shown for a backup method if the underlying archive command supports it.
+	- PostgreSQL: Fixed timezone transformation for PITR.
+	- Query Monitor: Fixed bug saving settings.
+	- Overview/Node Graphs: In some circumstances the date range could be the same for *From Date* and *To Date*, resulting in zero data points and no graph displayed.
+	- Audit Log: The timestamp in the ``auth.log`` file is off by 1h (default UTC).
+	- Error Reporting: A wrong Error Report Default Destination was shown.
+
+* Controller (bugs fixed):
+	- ProxySQL: Version is not updated in Topology view.
+	- PostgreSQL: PG Master node fails if you Enable WAL archiving after promoting it.
+	- PostgreSQL: Verify pg_basebackup (potentially other pg backup methods too) fails.
+	- PostgreSQL: Promoting a slave where a master cannot be determined or reached.
+	- PostgreSQL: Fixed an issue with pg_basebackup and multiple tablespaces (NOTE: encryption isn't supported for multiple tablespaces).
+	- PostgreSQL: PgBackRest with *Auto Select* backup host fails.
+	- PostgreSQL: Restoring PgBackRest backup on PostgreSQL12 failed.
+	- PostgreSQL: Make sure the recovery signal file is not present when enabling WAL log archiving.
+	- PostgreSQL: Fallback to server version from configuration when the information is not available in the host instance.
+	- PostgreSQL: Verify WAL archive directory for log files before performing PITR.
+	- Query Monitor: Disable Query Monitor is not working by setting ``enable_query_monitor=-1`` in ``/etc/cmon.d/cmon_X.cnf``.
+	- Galera: Force stop on the node does not prevent further auto-recovery jobs.
+	- Galera: Node recover job fails but is shown in green.
+	- Galera: Backup is not working for non-synced nodes in Galera Cluster. This allows mysqldump to be taken on non-synced nodes as xtrabackup/mariabackup tools prevent this.
+	- MariaDB: MariaDB 10.3/10.4 promote slave action fails.
+	- Repository Manager: Updated and added missing versions and removed some deprecated versions.
+
+* Controller (behavior change):
+	- Backup Verification Server: Applies to MySQL based systems only (PostgreSQL coming soon). It is now possible to reuse an up and running Backup Verification Server (BVS). Thus, a BVS does not need to be shutdown before verifying the backup.
+	- Host Discovery: A new way to execute host discovery and logging to ``/var/log/cmon_discovery*.log``.
+
+Maintenance Release: March 4\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.5-6697  
+
+* Frontend (UI):
+	- Auth logging. Added TZ support. Use server's TZ by default, but another TZ can be set in ``/var/www/html/clustercontrol/boostrap.php``.
+
+Maintenance Release: March 3\ :sup:`rd`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.5-3735
+	- clustercontrol-1.7.5-6695  
+
+* Frontend (UI):
+	- Auth logging. Login/logouts and failed login attempts are stored in ``/var/www/html/clustercontrol/app/tmp/logs/auth.log``.
+
+* Controller:
+	- PostgreSQL: Fixed a bug in Database Growth. 
+
 Maintenance Release: March 1\ :sup:`st`\ , 2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
