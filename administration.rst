@@ -371,7 +371,7 @@ Standby ClusterControl Server for High Availability
 
 It is possible to have several ClusterControl servers to monitor a single cluster. This is useful if you have a multi-datacenter cluster and you may need to have ClusterControl on the remote site to monitor and manage the alive nodes if connection between them goes down. However, ClusterControl servers must be configured to be working in active-passive mode to avoid race conditions when digesting queries and recovering failed node or cluster.
 
-In active mode, the ClusterControl node act as a primary controller, where it performs automatic recovery and parsing MySQL slow log query for query  monitoring. If The secondary ClusterControl node however must have the following things configured:
+In active mode, the ClusterControl node act as a primary controller, where it performs automatic recovery and parsing MySQL slow log query for query  monitoring. The secondary ClusterControl node however must have the following things configured:
 
 * Cluster/Node auto recovery must be turned off.
 * Query sampling must be disabled (only if PERFORMANCE_SCHEMA is disabled on the database nodes).
@@ -385,7 +385,7 @@ Steps described in this section must be performed on the secondary ClusterContro
 
 2) Add the same cluster via *ClusterControl > Import*. Ensure you choose "Enable Node AutoRecovery: No" and "Enable Cluster AutoRecovery: No" in the dialog box. Click "Add Cluster" to start the import job.
 
-3) Once the cluster is imported, disable query sampling by going to *ClusterControl > Settings > Query Monitoring > Sampling Time = -1*.
+3) Once the cluster is imported, disable query sampling by going to *ClusterControl > Query Monitor > Top Queries > Toggle Off*.
 
 Nothing should be performed on the primary side. The primary ClusterControl server shall perform automatic recovery in case of node or cluster failure.
 
@@ -395,7 +395,7 @@ Failover Method
 If you want to make the standby server runs in the active mode, just do as follow (assume the primary ClusterControl is unreachable at the moment):
 
 * Cluster/Node auto recovery must be turned on. Click on both red power icons in the summary bar until they appear in green color.
-* Enable query sampling. Go to *ClusterControl > Settings > Query Monitor* and change "Sampling Time" to other than "-1".
+* Enable query sampling by going to *ClusterControl > Query Monitor > Top Queries > Toggle On*.
 
 That's it. At this point, the standby server has taken over the primary role.
 
