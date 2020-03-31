@@ -10,6 +10,35 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.7.5
 -----------------
 
+Maintenance Release: March 30\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.5-3819
+	- clustercontrol-1.7.5-6791  
+
+* Frontend (UI):
+	- PostgreSQL: Point-in-time recovery (PITR) - fixes when selecting stop time and timezone.
+	- PostgreSQL: Fixed and improved restore backup to show the correct options for pg_basebackup regarding PITR.
+	- Cloud Deploy: Added missing references to our online documentation on how to create/add cloud credentials.
+	- Sync Clusters: Sync the UI view of clusters with the controller. 
+
+* Controller:
+	- PostgreSQL: Recovery of slaves will not commence if the master is down.
+	- PostgreSQL: Verify Backup now works when Install Software is enabled and Terminate Server is disabled.
+	- PostgreSQL: Promote failed when WAL replay is paused.
+	- PostgreSQL: Point-in-time recovery (PITR) fixes for pg_basebackup.
+	- Notifications: Alarms raised by the controller are only sent once to each recipient. 
+
+* Limitations:
+	- PostgreSQL PITR:
+		- If no writes have been made after the backup, them PITR may fail.
+		- Specifying time too far in the future may cause issues too.
+		- We recommend using pg_basebackup in order to use PITR.
+
+	- PostgreSQL Backups (pgbackrest & pg_basebackup):
+		- pgbackrest has an ``archive_command`` that is not compatible with pg_basebackup, which means e.g that a pg_basebackup cannot be restored using PITR on a PostgreSQL server configured with an ``archive_command`` configured for pgbackrest.
+
 Maintenance Release: March 23\ :sup:`rd`\ , 2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
