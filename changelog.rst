@@ -10,6 +10,36 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.7.5
 -----------------
 
+Maintenance Release: April 1\ :sup:`st`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.5-3828
+	- clustercontrol-notifications-1.7.5-243 
+
+* Notifications:
+	- Fixed an issue with Opsgenie integration, got error ``Failed to parse request body: parse error: expected string offset 11 of teams``.
+	- cmon-events does not read MySQL connection details from ``/etc/cmon-events.cnf``.
+	- Password handling: Using a special character was rejected by cmon-events service.
+	- Remember to restart the service: ``service cmon-events restart`` or ``systemctl restart cmon-events`` after the upgrade.
+
+* Controller:
+	- Spelling fix for cluster action 'Schedule and Disable Maintenance Mode'.
+	- PostgreSQL: Verify Backup, recreate missing datadir and config file if missing on the Backup Verification Server.
+	- PostgreSQL: Failed to Start Node for PostgreSQL.
+	- PostgreSQL: Failed to PITR pg_basebackup because ``standby_mode`` was ON, preventing the node from leaving recovery.
+	- PostgreSQL: Hide passwords from PostgreSQL logs.
+	- Error Reporting: Fixed a number of small issues.
+
+Maintenance Release: March 31\ :sup:`st`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.5-6794 
+
+* Frontend(UI):
+	- Spelling fix for cluster action 'Schedule and Disable Maintenance Mode'.
+
 Maintenance Release: March 30\ :sup:`th`\ , 2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
