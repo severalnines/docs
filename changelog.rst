@@ -10,6 +10,46 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.7.5
 -----------------
 
+Maintenance Release: April 8\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.5-6810
+	- clustercontrol-notifications-1.7.5-249
+	- clustercontrol-cloud-1.7.5-239
+
+* Frontend (UI):
+	- Opsgenie Integration: A fix to allow the user to specify region when setting up the integration.
+
+* Notifications:
+	- Opsgenie Integration: Fixed an issue resulting in the error ``Failed to parse request body: parse error: expected string offset 11 of teams``.
+	- Fixed an issue handling region.
+	- Improved and fixed a bug with ``http_proxy`` handing. Now, a ``http_proxy``/``https_proxy`` can be specified ``/etc/proxy.env`` or ``/etc/environment``.
+
+* Cloud:
+	- Improved and fixed a bug with ``http_proxy`` handing. Now, a ``http_proxy``/``https_proxy`` can be specified ``/etc/proxy.env`` or ``/etc/environment``.
+
+Maintenance Release: April 7\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+
+* Build:
+	- clustercontrol-controller-1.7.5-3844 
+
+* Controller:
+	- HAProxy: Using ports 5433 (read/write) and 5434 (read-only) by default for PostgreSQL.
+	- HAProxy: PostgreSQL - Read/write splitting was not setup when installing HAProxy from the S9s CLI.
+	- HAProxy: Installing HAProxy attempted to use the Backup Verification Server too.
+	- PostgreSQL: Never stopping 'Failover to a New Master' job + cluster status bugfix (it must be in Cluster Failed state when there is no writable master)
+	- PostgreSQL: Dashboards: Failed to deploy agents in some cases on the Data nodes.
+	- PostgreSQL: Import ``recovery.conf``/``postgres.auto.conf`` and can now be edited in the UI.
+	- PostgreSQL: ``pg_hba.conf`` is now editable on UI.
+	- PostgreSQL: pg_basebackup restore: first undo any previous PITR related options before restoring.
+	- PostgreSQL: Failed to Start Node for PostgreSQL.
+	- PostgreSQL: Fix pg_ctl status retval and output handling.
+	- PostgreSQL: Rebuild replication slave did not reset ``restore_command``.
+	- Percona Server 8.0: Verification of partial backup failed.
+	- ProxySQL: Could not edit backend server properties in ProxySQL for Galera.
+
 Maintenance Release: April 1\ :sup:`st`\ , 2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
