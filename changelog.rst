@@ -7,6 +7,30 @@ This change logs list details about updates in each version of ClusterControl.
 
 .. Attention:: We have encountered a severe bug in a library ClusterControl 1.7.3 relies on for SSH communication and may cause severe side effects. If you are using ClusterControl 1.7.3 then you must upgrade the ``clustercontrol-controller`` package to at least version 1.7.3-3440 (release date September 24th, 2019) or later.
 
+Changes in v1.7.6
+-----------------
+
+Initial Release: April 10\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.6-6815 
+	- clustercontrol-controller-1.7.6-3854
+	- clustercontrol-notifications-1.7.6-251 
+	- clustercontrol-cloud-1.7.6-241  
+	- clustercontrol-ssh-1.7.6-92
+
+**Feature Details**
+
+* Cloud Deployment of HAProxy
+	- Deploy a database stack containing your favorite SQL database and HAProxy load balancer.
+* MySQL Freeze Frame (BETA)
+	- Snapshot MySQL process list before cluster failure. 
+* Misc:
+	- CMON Upgrade operations are logged in a log file.
+	- Many improvements and fixes for PostgreSQL Backup, Restore, and Verify Backup. 
+	- A number of legacy ExtJS pages have been migrated to AngularJS.
+
 Changes in v1.7.5
 -----------------
 
@@ -39,7 +63,7 @@ Maintenance Release: April 7\ :sup:`th`\ , 2020
 	- HAProxy: Using ports 5433 (read/write) and 5434 (read-only) by default for PostgreSQL.
 	- HAProxy: PostgreSQL - Read/write splitting was not setup when installing HAProxy from the S9s CLI.
 	- HAProxy: Installing HAProxy attempted to use the Backup Verification Server too.
-	- PostgreSQL: Never stopping 'Failover to a New Master' job + cluster status bugfix (it must be in Cluster Failed state when there is no writable master)
+	- PostgreSQL: Never stopping 'Failover to a New Master' job + cluster status bugfix (it must be in Cluster Failed state when there is no writable master).
 	- PostgreSQL: Dashboards: Failed to deploy agents in some cases on the Data nodes.
 	- PostgreSQL: Import ``recovery.conf``/``postgres.auto.conf`` and can now be edited in the UI.
 	- PostgreSQL: ``pg_hba.conf`` is now editable on UI.
