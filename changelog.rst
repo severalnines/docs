@@ -10,6 +10,28 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.7.6
 -----------------
 
+Maintenance Release: April 22\ :sup:`nd`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.6-6830
+	- clustercontrol-controller-1.7.6-3880
+
+* Frontend (UI):
+	- Backup Schedule: When changing a backup method (from non-PgBackRest) to PgBackRest it could cause the UI to become stuck.
+	- Overview graph: The Cluster Overview graph was truncated in some cases to 30 minutes instead of 1 hour.
+
+* Controller:
+	- Verify Backup: A user will be notified by email if the verification fails.
+	- PostgreSQL: Backup Verification made a backup of datadir before restoring the backup, which was unnecessary.
+	- PostgreSQL: Fixed an issue with replication lag calculation and alarming.
+	- PostgreSQL: Skip nodes from failover whose lagging more than MAX_REPLICATION_LAG setting.
+	- MySQL Replication: A fix for rebuilding replication slave where there was a race condition checking if MySQL is down.
+	- Galera: Fixed an issue when manipulating the my.cnf files that could manifest itself as ``Got error Could not read 'wsrep_provider_options'`` when enabling *Galera SSL Encryption*.
+	- Galera: Add a Replication Slave in PXC 5.7 overwrote the my.cnf if it was a symlink.
+	- Password Escaping: Fix a password escaping issue in cmon configuration, that could lead to e.g the Prometheus database exporters to fail to connect to the database.
+	- LibSSH: Fixes to prevent zombie/defunct ssh proxy commands (such as ``sssd_ssh_known_hosts_proxy``) processes due to a missing ``waitpid`` in libssh.
+
 Initial Release: April 10\ :sup:`th`\ , 2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
