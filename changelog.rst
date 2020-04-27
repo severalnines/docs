@@ -10,6 +10,19 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.7.6
 -----------------
 
+Maintenance Release: April 27\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.6-3892
+
+* Controller:
+	- ``s9s_error_reporter`` is not working for Cluster ID 0 (fixed error-report fallback path).
+	- PostgreSQL: Include the pgdg common repository for pgbackrest on CentOS/RHEL.
+	- PostgreSQL: Fixes to failover in case of deleting/erasing the master's datadir.
+	- PostgreSQL: Ping lets do a disconnect first, so we can detect if no new connection can be made to the PostgreSQL server.
+	- MySQL: Bugfix for parsing the role syntax of a MySQL database user, which could lead to the frontend failing to handle the request to show database users in *Manage -> Schema and Users*.
+
 Maintenance Release: April 22\ :sup:`nd`\ , 2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
