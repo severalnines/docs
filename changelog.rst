@@ -10,6 +10,18 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.7.6
 -----------------
 
+Maintenance Release: May 3\ :sup:`rd`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.6-6846
+
+* Frontend (UI):
+	- HAProxy: Import error, fixed the job spec.
+	- Redundant nodes when *Select Stream from Master* in *Create Slave Cluster* dialog.
+	- Backup: Got error ``Cannot set unknown key encrypt_backup on RecordType`` in the UI when configuring backup with verifying backup (added property to Verification model and fixed unit tests).
+	- CSS fixes.
+
 Maintenance Release: April 27\ :sup:`th`\ , 2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -18,7 +30,7 @@ Maintenance Release: April 27\ :sup:`th`\ , 2020
 
 * Controller:
 	- ``s9s_error_reporter`` is not working for Cluster ID 0 (fixed error-report fallback path).
-	- PostgreSQL: Include the pgdg common repository for pgbackrest on CentOS/RHEL.
+	- PostgreSQL: Include the "pgdg" common repository for PgBackRest on CentOS/RHEL.
 	- PostgreSQL: Fixes to failover in case of deleting/erasing the master's datadir.
 	- PostgreSQL: Ping lets do a disconnect first, so we can detect if no new connection can be made to the PostgreSQL server.
 	- MySQL: Bugfix for parsing the role syntax of a MySQL database user, which could lead to the frontend failing to handle the request to show database users in *Manage -> Schema and Users*.
