@@ -10,6 +10,27 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.7.6
 -----------------
 
+Maintenance Release: May 6\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build: 
+	- clustercontrol-1.7.6-6854
+	- clustercontrol-controller-1.7.6-3910
+
+* Frontend (UI):
+	- HAProxy: Auto-filling HAProxy socket, port and credentials fields are not working in the import section (fixed template).
+
+* Controller:
+	- PostgreSQL: Fix a ``pg_hba.conf`` parsing error (whitespace in empty lines).
+	- PostgreSQL: Bugfix for duplicated ``pg_hba.conf`` entries.
+	- PostgreSQL: Bugfix for repetitive ``CREATE ROLE`` calls following a failover.
+	- MongoDB: Backups created by s9s CLI did not contain the node name in the backup file.
+	- MaxScale: Remove/Register fixes.
+	- MySQL: A strong root password is now auto-created if not specified explicitly by the job.
+	- MySQL: Refresh variables after restarting a node so the node is up to date in the UI.
+	- Prometheus: Make sure tar and gzip are installed to be able to deploy the packages.
+	- cmon_upgrade.log: Add timestamp and filenames.
+
 Maintenance Release: May 3\ :sup:`rd`\ , 2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
