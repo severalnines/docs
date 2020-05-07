@@ -1273,6 +1273,7 @@ URI                 Description
 ``mysql://``        The protocol to install and handle MySQL servers.
 ``ndbd://``         The protocol for MySQL Cluster (NDB) data node servers.
 ``ndb_mgmd://``     The protocol for MySQL Cluster (NDB) management node servers. The ``mgmd://`` notation is also accepted.
+``postgresql://``   The protocol to install and handle PostgreSQL servers
 ``haproxy://``      Used to create and manipulate HaProxy servers.
 ``proxysql://``     Use this to install and handle ProxySql servers.
 ``maxscale://``     The protocol to install and handle MaxScale servers.
