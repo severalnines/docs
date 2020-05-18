@@ -10,6 +10,31 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.7.6
 -----------------
 
+Maintenance Release: May 15\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.6-6868
+	- clustercontrol-controller-1.7.6-3940
+
+.. Note:: Cluster 2 cluster replication using PXC requires that ``server_id`` and binlog settings are identical on all nodes of the slave cluster. `Read more here <https://support.severalnines.com/hc/en-us/articles/360043650411>`_.
+
+* Frontend (UI):
+	- CC Teams and Users management issue (removed the strict linking on company for SuperAdmin).
+
+* Controller:
+	- PostgreSQL: Slave rebuild doesn't work for PostgreSQL.
+	- PostgreSQL: Failed create PostgreSQL cluster from pg_basebackup.
+	- PostgreSQL: Remove slave (recovery/standby) signal files after restoring pg_basebackup.
+	- Galera: Automatic failover is not working on MariaDB Cluster with slave nodes.
+	- Galera: *Create Galera Cluster From Backup* fails.
+	- Galera: Creating a Slave Cluster using PXC 5.6 failed. See note above.
+	- Galera: Galera recovery fails repeatedly if automatic recovery is enabled (huge dataset) because of a systemd script timeout. Now CMON will patch the vendors' broken systemd script.
+	- Galera: PXC 5.7 failed to deploy on Centos 8.
+	- MySQL/Galera: Added parser support for new MySQL 8.0 privileges.
+	- ProxySQL: Fix for wildcard handling in MySQL grants (fixes a ProxySQL import users issue).
+	- MongoDB: Deployment fails and fixed by preventing ``/var/run`` and ``/run`` from any owner/access changes, it makes the SSH connections failing.
+
 Maintenance Release: May 6\ :sup:`th`\ , 2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
