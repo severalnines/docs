@@ -10,10 +10,18 @@ This documentation provides detailed information for developers to manipulate an
 CMON RPC
 --------
 
-ClusterControl uses RPC interfaces for the CMON controller, and these interfaces are exposed in two different versions:
+ClusterControl provides RPC interfaces for the CMON controller, and these interfaces are exposed in two different versions:
 
-* `RPC v1 <https://severalnines.com/downloads/cmon/cmon-docs/current/ccrpc.html>`_
-* `RPC v2 <https://severalnines.com/downloads/cmon/cmon-docs/current/rpcv2.html>`_
+* |rpc_v1_external_link|
+* |rpc_v2_external_link|
+
+.. |rpc_v1_external_link| raw:: html
+
+   <a href="https://severalnines.com/downloads/cmon/cmon-docs/current/ccrpc.html" target="_blank">RPCv1</a>
+
+.. |rpc_v2_external_link| raw:: html
+
+   <a href="https://severalnines.com/downloads/cmon/cmon-docs/current/rpcv2.html" target="_blank">RPCv2</a>
 
 It's recommended to use the RPC v2, whenever possible. Please note that the RPC v2 API calls are available only using secure (TLS) connections, encryption is mandatory. The RPC v2 also uses an authentication call, very little of the calls are available to be used without authenticating first.
 
