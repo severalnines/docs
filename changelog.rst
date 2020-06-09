@@ -7,8 +7,26 @@ This change logs list details about updates in each version of ClusterControl.
 
 .. Attention:: We have encountered a severe bug in a library ClusterControl 1.7.3 relies on for SSH communication and may cause severe side effects. If you are using ClusterControl 1.7.3 then you must upgrade the ``clustercontrol-controller`` package to at least version 1.7.3-3440 (release date September 24th, 2019) or later.
 
+.. Note:: Cluster 2 cluster replication using PXC requires that ``server_id`` and binlog settings are identical on all nodes of the slave cluster. `Read more here <https://support.severalnines.com/hc/en-us/articles/360043650411>`_.
+
 Changes in v1.7.6
 -----------------
+
+Maintenance Release: June 8\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+* Build:
+	- clustercontrol-controller-1.7.6-3972
+
+* Controller:
+	- ProxySQL: Supporting MariaDB roles when importing users to ProxySQL.
+	- MongoDB: Upgraded ``mongodb_exporter`` to v0.11.0 to support newer MongoDB versions.
+	- HAProxy: Fixed an issue where the node appears as online but the VM is not even running.
+	- Galera: Failed to create slave cluster from backup for Galera.
+	- PostgreSQL: Cluster-to-Cluster replication shows *Cluster Failure* in the slave cluster.
+	- PostgreSQL: Failed to Create Slave Cluster on TimescaleDB.
+	- Notifications: Extended the fallback email address query with, ``dcps.users`` with ``company_id=0``, and the RPCv2 owner user of the cluster. This ensures that an admin that can see all clusters will get notifications from all clusters.
 
 Maintenance Release: May 15\ :sup:`th`\ , 2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -16,8 +34,6 @@ Maintenance Release: May 15\ :sup:`th`\ , 2020
 * Build:
 	- clustercontrol-1.7.6-6868
 	- clustercontrol-controller-1.7.6-3940
-
-.. Note:: Cluster 2 cluster replication using PXC requires that ``server_id`` and binlog settings are identical on all nodes of the slave cluster. `Read more here <https://support.severalnines.com/hc/en-us/articles/360043650411>`_.
 
 * Frontend (UI):
 	- CC Teams and Users management issue (removed the strict linking on company for SuperAdmin).

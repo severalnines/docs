@@ -52,10 +52,10 @@ Cluster Details
 	- Choose a cluster.
 	
 * **Select Vendor and Version**
-	- MySQL Replication Cluster - Percona Server 8.0, Oracle MySQL Server 8.0, MariaDB Server 10.3
-	- MySQL Galera - Percona XtraDB Cluster 5.7, MariaDB 10.2, MariaDB 10.3
-	- MongoDB Replica Set - MongoDB 3.4 and MongoDB 4.0 by MongoDB, Inc and Percona Server for MongoDB 3.4 by Percona (replica set only).
-	- PostgreSQL Streaming Replication - PostgreSQL 11.0 (streaming replication only).
+	- MySQL Replication Cluster - Percona Server 8.0, Oracle MySQL Server 8.0, MariaDB Server 10.3 and MariaDB 10.4.
+	- MySQL Galera - Percona XtraDB Cluster 5.7, MariaDB 10.2, MariaDB 10.3 and MariaDB 10.4.
+	- MongoDB Replica Set - MongoDB 3.6, MongoDB 4.0, MongoDB 4.2 by MongoDB, Inc and Percona Server for MongoDB 4.2 by Percona (replica set only).
+	- PostgreSQL Streaming Replication - PostgreSQL 11.0 and PostgreSQL 12.0 (streaming replication only).
 	- TimeScaleDB - TimeScaleDB 11.0 (streaming replication only).
 
 Configure Cluster
@@ -205,6 +205,27 @@ Most of the settings in this step are dynamically populated from the cloud provi
 * **Allocate Storage**
 	- Specify the storage size for the cloud instance in GB.
 
+Load Balancer
++++++++++++++
+
+* **Select Number of Loadbalancers**
+	- How many nodes for the load balancer nodes. You can start with one but two or more is recommended. 
+
+* **Instance Size**
+	- Choose an instance size for the cloud instance.
+
+* **Listen Port (Read/Write)**
+	- Specify the HAProxy listenting port for read-write connections.
+
+* **Listen Port (Read Only)**
+	- Specify the HAProxy listenting port for read-only connections.
+
+* **Policy**
+	- Choose one of these load balancing policy:
+		- leastconn - The server with the lowest number of connections receives the connection.
+		- roundrobin - Each server is used in turns, according to their weights.
+		- source - The same client IP address will always reach the same server as long as no server goes down.
+
 Deployment Summary
 ++++++++++++++++++
 
@@ -220,6 +241,5 @@ Known Limitations
 There are known limitations for the cloud deployment feature:
 
 * There is currently no 'accounting' in place for the cloud instances. You will need to manually remove created cloud instances.
-* You cannot deploy a load balancer automatically with a cloud instance.
 
 We appreciate your feedbacks, feature requests and bug reports. Contact us via the support channel or create a feature request. See :ref:`FAQ` for details.

@@ -1,5 +1,5 @@
 User Guide for TimeScaleDB
-==========================
+--------------------------
 
 This user guide covers ClusterControl with TimeScaleDB-based (>9.6) cluster, namely:
 

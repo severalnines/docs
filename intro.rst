@@ -3,7 +3,7 @@
 Introduction
 ============
 
-This documentation covers ClusterControl version 1.7.5 which was released on December 18\ :sup:`th`\ , 2019. This release contains key new features along with performance improvements and bug fixes. Release change log is available at :ref:`Changelog`.
+This documentation covers ClusterControl version 1.7.6 which was released on April 10\ :sup:`th`\ , 2020. This release contains key new features along with performance improvements and bug fixes. Release change log is available at :ref:`Changelog`.
 
 What is ClusterControl? 
 -----------------------
@@ -49,15 +49,16 @@ ClusterControl supports the following database servers/clusters:
 	- Percona XtraDB Cluster (Percona)
 	- MariaDB Galera Cluster (MariaDB)
 - MySQL Cluster (NDB)
-- MySQL/MariaDB Replication (master-master and master-slave)
-- MySQL/MariaDB Standalone
+- MySQL/MariaDB
+	- Standalone
+	- Replication (master-master and master-slave)
 - MongoDB/Percona Server for MongoDB
 	- Replica set
 	- Sharded cluster
 	- Replicated sharded cluster
 - PostgreSQL/TimescaleDB
-	- Single instance
-	- Streaming replication
+	- Standalone
+	- Streaming replication (asynchronous and synchronous)
 	
 Supported Load Balancer
 ------------------------

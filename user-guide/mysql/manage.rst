@@ -57,7 +57,7 @@ Base Template Files
 
 All services configured by ClusterControl use a base configuration template available under ``/usr/share/cmon/templates`` on the ClusterControl node. You can directly modify the file to suit your deployment policy however, this directory will be replaced after a package upgrade.
 
-To make sure your custom configuration template files persist across upgrade, store your template files under ``/etc/cmon/templates`` directory (ClusterControl 1.6.2 and later). When ClusterControl loads up the template file for deployment, files under ``/etc/cmon/templates`` will always have higher priority over the files under ``/usr/share/cmon/templates``. If two files having identical name exist on both directories, the one located under ``/etc/cmon/templates`` will be used.
+To make sure your custom configuration template files persist across upgrades, store your template files under ``/etc/cmon/templates`` directory (ClusterControl 1.6.2 and later). When ClusterControl loads up the template file for deployment, files under ``/etc/cmon/templates`` will always have higher priority over the files under ``/usr/share/cmon/templates``. If two files having identical names exist on both directories, the one located under ``/etc/cmon/templates`` will be used.
 
 The following are template files provided by ClusterControl related to MySQL/MariaDB:
 
@@ -283,9 +283,21 @@ Deploy HAProxy
 * **Install for read/write splitting (master-slave replication)**
 	- Toggled on if you want HAProxy to use another listener port for read-only. A new text box will appear right next to the *Listen Port (Read/Write)* text box. Default to 3308.
 	
+**Installation Settings**
+
 * **Build from Source**
 	- ClusterControl will compile the latest available source package downloaded from http://www.haproxy.org/#down. 
 	- This option is only required if you intend to use the latest version of HAProxy or if you are having problem with the package manager of your OS distribution. Some older OS versions do not have HAProxy in their package repositories.
+	
+* **Overwrite Existing /usr/local/sbin/mysqlchk on targets**
+	- Toggle on if you want to overwrite any existing MySQL health check script on the load balancer node.
+
+* **Disable Firewall?**
+	- Toggle on to disable firewall (recommended). Otherwise, ClusterControl will not perform this action and the existing firewall rules (if exist) will remain active.
+
+* **Disable SELinux/AppArmor?**
+	- Toggle on to let ClusterControl disable AppArmor (Ubuntu) or SELinux (RedHat/CentOS) if enabled (recommended).
+
 
 **Advanced Settings**
 	

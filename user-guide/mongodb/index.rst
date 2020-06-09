@@ -1,5 +1,5 @@
 User Guide for MongoDB
-=======================
+----------------------
 
 This user guide covers ClusterControl with MongoDB-based clusters, namely:
 

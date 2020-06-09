@@ -78,7 +78,7 @@ To create an instant backup, you have options to create a full backup using mysq
 	- Exclusive for mysqldump only. The default is ON where ClusterControl will create the dump with with ``--extended-insert``. This results in a smaller dump file and speeds up inserts when the file is reloaded. If toggled OFF, ClusterControl will use ``--skip-extended-insert`` and ``--set-gtid-purged=OFF`` flags in the mysqldump command.
 
 * **PITR Compatible**
-	- Exclusive for mysqldump and if binary log is enabled. A mysqldump PITR-compatible backup contains one single dump file, with GTID info, binlog file and position. Thus, only the database node that produces binary log will have the "PITR Compatible" option available. See `Point-in-Time Recovery`_.
+	- Exclusive for mysqldump and xtrabackup(full)/mariabackup(full) methods only if binary log is enabled. For mysqldump, the PITR-compatible backup contains one single dump file, with GTID info, binlog file and position. Thus, only the database node that produces binary log will have the "PITR Compatible" option available. See `Point-in-Time Recovery`_.
 
 * **Upload Backup to the cloud**
 	- Upload the backup to the cloud storage. The upload process happens right after the backup is successfully created. This feature requires you to set up the cloud credentials first. See :ref:`Sidebar - Integrations - Cloud Providers`.
@@ -205,7 +205,7 @@ Creates backup schedules of the database. You can choose to create a full or inc
 	- Exclusive for mysqldump only. The default is ON where ClusterControl will create the dump with with ``--extended-insert``. This results in a smaller dump file and speeds up inserts when the file is reloaded. If toggled OFF, ClusterControl will use ``--skip-extended-insert`` and ``--set-gtid-purged=OFF`` flags in the mysqldump command.
 
 * **PITR Compatible**
-	- Exclusive for mysqldump and if binary log is enabled. A mysqldump PITR-compatible backup contains one single dump file, with GTID info, binlog file and position. Thus, only the database node that produces binary log will have the "PITR Compatible" option available. See `Point-in-Time Recovery`_.
+	- Exclusive for mysqldump and xtrabackup(full)/mariabackup(full) methods only if binary log is enabled. For mysqldump, the PITR-compatible backup contains one single dump file, with GTID info, binlog file and position. Thus, only the database node that produces binary log will have the "PITR Compatible" option available. See `Point-in-Time Recovery`_.
 
 * **Upload Backup to the cloud**
 	- Upload the backup to the cloud storage. The upload process happens right after the backup is successfully created. This feature requires you to set up the cloud credentials first. See :ref:`Sidebar - Integrations - Cloud Providers`.

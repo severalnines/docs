@@ -1,5 +1,5 @@
 User Guide for MySQL
-====================
+--------------------
 
 This user guide covers ClusterControl with MySQL-based clusters, namely:
 
@@ -9,7 +9,6 @@ This user guide covers ClusterControl with MySQL-based clusters, namely:
 * MySQL Cluster (NDB)
 * MySQL/MariaDB Replication
 * MySQL/MariaDB single instance
-* MySQL Group Replication
 
 Contents:
 

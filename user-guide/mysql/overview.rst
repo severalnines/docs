@@ -1,19 +1,19 @@
 .. _MySQL - Overview:
 
 Overview
---------
+++++++++
 
 Provides summary of all database nodes in the cluster. This page is accessible only if there is a cluster deployed by ClusterControl via :ref:`Deploy Database Cluster` or imported into ClusterControl via :ref:`Import Existing Server Cluster`.
 
 .. _MySQL - Overview - Actions:
 
 Actions
-+++++++
+````````
 
 Provides shortcuts to the main cluster functionality. Each database cluster has its own set of functionality as described below:
 
 Galera Cluster
-``````````````
+''''''''''''''
 
 * **Add Load Balancer**
 	- See :ref:`MySQL - Manage - Load Balancer`.
@@ -60,15 +60,11 @@ Galera Cluster
 	- This action will remove the corresponding cluster from ClusterControl supervision and will NOT uninstall the actual database cluster.
 	- If you want to re-add the cluster, you have to use :ref:`Import Existing Server Cluster`.
 
-* **Deregister Cluster from UI**
-	- Unregister a database cluster from the ClusterControl UI. 
-	- You can still re-register your cluster to ClusterControl at a later stage by using :ref:`UserGuide - Global Settings - Cluster Registrations`.
-
 * **Stop Cluster**
 	- Stop all nodes in the cluster.
 
 MySQL Replication
-``````````````````
+'''''''''''''''''
 
 * **Add Node**
 	- See `Add Node`_ section.
@@ -95,15 +91,11 @@ MySQL Replication
 	- Removes the corresponding cluster from ClusterControl supervision and will NOT uninstall the actual database cluster.
 	- If you want to re-add the cluster, you have to use :ref:`Import Existing Server Cluster`.
 
-* **Deregister Cluster from UI**
-	- Unregister a database cluster from the ClusterControl UI. 
-	- You can still re-register your cluster to ClusterControl at a later stage by using :ref:`UserGuide - Global Settings - Cluster Registrations`.
-
 MySQL Standalone
-````````````````
+''''''''''''''''
 
 * **Add Node**
-	- See `Add Node`_ section.
+	- See `Add Node`_.
 	
 * **Add Load Balancer**
 	- See :ref:`MySQL - Manage - Load Balancer`.
@@ -126,17 +118,13 @@ MySQL Standalone
 * **Delete Cluster**
 	- This action will remove the corresponding cluster from ClusterControl supervision and will NOT uninstall the actual database cluster.
 	- If you want to re-add the cluster, you have to use :ref:`Import Existing Server Cluster`.
-
-* **Deregister Cluster from UI**
-	- Unregister a database cluster from the ClusterControl UI. 
-	- You can still re-register your cluster to ClusterControl at a later stage by using :ref:`UserGuide - Global Settings - Cluster Registrations`.
 
 
 MySQL Cluster
-``````````````
+''''''''''''''
 
 * **Add SQL Node**
-	- Add MySQL Cluster SQL node. See `Add Node`_ section.
+	- Add MySQL Cluster SQL node. See `Add Node`_.
 
 * **Add Load Balancer**
 	- See :ref:`MySQL - Manage - Load Balancer`.
@@ -160,62 +148,69 @@ MySQL Cluster
 	- This action will remove the corresponding cluster from ClusterControl supervision and will NOT uninstall the actual database cluster.
 	- If you want to re-add the cluster, you have to use :ref:`Import Existing Server Cluster`.
 
-* **Deregister Cluster from UI**
-	- Unregister a database cluster from the ClusterControl UI. 
-	- You can still re-register your cluster to ClusterControl at a later stage by using :ref:`UserGuide - Global Settings - Cluster Registrations`.
-
 Add Node
-````````
+''''''''
 
 Adds a new or existing database node into the cluster. You can scale out your cluster by adding mode database nodes. The new node will automatically join and synchronize with the rest of the cluster. 
 
 Create and add a new DB node
-''''''''''''''''''''''''''''
+............................
 
-If you specify a new hostname or IP address, make sure that the node is accessible from ClusterControl node via passwordless SSH.
+If you specify a new hostname or IP address, make sure that the node is accessible from ClusterControl node via passwordless SSH. See :ref:`Requirements - Passwordless SSH`.
 
-This is only available for Galera Cluster, MySQL Replication (adding slave) and MySQL Cluster.
+This is only available for Galera Cluster and MySQL Cluster.
 
-* **Hostname**
-	- IP address or :term:`FQDN` of the target node. If you already have the host added under *ClusterControl > Manage > Hosts*, you can just choose the host from the dropdown menu.
+* **Add Node**
+	- IP address or :term:`FQDN` of the target node. Press ENTER to add the node, where ClusterControl will perform a pre-deployment check to verify if the node is reachable via passwordless SSH. If the target node has more than one network interfaces, you will be able to select or enter a separate IP address to be used only for database traffic.
 
-* **Configuration**
-	- Choose a MySQL configuration template for the new node.
+* **Configuration Template**
+	- Choose a MySQL configuration template for the new node. The configuration templates will be loaded from ``/etc/cmon/templates`` or ``/usr/share/cmon/templates``. See :ref:`MySQL - Manage - Configurations - Base Template Files` for details.
+
+* **Data directory**
+	- MySQL data directory that is going to be set up on the target node.
+
+* **Galera Segment**
+	- Exclusive for Galera Cluster. Specify a different integer other than the current segment if you want to split the target node into another Galera segment.
+
+* **Create from a backup**
+	- Provisions the data on target node from an existing backup. Only PITR-compatible backups will be listed in the dropdown menu.
 	
-* **Install Software**
-	- If you already have the database server installed on the target host but not yet configured, you can tell ClusterControl to skip the database installation part by choosing 'No'.
+* **Install Database Software**
+	- Yes - Install the database software and all of its dependencies (recommended).
+	- No - If you already have the database server installed on the target host but not yet configured, you can tell ClusterControl to skip the database installation part.
 
 * **Disable Firewall**
 	- Yes - Firewall will be disabled (recommended).
 	- No - ClusterControl will not disabling any enabled firewall rules.
 
-* **Disable AppArmor/SELinux**
-	- Check the box to let ClusterControl disable AppArmor (Ubuntu) or SELinux (RedHat/CentOS) if enabled.
+* **Include in Loadbalancer set (if exists)**
+	- Yes - The node will be added into the load balancing set if you have HAProxy, ProxySQL or MaxScale deployed with ClusterControl.
+	- No - The node will be not added into the load balancing set.
 
-* **Include in Loadbalancer set (if exist)**
-	- The node will be added into the load balancing set if you have HAProxy or MaxScale deployed with ClusterControl.
-	
-* **Do you want to delay the slave?**
-	- Yes - Sets up a delayed slave.
-	- No - Sets up a standard slave.
-	
-* **Delay slave with**
-	- This option will appear only if you select Yes. Specify the value in seconds.
+* **Disable AppArmor/SELinux**
+	- Yes - Let ClusterControl disable AppArmor (Ubuntu) or SELinux (RedHat/CentOS) if it is enabled.
+	- No - Do nothing. AppArmor (Ubuntu) or SELinux (RedHat/CentOS) will not be touched.
 
 Add an existing DB node
-'''''''''''''''''''''''
+.......................
 
-Use this feature if you have added a DB node manually to your cluster and want it to be detected and managed by ClusterControl. ClusterControl will then detect the new DB node as being part of the cluster and starts to manage and monitor it as with the rest of the cluster nodes. Useful if a node has been created outside of ClusterControl e.g, through Puppet, Chef or Ansible.
+Use this feature if you have added a DB node manually to your cluster and want it to be detected and managed by ClusterControl. ClusterControl will then detect the new DB node as being part of the cluster and start to manage and monitor it as with the rest of the cluster nodes. Useful if a node has been created outside of ClusterControl e.g, through Puppet, Chef or Ansible.
 
-* **Hostname**
-	- IP address or :term:`FQDN` of the target node.
+* **Add Node**
+	- IP address or :term:`FQDN` of the target node. Press ENTER to add the node, where ClusterControl will perform a pre-deployment health check to verify if the node is reachable via passwordless SSH. IP address or :term:`FQDN` of the target node. Press ENTER to add the node, where ClusterControl will perform a pre-deployment check to verify if the node is reachable via passwordless SSH. If the target node has more than one network interfaces, you will be able to select or enter a separate IP address to be used only for database traffic.
 
 * **Port**
 	- MySQL port. Default is 3306.
 
+* **Data directory**
+	- MySQL data directory that is going to be set up on the target node.
+
+* **Include in Loadbalancer set (if exists)**
+	- Yes - The node will be added into the load balancing set if you have HAProxy, ProxySQL or MaxScale deployed with ClusterControl.
+	- No - The node will be not added into the load balancing set.
 
 Add Replication Slave
-``````````````````````
+'''''''''''''''''''''
 
 MySQL replication slave requires at least a master with GTID enabled on the Galera nodes. However, we would recommend users to configure all Galera nodes as master for better failover. GTID is required as it is used to do master failover (MariaDB's  GTID is not supported at the moment). If you are running on MySQL 5.5, you might need to upgrade to MySQL 5.6.
 
@@ -253,9 +248,9 @@ For the slave, you would need a separate host or VM, with or without MySQL insta
 We have covered an example deployment in this blog post, `Deploy an asynchronous slave to Galera Cluster for MySQL - The Easy Way <http://www.severalnines.com/blog/deploy-asynchronous-slave-galera-mysql-easy-way>`_.
 
 Add New Replication Slave
-''''''''''''''''''''''''''
+.........................
 
-The slave will be setup from a streamed XtraBackup from the master to the slave. 
+The slave will be setup through a streamed XtraBackup from the master to the slave. 
 
 * **Master Server**
 	- Select a master server. Only Galera nodes that generate binary log are listed here.
@@ -286,7 +281,7 @@ The slave will be setup from a streamed XtraBackup from the master to the slave.
 
 
 Add Existing Replication Slave
-''''''''''''''''''''''''''''''
+..............................
 
 Add an existing replication slave into ClusterControl. Use this feature if you have added a replication slave manually to your cluster and want it to be detected/managed by ClusterControl. ClusterControl will then detect the new database node as being part of the cluster and starts to manage and monitor it as with the rest of the cluster nodes. Useful if a node has been configured outside of ClusterControl e.g, through Puppet, Chef or Ansible.
 
@@ -298,7 +293,7 @@ Add an existing replication slave into ClusterControl. Use this feature if you h
 
 
 Clone Cluster
-``````````````
+'''''''''''''
 
 Exclusive for Galera Cluster. This feature allows you to create, in one click, an exact copy of your Galera Cluster onto a new set of hosts. The most common use case for cloning a deployment is for setting up a staging deployment for further development and test. Cloning is a ‘hot’ procedure and does not affect the operations of the source cluster. 
 
@@ -326,7 +321,7 @@ A clone will be created of this cluster. The following procedure applies:
 	- The database node IP address or hostname. The enable fields is depending on the Cloned Cluster Size.
 	
 Cluster-Cluster Replication
-````````````````````````````
+'''''''''''''''''''''''''''
 
 Exclusive for Galera Cluster. This feature allows you to create a new cluster that will be replicating from this cluster. One primary use case is for disaster recovery by having a hot standby site/cluster which can take over when the main site/cluster has failed. Clusters can be rebuilt with an existing backup or by streaming from a master on the source cluster.
 
@@ -350,18 +345,18 @@ A slave cluster will appear in the database cluster list after deployment finish
 .. _MySQL - Overview - Cluster Load:
 
 Cluster Load
-++++++++++++
+````````````
 
 The Cluster Load graph provides overview of aggregated load on your database cluster. To jump into individual database load, click on ‘Show Servers’.
 
 * **Dash Settings**
-	- Customize the Cluster Load dashboard. See :ref:`MySQL - Overview - Custom Dashboard` section.
+	- Customize the Cluster Load dashboard. See :ref:`MySQL - Overview - Custom Dashboard`.
 
 * **Show Servers**
 	- Show real-time individual node database load.
 
-* **Show Queries**
-	- Show real-time queries across all nodes.
+* **Show Queries Outliers**
+	- Show real-time queries outliers across all nodes. See :ref:`MySQL - Query Monitor - Query Outliers`.
 
 * **Sync Graphs**
 	- Sync all graph (cluster load and server load) when selecting a range.
@@ -390,7 +385,7 @@ The Cluster Load graph provides overview of aggregated load on your database clu
 .. _MySQL - Overview - Custom Dashboard:
 
 Custom Dashboard
-+++++++++++++++++
+`````````````````
 
 Customize the dashboard in the :ref:`MySQL - Overview` page by selecting which metrics and graphs to display. For Galera nodes, 6 graphs are configured by default:
 
@@ -424,7 +419,7 @@ The created custom dashboards will appear as tabs right before *Dash Settings*.
 .. _MySQL - Overview - Server Load:
 
 Server Load
-+++++++++++
+````````````
 
 Drill down into metrics for individual servers. Click on *Show CPU, Net and Disk* to view monitoring data on CPU, network and disk for the corresponding host.
 
@@ -434,7 +429,7 @@ Drill down into metrics for individual servers. Click on *Show CPU, Net and Disk
 .. _MySQL - Overview - Cluster-wide Queries:
 
 Cluster-wide Queries
-+++++++++++++++++++++
+``````````````````````
 
 Provides aggregated view of all queries running across all database nodes in the cluster. This page is auto-refreshed every 30 seconds. You can change the refresh rate by clicking on the arrow beside the greenRefresh icon. Click on any SELECT query to see the execution plan.
 
@@ -459,17 +454,17 @@ Provides aggregated view of all queries running across all database nodes in the
 .. _MySQL - Overview - Database Nodes Stats:
 
 Database Stats
-++++++++++++++
+``````````````
 
 This provides a summary of database and replication-related metrics for all nodes. These values are refreshed every *Refresh rate* values defined at the top of the page. 
 
 Each database cluster has it’s own set of metrics as explained below:
 
 Galera Cluster
-``````````````
+''''''''''''''
 
 Galera Nodes Grid
-''''''''''''''''''
+.................
 
 * **Host**
 	- Database node hostname or IP address
@@ -521,7 +516,7 @@ Galera Nodes Grid
 	- Fetch the latest update.
 
 Master Nodes Grid
-''''''''''''''''''
+.................
 
 This grid appears if you configured Galera node to produce binary log with a unique ``server_id`` value.
 
@@ -550,7 +545,7 @@ This grid appears if you configured Galera node to produce binary log with a uni
 	- Fetch the latest update.
 
 Slave Nodes Grid
-''''''''''''''''''
+................
 
 This grid appears if you have a replication slave attached to the Galera cluster.
 
@@ -591,10 +586,10 @@ This grid appears if you have a replication slave attached to the Galera cluster
 	- Fetch the latest update.
 	
 MySQL Group Replication
-````````````````````````
+'''''''''''''''''''''''
 
 Master Nodes Grid
-''''''''''''''''''
+.................
 
 This grid appears if you configured MySQL node to produce binary log with a unique ``server_id`` value.
 
@@ -629,10 +624,10 @@ This grid appears if you configured MySQL node to produce binary log with a uniq
 	- Fetch the latest update.
 
 MySQL Replication or Single Instance
-``````````````````````````````````````
+''''''''''''''''''''''''''''''''''''
 
 Standalone Nodes Grid
-''''''''''''''''''''''
+.....................
 
 * **Host**
 	- Database node hostname or IP address
@@ -653,7 +648,7 @@ Standalone Nodes Grid
 	- The number of SELECT queries on this node per second.
 
 Master Nodes Grid
-''''''''''''''''''
+.................
 
 This grid appears if you configured MySQL node to produce binary log with a unique ``server_id`` value.
 
@@ -688,7 +683,7 @@ This grid appears if you configured MySQL node to produce binary log with a uniq
 	- Value of ``binlog_ignore_db`` option.
 
 Slave Nodes Grid
-''''''''''''''''''
+................
 
 This grid appears if you have slaves replicating from a master.
 
@@ -726,10 +721,10 @@ This grid appears if you have slaves replicating from a master.
 	- Shows the set of GTIDs for transactions that have been executed on the master.
 
 MySQL Cluster
-``````````````
+'''''''''''''
 
 Management Nodes Grid
-''''''''''''''''''''''
+.....................
 
 * **Instance**
 	- Management node hostname or IP address
@@ -747,7 +742,7 @@ Management Nodes Grid
 	- Fetch the latest update.
 
 SQL Nodes Grid
-''''''''''''''''''
+..............
 
 * **Host**
 	- SQL node hostname or IP address.
@@ -783,7 +778,7 @@ SQL Nodes Grid
 	- Fetch the latest update.
 
 Data Nodes Grid
-''''''''''''''''''
+...............
 
 * **Instance**
 	- Data node hostname or IP address.
@@ -818,7 +813,7 @@ Data Nodes Grid
 .. _MySQL - Overview - Hosts Stats:
 
 Hosts Stats
-+++++++++++
+````````````
 
 Shows collected host metrics in a grid as below:
 

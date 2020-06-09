@@ -22,7 +22,7 @@ To remove a host, just select the host and click on the *Remove* button.
 Configurations
 +++++++++++++++
 
-Manages the configuration files of your database and HAProxy nodes. For PostgreSQL database, within the ``postgresql.conf`` file, some parameters contain comments that indicate ``# (change requires restart)``. Note that ClusterControl will neither perform the reload nor restart operation after modifying the configuration file. One has to schedule server reload/restart operation to load the changes into the server runtime.
+Manages the configuration files of your database and HAProxy nodes. For ``pg_hba.conf`` and within the ``postgresql.conf`` files, some parameters contain comments that indicate ``# (change requires restart)``. Note that ClusterControl will neither perform the reload nor restart operation after modifying the configuration file. One has to schedule server reload/restart operation to load the changes into the server runtime. If you would like to create user with automatic reload, use the `Users Management`_ instead.
 
 .. Note:: ClusterControl does not store configuration changes history so there is no versioning at the moment. Only one version exists at one time. It imports the latest configuration files every 30 minutes and overwrites it in CMON database. This limitation will be improved in the upcoming release where ClusterControl shall support configuration versioning with dynamic import interval.
 
@@ -92,11 +92,23 @@ Deploy HAProxy
 	- Specify the HAProxy listening port. This will be used as the load balanced PostgreSQL connection port for read/write connections.
 
 * **Install for read/write splitting (master-slave replication)**
-	- Toggled on if you want the HAProxy to use another listener port for read-only. A new text box will appear right next to the *Listen Port (Read/Write)* text box.
+	- Toggle on if you want the HAProxy to use another listener port for read-only. A new text box will appear right next to the *Listen Port (Read/Write)* text box.
+
+**Installation Settings**
 	
 * **Build from Source**
 	- ClusterControl will compile the latest available source package downloaded from http://www.haproxy.org/#down. 
 	- This option is only required if you intend to use the latest version of HAProxy or if you are having problem with the package manager of your OS distribution. Some older OS versions do not have HAProxy in their package repositories.
+	
+* **Overwrite Existing /usr/local/sbin/postgreschk_rw_split on targets**
+	- Toggle on if you want to overwrite any existing PostgreSQL health check script on the load balancer node.
+
+* **Disable Firewall?**
+	- Toggle on to disable firewall (recommended). Otherwise, ClusterControl will not perform this action and the existing firewall rules (if exist) will remain active.
+
+* **Disable SELinux/AppArmor?**
+	- Toggle on to let ClusterControl disable AppArmor (Ubuntu) or SELinux (RedHat/CentOS) if enabled (recommended).
+
 
 **Advanced Settings**
 	

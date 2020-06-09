@@ -179,7 +179,7 @@ Examples as follow:
 	# Debian/Ubuntu
 	$ CLUSTERCONTROL_BUILD="clustercontrol=1.7.1-5622 clustercontrol-cloud=1.7.1-163 clustercontrol-clud=1.7.1-163 clustercontrol-notifications=1.7.1-159 clustercontrol-ssh=1.7.1-70" CONTROLLER_BUILD="clustercontrol-controller=1.7.1-2985" S9S_TOOLS_BUILD="s9s-tools=1.7.20190117-release1" ./install-cc
 	
-	# Centos/Redhat
+	# CentOS/Redhat
 	$ CLUSTERCONTROL_BUILD="clustercontrol-1.7.1-5622 clustercontrol-cloud-1.7.1-163 clustercontrol-clud-1.7.1-163 clustercontrol-notifications-1.7.1-159 clustercontrol-ssh-1.7.1-70" CONTROLLER_BUILD="clustercontrol-controller-1.7.1-2985" S9S_TOOLS_BUILD="s9s-tools-1.7-93.1" ./install-cc
 
 

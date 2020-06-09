@@ -1,10 +1,14 @@
+.. _MySQL - Query Monitor:
+
 Query Monitor
--------------
++++++++++++++
 
 Provides summary of query processing across all nodes in the cluster.
 
+.. _MySQL - Query Monitor - Top Queries:
+
 Top Queries
-++++++++++++
+```````````
 
 This is an aggregated list of all your top queries running on all the nodes of your database cluster. The list can be ordered by Occurrence or Execution Time, to show the most common or slowest queries respectively. It is also possible to filter and review queries from one particular node.
 
@@ -38,7 +42,7 @@ If you are using the Slow Query log, only queries that exceed the *Long Query Ti
 The *Long Query Time* value can be specified to a resolution of microseconds, for example 0.000001 (1 x 10 :superscript:`-6`).
 
 Settings
-``````````
+''''''''
 
 Click on the Settings to configure the Query Monitor settings, as explained below:
 
@@ -63,7 +67,7 @@ Click on the Settings to configure the Query Monitor settings, as explained belo
 	- Wipes out the sampled queries. The sampling will be refreshed again after ``db_stats_collection_interval``.
 
 Top Queries Table
-``````````````````
+'''''''''''''''''
 
 This page is auto-refresh every 30 seconds. You can change the refresh rate by clicking on *Refresh rate* dropdown at top right. The following describes the Top Queries table columns:
 
@@ -95,9 +99,10 @@ This page is auto-refresh every 30 seconds. You can change the refresh rate by c
 		- Absolute - Total execution time of the query.
 		- Relative - Percentage of the query execution time over total time.
 
+.. _MySQL - Query Monitor - Running Queries:
 
 Running Queries
-+++++++++++++++
+```````````````
 
 View current running queries on your database cluster similar to ``SHOW FULL PROCESSLIST`` command in MySQL. You can stop a running query by selecting to kill the connection that started the query. The processlist can be filtered out by host.
 
@@ -133,8 +138,10 @@ This page is auto-refresh every 30 seconds. You can change the refresh rate by c
 * **State**
 	- An action, event, or state that indicates what the thread is doing, as explained in `MySQL Documentation <http://dev.mysql.com/doc/refman/5.6/en/general-thread-states.html>`_ page.
 
+.. _MySQL - Query Monitor - Query Outliers:
+
 Query Outliers
-+++++++++++++++
+``````````````
 
 Shows queries that are outliers. An outlier is a query taking longer time than the normal query of that type. Use this feature to filter out the outliers for a certain time period. After a number of samples and when ClusterControl has had enough stats, it can determine if latency is higher than normal (2 sigma + ``average_query_time``) then it is an outlier, and will be added into the *Query Outlier*.
 

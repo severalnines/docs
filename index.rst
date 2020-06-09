@@ -19,11 +19,11 @@ Contents:
    installation
    user-guide/index
    components
-   tutorials/index
    administration
+   devel
+   tutorials/index
    troubleshooting
    faq
-   dsl
    changelog
    glossary
 

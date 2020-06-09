@@ -1,7 +1,7 @@
-.. _UserGuide - Dashboard:
+.. _ClusterControl UI - Dashboard:
 
 Dashboard
-=========
+---------
 
 This page is the landing page once you are logged in. It provides a summary of database clusters monitored by ClusterControl.
 
@@ -46,19 +46,19 @@ Provides shortcuts to main cluster functionality. Every supported database clust
 .. _UserGuide - Activity:
 
 Activity
---------
+++++++++
 
 Clicking on it will expand the activity tab which consists of `Alarms`_, `Jobs`_ and `Logs`_. Click once more to collapse the content. If you rolled over the menu icon, you would see a counter summary for every component.
 
 Alarms
-++++++
+``````
 
 Shows aggregated view of alarms raised for all clusters monitored by ClusterControl. Each alarm entry has a header, details on the issue, severity level, category, corresponding cluster name, corresponding host and timestamp. All the alarms listed here are also accessible directly under individual cluster main menu available at *Alarms > Alarms*.
 
 Click on the alarm entry itself to see the full details and recommendation. Furthermore, you can click on the "Full Alarm Details" to see the full information, recommendation and to send out this alarm as an email to the recipients configured under *Settings > CMON Settings > Email Notification Settings*. Click "Ignore Alarm" to silent the respective alarm from appearing in the list again.
 
 Jobs
-++++++
+````
 
 Shows aggregated view of jobs that have been initiated and performed by ClusterControl across clusters (e.g., deploying a new cluster, adding an existing cluster, cloning, creating backup, etc). Each job entry has a job status, a cluster name, which user started the job and also timestamp. All the jobs listed here are also accessible directly under individual cluster main menu available at *Logs > Jobs*.
 
@@ -83,21 +83,21 @@ The job status:
 +------------+--------------------------------------+
 
 Logs
-++++++
+````
 
 Shows aggregated view of ClusterControl logs which require user's attention across clusters (logs with severity WARNING and ERROR). Each log entry has a message subject, severity level, component, the corresponding cluster name and also timestamp. All the logs listed here are also accessible directly under individual cluster at *Logs > CMON Logs*.
 
-.. _UserGuide - Global Settings:
+.. _ClusterControl UI - Global Settings:
 
 Global Settings
----------------
++++++++++++++++
 
 Provides interface to register clusters, repositories and subscriptions inside ClusterControl.
 
-.. _UserGuide - Global Settings - Repositories:
+.. _ClusterControl UI - Global Settings - Repositories:
 
 Repositories
-+++++++++++++
+````````````
 
 Manages provider's repository for database servers and clusters. You can have three types of repository when deploying database server/cluster using ClusterControl:
 
@@ -133,14 +133,14 @@ For reference purpose, following is an example of yum definition if *Local Mirro
 .. _UserGuide - Global Settings - Cluster Registrations:
 
 Cluster Registrations
-++++++++++++++++++++++
+`````````````````````
 
 Registers a database cluster managed by ClusterControl Controller (CMON) to be viewed by ClusterControl UI. Each database cluster can be registered with the UI through this interface or you may skip doing this and use ClusterControl CLI instead. By default, all clusters deployed by and imported into ClusterControl through the web interface will be automatically registered with the UI. This effectively establishes the communication between the UI and the controller.
 
 .. _UserGuide - Global Settings - Subscriptions:
 
 Subscriptions
-++++++++++++++
+`````````````
 
 .. Attention:: ClusterControl introduces new license format on v1.7.1 (the new license key format contains only a long-encrypted string). If you are having the older format, contact the account manager or email our sales department at sales@severalnines.com to get a new license.
 
@@ -188,12 +188,12 @@ If you would like to force the existing enteprise edition to community edition (
 .. Warning:: Once a trial license is truncated and cmon is restarted, there is no way you can re-activate a trial licence anymore. Only a working enterprise license will be working as trial license can't be applied more than once.
 
 Configure Mail Server
-+++++++++++++++++++++
+`````````````````````
 
 Configures how email notifications should be sent out. ClusterControl supports two options for sending email notifications, either using local mail commands via local MTA (Sendmail/Postfix/Exim) or using an external SMTP server. Make sure the local MTA is installed and verified using *Test Email* button.
 
 Use SMTP Server (Recommended)
-``````````````````````````````
+'''''''''''''''''''''''''''''
 
 * **SMTP**
 	- SMTP mail server address that you are going to use to send email.
@@ -217,7 +217,7 @@ Use SMTP Server (Recommended)
 	- Test the mail settings. If successful, an email will be sent to all users in the *Email Notification Settings*. Do not forget to add a recipient before pressing this button.
 	
 Use Sendmail
-````````````
+''''''''''''
 
 * **Use sendmail**
 	- Use this option to use sendmail to send notifications. See `Installing Sendmail`_ if you haven't installed Sendmail. If you want to use Postfix, see `Using Postfix`_.
@@ -226,7 +226,7 @@ Use Sendmail
 	- Specify the sender of the email. This will appear in the 'From' field of mail header.
 
 Installing Sendmail
-'''''''''''''''''''
+...................
 
 On ClusterControl server, install the following packages:
 
@@ -251,7 +251,7 @@ Verify if it works:
 Replace myemail@example.com with your email address.
 
 Using Postfix
-'''''''''''''
+.............
 
 Many of Linux distributions come with Sendmail as default MTA. To replace Sendmail and use other MTA, e.g Postfix, you just need to uninstall Sendmail, install Postfix and start the service. Following example shows commands that need to be executed on ClusterControl node as root user for RHEL:
 
@@ -263,19 +263,19 @@ Many of Linux distributions come with Sendmail as default MTA. To replace Sendma
 	$ chkconfig postfix on 
 	$ service postfix start
 
-.. _UserGuide - Global Settings - Runtime Configurations:
+.. _ClusterControl UI - Global Settings - Runtime Configurations:
 
 Runtime Configurations
-+++++++++++++++++++++++
+``````````````````````
 
 A shortcut to ClusterControl Controller runtime configurations per cluster. Runtime configuration shows the active ClusterControl Controller (CMON) runtime configuration parameters and displays the versions of ClusterControl Controller and ClusterControl UI packages. All parameters listed are loaded directly from ``cmon.cmon_configuration`` table, grouped by cluster ID.
 
 Clicking on any of the list will redirect user to the *Runtime Configurations* page for that particular cluster.
 
-.. _UserGuide - Database Cluster List:
+.. _ClusterControl UI - Database Cluster List:
 
 Database Cluster List
----------------------
++++++++++++++++++++++
 
 Each row represents the summarized status of a database cluster:
 

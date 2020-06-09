@@ -1,5 +1,5 @@
 User Guide for PostgreSQL
-=========================
+-------------------------
 
 This user guide covers ClusterControl with PostgreSQL-based (>9.x) cluster, namely:
 

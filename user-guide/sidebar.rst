@@ -1,14 +1,14 @@
 .. _Sidebar:
 
 Sidebar
-=======
+-------
 
 Left-side navigation menu provides shortcuts to manage clusters, roles, users, notifications, integration, reporting, authentication, keys and certificates. The menu can be collapsed	to icon-only menu and expanded by using the `Close Menu`_ function.
 
 .. _Sidebar - Spotlight Search:
 
 Spotlight Search
-----------------
++++++++++++++++++
 
 Helps users navigate through pages, find nodes and perform actions faster by typing the elements in the cluster. The supported elements are hostname, IP address, cluster name, cluster actions, node actions and ClusterControl's navigation menu. The search result is automatically filtered based on the input from text field.
 
@@ -17,14 +17,14 @@ Helps users navigate through pages, find nodes and perform actions faster by typ
 .. _Sidebar - Clusters:
 
 Clusters
---------
+++++++++
 
 List of database clusters managed by ClusterControl with summarized status. Database cluster deployed by (or added into) ClusterControl will be listed in this page. See `Database Cluster List <dashboard.html#database-cluster-list>`_ section.
 
 .. _Sidebar - Operational Reports:
 	
 Operational Reports
--------------------
++++++++++++++++++++
 
 Generates or schedules operational reports, as well as incident reports. Operational report is a comprehensive way to understand the state of your database cluster along the time. The reports can be generated in-place or can be delivered to you via email, which make things conveniently easy if you have a reporting silo. For incident reports, ClusterControl will auto generate an incident report via a feature called MySQL Freeze Frame when these two states are triggered:
 
@@ -37,14 +37,14 @@ For operational reports, there are 5 types of reports available:
 
 * Availability report - All clusters.
 * Backup report - All clusters.
-* Schema change report - MySQL/MariaDB-based cluster only.
+* Schema change report - MySQL/MariaDB-based clusters only.
 * Daily system report - Per cluster.
 * Package upgrade report - Per cluster.
 
 See `Types of Operational Reports`_ for more details. Check out the operational report examples in this blog post, `Become a ClusterControl DBA: Operational Reports for MySQL, MariaDB, PostgreSQL & MongoDB <https://severalnines.com/blog/become-clustercontrol-dba-operational-reports-mysql-mariadb-postgresql-mongodb>`_.
 
 Generated Reports
-+++++++++++++++++
+`````````````````
 
 Provides list of generated operational reports. Click on any of the entries will open the generated operational report in a new window.
 
@@ -59,7 +59,7 @@ Provides list of generated operational reports. Click on any of the entries will
 	- Refresh the operational report list.
 
 Schedules
-++++++++++
+`````````
 
 List of scheduled operational report and incident reports (if any).
 
@@ -76,17 +76,17 @@ List of scheduled operational report and incident reports (if any).
 	- Refresh the schedule list.
 
 Types of Operational Reports
-++++++++++++++++++++++++++++
+````````````````````````````
 
 Availability Report
-```````````````````
+'''''''''''''''''''
 
 *All Clusters*
 
 The report generates the uptime/downtime and availability report for each cluster managed by ClusterControl. You can see information about availability statistics of your databases, the cluster type, total uptime and downtime, current state of the cluster and when that state last changed.
 
 Backup Report
-`````````````
+'''''''''''''
 
 *All Clusters*
 
@@ -95,7 +95,7 @@ The report summarizes backups for each cluster managed by ClusterControl. It con
 ClusterControl also provides examples of backup policy if it finds any of the monitored database cluster running without any scheduled backup or delayed slave configured.
 
 Schema Change Report
-````````````````````
+''''''''''''''''''''
 
 *MySQL/MariaDB-based cluster only*
 
@@ -126,14 +126,14 @@ Take note only new tables or changed tables are printed in the report. The first
 
 
 Daily System Report
-```````````````````
+'''''''''''''''''''
 
 *Per Cluster*
 
 The current default report shows a cluster's health and performance at the time it was generated compared to one day ago. Under the summary section, it lists out the nodes in the cluster, their type, role (master or slave), status of the node, uptime and the OS. It also reports the top queries summary as well as node status overview in histogram format like CPU usage, data throughput, load average, disk usage and throughput, RAM usage, network throughput, server load and handler.
 
 Package Upgrade Report
-``````````````````````
+''''''''''''''''''''''
 
 *Per Cluster*
 
@@ -144,14 +144,14 @@ For an accurate reporting, ensure you always use stable and trusted repositories
 .. _Sidebar - Email Notifications:
 
 Email Notifications
--------------------
++++++++++++++++++++
 
 Configures global email notifications across clusters. Any modification made on this page will be directly saved into the CMON database.
 
-* **Add External User**
-	- Creates a new recipient by specifying an email address. A newly created recipient will be listed under 'External' organization. If you want to create a new recipient under a specific team, use :ref:`Sidebar - User Management - Teams`.
+* **Add External Email**
+	- Creates a new recipient by specifying an email address. A newly created recipient will be listed under 'External' team. If you want to create a new recipient under a specific team, use :ref:`Sidebar - User Management - Teams`.
 
-* **Send digests at**
+* **Send daily digest at**
 	- Send a digested (summary) email at this time every day to the selected recipient.
 
 * **Set daily email limit**
@@ -161,19 +161,19 @@ Configures global email notifications across clusters. Any modification made on 
 	====================== ===========
 	Event                  Description
 	====================== ===========
-	All Event Categories   All events.
+	Backup                 Messages about backups.
+	Cluster                Cluster related messages, e.g. cluster failed.
+	ClusterConfiguration   Cluster configuration messages, e.g. software configuration messages.
 	Network                Network related messages, e.g. host unreachable, SSH issues.
 	CmonDatabase           Internal CMON database related messages.
 	Mail                   Mail system related messages.
-	Cluster                Cluster related messages, e.g. cluster failed.
-	ClusterConfiguration   Cluster configuration messages, e.g. software configuration messages.
 	ClusterRecovery        Recovery messages like cluster or node recovery failures.
 	Node                   Message related to nodes, e.g. node disconnected, missing GRANT, failed to start HAProxy, failed to start NDB cluster nodes.
 	Host                   Host related messages, e.g. CPU/disk/RAM/swap alarms.
 	DbHealth               Database health related messages, e.g. memory usage of mysql servers, connections.
 	DbPerformance          Alarms for long running transactions and deadlocks
 	SoftwareInstallation   Software installation related messages.
-	Backup                 Messages about backups.
+
 	Unknown                Other uncategorized messages.
 	====================== ===========
 
@@ -183,13 +183,14 @@ Configures global email notifications across clusters. Any modification made on 
 	======= ===========
 	Ignore  Ignore if an alarm raised.
 	Deliver Send notification immediately via email once an alarm raised.
-	Digest  Send a summary of alarms raised everyday at *Send digests at*
+	Digest  Send a summary of alarms raised everyday at *Send daily digest at	
+	*
 	======= ===========
 
 .. _Sidebar - Integrations:
 
 Integrations
--------------
+++++++++++++
 
 Manages ClusterControl integration modules. Starting from version 1.5.0, there are two modules available:
 
@@ -199,7 +200,7 @@ Manages ClusterControl integration modules. Starting from version 1.5.0, there a
 .. _Sidebar - Integrations - 3rd Party Notifications:
 
 3rd Party Notifications
-+++++++++++++++++++++++++
+```````````````````````
 
 Configures third-party notifications on events triggered by ClusterControl.
 
@@ -258,7 +259,7 @@ Supported services are:
 	- Remove the selected integration.
 	
 Warning Events
-``````````````
+''''''''''''''
 
 +---------------+-------------------------+------------+---------------------------------------------------------------------------------+
 | Area          | Alarms                  | Severity   | Description                                                                     |
@@ -306,7 +307,7 @@ Warning Events
 +---------------+-------------------------+------------+---------------------------------------------------------------------------------+
 
 Critical Events
-````````````````
+'''''''''''''''
 
 +---------------+--------------------------+------------+--------------------------------------------------------------------------------------------+
 | Area          | Alarms                   | Severity   | Description                                                                                |
@@ -365,7 +366,7 @@ Critical Events
 .. _Sidebar - Integrations - Cloud Providers:
 
 Cloud Providers
-+++++++++++++++++
+```````````````
 
 Manages resources and credentials for cloud providers. Note that this new feature requires two modules called *clustercontrol-cloud* and *clustercontrol-clud*. The former is a helper daemon which extends CMON capability of cloud communication, while the latter is a file manager client to upload and download files on cloud instances. Both packages are dependencies of the *clustercontrol* UI package, which will be installed automatically if do not exist. 
 
@@ -384,7 +385,7 @@ To create a cloud profile, click on *Add Cloud Credentials* and follow the wizar
 - Microsoft Azure
 
 Amazon Web Services Credential
-``````````````````````````````
+''''''''''''''''''''''''''''''
 
 The stored AWS credential will be used by ClusterControl to list out Amazon EC2 instances, spin new instances when deploying a cluster and uploading/downloading backups to AWS S3. 
 
@@ -409,7 +410,7 @@ Comment (Optional) Description of the credential.
 ================== ============
 
 AWS Instances
-'''''''''''''
+.............
 
 Lists out your AWS instances. You can perform simple AWS instance management tasks directly from ClusterControl, which uses your defined AWS credentials to connect to the AWS API.
 
@@ -423,7 +424,7 @@ Terminate         Shutdown and terminate the instance.
 ================= ===========
 
 AWS VPC
-'''''''
+.......
 
 This allows you to conveniently manage your VPC from ClusterControl, which uses your defined AWS credentials to connect to AWS VPC. Most of the functionalities are dynamically populated and integrated to have the same look and feel as the AWS VPC console. Thus, you may refer to `VPC User Guide <https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Introduction.html>`_ for details on how to manage AWS VPC.
 
@@ -459,7 +460,7 @@ This allows you to conveniently manage your VPC from ClusterControl, which uses 
 +-------------------+-----------------------------------------------------------------------------------------------------------------+
 
 Google Cloud Platform Credentials
-``````````````````````````````````
+'''''''''''''''''''''''''''''''''
 
 To create a service account:
 
@@ -478,7 +479,7 @@ Comment (Optional) Description of the credential.
 ================== ============
 
 Microsoft Azure Credentials
-````````````````````````````
+'''''''''''''''''''''''''''
 
 In order to provide an access to Azure services you need to register an application and grant it access to your Azure resources.
 
@@ -490,7 +491,7 @@ In order to provide an access to Azure services you need to register an applicat
 2. Get application ID and authentication key:
 	a) From App registrations in Azure Active Directory, select your application.
 	b) Copy the Application ID. You should pass that value as ``application_id``.
-	c) To generate an authentication key, select *Settings > Keys*.
+	c) To generate an authentication key, select *Manage > Certificates & secrets > New client secret*.
 	d) Provide a description of the key, and a duration for the key. When done, select "Save".
 	e) After saving the key, the value of the key is displayed. Copy this value because you are not able to retrieve the key later. Pass this value as ``client_secret``.
 
@@ -546,12 +547,12 @@ Comment (Optional) Description of the credential.
 .. _Sidebar - Key Management:
 
 Key Management
---------------
+++++++++++++++
 
 Key Management allows you to manage a set of SSL certificates and keys that can be provisioned on your clusters. This feature allows you to create Certificate Authority (CA) and/or self-signed certificates and keys. Then, it can be easily enabled and disabled for MySQL and PostgreSQL client-server connections using SSL encryption feature.
 
 Manage
-++++++
+``````
 
 Manage existing keys and certificates generated by ClusterControl.
 
@@ -566,7 +567,7 @@ Manage existing keys and certificates generated by ClusterControl.
 
 
 Generate
-++++++++
+````````
 
 By default, the generated keys and certificates will be created under default repository at ``/var/lib/cmon/ca``. 
 
@@ -580,7 +581,7 @@ By default, the generated keys and certificates will be created under default re
     - Refresh the list.
 
 Self-signed Certificate Authority and Key
-``````````````````````````````````````````
+'''''''''''''''''''''''''''''''''''''''''
 
 Generate a self-signed Certificate Authority and key. You can use this Certificate Authority (CA) to sign your client and server certificates.
 
@@ -628,7 +629,7 @@ Generate a self-signed Certificate Authority and key. You can use this Certifica
     - Reset the form.
 
 Client/Server Certificates and Key
-````````````````````````````````````
+''''''''''''''''''''''''''''''''''
 
 Sign with an existing CA or generate a self-signed certificate. ClusterControl generates certificate and key depending on the type, server or client. The generated server's key and certificate can then be used by `Enable SSL Encryption <mysql/overview.html#enable-ssl-encryption>`_ feature.
 
@@ -681,7 +682,7 @@ Sign with an existing CA or generate a self-signed certificate. ClusterControl g
 
 
 Import
-++++++
+``````
 
 Import keys and certificates into ClusterControl's certificate repository. The imported keys and certificates can then be used to enable SSL encryption for server-client connection, replication or backup at a later stage. Before you perform the import action, bear in mind to:
 
@@ -711,12 +712,12 @@ Import keys and certificates into ClusterControl's certificate repository. The i
 .. _Sidebar - User Management:
 
 User Management
----------------
++++++++++++++++
 
 .. _Sidebar - User Management - Teams: 
   
 Teams
-+++++
+``````
 
 Manage teams (organizations) and users under ClusterControl. Take note that only the first user created with ClusterControl will be able to create the teams. You can have one or more teams and each team consists of zero or more clusters and users. You can have many roles defined under ClusterControl and a user must be assigned with one role.
 
@@ -730,7 +731,7 @@ As a roundup, here is how the different entities relate to each other:
 .. _Sidebar - User Management - Users: 
 
 Users
-+++++
+``````
 
 A user belongs to one team and assigned with a role. Users created here will be able to login and see specific cluster(s), depending on their team and the cluster they have been assigned to.
 
@@ -749,7 +750,7 @@ To create a custom role, see `Access Control`_.
 .. _Sidebar - User Management - Access Control: 
 
 Access Control
-++++++++++++++
+``````````````
 
 ClusterControl uses Role-Based Access Control (RBAC) to restrict access to clusters and their respective deployment, management and monitoring features. This ensures that only authorized user requests are allowed. Access to functionality is fine-grained, allowing access to be defined by organization or user. ClusterControl uses a permissions framework to define how a user may interact with the management and monitoring functionality, after they have been authorized to do so. 
 
@@ -758,7 +759,7 @@ You can create a custom role with its own set of access levels. Assign the role 
 .. Note:: The **Super Admin** role is not listed since it is a default role and has the highest level of privileges in ClusterControl. 
 
 Privileges
-``````````
+''''''''''
 
 ========= ===========
 Privilege Description
@@ -770,7 +771,7 @@ Modify    Similar to manage, for certain features that required modification.
 ========= ===========
 
 Features Description
-````````````````````
+''''''''''''''''''''
 
 ============================ ============
 Feature                      Description
@@ -806,7 +807,7 @@ Feature                      Description
 .. _Sidebar - User Management - LDAP Settings: 
 
 LDAP Settings
-+++++++++++++
+``````````````
 
 ClusterControl supports :term:`Active Directory`, :term:`FreeIPA` and :term:`LDAP` authentication. This allows users to log into ClusterControl by using their corporate credentials instead of a separate password. LDAP groups can be mapped onto ClusterControl user groups to apply roles to the entire group. It supports up to LDAPv3 protocol based on `RFC2307 <https://www.ietf.org/rfc/rfc2307.txt>`_.
 
@@ -826,7 +827,7 @@ Once the LDAP settings are verified, login into ClusterControl by using the LDAP
 For example on how to setup OpenLDAP authentication with ClusterControl, please refer to this blog post, `How to Setup Centralized Authentication of ClusterControl Users with LDAP <http://www.severalnines.com/blog/how-setup-centralized-authentication-clustercontrol-users-ldap>`_.
 
 LDAP Group
-``````````
+''''''''''
 
 If LDAP authentication is enabled, you would need to map ClusterControl roles with their respective LDAP groups. You can configure this by clicking on the '+' icon to add an LDAP group:
 
@@ -841,7 +842,7 @@ If LDAP authentication is enabled, you would need to map ClusterControl roles wi
 +-----------------+-------------------------------------------------------------------------+------------------------------------+
 
 Settings
-``````````
+''''''''
 
 * **Enable LDAP Authentication**
 	- Choose whether to enable or disable LDAP authentication.
@@ -870,7 +871,7 @@ Settings
 .. Attention:: ClusterControl does not support binding against a nested directory group. Ensure each LDAP user that authenticates to ClusterControl has a direct membership to the LDAP group.
 
 FreeIPA
-````````
+'''''''
 
 ClusterControl is able to bind to a :term:`FreeIPA` server and perform lookups on compatible schema. Once the :term:`DN` for that user is retrieved, it tries to bind using the full DN (in standard tree) with the entered password to verify the LDAP group of that user.
 
@@ -884,7 +885,7 @@ For example on integrating ClusterControl with FreeIPA and Windows Active Direct
 .. _Sidebar - User Management - Clusters: 
 
 Clusters
-++++++++
+````````
 
 Manage database clusters inside ClusterControl.
 
@@ -896,31 +897,31 @@ Manage database clusters inside ClusterControl.
 
 
 Documentation
---------------
++++++++++++++
 
 Opens ClusterControl `online documentation page <http://www.severalnines.com/docs>`_.
 
 Give us Feedback
-----------------
+++++++++++++++++
 
 Opens a feedback form which you can use to send feedbacks, report bug, submit feature request or ask us questions. The submitted form will be sent directly to our support system and you will receive the response into your email inbox.
 
 What's New?
------------
++++++++++++
 
 Opens the *What's new* popup. This popup also appears the first time a user logs in after new installation or upgrade.
 
 Support Forum
---------------
++++++++++++++
 
 Opens Severalnines `community support forums <http://support.severalnines.com/forums>`_. Community users are encouraged to use this support channel. For licensed user, please raise a `support ticket <http://support.severalnines.com/tickets/new>`_.
 
 Switch Theme
--------------
+++++++++++++
 	
 A switcher for a dark or light colour background of the side menu.
 
 Close Menu
------------
+++++++++++
 
 Collapses and expands the side menu.
