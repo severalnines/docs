@@ -95,5 +95,3 @@ Lists the accounts on the cluster.
 		--long \
 		--cluster-id=1
 
-
-s9s alarm
