@@ -12,6 +12,27 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.7.6
 -----------------
 
+Maintenance Release: June 16\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.6-6959
+	- clustercontrol-controller-1.7.6-3985
+
+* Controller:
+	- Monitoring/disk: Skip monitoring NFS filesystem.
+	- PostgreSQL: In case of an inconsistent view (master down, but load balancer or slave reports it is up) then performs double check using SSH.
+	- PostgreSQL: Log the replication failure alarm reasoning and server disconnected reason in the alarm text.
+
+* Frontend (UI):
+	- MongoDB: Dashboards metrics updated to support new ``mongodb_exporter``. A re-install of the MongoDB exporter is needed, which is done from the Dashboards action menu.
+	- Schema Analyzer: Showed no data for community edition.
+	- *Stop Node* action must always be visible. Even if the node is down/unknown.
+	- Backup Scheduling: An issue specifying the time when using advanced settings.
+	- User management: A User with 'Admin' role cannot open the mail notifications page
+	- User management: Users are shown in the wrong group (fixed 'All users' logic).
+	- User management: LDAP users can't see alarms or jobs.
+
 Maintenance Release: June 8\ :sup:`th`\ , 2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
