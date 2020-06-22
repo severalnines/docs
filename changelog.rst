@@ -12,6 +12,23 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.7.6
 -----------------
 
+.. Note:: Replication lag alarms are sent from version 1.7.6 and onwards. In earlier versions, replication lag alarms were not always properly raised. If you notice replication lag alarms, you may increase the ``MAX REPLICATION LAG`` configuration variable or tune replication and queries.
+
+Maintenance Release: June 20\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.6-6976
+	- clustercontrol-controller-1.7.6-3995
+
+* Frontend (UI):
+	- Query Monitor: Fixed a bug when purging data in the *Query Monitor*. 
+
+* Controller:
+	- SSL Certificates: Fixed a bug that prevented self-signed certificates to be imported. The error manifested itself as: ``Error 'CA certificate: Empty PEM string'``.
+	- MaxScale: The MaxScale nodes could in some situation appear as "not available" or "offline", but the process was actually running.
+	- Backups: Fixed a bug where a backup could end up in the wrong backup directory if the backup was re-executed too soon after a failed backup.
+
 Maintenance Release: June 16\ :sup:`th`\ , 2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
