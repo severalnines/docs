@@ -14,6 +14,27 @@ Changes in v1.7.6
 
 .. Note:: Replication lag alarms are sent from version 1.7.6 and onwards. In earlier versions, replication lag alarms were not always properly raised. If you notice replication lag alarms, you may increase the ``MAX REPLICATION LAG`` configuration variable or tune replication and queries.
 
+Maintenance Release: June 28\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.6-6996
+	- clustercontrol-controller-1.7.6-4013
+
+* Frontend (UI):
+	- Query Monitor: Running Queries did only appear on the last page when filtering on hosts.
+	- User Management: The number of visible Teams/LDAP groups was limited and more than 33 groups could not be shown in the UI.
+
+* Controller:
+	- Query Monitor: Purge Query Monitor for MySQL did not purge the ``performance_schema.events_statements_summary_by_digest``.
+	- Ping time was set incorrectly (to a big value) when blocked by firewall or ICMP disabled in conf. Now it is set to ``-1`` if blocked by the firewall or disabled.
+	- HAProxy: It was possible to import an non-existing HAProxy.
+	- ProxySQL: Fixed a bug syncing instances error when a database name contains backslash.
+	- ProxySQL: Fixed an issue with MariaDB when importing users with a role in ProxySQL.
+	- ProxySQL: Fixed an issue Installing ProxySQL 1.x failed on CentOS7.
+	- ProxySQL: Could not install version 1 to two nodes in the same job.
+	- ProxySQL: Failed to stop the ProxySQL service while removing and uninstalling the node.
+
 Maintenance Release: June 20\ :sup:`th`\ , 2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
