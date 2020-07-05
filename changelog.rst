@@ -14,6 +14,17 @@ Changes in v1.7.6
 
 .. Note:: Replication lag alarms are sent from version 1.7.6 and onwards. In earlier versions, replication lag alarms were not always properly raised. If you notice replication lag alarms, you may increase the ``MAX REPLICATION LAG`` configuration variable or tune replication and queries.
 
+Maintenance Release: July 5\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build: 
+	- clustercontrol-controller-1.7.6-4026
+
+* Controller:
+	- Galera: Improved Cluster Split detection. Now, the ``cluster_size`` is measured over a three-second period, and the cluster will enter failed state if the ``cluster_size`` is not the same on all nodes after this period of time.
+	- PostgreSQL: Rebuilding a PostgreSQL node as a slave could make it appear with the role set to master (but non-writable, and streaming from the writable master).
+	- ProxySQL: Removed unnecessary log messages when installing ProxySQL.
+
 Maintenance Release: June 28\ :sup:`th`\ , 2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
