@@ -14,6 +14,19 @@ Changes in v1.7.6
 
 .. Note:: Replication lag alarms are sent from version 1.7.6 and onwards. In earlier versions, replication lag alarms were not always properly raised. If you notice replication lag alarms, you may increase the ``MAX REPLICATION LAG`` configuration variable or tune replication and queries.
 
+2020-07-10    
+
+Maintenance Release: July 10\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.6-4036
+
+* Controller:
+	- A fix for a race condition when the SSH connection is lost for a moment when sampling processes. This could lead to the process (e.g HAProxy, Garbd, ProxySQL) to have the wrong state for a short period of time.
+	- MongoDB: Consistent backup failed because the *Storage Host* was not set.
+
+
 Maintenance Release: July 5\ :sup:`th`\ , 2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
