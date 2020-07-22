@@ -14,7 +14,22 @@ Changes in v1.7.6
 
 .. Note:: Replication lag alarms are sent from version 1.7.6 and onwards. In earlier versions, replication lag alarms were not always properly raised. If you notice replication lag alarms, you may increase the ``MAX REPLICATION LAG`` configuration variable or tune replication and queries.
 
-2020-07-10    
+Maintenance Release: July 20\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.6-7059
+	- clustercontrol-controller-1.7.6-4047
+
+* Frontend(UI):
+	- Integrations: Fixed a bug when adding cluster on integration channel if cluster name only 2 characters.
+	- PostgreSQL: Enable TimescaleDB for PostgreSQL 12.
+	- User Management: Fixed an issue preventing a SuperAdmin used logged in from LDAP to change a cluster team.
+
+* Controller:
+	- PostgreSQL: Fixed an issue where the controller failed to parse ``pg_hba.conf`` when a line ends up with empty space before a new line.
+	- PostgreSQL: Ensure that directories created for PostgreSQL have the correct rights and even the newly created parent directories, such as ``/etc/postgres``.
+	- General: Extended OS compatibility matrix with Ubuntu Server 20.04 LTS (Focal Fossa).
 
 Maintenance Release: July 10\ :sup:`th`\ , 2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
