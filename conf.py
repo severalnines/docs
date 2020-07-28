@@ -292,15 +292,15 @@ texinfo_documents = [
 #texinfo_no_detailmenu = False
 
 rst_prolog = """
-.. |ClusterControl_UI_rpm| replace:: https://severalnines.com/downloads/cmon/clustercontrol-1.7.6-7060-x86_64.rpm
-.. |ClusterControl_Controller_rpm| replace:: https://severalnines.com/downloads/cmon/clustercontrol-controller-1.7.6-4047-x86_64.rpm
+.. |ClusterControl_UI_rpm| replace:: https://severalnines.com/downloads/cmon/clustercontrol-1.7.6-7082-x86_64.rpm
+.. |ClusterControl_Controller_rpm| replace:: https://severalnines.com/downloads/cmon/clustercontrol-controller-1.7.6-4059-x86_64.rpm
 .. |ClusterControl_Notifications_rpm| replace:: https://severalnines.com/downloads/cmon/clustercontrol-notifications-1.7.6-251-x86_64.rpm
 .. |ClusterControl_SSH_rpm| replace:: https://severalnines.com/downloads/cmon/clustercontrol-ssh-1.7.6-92-x86_64.rpm
 .. |ClusterControl_Cloud_rpm| replace:: https://severalnines.com/downloads/cmon/clustercontrol-cloud-1.7.6-241-x86_64.rpm
 .. |ClusterControl_CLUD_rpm| replace:: https://severalnines.com/downloads/cmon/clustercontrol-clud-1.7.6-241-x86_64.rpm
 .. |s9s_tools_rpm| replace:: http://repo.severalnines.com/s9s-tools/CentOS_7/x86_64/s9s-tools-1.7-171.1.x86_64.rpm
-.. |ClusterControl_UI_deb| replace:: https://severalnines.com/downloads/cmon/clustercontrol_1.7.6-7060_x86_64.deb
-.. |ClusterControl_Controller_deb| replace:: https://severalnines.com/downloads/cmon/clustercontrol-controller-1.7.6-4047-x86_64.deb
+.. |ClusterControl_UI_deb| replace:: https://severalnines.com/downloads/cmon/clustercontrol_1.7.6-7082_x86_64.deb
+.. |ClusterControl_Controller_deb| replace:: https://severalnines.com/downloads/cmon/clustercontrol-controller-1.7.6-4059-x86_64.deb
 .. |ClusterControl_Notifications_deb| replace:: https://severalnines.com/downloads/cmon/clustercontrol-notifications_1.7.6-251_x86_64.deb
 .. |ClusterControl_SSH_deb| replace:: https://severalnines.com/downloads/cmon/clustercontrol-ssh_1.7.6-92_x86_64.deb
 .. |ClusterControl_Cloud_deb| replace:: https://severalnines.com/downloads/cmon/clustercontrol-cloud_1.7.6-241_x86_64.deb

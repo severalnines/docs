@@ -14,6 +14,25 @@ Changes in v1.7.6
 
 .. Note:: Replication lag alarms are sent from version 1.7.6 and onwards. In earlier versions, replication lag alarms were not always properly raised. If you notice replication lag alarms, you may increase the ``MAX REPLICATION LAG`` configuration variable or tune replication and queries.
 
+Maintenance Release: July 27\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.6-7082
+	- clustercontrol-controller-1.7.6-4059
+
+* Frontend (UI):
+	- Cloud Deployment: Fixed an issue where the wrong disk size unit (GB) was sent in the job instead of MB.
+	- Backup/Restore (MySQL-based): Fixed a couple of UX issues. Restoring a backup using Point In-time Recovery (PITR) may only be executed on the cluster nodes where the backup was created. All other options are now disabled (Restore on standalone/create cluster from backup).
+	- Import MySQL Replication: The option *Import as a standalone node* has been removed as it did not have any purpose.
+
+* Controller:
+	- MySQL 8.0: Fixed an issue with parsing privileges in a ``GRANT`` statement (``INNODB_REDO_LOG_ENABLE`` privilege was missing).
+	- Replication: Fixed an issue retrieving/creating user account information in case there was one server in the setup and it was not configured as a master. The error manifested itself as ``Server not found while trying to create an account``.
+	- Replication: Improved the behavior by not raising an alarm and disabling auto-recovery if the setting ``auto_manage_readonly=false`` is specified and the cluster has multiple writable masters.
+	- Replication: Enable/Disable read-only job: Failed to run if ``auto_manage_readonly=false``.
+	- ProxySQL: Failed to sync instance in ProxySQL (``GRANT`` option).
+
 Maintenance Release: July 20\ :sup:`th`\ , 2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
