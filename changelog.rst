@@ -14,6 +14,32 @@ Changes in v1.7.6
 
 .. Note:: Replication lag alarms are sent from version 1.7.6 and onwards. In earlier versions, replication lag alarms were not always properly raised. If you notice replication lag alarms, you may increase the ``MAX REPLICATION LAG`` configuration variable or tune replication and queries.
 
+Maintenance Release: August 4\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+* Build:
+	- clustercontrol-1.7.6-7124
+	- clustercontrol-notifications-1.7.6-254
+
+* Frontend:
+	- Galera: Fixed an issue which made it impossible to activate Galera SSL Encryption when SSL Encryption was enabled.
+	- Galera: *Server Load* graphs were not properly initialized when there was no data to graph (e.g, because a server was down for a period of time).
+	- ServiceNow integration:  Fixed a layout issue, and improved the usability by adding an ``All Clusters`` to simplify when having many clusters. This fix also includes two new fields: ``Service`` and ``Configuration Item``.
+
+* Notifications service:
+	- ServiceNow: Added support for ``Service`` and ``Configuration Item``.
+
+Maintenance Release: August 3\ :sup:`rd`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.7.6-4068
+
+* Controller:
+	- Galera: Fixed a bug deploying Percona Server and XtraDB Cluster on CentOS 8.
+	- PostgreSQL: Fixed an issue with PgBackRest using user-defined stanzas to prevent default configuration options defined by the controller from being set as command-line options. Thus, only the options set in the user-defined stanza will be used and nothing else.
+
 Maintenance Release: July 27\ :sup:`th`\ , 2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
