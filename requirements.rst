@@ -98,16 +98,16 @@ The following table shows supported database clusters with recommended minimum n
 +=================+============================+==========================================+=================================================================================+
 | MySQL/MariaDB   | MySQL Cluster (NDB)        | 7.1 and later                            | 5 hosts (2 data nodes + 2 API/mgmd nodes + 1 ClusterControl node)               |
 |                 +----------------------------+------------------------------------------+---------------------------------------------------------------------------------+
-|                 | MySQL/MariaDB replication  | * 5.1/5.5/5.6/5.7/8.0 (MySQL/Percona)    | 3 hosts (1 master node + 1 standby master/slave + 1 ClusterControl node)        |
-|                 |                            | * 5.5/10.0/10.1/10.2/10.3/10.4 (MariaDB) |                                                                                 |
+|                 | MySQL/MariaDB replication  | * 5.6/5.7/8.0 (MySQL/Percona)            | 3 hosts (1 master node + 1 standby master/slave + 1 ClusterControl node)        |
+|                 |                            | * 10.1/10.2/10.3/10.4 (MariaDB)          |                                                                                 |
 |                 +----------------------------+------------------------------------------+---------------------------------------------------------------------------------+
-|                 | * Percona XtraDB Cluster   | * 5.5/5.6/5.7 (MySQL/Percona)            | 4 hosts (3 Galera nodes + 1 ClusterControl node)                                |
-|                 | * MariaDB Galera Cluster   | * 5.5/10.0/10.1/10.2/10.3/10.4 (MariaDB) |                                                                                 |
+|                 | * Percona XtraDB Cluster   | * 5.6/5.7 (MySQL/Percona)                | 4 hosts (3 Galera nodes + 1 ClusterControl node)                                |
+|                 | * MariaDB Galera Cluster   | * 10.1/10.2/10.3/10.4 (MariaDB)          |                                                                                 |
 |                 +----------------------------+------------------------------------------+---------------------------------------------------------------------------------+
-|                 | Single instance            | * 5.5/5.6/5.7/8.0 (MySQL/Percona)        | 2 hosts (1 database node + 1 ClusterControl node)                               |
-|                 |                            | * 5.5/10.0/10.1/10.2/10.3/10.4 (MariaDB) |                                                                                 |
+|                 | Single instance            | * 5.6/5.7/8.0 (MySQL/Percona)            | 2 hosts (1 database node + 1 ClusterControl node)                               |
+|                 |                            | * 10.1/10.2/10.3/10.4 (MariaDB)          |                                                                                 |
 +-----------------+----------------------------+------------------------------------------+---------------------------------------------------------------------------------+
-| MongoDB/Percona | Sharded cluster            | 3.4/3.6/4.0/4.2                          | 4 hosts (3 config servers / 3 shard servers / 2 mongos + 1 ClusterControl node) |
+| MongoDB/Percona | Sharded cluster            | 3.6/4.0/4.2                              | 4 hosts (3 config servers / 3 shard servers / 2 mongos + 1 ClusterControl node) |
 | Server for      +----------------------------+                                          +---------------------------------------------------------------------------------+
 | MongoDB         | Replica set                |                                          | 4 hosts (3 replica servers + 1 ClusterControl node)                             |
 +-----------------+----------------------------+------------------------------------------+---------------------------------------------------------------------------------+
