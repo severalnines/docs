@@ -14,6 +14,23 @@ Changes in v1.7.6
 
 .. Note:: Replication lag alarms are sent from version 1.7.6 and onwards. In earlier versions, replication lag alarms were not always properly raised. If you notice replication lag alarms, you may increase the ``MAX REPLICATION LAG`` configuration variable or tune replication and queries.
 
+
+Maintenance Release: August 11\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.6-7146
+	- clustercontrol-contoller-1.7.6-4077
+
+* Frontend (UI):
+	- Fixed an issue with retrieving roles where a non super-admin LDAP users always end up at the first cluster in the list.
+	- Fixed an issue editing an OpsGenie integration which prompted the user to enter information in a field, but it was not possible.
+
+* Controller:
+	- HAProxy: Fixed an issue using non-default ports as a user-specified value would be set to the default.
+	- Mariabackup: A fix for Mariabackup 10.4.14 which has dropped support for some options.
+	- Deployment: Fixed a bug deploying Percona on CentOS 8.
+
 Maintenance Release: August 4\ :sup:`th`\ , 2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -22,8 +39,8 @@ Maintenance Release: August 4\ :sup:`th`\ , 2020
 	- clustercontrol-1.7.6-7124
 	- clustercontrol-notifications-1.7.6-254
 
-* Frontend:
-	- Galera: Fixed an issue which made it impossible to activate Galera SSL Encryption when SSL Encryption was enabled.
+* Frontend (UI):
+	- Galera: Fixed an issue which made it impossible to activate *Galera SSL Encryption* when *SSL Encryption* was enabled.
 	- Galera: *Server Load* graphs were not properly initialized when there was no data to graph (e.g, because a server was down for a period of time).
 	- ServiceNow integration:  Fixed a layout issue, and improved the usability by adding an ``All Clusters`` to simplify when having many clusters. This fix also includes two new fields: ``Service`` and ``Configuration Item``.
 
