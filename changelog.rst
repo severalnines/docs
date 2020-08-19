@@ -14,6 +14,19 @@ Changes in v1.7.6
 
 .. Note:: Replication lag alarms are sent from version 1.7.6 and onwards. In earlier versions, replication lag alarms were not always properly raised. If you notice replication lag alarms, you may increase the ``MAX REPLICATION LAG`` configuration variable or tune replication and queries.
 
+Maintenance Release: August 17\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build: 
+	- clustercontrol-1.7.6-7158
+	- clustercontrol-contoller-1.7.6-4083
+
+* Frontend (UI):
+	- Dashboards: Fixed an issue in the Replication dashboard where the *Master Server ID* was presented as a decimal value and not an integer.
+
+* Controller:
+	- ProxySQL: Fixed a bug with logs getting flooded with ``SAVE MYSQL SERVERS TO DISK`` and ``LOAD MYSQL ...`` commands if there was a MySQL server not present in the ProxySQL Server's ``mysql_servers`` table.
+	- Alarms: Fixed a timezone problem between the reported date in the *Alarm Digest* email and the triggered *Alarm*. Now the datetime has the same timezone in both cases.
 
 Maintenance Release: August 11\ :sup:`th`\ , 2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
