@@ -14,6 +14,37 @@ Changes in v1.7.6
 
 .. Note:: Replication lag alarms are sent from version 1.7.6 and onwards. In earlier versions, replication lag alarms were not always properly raised. If you notice replication lag alarms, you may increase the ``MAX REPLICATION LAG`` configuration variable or tune replication and queries.
 
+Maintenance Release: September 2\ :sup:`nd`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.6-7207
+	- clustercontrol-contoller-1.7.6-4120 
+
+* Frontend (UI):
+	- Topology View: Fixed and issue to avoid flickering on cluster update.
+	- Topology View: Fixed an issue showing the topology for 3 or more multi-masters.
+	- ProxySQL: The *IP/Hostname Address* column was truncated in ProxySQL Processlist.
+
+* Controller:
+	- MongoDB: Node menu does not appear for MongoDB ReplicaSet due to an internal error.
+	- MongoDB: Fixed a bug causing Mongo shard recovery to fail and Mongos are started last.
+	- Prometheus: Upgraded ``node_exporter`` to 1.0.1 (no incompatible changes) with some typo fixes.
+	- Prometheus: Bump Prometheus version to 2.20.1.
+	- [improvement] OS Support: Updated compatibility matrix to support Ubuntu 20.04.
+
+Maintenance Release: August 27\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-contoller-1.7.6-4108
+
+* Controller:
+	- OS Detection: Fixed an error to be more tolerant to extra lines introduced by SSH login to a host. This caused an issue when detecting the operating system.
+	- CMON Schema: Fixed an issue with the ``cmon_log_entries`` table that has an invalid Foreign Key.
+	- ProxySQL: Deploy fails on Debian 10 in combination with Percona or Oracle/MySQL 8.0.
+	- Fixed an issue on MySQL based system where the rebuild replication slave would fail when using uppercased hostnames.
+
 Maintenance Release: August 17\ :sup:`th`\ , 2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
