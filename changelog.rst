@@ -9,10 +9,60 @@ This change logs list details about updates in each version of ClusterControl.
 
 .. Note:: Cluster 2 cluster replication using PXC requires that ``server_id`` and binlog settings are identical on all nodes of the slave cluster. `Read more here <https://support.severalnines.com/hc/en-us/articles/360043650411>`_.
 
+
+Changes in v1.8.0
+-----------------
+
+
+Initial Release: September 16\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.8.0-7250 
+	- clustercontrol-controller-1.8.0-4145
+	- clustercontrol-notifications-1.8.0-257
+	- clustercontrol-cloud-1.8.0-252  
+	- clustercontrol-ssh-1.8.0-96
+
+**Feature Details**
+
+* Scalability
+	- ClusterControl support hundreds of nodes.
+	- Lowered CPU consumption.
+* Vault Integration
+	- Credentials stored in cmon configuration files can now be moved to Vault.
+* Tagging
+	- Supported via the S9S CLI.
+	- Set tags to the existing clusters and on cluster creation.
+	- Filter by tags.
+
+
 Changes in v1.7.6
 -----------------
 
 .. Note:: Replication lag alarms are sent from version 1.7.6 and onwards. In earlier versions, replication lag alarms were not always properly raised. If you notice replication lag alarms, you may increase the ``MAX REPLICATION LAG`` configuration variable or tune replication and queries.
+
+
+Maintenance Release: September 10\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.7.6-7237
+
+* Frontend (UI):
+	- OpsGenie: Fixed a bug where the *Integration* could not be created due to ``Failed to parse request body:...``
+	- OpsGenie: Updated instructions. The API Key must be the API Key of the Team may be used: https://docs.opsgenie.com/docs/api-key-management .
+	- HAProxy: Fixed a bug where disable HAProxy failed because UI didn't send the hostname parameter to the job.
+	- MariaBackup: Fixed an issue with partial backups. It was not possible to specify databases/tables.
+
+Maintenance Release: September 8\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-contoller-1.7.6-4130
+
+* Controller:
+	- Oracle/MySQL 8.0 compatibility & testing fixes.
 
 Maintenance Release: September 2\ :sup:`nd`\ , 2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
