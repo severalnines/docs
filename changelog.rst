@@ -13,6 +13,38 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.8.0
 -----------------
 
+Maintenance Release: September 29\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.8.0-4166
+
+* Controller:
+	- ProxySQL Galera: Fix for crash for when updating ProxySQL in case the host group does not exist or is not defined.
+	- PostgreSQL: Fixed an issue when deploying on CentOS/RedHat using the option "Do Not Setup Vendor Repositories" as it wrongly adding ``--repo=pgdg`` to the yum install command.
+	- MySQL Cluster: Fixed an issue when handling status replies of MySQL Clusters containing many nodes.
+	- MySQL Cluster: Improved error handling & logging (including error-reporting) for MySQL NDB Clusters.
+
+
+Maintenance Release: September 23\ :sup:`rd`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.8.0-7277
+	- clustercontrol-controller-1.8.0-4156
+	- clustercontrol-cloud-1.8.0-254
+
+* Frontend (UI):
+	- ProxySQL: Top Queries page shows non-truncated digest text.
+	- Cloud Deployment: Fixed an issue where the wrong unit (MB) was passed to the ``cmon-cloud`` service. GB was expected.
+
+* Controller:
+	- HAProxy: Fixed an issue to refresh/sample HAProxy on certain actions.
+	- MySQL Replication: Fixed an issue to allow removing down/failed master(s) in case when there is more than one node in the cluster.
+	- APT repository mirroring fixes (updated ``aptly`` and fixed ``gpg`` handling on newer systems) for Ubuntu 18.04.
+
+* Cloud:
+	- Azure: Fixed a timeout issue where it was not possible to get the status of a VM within 10m (Error: ``Could not get VM statuses in 10m0s.``)
 
 Initial Release: September 16\ :sup:`th`\ , 2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
