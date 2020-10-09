@@ -153,7 +153,7 @@ v         The verification status of the backup. Possible values are "Unverified
 
 **Examples**
 
-Assume we have a data node on 10.10.10.20 (port 3306) on cluster id 2, and we want to backup all databases using mysqldump and store the backup on ClusterControl server:
+Suppose we have a data node on 10.10.10.20 (port 3306) on cluster id 2, and we want to backup all databases using mysqldump and store the backup on ClusterControl server:
 
 .. code-block:: bash
 
