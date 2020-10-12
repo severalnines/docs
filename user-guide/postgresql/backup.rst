@@ -1,4 +1,5 @@
 .. _PostgreSQL - Backup:
+.. _support@severalnines.com: support@severalnines.com
 
 Backup
 -------
@@ -214,6 +215,24 @@ For example, if a full backup is taken on Sunday and the following daily increme
 * Tuesday - data from Monday to Tuesday
 * Wednesday - data from Tuesday to Wednesday
 * Thursday - data from Wednesday to Thursday
+
+Current Limitations (pgBackRest under ClusterControl)
+''''''''''''''''''''''''''''''''''''''''''''''''''''''
+* When PgBackRest is set up, it sets up WAL archiving for itself and it is not compatible with pg_basebackup regarding PITR.
+
+* If pg_basebackup local WAL archiving is set up after pgBackRest, it breaks the pgBackRest configuration.
+
+* Only configurations and stanzas created from ClusterControl are guaranteed to work. This means that custom made stanzas may or may not work. 
+
+* If ClusterControl cannot derive vital information (e.g due to the usage of a custom stanza), such as storage locations, then it may not work to restore the backup using ClusterControl
+
+* Issues with custom stanzas can be reported to `support@severalnines.com`_ and a feature request can be created, but is not guaranteed to be implemented.
+
+* Backups cannot be uploaded to cloud storage.
+
+* If manual changes/updates are made on the PgBackRest, e.g removing or taking backups, then those update/changes are not visible in ClusterControl as this meta data is not synced between PgBackRest to ClusterControl.
+
+* ClusterControl records traces of pgBackRest backups that are only done and created using ClusterControl (through ClusterControl GUI or with :ref:`s9s-tools<ClusterControl CLI>`). Any backups that were taken or managed outside (e.g. run manually, delete backups manually) using your command line terminal shall not be synced with the ClusterControl backups list viewer.
 
 Backup List
 +++++++++++
