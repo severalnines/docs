@@ -13,6 +13,67 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.8.0
 -----------------
 
+Maintenance Release: October 26\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.8.0-4202
+
+* Controller:
+	- Alarms: Improved reporting on the memory-/RAM-usage alarms to include the actual bytes used and total bytes available.
+	- General: Optimized and reduced the CPU usage of the controller when using Prometheus.
+	- Keepalived: Fixed a bug when uninstalling Keepalived where the controller tried to copy a non-existing config file.
+
+Maintenance Release: October 16\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.8.0-4195
+
+* Controller:
+	- General: Fix some high CPU usage about Prometheus sampling with many clusters.
+	- Cloud Deployment: Use private/internal IP addresses to communicate with DB nodes when ``use_private_network`` option is set.
+	- Deployment: Fixed an issue with Percona installation on Debian/Ubuntu. It was pulling ``-dbg`` packages and it prolonged the installation time.
+
+
+Maintenance Release: October 14\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.8.0-7331
+	- clustercontrol-controller-1.8.0-4190
+
+* Frontend:
+	- Alarms: Refactored the alarms page to make it more space-efficient.
+
+* Controller:
+	- MariaDB Cluster 10.4 failed to deploy on CentOS 8. As a side-effect, due to dependency issues, ``percona-toolkit`` can not be installed.
+
+Maintenance Release: October 13\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.8.0-4188
+
+* Controller:
+	- PostgreSQL: Change the owner of a pre-created datadir owned by another user than 'postgres'.
+	- Query Monitor: 'Last seen' was set to 'now' and not the actual 'last seen'.
+
+Maintenance Release: October 7\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.8.0-7312
+	- clustercontrol-controller-1.8.0-4181
+
+* Frontend:
+	- Cloud Deploy: Added an option to use private IP address only when creating the VMs. 
+
+* Controller:
+	- HAProxy: Failed to *Enable/Disable HAProxy* because ``node_address`` was not taken into account.
+	- Deployment: Improved logic to determine the AppStream repository name for CentOS/RHEL/Oracle.
+	- MySQL Cluster: Include ``ndb_mgm -e`` show in the error report.
+
 Maintenance Release: September 29\ :sup:`th`\ , 2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
