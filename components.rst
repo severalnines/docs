@@ -234,7 +234,7 @@ CMON
 Option                                 Description
 ====================================== ===========
 ``hostname=<string>``                  Hostname or IP address of the controller host. Example: ``hostname=192.168.0.10``.
-``controller_id=<integer>``            An arbitrary identifier string of this controller instance. Example: ``controller_id=1``. 
+``controller_id=<string>``             An arbitrary identifier string of this controller instance. Example: ``controller_id=1``. 
 ``mode=<string>``                      CMON role. Supported values are "controller", "dual", "hostonly". Example: ``mode=controller``.
 ``agentless=<boolean integer>``        CMON controller mode (deprecated). Agents are no longer supported. 0 for agent-based or 1 for agentless (default). Example: ``agentless=1``.
 ``logfile=<path>``                     CMON log file location. This is where CMON logs its activity. The file will be automatically generated if it doesn't exist. CMON will write to syslog by default. Example: ``logfile=/var/log/cmon.log``.
