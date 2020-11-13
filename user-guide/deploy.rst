@@ -97,9 +97,9 @@ Starting from version 1.4.0, it's possible to setup a master-master replication 
 	- Specify MySQL root password. ClusterControl will configure the same MySQL root password for all instances in the cluster.
 
 * **Repository**
-	- Use Vendor Repositories - Provision software by setting up and using the database vendor's preferred software repository. ClusterControl will always install the latest version of what is provided by database vendor repository.
-	- Do Not Setup Vendor Repositories - Provision software by using repositories already setup on the nodes. The User has to set up the software repository manually on each database node and ClusterControl will use this repository for deployment. This is good if the database nodes are running without internet connections.
-	- Use Mirrored Repositories - Create and mirror the current database vendor's repository and then deploy using the local mirrored repository. This is a preferred option when you have to scale the cluster in the future, to ensure the newly provisioned node will always have the same version as the rest of the members.
+	- Use Vendor Repositories - Provision software by setting up and using the database vendor's preferred software repository. ClusterControl will always install the latest version of what is provided.
+	- Do Not Setup Vendor Repositories - Provision software by using repositories already set up on the nodes. User has to set up the software repository manually on every database node as well as all future database/load balancer nodes in this cluster. Commonly, this is the best option if the database nodes are running without internet connections.
+	- Use Mirrored Repositories - Create and mirror the current database vendor's repository and then deploy using the local mirrored repository. This is a preferred option when you have to scale the cluster in the future, to ensure the newly provisioned node will always have the same version as the rest of the members. Depending on the database vendor and version, this might eat up the disk space of the ClusterControl host significantly.
 
 3) Define Topology
 ````````````````````

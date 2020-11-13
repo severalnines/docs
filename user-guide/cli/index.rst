@@ -43,5 +43,6 @@ Command               Description
 `s9s report`_         Manage reports.
 `s9s script`_         Manage and execute scripts.
 `s9s server`_         Manage hardware resources.
+`s9s tree`_           Manage and manipulate CMON Directory Tree (CDT).
 `s9s user`_           Manage users.
 ===================== ===========

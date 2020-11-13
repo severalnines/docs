@@ -110,7 +110,3 @@ How can I submit a feature request?
 
 You can either use our `Feature Request <http://support.severalnines.com/hc/en-us/community/topics/200447603-Feature-Requests>`_ page or submit a ticket at our support site `<https://support.severalnines.com/new>`_.
 
-I am using Veeam Backup by VMware but cmon crashes, what should I do?
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-We have heard this problems multiple times from our customers and it's currently a limitation when a Veeam Backup initiates, the cmon process dies. Although this shall work when cmon is restarted back again once the hot copy or  snapshot finishes, there's a cron entry you can find under /etc/cron.d/cmon. Ensure that this is enabled. So whenever the cmon is killed or crash, it will start automatically and everything will keep back to normal.

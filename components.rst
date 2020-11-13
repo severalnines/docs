@@ -40,7 +40,6 @@ The following diagram illustrates the architecture of ClusterControl:
    :alt: ClusterControl architecture
    :align: center
 
-
 .. _Components - ClusterControl Controller:
 
 ClusterControl Controller (CMON)
@@ -234,7 +233,7 @@ CMON
 Option                                 Description
 ====================================== ===========
 ``hostname=<string>``                  Hostname or IP address of the controller host. Example: ``hostname=192.168.0.10``.
-``controller_id=<string>``             An arbitrary identifier string of this controller instance. Example: ``controller_id=1`` or ``controller_id=clustercontrol01`` or ``controller_id=e2377798-1f1d-456b-bf4c-ee6df6ff246``. 
+``controller_id=<integer>``            An arbitrary identifier string of this controller instance. Example: ``controller_id=1``. 
 ``mode=<string>``                      CMON role. Supported values are "controller", "dual", "hostonly". Example: ``mode=controller``.
 ``agentless=<boolean integer>``        CMON controller mode (deprecated). Agents are no longer supported. 0 for agent-based or 1 for agentless (default). Example: ``agentless=1``.
 ``logfile=<path>``                     CMON log file location. This is where CMON logs its activity. The file will be automatically generated if it doesn't exist. CMON will write to syslog by default. Example: ``logfile=/var/log/cmon.log``.
@@ -491,6 +490,69 @@ Option                                                Description
 ``replication_failover_blacklist=<string>``           Comma separated list of PostgreSQL slaves which will never be considered a master candidate. You can use it to list slaves that are used for backups or analytical queries. If the hardware varies between slaves, you may want to put here the slaves which use slower hardware. ``replication_failover_whitelist`` takes precedence over this parameter if it is set. Example: ``replication_failover_blacklist=192.168.1.101,192.168.1.102``.
 ``replication_post_failover_script=<path>``           Path to the failover script on ClusterControl node. This script executes after the failover has happened. If the script returns non-zero, a warning will be written in the job log. The script must be accessible and executable on the controller. Example: ``replication_post_failover_script=/usr/local/bin/post_failover_script.sh``.
 ===================================================== ===========
+
+.. _Components - ClusterControl Controller - Vault Integration:
+
+HashiCorp Vault Integration
+++++++++++++++++++++++++++++
+
+
+Beginning with ClusterControl 1.8.0, it is possible to integrate HashiCorp's Vault for storing credentials used in ClusterControl. When the controller starts up, it will connect to the Vault server and load the credentials. 
+
+Check out this blog post, `ClusterControl’s Vault Integration Adds Dynamic Data Security Protections <https://severalnines.com/database-blog/clustercontrol-s-vault-integration-adds-dynamic-data-security-protections>`_ on example configuration on ClusterControl with HashiCorp Vault.
+
+Requirements
+````````````
+
+The following is required in order to use the Vault Integration:
+
+* A running Vault Server. It must be reachable from the Controller. This has been tested with Vault v1.4.3.
+* ClusterControl version 1.8.0 or later
+
+Configuration
+``````````````
+
+The controller must be configured to use Vault. The following parameters are set in ``/etc/cmon.cnf`` (do not set in ``cmon.d/cmon_X.cnf``):
+
+============================ ===========
+Paramaters                   Description
+============================ ===========
+``vault_token``              A token used by the controller to authorize itself against the Vault server. The Vault token is created by the Vault server. When the vault_token is present credentials for new clusters will be stored in Vault and not in the cmon configuration files.
+``vault_addr``               The full URL (including protocol and port) where the Vault server is listening. You can set it to the same as you would set ``VAULT_ADDR`` environment variable for vault CLI. Default is ``https://localhost:8200``.
+``vault_path``               Default value is ``clustercontrol``. The controller is going to store the data within this path, e.g ``clustercontrol/controller_UUID/cluster_ID/mysql_password``. Each ClusterControl instance and controller, and cluster can have its unique namespace.
+``vault_auto_migrate``       Enable this to auto-move all existing secrets from existing cmon configuration files to the configured Vault instance. 
+============================ ===========
+
+.. Caution:: Passwords will no longer be present in the CMON configuration files after this operation. Backup the configuration files and ensure that everything is working as expected before removing the backed up config files. The main ``/etc/cmon.cnf`` file is not modified.
+
+
+Starting up
+````````````
+
+The Vault integration feature is enabled as soon as the ``vault_token`` configuration parameter is set. At this stage, provided there is a Vault server listening on the ``vault_addr``, then any new cluster that is created will store its credentials in Vault.
+
+Credentials of existing clusters are not affected until ``vault_auto_migrate`` has been enabled.
+
+Since the Vault settings are applied to ``/etc/cmon.cnf``, then these are global for all clusters. Hence, it is not possible to migrate one cluster at a time.
+
+Reverting the Vault integration
+````````````````````````````````
+
+Should you want to revert this process, you should follow these steps:
+
+1) Get all the keys and values from the Vault for all of the clusters.
+2) Stop cmon process
+3) Remove Vault configuration from ``/etc/cmon.cnf``.
+4) Add the keys and values you extracted from the Vault into respective configuration files in ``/etc/cmon.d``. You can use the backup copy of the configuration from before Vault has been used but please keep in mind that some additional passwords might have been added in the meantime - double check that your old configuration files contain all the data that is stored in the Vault.
+
+Limitations
+````````````
+
+* In this version, ClusterControl only supports the KV v2 secrets engine in Vault.
+* Currently, the Controller must be restarted to re-read credentials from Vault.
+* Updating a credential in Vault will not change the underlying credential on the database node. Thus, when changing a password, then the account must be updated on the database node(s).
+* Not been tested with CMON HA.
+* The cmon-events, cmon-cloud, cmon-ssh services have not been migrated to use Vault yet. Hence the passwords are still present in ``/etc/cmon.cnf``. You can ensure that the config files used by these services are reconfigured and then drop the passwords completely from ``/etc/cmon.cnf``.
 
 .. _Components - ClusterControl Controller - Management and Deployment Operations:
 
@@ -885,7 +947,7 @@ The package list is available at `s9s-tools repository page <http://repo.several
 RHEL/CentOS
 '''''''''''
 
-The repository file for each distribution can be downloaded directly from:
+The repository definition file for each distribution can be downloaded directly from:
 
 * CentOS 6: http://repo.severalnines.com/s9s-tools/CentOS_6/s9s-tools.repo
 * CentOS 7: http://repo.severalnines.com/s9s-tools/CentOS_7/s9s-tools.repo
@@ -908,7 +970,7 @@ Installation steps are straight-forward:
 Debian/Ubuntu DEB Repositories
 '''''''''''''''''''''''''''''''
 
-The repository file for each distribution can be downloaded directly from:
+The repository definition file for each distribution can be downloaded directly from:
 
 * Debian 7 (Wheezy): http://repo.severalnines.com/s9s-tools/wheezy/
 * Debian 8 (Jessie): http://repo.severalnines.com/s9s-tools/jessie/
@@ -921,6 +983,7 @@ The repository file for each distribution can be downloaded directly from:
 * Ubuntu 18.04 (Bionic): http://repo.severalnines.com/s9s-tools/bionic/
 * Ubuntu 18.10 (Cosmic): http://repo.severalnines.com/s9s-tools/cosmic/
 * Ubuntu 19.04 (Disco): http://repo.severalnines.com/s9s-tools/disco/
+* Ubuntu 20.04 (Focal): http://repo.severalnines.com/s9s-tools/focal/
 
 To install, one would do:
 

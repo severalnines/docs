@@ -13,6 +13,36 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.8.0
 -----------------
 
+Maintenance Release: November 4\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.8.0-4223
+
+* Controller:
+	- Prometheus: Fixed an issue where the port used by a Prometheus exporter was incremented and could be different on each node. This made it problematic to maintain e.g firewalls.
+
+Maintenance Release: November 3\ :sup:`rd`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.8.0-4218
+
+* Controller:
+	- PostgreSQL: Add missing quoting of PostgreSQL passwords in cmon configuration file.
+	- Deployment fails for MariaDB 10.4 on CentOS 8.
+	- Deployment fails for MariaDB 10.3 on CentOS 8.
+
+Maintenance Release: October 29\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.8.0-4210
+
+* Controller:
+	- Prometheus: Fixed an issue where the port used by a Prometheus exporter was incremented and could be different on each node. This made it problematic to maintain e.g firewalls.
+	- Notifications: Improvements to the Memory/RAM usage alarm.
+
 Maintenance Release: October 26\ :sup:`th`\ , 2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 

@@ -71,6 +71,8 @@ Name, shorthand                                     Description
 |minus|\ |minus|\ use-internal-repos                Use internal repositories when installing software packages. Using this command line option it is possible to deploy clusters and add nodes off-line, without a working internet connection. The internal repositories has to be set up in advance.
 |minus|\ |minus|\ vendor=VENDOR                     The name of the software vendor to be installed.
 |minus|\ |minus|\ wait                              Waits for the specified job to end. While waiting, a progress bar will be shown unless the silent mode is set.
+|minus|\ |minus|\ with-tags=LIST                    Limit the list of printed clusters by tags. See `Cluster Tagging`_.
+|minus|\ |minus|\ without-tags=LIST                 Limit the list of printed clusters by tags. See `Cluster Tagging`_.
 |minus|\ |minus|\ with-timescaledb                  Install the TimescaleDB option when creating a new cluster. This is currently only supported on PostgreSQL systems.
 --------------------------------------------------- -----------
 *ACCOUNT, DATABASE & CONFIGURATION MANAGEMENT*
@@ -164,6 +166,70 @@ u             The CPU usage percent found on the cluster.
 w             The total swap space found in the cluster measured in GigaBytes. With the ``f`` modifier (e.g. ``%6.2fk``) this reports the free swap space in GigaBytes.
 %             The ``%`` character itself.
 ============= ===========
+
+.. _ClusterControl CLI - s9s-cluster - Cluster Tagging:
+
+Cluster Tagging
++++++++++++++++
+
+The concept is very similar to the hash-tags used by popular services such as Twitter and Instagram.
+
+A cluster can be created with tags, by using ``--with-tags`` option:
+
+.. code-block:: bash
+
+	$ s9s cluster --create \
+		--cluster-name="TAGGED_MDB" \
+		--cluster-type=galera \
+		--provider-version="10.4" \
+		--vendor=mariadb  \
+		--nodes="mysql://10.10.10.14:3306" \
+		--os-user=vagrant \
+		--with-tags="MDB;DC1;PRODUCTION" \
+		--log
+
+Multiple values are supported using semi-colon (``;``) as delimiter. The tag values are case-sensitive.
+
+An existing cluster can be tagged with ``--add-tag`` and ``--tag`` options under by specifying the CMON tree path, retrievable using the ``tree`` command. To retrive the "tree path", one has to list out the CMON object tree and look for column "NAME", as shown in the following example:
+
+.. code-block:: bash
+
+	$ s9s tree --list --long
+	MODE        SIZE OWNER  GROUP  NAME
+	crwxrwx---     - system admins MariaDB Replication 10.3
+	srwxrwxrwx     - system admins localhost
+	drwxrwxr--  1, 0 system admins groups
+	urwxr--r--     - admin  admins admin
+	urwxr--r--     - nobody admins nobody
+	urwxr--r--     - system admins system
+
+
+Then, specify the tree path as ``/`` + tree name ("MariaDB Replication 10.3"), as shown in the following:
+
+.. code-block:: bash
+
+	$ s9s tree --add-tag --tag="REPLICATION;PRODUCTION" "/MariaDB Replication 10.3"
+	Tag is added.
+
+To show all clusters having a certain tag:
+
+.. code-block:: bash
+
+	$ s9s cluster --list --long --with-tags="PRODUCTION"
+
+Show all cluster that does not have a certain tag:
+
+.. code-block:: bash
+
+	$ s9s cluster --list --long --without-tags="PRODUCTION"
+
+To filter using multiple tag values:
+
+.. code-block:: bash
+
+	$ s9s cluster --list --long --with-tags="PRODUCTION;DEV"
+
+
 
 **Examples**
 
@@ -336,3 +402,25 @@ Create a database account on the cluster and also create a new database to be us
 		--account="john:passwd@10.10.1.100" \
 		--with-database
 
+Create a cluster and tag it using ``--with-tags`` option:
+
+.. code-block:: bash
+
+	$ s9s cluster --create \
+	--cluster-name="TAGGED_MDB" \
+	--cluster-type=galera \
+	--provider-version="10.4" \
+	--vendor=mariadb  \
+	--nodes="mysql://10.10.10.14:3306" \
+	--os-user=vagrant \
+	--with-tags="MDB;DC1;PRODUCTION" \
+	--log
+
+
+Show all clusters having a certain tag (an existing cluster can be tagged using `s9s tree`_), with multiple tags separated by a semi-colon:
+
+.. code-block:: bash
+
+	$ s9s cluster --list \
+	--long \
+	--with-tags="PRODUCTION;big_cluster"

@@ -3,7 +3,7 @@
 Introduction
 ============
 
-This documentation covers ClusterControl version 1.7.6 which was released on April 10\ :sup:`th`\ , 2020. This release contains key new features along with performance improvements and bug fixes. Release change log is available at :ref:`Changelog`.
+This documentation covers ClusterControl version 1.8.0 which was released on September 19\ :sup:`th`\ , 2020. This release contains key new features along with performance improvements and bug fixes. The release changelog is available at :ref:`Changelog`.
 
 What is ClusterControl? 
 -----------------------
@@ -17,10 +17,10 @@ ClusterControl consists of a number of components:
 +====================================+==============================+====================================================================================+
 | ClusterControl Controller (cmon)   | clustercontrol-controller    | The brain of ClusterControl. A backend service performing automation, management,  |
 |                                    |                              | monitoring and scheduling tasks. All the collected data will be stored directly    |
-|                                    |                              | inside CMON database.                                                              |
+|                                    |                              | inside the CMON database.                                                          |
 +------------------------------------+------------------------------+------------------------------------------------------------------------------------+
 | ClusterControl UI                  | clustercontrol               | A modern web user interface to visualize and manage the cluster. It interacts with | 
-|                                    |                              | CMON controller via remote procedure call (RPC) or REST API interface.             |
+|                                    |                              | CMON controller via remote procedure call (RPC) interface.                         |
 +------------------------------------+------------------------------+------------------------------------------------------------------------------------+
 | ClusterControl SSH                 | clustercontrol-ssh           | Optional package introduced in ClusterControl 1.4.2 for ClusterControl's           |
 |                                    |                              | web SSH console. Only works with Apache 2.4+.                                      |

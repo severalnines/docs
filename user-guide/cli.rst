@@ -19,6 +19,7 @@ ClusterControl CLI
 .. include:: cli/s9s-report.rst
 .. include:: cli/s9s-script.rst
 .. include:: cli/s9s-server.rst
+.. include:: cli/s9s-tree.rst
 .. include:: cli/s9s-user.rst
 
 
