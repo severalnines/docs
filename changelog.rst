@@ -9,6 +9,78 @@ This change logs list details about updates in each version of ClusterControl.
 
 .. Note:: Cluster 2 cluster replication using PXC requires that ``server_id`` and binlog settings are identical on all nodes of the slave cluster. `Read more here <https://support.severalnines.com/hc/en-us/articles/360043650411>`_.
 
+Changes in v1.8.1
+-----------------
+
+Maintenance Release: November 23\ :sup:`rd`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.8.1-7473
+
+* Frontend (UI):
+	- *Backup -> Settings -> Backup Settings*: Customize/set netcat ports to use when streaming backups.
+	- Cluster-to-Cluster: The second PostgreSQL slave cluster is now properly linked.
+	- Delete Job: Add back support to delete pending jobs via the *Activity Viewer*.
+	- Restore PITR backup: Correctly set/select the node to restore the backup (PITR) on.
+	- Import Cluster: You no longer need to specify vendor or version - it's automatically detected.
+	- Cluster Overview: Setting the same time range sometimes resulted in showing a different range.
+
+* Misc
+	- Fix incorrect backup restore confirmation messages.
+	- Fix modal and sidebar issues with the restore backup dialog - it now closes properly.
+	- Fix broken backup scheduler icon for the jobs in the *Activity Viewer*.
+	- Fix overlapping text in the *Logs -> Jobs* page for smaller screen resolutions.
+	- Empty role is now not being created when cancelling the role creation.
+
+Maintenance Release: November 18\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.8.1-4258
+
+* Controller:
+	- MongoDB: Installing PBM on MongoDB release v4.2 failed.
+	- MaxScale: Due to an SSH environment problem, a node transitioned between offline and online. Now there is better logging in this area.
+	- Scheduled backups: Fixed a bug where the scheduled backup printed out the same ID number (#0) for all backups. It is only a printout/formatting issue.
+
+Initial Release: November 13\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+* Build:
+	- clustercontrol-1.8.1-7442
+	- clustercontrol-controller-1.8.1-4249
+	- clustercontrol-notifications-1.8.1-261
+	- clustercontrol-ssh-1.8.1-99
+	- clustercontrol-cloud-1.8.1-263
+
+In this release, we introduce a new consistent backup method for MongoDB Replica Sets and Sharded Clusters, native ProxySQL Clustering support, version updates of supported databases, PITR improvements for MySQL, and last but not least security enhancements on the web UI.
+
+Security is always a top priority, and as a part of the security enhancements, a number of vulnerabilities were fixed in the web UI.
+
+MongoDB 3.6 and later can now use *Percona Backup for MongoDB* to create consistent backups of replica sets and sharded clusters.
+
+ProxySQL Clustering offers a convenient way to keep a number of ProxySQL servers in sync. For example, if a user is created on a node, then the change is propagated to other clustered ProxySQL nodes.
+
+Let us know what you think about these features and changes anytime!
+
+**Feature Details**
+
+* MongoDB Backup
+	- Uses Percona Backup For MongoDB
+	- Backup and Restore Replica sets and Sharded Clusters
+* ProxySQL Clustering
+	- Leverage the built in clustering of ProxySQL to keep ProxySQL instances in sync
+* Version Updates
+	- Percona XtraDB Cluster 8.0
+	- MariaDB and MariaDB Cluster 10.5
+* Security Improvements
+	- Prevent Clickjacking
+	- Updated jQuery (3.5.0)
+	- CGI Generic Cross-Site Request Forgery Detection
+* MySQL PITR enhancements
+	- Backup a node and perform PITR on any node in the Cluster
 
 Changes in v1.8.0
 -----------------
