@@ -3,7 +3,7 @@
 Introduction
 ============
 
-This documentation covers ClusterControl version 1.8.0 which was released on September 19\ :sup:`th`\ , 2020. This release contains key new features along with performance improvements and bug fixes. The release changelog is available at :ref:`Changelog`.
+This documentation covers ClusterControl version 1.8.1 which was released on November 13\ :sup:`th`\ , 2020. This release contains key new features along with performance improvements and bug fixes. The release changelog is available at :ref:`Changelog`.
 
 What is ClusterControl? 
 -----------------------
