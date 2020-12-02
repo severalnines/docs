@@ -12,6 +12,18 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.8.1
 -----------------
 
+Maintenance Release: November 30\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.8.1-4274
+
+* Controller:
+	- MongoDB Percona Backup: Fixed an issue when deleting a backup. The deletion was reported as successful, but it actually failed.
+	- MySQL Replication: Fixed a bug where the ``read_only`` setting in ``my.cnf`` could be inconsistently set on the nodes. The ``my.cnf`` file must always have ``read_only=ON`` on all nodes.
+	- MySQL Replication: Fixed an issue where if the ``auto_manage_readonly=1`` , then a user could set ``read_only = OFF`` on a slave. Now the read_only flag will be set to ``read_only = ON`` as soon as it is detected.
+	- Backups: Fixed the job title of backups executed from schedules. Before the title was set to ``Backup schedule #N'N``, where *NN* is a number. Now the backup title is properly set to **Create Backup**.
+
 Maintenance Release: November 23\ :sup:`rd`\ , 2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 

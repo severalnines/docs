@@ -63,7 +63,8 @@ To create an instant backup, you have options to create a full backup using mysq
 	========= ===================
 
 * **Netcat Port**
-	- Specify the port number that will be used by ClusterControl to stream backup created on the database node. This port must be opened on both source and destination hosts. Only available if you choose *Store on Controller* in *Storage Location*.
+	- Specify the port number, or port number range that will be used by ClusterControl to stream backup created on the database node. This port must be opened on both source and destination hosts. Only available if you choose *Store on Controller* in *Storage Location*.
+	- Default is "9999,9990-9998", which means port 9999 will be preferred if available.
 	
 * **Use Compression**
 	- Tells the chosen backup method to compress all output data, including the transaction log file and meta data files.
@@ -180,7 +181,8 @@ Creates backup schedules of the database. You can choose to create a full or inc
 	========= ===================
 
 * **Netcat Port**
-	- Specify the port number that will be used by ClusterControl to stream backup created on the database node. This port must be opened on both source and destination hosts. Only available if you choose *Store on Controller* in *Storage Location*.
+	- Specify the port number, or port number range that will be used by ClusterControl to stream backup created on the database node. This port must be opened on both source and destination hosts. Only available if you choose *Store on Controller* in *Storage Location*.
+	- Default is "9999,9990-9998", which means port 9999 will be preferred if available.
 
 * **Use Compression**
 	- Tells the chosen backup method to compress all output data, including the transaction log file and meta data files.
@@ -326,7 +328,7 @@ Performs backup verification job.
 	- Specify the FQDN, hostname or IP address of the standalone host. The host must not be part of the cluster.
 
 * **Install Database Software**
-	- A new MySQL server will be installed and setup if 'Install Software' has been enabled otherwise an existing running MySQL server on the target host will be used. If there is an existing MySQL server installed or running, it will be stopped and removed before ClusterControl performs the installation.
+	- A new MySQL server will be installed and setup if "Install Software" has been enabled otherwise an existing running MySQL server on the target host will be used. If there is an existing MySQL server installed or running, it will be stopped and removed before ClusterControl performs the installation.
 
 * **Disable Firewall?**
 	- Check the box to disable firewall (recommended).
@@ -371,7 +373,7 @@ Due to the dependency on the binary logs to perform recovery, the PITR-compatibl
 Restore on node
 ````````````````
 
-You can restore up to a number incremental backups by clicking on the *Restore* button for the respective backup ID. The following steps will be performed:
+You can restore up to a number of incremental backups by clicking on the *Restore* button for the respective backup ID. The following steps will be performed:
 
 For mysqldump (online restore):
 

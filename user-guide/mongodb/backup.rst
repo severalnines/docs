@@ -49,7 +49,7 @@ Creates a backup of the database immediately. You can choose to create a full ba
 Schedule Backup
 ```````````````
 
-Creates backup schedules of the database. You can choose to create a full backup using mongodump or mongodb-consistent-backup. ClusterControl organizes backup directory according to shard or replica set, under the *Backup Directory* on the ClusterControl host.
+Creates backup schedules of the database. You can choose to create a full backup using mongodump or Percona Backup for MongoDB. ClusterControl organizes backup directory according to shard or replica set, under the *Backup Directory* on the ClusterControl host.
 
 * **Schedule**
 	- Sets the backup schedule.
@@ -58,7 +58,10 @@ Creates backup schedules of the database. You can choose to create a full backup
 
 * **Backup Method**
 	- mongodump - See `mongodump`_ section.
-	- mongodb consistent - See `mongodb consistent`_ section.
+	- mongodb consistent - See `mongodb consistent`_ section (deprecated).
+	- Percona Backup for MongoDB - See `Percona Backup for MongoDB`_ section (requires installation).
+
+.. Note:: If Percona Backup for MongoDB is not enabled, ClusterControl will notify the user to install it first and a shared directory mounted on all MongoDB nodes is required. 
 
 * **Storage Directory**
 	- Enter a backup directory or use default path provided by ClusterControl under *ClusterControl > Settings > Backup*. ClusterControl organizes backup directory according to shard or replica set name, under the *Backup Directory* on the ClusterControl host.
@@ -118,7 +121,14 @@ mongodb consistent
 
 Built on top of Python 2.7, also known as :term:`mongodb-consistent-backup`, it creates cluster-consistent point-in-time backups of MongoDB via wrapping :term:`mongodump`. Backups are remotely-pulled and outputted onto the host running the tool. Even if you do not run MongoDB 3.2+, it is strongly recommended to use MongoDB 3.2+ binaries due to inline compression and parallelism.
 
-.. Note:: :term:`mongodump` is required on the database node for this feature to work.
+.. Warning:: This backup method has been deprecated. Use `Percona Backup for MongoDB`_ instead.
+
+Percona Backup for MongoDB
+``````````````````````````
+
+Percona Backup for MongoDB is a distributed, low-impact solution for achieving consistent backups of MongoDB sharded clusters and replica sets. Percona Backup for MongoDB supports Percona Server for MongoDB and MongoDB Community v3.6 or higher with MongoDB Replication enabled (standalone is not supported due to the dependency on MongoDB's oplog). The Percona Backup for MongoDB project inherited from and replaces :term:`mongodb_consistent_backup`, which is no longer actively developed or supported.
+
+.. Attention:: Percona Backup for MongoDB requires a remote fileserver mounted to a local directory. It is the responsibility of the server administrators to guarantee that the same remote directory is mounted at exactly the same local path on all servers in the MongoDB cluster or non-sharded replica set. If the path is accidentally a normal local directory, errors will eventually occur, most likely during a restore attempt.
 
 Backup List
 +++++++++++
@@ -161,6 +171,9 @@ Or, you can pass the stdin to the respective restore command chain, for example:
 Settings
 ++++++++
 
+Backup Settings
+````````````````
+
 Manages the backup settings.
 
 * **Default backup directory**
@@ -178,3 +191,18 @@ Manages the backup settings.
 
 * **Backup cloud retention period**
 	- The number of days ClusterControl keeps the uploaded backups in the cloud. Backups older than the value defined here will be deleted.
+
+Percona Backup
+````````````````
+
+Manages the Percona Backup for MongoDB (PBM) installation and configuration. Clicking on the "Actions" button will list down all the possible functionalities.
+
+* **Add Agent**
+	- Install PBM agent on any new MongoDB replicas/nodes. These nodes must be added first into ClusterControl e.g, scale out the replica set using ClusterControl or use the import existing database nodes feature.
+
+* **Reconfigure**
+	- Reinstall the Percona Backup for MongoDB on all MongoDB nodes.
+
+* **Uninstall**
+	- Stop and remove Percona Backup for MongoDB agent on all MongoDB nodes.
+	- All existing backups created by this backup method will be retained as they are.

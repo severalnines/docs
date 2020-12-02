@@ -306,23 +306,7 @@ If you have configured a very short interval recurring jobs like backup job runn
 Health Checks
 -------------
 
-There are several ways to perform health checks against ClusterControl to ensure it runs correctly. Since ClusterControl consists of several components, every component may have different ways to probe its liveliness.
 
-The following table shows examples on how to perform health checks based on ClusterControl components:
-
-============================== =================
-Components                     Health Checks
-============================== =================
-CMON (controller)              ``systemctl status cmon`` or ``service cmon status``
-ClusterControl UI              ``curl -sSf http://localhost/clustercontrol/ > /dev/null``
-ClusterControl Web-SSH         ``systemctl status cmon-ssh`` or ``service cmon-ssh status``
-ClusterControl Cloud           ``systemctl status cmon-cloud`` or ``service cmon-cloud status``
-ClusterControl Notifications   ``systemctl status cmon-events`` or ``service cmon-events status``
-============================== =================
-
-In shell scripting, expect the above commands to return a good response like exit code 0 to indicate a running process. You could also use other means by checking the process list, connecting to the respective service ports or inspecting the log files.
-
-.. Note:: By default, a failed cmon will be restarted by a cron script automatically. This is installed by default, and gets enabled whenever user starts the service.
 
 .. _Administration - Migrating IP Address or Hostname:
 

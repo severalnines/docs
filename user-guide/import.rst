@@ -63,7 +63,7 @@ When importing an existing MySQL Replication, ClusterControl will do the followi
 * **MySQL Version**
 	- Supported version:
 		- Percona Server (5.5, 5.6, 5.7, 8.0)
-		- MariaDB Server (10.1, 10.2, 10.3)
+		- MariaDB Server (10.1, 10.2, 10.3, 10.4, 10.5)
 		- Oracle MySQL Server (5.7, 8.0)
 
 * **Basedir**
@@ -125,8 +125,8 @@ Import Existing MySQL Galera
 
 * **Version**
 	- Supported version:
-		- Percona Server (5.5, 5.6, 5.7)
-		- MariaDB Server (10.1, 10.2, 10.3)
+		- Percona Server (5.5, 5.6, 5.7, 8.0)
+		- MariaDB Server (10.1, 10.2, 10.3, 10.4, 10.5)
 
 * **Basedir**
 	- MySQL base directory. Default is ``/usr``. ClusterControl assumes MySQL is having the same base directory on all nodes.
@@ -163,7 +163,7 @@ Import Existing MySQL Galera
 Import Existing MySQL Cluster
 +++++++++++++++++++++++++++++
 
-ClusterControl is able to manage and monitor an existing production deployed MySQL Cluster (NDB). Minimum of 2 management nodes and 2 data nodes is required. 
+ClusterControl is able to manage and monitor an existing production deployed MySQL Cluster (NDB). A minimum of 2 management nodes and 2 data nodes is required. 
 
 1) General & SSH Settings
 ``````````````````````````
@@ -260,7 +260,7 @@ ClusterControl is able to manage and monitor an existing MongoDB/Percona Server 
 	- MongoDB - MongoDB Server by MongoDB Inc (formerly 10gen).
 
 * **Version**
-	- The supported MongoDB version are 3.2, 3.4 and 3.6.
+	- The supported MongoDB version are 3.4, 3.6, 4.0 and 4.2.
 
 * **Server Port**
 	- MongoDB server port. Default is 27017.
@@ -334,8 +334,8 @@ ClusterControl is able to manage and monitor an existing MongoDB/Percona Server 
 * **Import**
 	- Click the button to start the import. ClusterControl will connect to the specified MongoDB mongos, discover the configuration for the rest of the members and start managing/monitoring the cluster.
 
-Import Existing PostgreSQL/TimeScaleDB
-+++++++++++++++++++++++++++++++++++++++
+Import Existing PostgreSQL & TimeScaleDB
+++++++++++++++++++++++++++++++++++++++++
 
 ClusterControl is able to manage/monitor an existing set of PostgreSQL/TimeScaleDB version 9.6 and later. Individual hosts specified in the same list will be added to the same server group in the UI. ClusterControl assumes that you are using the same database admin password for all instances specified in the group.
 

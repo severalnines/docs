@@ -137,6 +137,10 @@ List out all backend servers created under this ProxySQL instance.
 	- Click on 'Edit' to edit the server details like hostgroup id, weight, max replication lag and so on.
 	- Click on 'Remove' to delete the selected server.
 
+* **ProxySQL Cluster**
+	- List of ProxySQL nodes belong to this ProxySQL cluster. 
+	- Only available if you enabled ProxySQL native clustering.
+
 Users
 '''''
 

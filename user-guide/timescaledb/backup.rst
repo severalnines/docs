@@ -52,7 +52,8 @@ You can choose to create a full backup using :term:`pg_dumpall` or :term:`pg_bas
 	========= ===================
 
 * **Netcat Port**
-	- Specify the port number that will be used by ClusterControl to stream backup created on the database node. This port must be opened on both source and destination hosts. Only available if you choose *Store on Controller* in *Storage Location*.
+	- Specify the port number, or port number range that will be used by ClusterControl to stream backup created on the database node. This port must be opened on both source and destination hosts. Only available if you choose *Store on Controller* in *Storage Location*.
+	- Default is "9999,9990-9998", which means port 9999 will be preferred if available.
 	
 * **Use Compression**
 	- Yes - Tells the chosen backup method to compress all output data, including the transaction log file and meta data files.
@@ -121,7 +122,8 @@ Creates backup schedules of the database.
 	- Upload the backup to the cloud storage. The upload process happens right after the backup is successfully created. This feature requires you to set up the cloud credentials first. See :ref:`Sidebar - Integrations - Cloud Providers`.
 
 * **Netcat Port**
-	- Specify the port number that will be used by ClusterControl to stream backup created on the database node. This port must be opened on both source and destination hosts. Only available if you choose *Store on Controller* in *Storage Location*.
+	- Specify the port number, or port number range that will be used by ClusterControl to stream backup created on the database node. This port must be opened on both source and destination hosts. Only available if you choose *Store on Controller* in *Storage Location*.
+	- Default is "9999,9990-9998", which means port 9999 will be preferred if available.
 
 * **Use Compression**
 	- Yes - Tells the chosen backup method to compress all output data, including the transaction log file and meta data files.

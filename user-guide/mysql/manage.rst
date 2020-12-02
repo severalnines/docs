@@ -157,25 +157,33 @@ Deploy ProxySQL
 Specify the host that you want to install ProxySQL. You can use an existing database server or use another new host by specifying the hostname or IPv4 address.
 
 * **Server Address**
-	- List of existing servers provisioned under ClusterControl.
+	- Specify the hostname or IP address of the host. This host must be accessible via passwordless SSH from ClusterControl node.
 
 * **Port**
 	- ProxySQL load-balanced port. Default is 6033.
 
 * **Select Version**
 	- Pick a ProxySQL major version to be installed by ClusterControl. Default is 2.x.
-
-* **Add a new address**
-	- Specify the hostname or IP address of the host. This host must be accessible via passwordless SSH from ClusterControl node.
+	
 
 **ProxySQL Configuration**
 
 * **Import Configuration**
 	- Deploys a new ProxySQL based on an existing ProxySQL instance. The source instance must be added first into ClusterControl. Once added, you can choose the source ProxySQL instance from a dropdown list.
 
+* **Disable Firewall**
+	- Check the box to disable firewall (recommended).
+
+* **Disable AppArmor/SELinux**
+	- Check the box to let ClusterControl disable AppArmor (Ubuntu) or SELinux (RedHat/CentOS) if enabled (recommended).
+
+* **Use Native Clustering**
+	- The ProxySQL server will be created using native ProxySQL clustering. An entry will be created in the ``proxysql_server`` table. 
+	- It is recommended to enable this if you would like to have more than one ProxySQL nodes. Port 6032 must be reachable between all ProxySQL nodes.
+	
 **ProxySQL User Credentials**
 
-Two ProxySQL users are required, one for administration and another one for monitoring. ClusterControl will create both during deployment.
+Two ProxySQL users are required, one for administration and another one for monitoring. ClusterControl will create both during deployment. This section will be greyed out if you already have enabled *Native Clustering* for any existing ProxySQL node because the administration and monitoring users must be identical on all ProxySQL nodes.
 
 * **Administration User**
 	- ProxySQL administration user name.

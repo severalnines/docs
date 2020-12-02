@@ -27,15 +27,16 @@ ClusterControl will trigger a deployment job and the progress can be monitored u
 MySQL Replication
 +++++++++++++++++
 
-Deploys a new MySQL Replication or a standalone MySQL server. The database cluster will be automatically added into ClusterControl once deployed. Minimum of two nodes is required for MySQL replication. If only one MySQL IP address or hostname is defined, ClusterControl will deploy it as a standalone MySQL server with binary log enabled.
+Deploys a new MySQL Replication or a standalone MySQL server. The database cluster will be automatically added into ClusterControl once deployed. A minimum of two nodes is required for MySQL replication. If only one MySQL IP address or hostname is defined, ClusterControl will deploy it as a standalone MySQL server with binary log enabled.
 
 By default, ClusterControl deploys MySQL replication with the following configurations:
 
-* GTID with ``log_slave_updates`` enabled (MySQL and Percona only).
-* Start all database nodes with ``read_only=ON`` and ``super_read_only=ON`` (if supported). The chosen master will be promoted by disabling read-only dynamically.
-* PERFORMANCE_SCHEMA disabled.
-* ClusterControl will create and grant necessary privileges for 2 MySQL users - ``cmon`` for monitoring and management and ``backupuser`` for backup and restore purposes.
-* Generated account credentials are stored inside ``/etc/mysql/secrets-backup.cnf``.
+* MySQL GTID with ``log_slave_updates`` enabled (MySQL and Percona only).
+* MariaDB GTID with ``log_slave_updates`` enabled (MariaDB only).
+* All database nodes will be configured with ``read_only=ON`` and ``super_read_only=ON`` (if supported). The chosen master will be promoted by disabling the read-only in the runtime.
+* ``PERFORMANCE_SCHEMA`` is disabled.
+* ClusterControl will create and grant necessary privileges for two MySQL/MariaDB users – ``cmon`` for monitoring and management and ``backupuser`` for backup and restore purposes.
+* The generated account credentials are stored inside ``secrets-backup.cnf under`` the MySQL configuration directory.
 * ClusterControl will configure semi-synchronous replication.
 
 If you would like to customize the above configurations, modify the template base file to suit your needs before proceed to the deployment. See :ref:`MySQL - Manage - Configurations - Base Template Files` for details.
@@ -82,7 +83,7 @@ Starting from version 1.4.0, it's possible to setup a master-master replication 
 	- Oracle - MySQL Server by Oracle
 
 * **Version**
-	- Select the MySQL version for new deployment. For Oracle, only 5.7 and 8.0 are supported. For Percona, 5.6, 5.7 and 8.0 while MariaDB, 10.1, 10.2, 10.3 and 10.4 are supported.
+	- Select the MySQL version for new deployment. For Oracle, only 5.7 and 8.0 are supported. For Percona, 5.6, 5.7 and 8.0 while MariaDB, 10.1, 10.2, 10.3, 10.4 and 10.5 are supported.
 
 * **Server Data Directory**
 	- Location of MySQL data directory. Default is ``/var/lib/mysql``.
@@ -129,15 +130,16 @@ Starting from version 1.4.0, it's possible to setup a master-master replication 
 MySQL Galera 
 +++++++++++++
 
-Deploys a new MySQL Galera Cluster. The database cluster will be automatically added into ClusterControl once deployed. A minimal setup is comprised of one Galera node (no high availability, but this can later be scaled with more nodes). However, the minimum of three nodes is recommended for high availability. Garbd (an arbitrator) can be added later after the deployment completes if needed.
+Deploys a new MySQL Galera Cluster. The database cluster will be automatically added into ClusterControl once deployed. A minimal setup is comprised of one Galera node (no high availability, but this can later be scaled with more nodes). However, a minimum of three nodes is recommended for high availability. Garbd (an arbitrator) can be added later after the deployment completes if needed.
 
 By default, ClusterControl deploys MySQL Galera with the following configurations:
 
 * Use xtrabackup-v2 or mariabackup (depending on the vendor chosen) for ``wsrep_sst_method``.
-* PERFORMANCE_SCHEMA disabled.
-* Binary logging disabled.
-* ClusterControl will create and grant necessary privileges for 2 MySQL users - ``cmon`` for monitoring and management and ``backupuser`` for backup and restore purposes.
-* Generated account credentials are stored inside ``/etc/mysql/secrets-backup.cnf``.
+* All database nodes will be configured with ``read_only=ON`` and ``super_read_only=ON`` (if supported). The chosen master will be promoted by disabling the read-only in the runtime.
+* ``PERFORMANCE_SCHEMA`` is disabled.
+* Binary logging is disabled.
+* ClusterControl will create and grant necessary privileges for two MySQL/MariaDB users – ``cmon`` for monitoring and management and ``backupuser`` for backup and restore purposes.
+* The generated account credentials are stored inside ``secrets-backup.cnf under`` the MySQL configuration directory.
 
 1) General & SSH Settings
 ``````````````````````````
@@ -176,7 +178,7 @@ By default, ClusterControl deploys MySQL Galera with the following configuration
 	- MariaDB - MariaDB Server (Galera embedded) by MariaDB
 
 * **Version**
-	- Select the MySQL version for new deployment. For Percona, 5.6 and 5.7 are supported while MariaDB, 10.1, 10.2, 10.3 and 10.4 are supported.
+	- Select the MySQL version for new deployment. For Percona, 5.6 and 5.7, 8.0 are supported while MariaDB, 10.1, 10.2, 10.3, 10.4 and 10.5 are supported.
 
 * **Server Data Directory**
 	- Location of MySQL data directory. Default is ``/var/lib/mysql``.
@@ -196,7 +198,7 @@ By default, ClusterControl deploys MySQL Galera with the following configuration
 	- Use Mirrored Repositories - Create and mirror the current database vendor's repository and then deploy using the local mirrored repository. This is a preferred option when you have to scale the Galera Cluster in the future, to ensure the newly provisioned node will always have the same version as the rest of the members.
 	
 * **Add Node**
-	- Specify the IP address or hostname of the MySQL nodes. Press 'Enter' once specified so ClusterControl can verify the node reachability via passwordless SSH. Minimum of three nodes is recommended.
+	- Specify the IP address or hostname of the MySQL nodes. Press 'Enter' once specified so ClusterControl can verify the node reachability via passwordless SSH. A minimum of three nodes is recommended.
 
 * **Deploy**
 	- Starts the Galera Cluster deployment.
@@ -206,7 +208,7 @@ By default, ClusterControl deploys MySQL Galera with the following configuration
 MySQL Cluster (NDB)
 ++++++++++++++++++++
 
-Deploys a new MySQL Cluster (NDB) by Oracle. The cluster consists of management nodes, MySQL API nodes and data nodes. The database cluster will be automatically added into ClusterControl once deployed. Minimum of 4 nodes (2 SQL and management + 2 data nodes) is recommended. 
+Deploys a new MySQL Cluster (NDB) by Oracle. The cluster consists of management nodes, MySQL API nodes and data nodes. The database cluster will be automatically added into ClusterControl once deployed. A minimum of 4 nodes (2 SQL and management + 2 data nodes) is recommended. 
 
 .. Attention:: Every data node must have at least 1.5 GB of RAM for the deployment to succeed.
 
@@ -292,7 +294,7 @@ Deploys a new MySQL Cluster (NDB) by Oracle. The cluster consists of management 
 TimeScaleDB
 +++++++++++
 
-Deploys a new TimeScaleDB standalone or streaming replication cluster. Only TimeScaleDB 9.6 and later are supported. Minimum of two nodes 
+Deploys a new TimeScaleDB standalone or streaming replication cluster. Only TimeScaleDB 9.6 and later are supported. A minimum of two nodes is required for TimeScaleDB streaming replication.
 
 1) General & SSH Settings
 ``````````````````````````
@@ -367,7 +369,7 @@ Deploys a new TimeScaleDB standalone or streaming replication cluster. Only Time
 PostgreSQL
 +++++++++++
 
-Deploys a new PostgreSQL standalone or streaming replication cluster from ClusterControl. Only PostgreSQL 9.6 and later are supported.
+Deploys a new PostgreSQL standalone or streaming replication cluster from ClusterControl. Only PostgreSQL 9.6 and later are supported. A minimum of two nodes is required for PostgreSQL streaming replication.
 
 1) General & SSH Settings
 ``````````````````````````
@@ -441,7 +443,7 @@ Deploys a new PostgreSQL standalone or streaming replication cluster from Cluste
 MongoDB ReplicaSet
 +++++++++++++++++++
 
-Deploys a new MongoDB Replica Set. The database cluster will be automatically added into ClusterControl once deployed. Minimum of three nodes (including mongo arbiter) is recommended.
+Deploys a new MongoDB Replica Set. The database cluster will be automatically added into ClusterControl once deployed. A minimum of three nodes (including mongo arbiter) is recommended.
 
 .. Attention:: It is possible to deploy only 2 MongoDB nodes (without arbiter). The caveat of this approach is no automatic failover. If the primary node goes down then manual failover is required to make the other server as primary. Automatic failover works fine with 3 nodes and more.
 
@@ -482,7 +484,7 @@ Deploys a new MongoDB Replica Set. The database cluster will be automatically ad
 	- MongoDB - MongoDB Server by MongoDB Inc.
 
 * **Version**
-	- The supported MongoDB versions are 3.4, 3.6, 4.0 and 4.2.
+	- The supported MongoDB versions are 3.6, 4.0 and 4.2.
 
 * **Server Data Directory**
 	- Location of MongoDB data directory. Default is ``/var/lib/mongodb``.
@@ -508,7 +510,7 @@ Deploys a new MongoDB Replica Set. The database cluster will be automatically ad
 	- Use Mirrored Repositories - Create and mirror the current database vendor's repository and then deploy using the local mirrored repository. This is a preferred option when you have to scale the MongoDB in the future, to ensure the newly provisioned node will always have the same version as the rest of the members.
 	
 * **Add Nodes**
-	- Specify the IP address or hostname of the MongoDB nodes. Minimum of three nodes is required.
+	- Specify the IP address or hostname of the MongoDB nodes. A minimum of three nodes is required.
 
 * **Deploy**
 	- Starts the MongoDB ReplicaSet deployment.
@@ -518,7 +520,7 @@ Deploys a new MongoDB Replica Set. The database cluster will be automatically ad
 MongoDB Shards
 ++++++++++++++
 
-Deploys a new MongoDB Sharded Cluster. The database cluster will be automatically added into ClusterControl once deployed. Minimum of three nodes (including mongo arbiter) is recommended.
+Deploys a new MongoDB Sharded Cluster. The database cluster will be automatically added into ClusterControl once deployed. A minimum of three nodes (including mongo arbiter) is recommended.
 
 .. Warning:: It is possible to deploy only 2 MongoDB nodes (without arbiter). The caveat of this approach is no automatic failover. If the primary node goes down then manual failover is required to make the other server as primary. Automatic failover works fine with 3 nodes and more.
 
@@ -560,7 +562,7 @@ Deploys a new MongoDB Sharded Cluster. The database cluster will be automaticall
 	- MongoDB config server port. Default is 27019.
 
 * **Add Configuration Servers**
-	- Specify the IP address or hostname of the MongoDB config servers. Minimum of one node is required, recommended to use three nodes.
+	- Specify the IP address or hostname of the MongoDB config servers. A minimum of one node is required, recommended to use three nodes.
 
 *Routers/Mongos*
 
@@ -580,7 +582,7 @@ Deploys a new MongoDB Sharded Cluster. The database cluster will be automaticall
 	- MongoDB shard server port. Default is 27018.
 
 * **Add Node**
-	- Specify the IP address or hostname of the MongoDB shard servers. Minimum of one node is required, recommended to use three nodes.
+	- Specify the IP address or hostname of the MongoDB shard servers. A minimum of one node is required, recommended to use three nodes.
 	
 * **Advanced Options**
 	- Click on this to open set of advanced options for this particular node in this shard:
@@ -598,7 +600,7 @@ Deploys a new MongoDB Sharded Cluster. The database cluster will be automaticall
 	- MongoDB - MongoDB Server by MongoDB Inc
 
 * **Version**
-	- The supported MongoDB versions are 3.4, 3.6, 4.0 and 4.2.
+	- The supported MongoDB versions are 3.6, 4.0 and 4.2.
 
 * **Server Data Directory**
 	- Location of MongoDB data directory. Default is ``/var/lib/mongodb``.
