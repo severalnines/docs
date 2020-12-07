@@ -12,6 +12,15 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.8.1
 -----------------
 
+Maintenance Release: December 5\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.8.1-7491
+
+* Frontend (UI):
+	- Fix for ClusterControl user login. The login username was required to be an email address which prevented LDAP login with a plain username. 
+
 Maintenance Release: November 30\ :sup:`th`\ , 2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
