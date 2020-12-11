@@ -12,6 +12,26 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.8.1
 -----------------
 
+Maintenance Release: December 10\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.8.1-7500
+
+* Frontend (UI):
+	- Remove duplicate headers in *Query Monitor*.
+
+Maintenance Release: December 9\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.8.1-4285
+
+* Controller:
+	- PostgreSQL: Can't remove PostgreSQL slave in case of co-location.
+	- MariaDB: Fixed a bug with *Backup Verification* doesn't work on MariaDB 10.2 and later.
+	- MongoDB: ``mongodump`` logging improvement to add the last 50 lines of its output to the backup job log. 
+
 Maintenance Release: December 5\ :sup:`th`\ , 2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
