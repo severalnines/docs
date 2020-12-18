@@ -10,6 +10,7 @@ Alarms indicate problems that could affect or degrade the cluster as a whole. Th
 * Host
 * Node
 * Network
+* Backup
 
 An alarm can be acknowledged by checking the *Ignore?* checkbox. When ignored, no notification will be sent via email. An alarm cannot be deleted or dismissed, though you can hide it from the list by clicking on *Hide Ignored Alarms* button. 
 	
