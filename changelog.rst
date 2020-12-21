@@ -12,6 +12,34 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.8.1
 -----------------
 
+Maintenance Release: December 18\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.8.1-4299
+
+* Controller:
+	- Verify Backup: Fixed an issue where the *Verify Backup* would fail on MariaDB 10.2 and later if the MariaDb version of the restore host could not be determined. The error presented itself as ``/usr/bin/mariabackup: unknown option '--apply-log-only'``.
+
+Maintenance Release: December 14\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.8.1-4294
+
+* Controller:
+	- ProxySQL: Deployment fails because of a weak proxydemo user password. Now the proxydemo user is not created at all. 
+
+Maintenance Release: December 11\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.8.1-4292
+
+* Controller:
+	- Verify Backup: The *Verify Backup* job failed for MySQL based system because the *Backup Verification Server* was in read-only mode.
+	- Verify Backup: When verifying mysqldump backups, the binary logs of the *Backup Verification Server* were not removed. 
+
 Maintenance Release: December 10\ :sup:`th`\ , 2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
