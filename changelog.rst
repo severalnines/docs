@@ -12,6 +12,15 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.8.1
 -----------------
 
+Maintenance Release: December 23\ :sup:`rd`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.8.1-4304
+
+* Controller:
+	- MariaDB: Adding ``module_hotfixes=1`` to repo files to overcome the MariaDB issue: https://jira.mariadb.org/browse/MDEV-20673.
+
 Maintenance Release: December 18\ :sup:`th`\ , 2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
