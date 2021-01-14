@@ -12,6 +12,46 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.8.1
 -----------------
 
+Maintenance Release: January 13\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.8.1-7527
+
+* Controller:
+	- Fixed a bug where ``netcat_ports`` used by backup could collide with ports used by e.g Prometheus exporters and services.
+	- MongoDb Backup: Check the free space on storage host before starting backup.
+	- CPU Usage Alarm: Made it configurable how long time *CPU Usage* should be above a Warning/Critical threshold before raising the alarm. This can be set in the cmon configuration file (``host_stats_window_size``) or from the CMON Settings in the frontend and S9S CLI.
+
+Maintenance Release: January 7\ :sup:`th`\ , 2021
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-1.8.1-7527
+
+* Frontend (UI):
+	- MySQL root password is now correctly set when using the cloud deployment (wizard).
+	- The MySQL verify backup job is now containing the entered PITR position or time.
+	- The backups page was missing the 'backed up tables info' for MySQL partial backups with tables.
+
+Maintenance Release: December 30\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.8.1-4314
+
+* Controller:
+	- Percona Backup for MongoDB: The controller always reports the backup failed, but PBM says the backup completed and there are no error logs.
+
+Maintenance Release: December 28\ :sup:`th`\ , 2020
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+* Build:
+	- clustercontrol-controller-1.8.1-4311
+
+* Controller:
+	- MySQL Replication: Fixed a bug regarding package dependencies when adding a replication slave using Oracle MySQL 8.0 on CentOS/RHEL 8.
+
 Maintenance Release: December 23\ :sup:`rd`\ , 2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
