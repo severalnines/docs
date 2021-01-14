@@ -12,7 +12,7 @@ This change logs list details about updates in each version of ClusterControl.
 Changes in v1.8.1
 -----------------
 
-Maintenance Release: January 13\ :sup:`th`\ , 2020
+Maintenance Release: January 13\ :sup:`th`\ , 2021
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 * Build:
